@@ -14,9 +14,9 @@ export enum DAMAGETYPE {
     HOLY = "HOLY"
 }
 
-export interface Card extends OldCardData{
+export interface Card extends CardData{
     id: string;
-    
+    hand: "RIGHT"|"LEFT";
 }
 
 
@@ -37,7 +37,8 @@ export interface Damage {
 
 export interface CardData {
     name: string;
-    weapon: string;
+    item?: string;
+    count?: number;
     
     description: string;
     
@@ -50,3 +51,4 @@ export interface CardData {
     onMiss: (gs: GameState) => GameState;
     onUse: (gs: GameState) => GameState;
 }
+

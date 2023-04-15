@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { attackWithCard, createGame, endEnemyTurn, endTurn, startGame } from "./game/GameService";
+import { createGame, endEnemyTurn, endTurn, startGame, playItemCard } from "./game/GameService";
 import { CardSetA } from "./data/CardSetA";
 
 import { TestArena } from "./data/TestArena";
@@ -30,17 +30,16 @@ function App() {
 		}
 	}, [gameState.state]);
 
-  useEffect(() => {
-    if(targetIndex !== null && selectedCard !== null) {
-      const card = selectedCard;
-      const target = targetIndex;
-      setTarget(null);
-      setSelectedCard(null);
-      console.log(`Card ${card.name} attacks enemy ${target}`);
-      setGameState(attackWithCard(gameState, card, target));
-      
-    }
-  }, [targetIndex, selectedCard])
+	useEffect(() => {
+		if (targetIndex !== null && selectedCard !== null) {
+			const card = selectedCard;
+			const target = targetIndex;
+			setTarget(null);
+			setSelectedCard(null);
+			console.log(`Card ${card.name} attacks enemy ${target}`);
+			setGameState(playItemCard(gameState, card, targetIndex));
+		}
+	}, [targetIndex, selectedCard]);
 
 	function handleEndTurn() {
 		if (gameState && gameState.state === GAMESTATES.MYTURN) {
@@ -52,7 +51,7 @@ function App() {
 	function onHandCardClick(c: Card) {
 		setSelectedCard((prev) => {
 			if (prev && prev.id === c.id) {
-        return null;
+				return null;
 			}
 			return c;
 		});
@@ -78,7 +77,7 @@ function App() {
 			</h1>
 			<h2>
 				Health: {gameState.myHealth} / {gameState.myMaxHealth} <br />
-        APS: {gameState.aps} / {gameState.maxAps}
+				APS: {gameState.aps} / {gameState.maxAps}
 			</h2>
 
 			{gameState.state === GAMESTATES.MYTURN && (
@@ -93,17 +92,43 @@ function App() {
 			<h2>Enemies</h2>
 			<div className="enemies">
 				{gameState.arena.enemies.map((enemy, index) => {
-					return <EnemyCard key={`enemy-${index}`} enemy={enemy} index={index} onClick={onEnemyClick}/>;
+					return <EnemyCard key={`enemy-${index}`} enemy={enemy} index={index} onClick={onEnemyClick} />;
 				})}
 			</div>
 
-			<h2>
-				Hand (Deck: {gameState.deck.deckSize()} Discard: {gameState.deck.discardSize()})
-			</h2>
-			<div className="hand">
-				{gameState.hand.map((card, index) => {
-					return <HandCard key={`card-${index}`} card={card} onClick={onHandCardClick} selected={selectedCard && selectedCard.id === card.id ? true : false} />;
+			<div className="lefthand">
+				<div>
+					<div className="deck">{gameState.leftHandDeck.deckSize()}</div>
+					<div className="deck discard">{gameState.leftHandDeck.discardSize()}</div>
+				</div>
+
+				{gameState.leftHand.map((card, index) => {
+					return (
+						<HandCard
+							key={`card-left-${index}`}
+							card={card}
+							onClick={onHandCardClick}
+							selected={selectedCard && selectedCard.id === card.id ? true : false}
+						/>
+					);
 				})}
+			</div>
+
+			<div className="righthand">
+				{gameState.rightHand.map((card, index) => {
+					return (
+						<HandCard
+							key={`card-right-${index}`}
+							card={card}
+							onClick={onHandCardClick}
+							selected={selectedCard && selectedCard.id === card.id ? true : false}
+						/>
+					);
+				})}
+        	<div>
+					<div className="deck">{gameState.rightHandDeck.deckSize()}</div>
+					<div className="deck discard">{gameState.rightHandDeck.discardSize()}</div>
+				</div>
 			</div>
 		</div>
 	);

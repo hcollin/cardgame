@@ -1,4 +1,7 @@
+import { rnd } from "rndlib";
+import { Damage } from "../models/Card";
 import { GameState } from "../models/GameState";
+import { getDamageRange } from "./ItemTools";
 
 export enum ENEMYSTATUS {
 	ALIVE = "alive",
@@ -43,8 +46,10 @@ export class Enemy {
 		return this.attackValue;
 	}
 
-	public takeDamage(damage: number): void {
-		this.health -= damage;
+	public takeDamage(damage: Damage): void {
+		const damageRange = getDamageRange(damage);
+
+		this.health -= rnd(damageRange[0], damageRange[1]);
 		if (this.health <= 0) {
 			this.status = ENEMYSTATUS.DEAD;
 		}

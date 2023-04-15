@@ -12,7 +12,6 @@ export enum GAMESTATES {
 }
 
 
-
 export interface GameState {
     id: string;
     turn: number;
@@ -22,9 +21,14 @@ export interface GameState {
     maxAps: number;
 
 
-    deck: Deck;
+    leftHandDeck: Deck;
+    rightHandDeck: Deck;
+
+    leftHand: Card[];
+    rightHand: Card[];
+    
     state: GAMESTATES;
-    hand: Card[];
+    
     arena: Arena;
     
 }
