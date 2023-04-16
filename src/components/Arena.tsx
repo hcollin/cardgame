@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 import { TestArena } from "../data/TestArena";
 import { createGame, startGame, endEnemyTurn, playItemCard, endTurn } from "../game/GameService";
 import { Card, TARGETS } from "../models/Card";
@@ -77,8 +77,19 @@ function Arena() {
 
 	if (!gameState) return null;
 
+	const arenaStyle: CSSProperties = {
+		backgroundColor: gameState.arena.background,
+		height: "100vh",		
+	};
+	if(gameState.arena.bgImage) {
+		console.log(gameState.arena);
+		arenaStyle.backgroundImage = `url(${gameState.arena.bgImage})`;
+		arenaStyle.backgroundSize = "cover";
+	}
+
+
 	return (
-		<div className="arena" style={{ backgroundColor: gameState.arena.background, height: "100vh" }}>
+		<div className="arena" style={arenaStyle}>
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
 			<div className="enemies">

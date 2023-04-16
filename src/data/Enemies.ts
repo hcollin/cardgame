@@ -1,4 +1,4 @@
-import { Enemy } from "../game/Enemy";
+import { ENEMYACTIONS, ENEMYACTIONTARGETS, Enemy, EnemyAction } from "../game/Enemy";
 import { DAMAGETYPE } from "../models/Card";
 
 import img from "./pics/orc.png";
@@ -12,6 +12,23 @@ export class Orc extends Enemy {
     protected attackValue: number = 5;
 
     public image: string = img;
+
+    protected actions: EnemyAction[] = [
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 5,
+        },
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 5,
+        },
+        {
+            action: ENEMYACTIONS.WAIT,
+            target: ENEMYACTIONTARGETS.SELF,
+        },
+    ];
 
 
     constructor() {
@@ -29,6 +46,23 @@ export class Skeleton extends Enemy {
         protected vulnerableTo = [DAMAGETYPE.BLUNT];
 
         public image: string = imtSkel;
+
+        protected actions: EnemyAction[] = [
+            {
+                action: ENEMYACTIONS.ATTACK,
+                target: ENEMYACTIONTARGETS.HERO,
+                value: 8,
+            },
+            {
+                action: ENEMYACTIONS.WAIT,
+                target: ENEMYACTIONTARGETS.SELF,
+            },
+            {
+                action: ENEMYACTIONS.HEAL,
+                target: ENEMYACTIONTARGETS.SELF,
+                value: 3,
+            }
+        ];
 
         constructor() {
             super();

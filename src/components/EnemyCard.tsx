@@ -79,6 +79,9 @@ export default function EnemyCard(props: EnemyCardProps) {
 					</div>
 				</footer>
 			</div>
+			{stats.status === ENEMYSTATUS.ALIVE && <div className="next-action">
+				{stats.action}
+			</div>}
 		</div>
 	);
 }

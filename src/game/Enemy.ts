@@ -9,7 +9,7 @@ export enum ENEMYSTATUS {
 	DEAD = "dead",
 }
 
-export interface EnemyStata {
+export interface EnemyStats {
 	name: string;
 	damage: number;
 	health: number;
@@ -17,6 +17,33 @@ export interface EnemyStata {
 	effects: Map<EFFECTS, number>;
 	action: string;
 }
+
+
+export enum ENEMYACTIONS {
+	ATTACK = "ATTACK",
+	DEFEND = "DEFEND",
+	WAIT = "WAIT",
+	HEAL = "HEAL",
+	ESCAPE = "ESCAPE",
+	SPECIAL1 = "SPECIAL1",
+	SPECIAL2 = "SPECIAL2",
+	SPECIAL3 = "SPECIAL3"
+}
+
+export enum ENEMYACTIONTARGETS {
+	SELF = "SELF",
+	HERO = "HERO",
+	WORLD = "WORLD",
+	OTHERS = "OTHERS"
+}
+
+export interface EnemyAction {
+	action: ENEMYACTIONS;
+	target: ENEMYACTIONTARGETS;
+	value?: number;
+	description?: string;
+}
+
 
 export class Enemy {
 
@@ -37,6 +64,9 @@ export class Enemy {
 	private status: ENEMYSTATUS = ENEMYSTATUS.ALIVE;
 
 	public image: string = "";
+
+	protected actions: EnemyAction[] = [];
+	protected nextAction: number = 0;
 
 	constructor() {
 		this.id = Math.random().toString(36).substr(2, 9);
@@ -87,6 +117,70 @@ export class Enemy {
 			this.effects.set(effect, 1);
 		}
 	}
+
+	public resolveAction(gs: GameState): GameState {
+		if (this.isDead()) { return gs; }
+
+		const act = this.actions[this.nextAction];
+
+		switch (act.action) {
+			case ENEMYACTIONS.ATTACK:
+				return this.actionAttack(gs, act);
+			case ENEMYACTIONS.DEFEND:
+				return this.actionDefend(gs, act);
+			case ENEMYACTIONS.HEAL:
+				return this.actionHeal(gs, act);
+			case ENEMYACTIONS.ESCAPE:
+				break;
+			case ENEMYACTIONS.WAIT:
+				return {...gs};
+			case ENEMYACTIONS.SPECIAL1:
+				break;
+			case ENEMYACTIONS.SPECIAL2:
+				break;
+			case ENEMYACTIONS.SPECIAL3:
+				break;
+			default:
+				break;
+		}
+
+		return {...gs};
+	}
+
+	protected actionAttack(gs: GameState, act: EnemyAction): GameState {
+		if (!this.isAbletoAct()) {
+			return gs;
+		}
+		let damage = act.value || this.attackValue;
+		
+		if(damage <= gs.hero.armor) {
+			gs.hero.armor -= damage;
+			damage = 0;
+		}
+		if(damage > gs.hero.armor) {
+			damage -= gs.hero.armor;
+			gs.hero.armor = 0;
+		}
+
+		gs.hero.health -= damage;
+		return {...gs};
+	}
+
+	protected actionHeal(gs: GameState, act: EnemyAction): GameState {
+	
+		this.health += act.value || 0;
+		if(this.health > this.maxHealth) {
+			this.health = this.maxHealth;
+		}
+
+		return {...gs};
+	}
+
+	protected actionDefend(gs: GameState, act: EnemyAction): GameState {
+		this.armor += act.value || 0;
+		return {...gs};
+	}
+
 
 	public resetEnemy(): void {
 		this.health = this.maxHealth;
@@ -156,16 +250,23 @@ export class Enemy {
 			}
 		});
 
+		this.nextAction++;
+		if(this.nextAction >= this.actions.length) this.nextAction = 0;
+
 		return {...gs};
 	}
 
-	public getStats(): EnemyStata {
+	public getStats(): EnemyStats {
+
+		const act = this.actions[this.nextAction];
+
+
 		return {
 			name: this.name,
 			damage: this.attackValue,
 			health: this.health,
 			status: this.status,
-			action: "Attack!",
+			action: this.nextActionString(),
 			effects: this.effects,
 		};
 	}
@@ -176,4 +277,20 @@ export class Enemy {
 		if (this.effects.has(EFFECTS.FROZEN)) return false;
 		return true;
 	}
+
+	protected nextActionString(): string {
+		if(!this.actions[this.nextAction]) return "";
+		const act = this.actions[this.nextAction];
+		
+		const strs: string[] = [];
+		strs.push(act.action);
+		// strs.push(act.target.toLowerCase());
+		if(act.value) {
+			// strs.push("for")
+			strs.push(act.value.toString());
+		}
+		return strs.join(" ");
+	}
 }
+
+

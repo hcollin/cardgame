@@ -110,22 +110,12 @@ export function endTurn(gameState: GameState): GameState {
 }
 
 export function endEnemyTurn(gameState: GameState): GameState {
-	gameState.arena.enemies.forEach((enemy) => {
-		// Each enemy attacks
-		let damage = enemy.attack();
-		
-		if(damage <= gameState.hero.armor) {
-			gameState.hero.armor -= damage;
-			damage = 0;
-		}
-		if(damage > gameState.hero.armor) {
-			damage -= gameState.hero.armor;
-			gameState.hero.armor = 0;
-		}
-
-		gameState.hero.health -= damage;
-	});
-
+	
+	// Resolve enemy actions
+	gameState = gameState.arena.enemies.reduce((gs, enemy) => {
+		return enemy.resolveAction(gs);
+	}, {...gameState});
+	
 	gameState.arena.enemies.forEach((enemy) => {
 		gameState = enemy.atEndOfEnemyTurn(gameState);
 		gameState = enemy.cleanUpEndOfEnemyTurn(gameState);
