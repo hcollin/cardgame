@@ -1,0 +1,36 @@
+
+.target-hero {
+    position: absolute;
+
+    bottom: calc(var(--cardSize) * 2.2);
+    left: 50%;
+    
+
+    height: calc(var(--cardSize) * 2);
+    width: calc(var(--cardSize) * 2);
+
+    margin-left: calc(var(--cardSize) * -1);
+
+
+    background-image: url("./icons/impact-point.png");
+    background-size: contain;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+
+    text-shadow: 2px 2px 2px #000000AA, -2px -2px 2px #000000AA, 2px -2px 2px #000000AA, -2px 2px 2px #000000AA;   
+
+    opacity: 0.8;
+}
+
+.target-hero.isOverTrue {
+    transform: scale(1.1);
+    opacity: 1;
+
+    color: var(--hero-blue);
+}

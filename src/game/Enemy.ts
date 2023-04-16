@@ -19,6 +19,9 @@ export interface EnemyStata {
 }
 
 export class Enemy {
+
+	public id: string = "";
+
 	protected name: string = "No name";
 	protected health: number;
 	protected maxHealth: number = 100;
@@ -36,6 +39,7 @@ export class Enemy {
 	public image: string = "";
 
 	constructor() {
+		this.id = Math.random().toString(36).substr(2, 9);
 		this.health = this.maxHealth;
 	}
 

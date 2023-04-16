@@ -16,6 +16,8 @@
     flex-direction: column;
 
     position: relative;
+
+    user-select: none;
 }
 
 .card.common {
@@ -34,6 +36,11 @@
     background: #9867C5;
 }
 
+.card.dragging {
+    opacity: 0.5;
+    transform: scale(1.1);
+    box-shadow: inset 0 0 0.5rem 3px #FFFFFF44, 1rem 1rem 1rem 0.5rem #00000088;
+}
 
 .card>header {
     height: 2rem;

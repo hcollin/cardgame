@@ -6,4 +6,6 @@
   --cardSize: 100px;
   font-size: 12px;
   box-sizing: border-box;
+
+  --hero-blue: #ADD8E6;
 }

@@ -58,7 +58,7 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 	gameState = card.onUse(gameState);
 
 	// If target is specified, use the card on the target
-	if (targetIndex !== undefined) {
+	if (targetIndex !== undefined && targetIndex > -1) {
 		const enemy = gameState.arena.enemies[targetIndex];
 		card.damage.forEach((dmg) => {
 			enemy.takeDamage(dmg);

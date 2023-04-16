@@ -5,6 +5,7 @@ import imgPoison from "./icons/poison.png";
 import imgFrozen from "./icons/frozen.png";
 
 import "./effectIcon.css";
+import { rnd } from "rndlib";
 
 export const EffectIcon = (props: { effect: EFFECTS; amount: number }) => {
 	let img = null;
@@ -60,9 +61,12 @@ export const EffectRow = (props: { effects: Map<EFFECTS, number> }) => {
 
 	return (
 		<div className="effect-row">
-			{effects.map((effect) => (
-				<EffectIcon effect={effect[0]} amount={effect[1]} />
-			))}
+			{effects.map((effect: [EFFECTS, number], index) => {
+				const eff: EFFECTS = effect[0];
+				
+				return (
+				<EffectIcon effect={effect[0]} amount={effect[1]} key={`eff-${eff}-${index}-${rnd(1000,9999)}`}/>
+			)})}
 		</div>
 	);
 };

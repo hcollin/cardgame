@@ -9,12 +9,16 @@ import HandCard from "./HandCard";
 import "./arena.css";
 import ArenaHeader from "./ArenaHeader";
 import HeroInfo from "./HeroInfo";
+import { Enemy } from "../game/Enemy";
+import TargetHero from "./TargetHero";
 
 function Arena() {
 	const [gameState, setGameState] = useState<GameState>(createGame(new TestArena()));
 
 	const [targetIndex, setTarget] = useState<number | null>(null);
 	const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+
+	const [isDragging, setIsDragging] = useState<boolean>(false);
 
 	useEffect(() => {
 		const gs = createGame(new TestArena());
@@ -59,16 +63,27 @@ function Arena() {
 		});
 	}
 
+	function playCardOnHero() {
+		setTarget(-2);
+	}
+
+	function onEnemyDrop(e: Enemy) {
+		const eIndex = gameState.arena.enemies.findIndex((enemy) => enemy.id === e.id);
+		console.log(`Dropped ${selectedCard?.name} on ${e.getName()} at index ${eIndex}.`);
+		if (eIndex > -1) {
+			setTarget(eIndex);
+		}
+	}
+
 	if (!gameState) return null;
 
 	return (
 		<div className="arena" style={{ backgroundColor: gameState.arena.background, height: "100vh" }}>
-		
-            <ArenaHeader gameState={gameState} updateGameState={setGameState} />
+			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
 			<div className="enemies">
 				{gameState.arena.enemies.map((enemy, index) => {
-					return <EnemyCard key={`enemy-${index}`} enemy={enemy} index={index} onClick={onEnemyClick} />;
+					return <EnemyCard key={`enemy-${index}`} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} />;
 				})}
 			</div>
 
@@ -83,8 +98,16 @@ function Arena() {
 						<HandCard
 							key={`card-left-${index}`}
 							card={card}
-							onClick={onHandCardClick}
-							selected={selectedCard && selectedCard.id === card.id ? true : false}
+							onDragStart={(c: Card) => {
+								setIsDragging(true);
+							}}
+							onDragEnd={(c: Card) => {
+								setSelectedCard(c);
+								setIsDragging(false);
+							}}
+							// onClick={onHandCardClick}
+
+							// selected={selectedCard && selectedCard.id === card.id ? true : false}
 						/>
 					);
 				})}
@@ -96,8 +119,14 @@ function Arena() {
 						<HandCard
 							key={`card-right-${index}`}
 							card={card}
-							onClick={onHandCardClick}
-							selected={selectedCard && selectedCard.id === card.id ? true : false}
+							onDragStart={(c: Card) => {
+								setIsDragging(true);
+							}}
+							onDragEnd={(c: Card) => {
+								setSelectedCard(c);
+								setIsDragging(false);
+							}}
+							// selected={selectedCard && selectedCard.id === card.id ? true : false}
 						/>
 					);
 				})}
@@ -108,6 +137,10 @@ function Arena() {
 			</div>
 
 			<HeroInfo gameState={gameState} />
+
+			{isDragging && (
+				<TargetHero onDrop={playCardOnHero}/>
+			)}
 		</div>
 	);
 }
