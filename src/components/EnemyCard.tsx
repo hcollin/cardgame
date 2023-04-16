@@ -4,6 +4,7 @@ import attImg from "./pics/attack.png";
 import healthImg from "./pics/health.png";
 
 import "./enemycard.css";
+import { EffectRow } from "./EffectIcon";
 
 interface EnemyCardProps {
 	enemy: Enemy;
@@ -34,6 +35,8 @@ export default function EnemyCard(props: EnemyCardProps) {
             {props.enemy.image.length > 10 && <img src={props.enemy.image} alt={props.enemy.getName()} />}
             <div className="data">
                 <h1>{props.enemy.getName()}</h1>
+
+				<EffectRow effects={stats.effects} />
 
                 <footer>
                     <div className="att"><img src={attImg} alt="Attack Damage" /> {stats.damage}</div>

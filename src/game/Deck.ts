@@ -1,5 +1,5 @@
 import { shuffle } from "rndlib";
-import { Card, OldCardData } from "../models/Card";
+import { Card } from "../models/Card";
 
 export class Deck {
 	private deck: Card[] = [];

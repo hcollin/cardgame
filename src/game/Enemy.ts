@@ -1,7 +1,8 @@
 import { rnd } from "rndlib";
-import { Damage } from "../models/Card";
+import { DAMAGETYPE, Damage } from "../models/Card";
 import { GameState } from "../models/GameState";
 import { getDamageRange } from "./ItemTools";
+import { EFFECTS } from "../models/Effects";
 
 export enum ENEMYSTATUS {
 	ALIVE = "alive",
@@ -13,7 +14,7 @@ export interface EnemyStata {
 	damage: number;
 	health: number;
 	status: ENEMYSTATUS;
-
+	effects: Map<EFFECTS, number>;
 	action: string;
 }
 
@@ -22,6 +23,13 @@ export class Enemy {
 	protected health: number;
 	protected maxHealth: number = 100;
 	protected attackValue: number = 5;
+
+	protected armor: number = 0;
+
+	protected vulnerableTo: DAMAGETYPE[] = [];
+	protected resistantTo: DAMAGETYPE[] = [];
+
+	protected effects: Map<EFFECTS, number> = new Map();
 
 	private status: ENEMYSTATUS = ENEMYSTATUS.ALIVE;
 
@@ -40,7 +48,7 @@ export class Enemy {
 	}
 
 	public attack(): number {
-		if (this.status === ENEMYSTATUS.DEAD) {
+		if (!this.isAbletoAct()) {
 			return 0;
 		}
 		return this.attackValue;
@@ -49,9 +57,30 @@ export class Enemy {
 	public takeDamage(damage: Damage): void {
 		const damageRange = getDamageRange(damage);
 
-		this.health -= rnd(damageRange[0], damageRange[1]);
+		if (this.vulnerableTo.includes(damage.type)) {
+			damageRange[0] = Math.round(damageRange[0] * 1.5);
+			damageRange[1] = Math.round(damageRange[1] * 1.5);
+		}
+
+		if (this.resistantTo.includes(damage.type)) {
+			damageRange[0] = Math.round(damageRange[0] * 0.5);
+			damageRange[1] = Math.round(damageRange[1] * 0.5);
+		}
+
+		const damageTaken = rnd(damageRange[0], damageRange[1]);
+
+		this.health -= damageTaken;
+
 		if (this.health <= 0) {
 			this.status = ENEMYSTATUS.DEAD;
+		}
+	}
+
+	public causeEffect(effect: EFFECTS) {
+		if (this.effects.has(effect)) {
+			this.effects.set(effect, this.effects.get(effect)! + 1);
+		} else {
+			this.effects.set(effect, 1);
 		}
 	}
 
@@ -109,6 +138,23 @@ export class Enemy {
 		return gs;
 	}
 
+	public cleanUpEndOfEnemyTurn(gs: GameState): GameState {
+		if (this.effects.has(EFFECTS.POISONED)) {
+			this.takeDamage({ amount: 1, type: DAMAGETYPE.POISON, variation: 0 });
+		}
+
+		// Remove 1 from each effect
+		this.effects.forEach((value, key) => {
+			if (value === 1) {
+				this.effects.delete(key);
+			} else {
+				this.effects.set(key, value - 1);
+			}
+		});
+
+		return {...gs};
+	}
+
 	public getStats(): EnemyStata {
 		return {
 			name: this.name,
@@ -116,6 +162,14 @@ export class Enemy {
 			health: this.health,
 			status: this.status,
 			action: "Attack!",
+			effects: this.effects,
 		};
+	}
+
+	protected isAbletoAct(): boolean {
+		if (this.status === ENEMYSTATUS.DEAD) return false;
+		if (this.effects.has(EFFECTS.STUNNED)) return false;
+		if (this.effects.has(EFFECTS.FROZEN)) return false;
+		return true;
 	}
 }

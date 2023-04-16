@@ -1,0 +1,93 @@
+div.arena {
+    height: 100vh;
+}
+
+
+
+.enemies {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+
+
+.lefthand {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    width: 46%;
+    padding: 0.5rem;
+    padding-top: 3rem;
+
+    background: linear-gradient(0deg, #444, #667);
+    box-shadow: inset 0 0 1rem 0.25rem #FFFFFF33, 0 0 1rem 0.5rem #00000033;
+
+    /* border-top-right-radius: 5% 50%; */
+    border-top-left-radius: 90% 25%;
+    padding-right: 2rem;
+
+}
+
+.righthand {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    width: 46%;
+    padding: 0.5rem;
+    padding-top: 3rem;
+
+    /* background: #00000022; */
+    background: linear-gradient(0deg, #444, #667);
+    box-shadow: inset 0 0 1rem 0.25rem #FFFFFF33, 0 0 1rem 0.5rem #00000033;
+
+    /* border-top-left-radius: 5% 50%; */
+    border-top-right-radius: 90% 25%;
+    padding-left: 2rem;
+}
+
+.deck {
+    background: #FFFFFF55;
+    box-shadow: inset 0 0 0.3rem 2px #FFFFFF33;
+
+    border: solid 1px black;
+
+
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: calc(var(--cardSize) * 0.45);
+    height: calc(var(--cardSize) * 1.6 * 0.45);
+
+    font-size: 1.6rem;
+    color: black;
+    font-weight: bold;
+
+    margin: 0.5rem 0;
+
+}
+
+.deck.discard {
+    background: #00000022;
+    box-shadow: inset 0 0 0.3rem 2px #00000033;
+
+}
+
+.commands {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #00000055;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+}

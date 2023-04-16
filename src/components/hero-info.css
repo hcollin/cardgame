@@ -1,0 +1,86 @@
+
+.hero-info {
+    position: absolute;
+    bottom: 0;
+    left: 43%;
+    width: 14%;
+
+    
+    
+    height: calc(var(--cardSize) * 2.4);
+    border-top-left-radius: 4rem 3rem;
+    border-top-right-radius: 4rem 3rem;
+
+    border-bottom-left-radius: 20% 75%;
+    border-bottom-right-radius: 20% 75%;
+
+    background-image: url("./pics/rustymetal.jpg");
+    background-size: cover;
+    
+    /* background: linear-gradient(0deg, #448 31%, #844 33%, #844 61%, #444 63%); */
+    box-shadow: inset 0 0 1rem 0.5rem #00000099, 0 0 1rem 0.5rem #00000033;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: top;
+    align-items: center;
+    padding: 1rem;
+    overflow: hidden;
+    z-index: 10;
+    
+}
+
+.hero-info::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: linear-gradient(0deg, #448 31%, #844 33%, #844 61%, #444 63%); */
+    background: linear-gradient(0deg, #222 0%, #444 20%, #777 80%, #222 100%);
+    
+    opacity: 0.5;
+    z-index: 11;
+}
+
+.hero-info>h1 {
+    --shadowcolor: #00000088;
+    --shadowdist: 4px;
+    color: #FFFFFFBB;
+    font-size: 2.5rem;
+    margin: 0;
+    z-index: 20;
+    text-shadow: 2px 2px var(--shadowdist) var(--shadowcolor), -2px -2px var(--shadowdist) var(--shadowcolor), 2px -2px var(--shadowdist) var(--shadowcolor), -2px 2px var(--shadowdist) var(--shadowcolor);
+}
+
+.hero-info>h1>small {
+    font-size: 1.3rem;
+    /* opacity: 0.6; */
+    color: #CCCCCC99;
+
+}
+
+.hero-info>h3 {
+    --shadowcolor: #00000066;
+    --shadowdist: 2px;
+    color: #FFFFFFDD;
+    font-size: 0.9rem;
+    margin: 0;
+    font-style: italic;
+    margin-top: 1rem;
+    /* border-top: solid 3px #FFFFFF44; */
+    border-bottom: none;
+    width: 100%;
+    z-index: 20;
+    text-transform: uppercase;
+    
+    text-shadow: 2px 2px var(--shadowdist) var(--shadowcolor), -2px -2px var(--shadowdist) var(--shadowcolor), 2px -2px var(--shadowdist) var(--shadowcolor), -2px 2px var(--shadowdist) var(--shadowcolor);
+    
+    text-align: center;
+
+    /* border-top-right-radius: 25% 80%; */
+    /* border-top-left-radius: 25% 80%; */
+    padding-top: 0.2rem;
+}

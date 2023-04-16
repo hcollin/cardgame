@@ -1,4 +1,4 @@
-import { Card, OldCardData } from "../models/Card";
+import { Card } from "../models/Card";
 import { Deck } from "./Deck";
 import { Arena } from "./Arena";
 import { GAMESTATES, GameState } from "../models/GameState";
@@ -6,21 +6,20 @@ import { Item } from "../models/Items";
 import { createCardsFromItem } from "./ItemTools";
 import { LongSword } from "../data/items/LongSword";
 import { Shield } from "../data/items/Shield";
+import { createHero } from "./HeroTools";
 
-export function createGame(cardSet: OldCardData[], arena: Arena): GameState {
+export function createGame(arena: Arena): GameState {
 	return {
 		id: "testGame",
 		turn: 0,
-		myHealth: 0,
-		myMaxHealth: 50,
-		aps: 0,
-		maxAps: 4,
 		leftHandDeck: new Deck([]),
 		rightHandDeck: new Deck([]),
 		leftHand: [],
 		rightHand: [],
 		state: GAMESTATES.WAITING,
 		arena: arena,
+
+        hero: createHero()
 	};
 }
 
@@ -34,20 +33,23 @@ export function selectItems(gs: GameState, left: Item, right: Item): GameState {
 export function startGame(gameState: GameState): GameState {
 	gameState.state = GAMESTATES.MYTURN;
 
-    gameState = selectItems(gameState, Shield, LongSword);
+	gameState = selectItems(gameState, Shield, LongSword);
+
+	gameState.rightHandDeck.shuffleDeck();
+	gameState.leftHandDeck.shuffleDeck();
 
 	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
 
 	gameState.arena.resetArena();
 	gameState.turn = 1;
-	gameState.aps = gameState.maxAps;
-	gameState.myHealth = gameState.myMaxHealth;
+	
+
 	return { ...gameState };
 }
 
 export function playItemCard(gameState: GameState, card: Card, targetIndex?: number): GameState {
-	if (gameState.aps < card.apCost) {
+	if (gameState.hero.aps < card.apCost) {
 		console.log("Not enough Action Points");
 		return { ...gameState };
 	}
@@ -62,12 +64,16 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 			enemy.takeDamage(dmg);
 		});
 
+        card.effectsOnHit.forEach((effect) => {
+            enemy.causeEffect(effect);
+        });
+
 		if (enemy.isDead()) {
 			gameState = enemy.atDeath(gameState);
 		}
 	}
 
-	gameState.aps -= card.apCost;
+	gameState.hero.aps -= card.apCost;
 
 	// Discard used card
 	if (card.hand === "RIGHT") {
@@ -106,16 +112,32 @@ export function endTurn(gameState: GameState): GameState {
 export function endEnemyTurn(gameState: GameState): GameState {
 	gameState.arena.enemies.forEach((enemy) => {
 		// Each enemy attacks
-		gameState.myHealth -= enemy.attack();
+		let damage = enemy.attack();
+		
+		if(damage <= gameState.hero.armor) {
+			gameState.hero.armor -= damage;
+			damage = 0;
+		}
+		if(damage > gameState.hero.armor) {
+			damage -= gameState.hero.armor;
+			gameState.hero.armor = 0;
+		}
+
+		gameState.hero.health -= damage;
 	});
 
 	gameState.arena.enemies.forEach((enemy) => {
 		gameState = enemy.atEndOfEnemyTurn(gameState);
+		gameState = enemy.cleanUpEndOfEnemyTurn(gameState);
 	});
+
+
+	gameState.hero.armor = gameState.hero.defaultArmor;
+
 
 	gameState.state = GAMESTATES.MYTURN;
 	gameState.turn++;
-	gameState.aps = gameState.maxAps;
+	gameState.hero.aps = gameState.hero.maxAps;
 
 	// Draw 3 cards to both hands
 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
