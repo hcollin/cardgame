@@ -1,26 +1,31 @@
 import { useDrop } from "react-dnd";
 import "./target-hero.css";
+import { Card, TARGETS } from "../models/Card";
 
-function TargetHero(props: {onDrop?: () => void}) {
+function TargetHero(props: { onDrop?: () => void }) {
 	const [{ isOver, canDrop }, drop] = useDrop({
 		accept: "Card",
 		drop: (item: any) => {
-            if(props.onDrop) {
-                props.onDrop();
-            }
-        },
+			if (props.onDrop) {
+				props.onDrop();
+			}
+		},
+		canDrop: (item: Card) => {
+			return item.allowedTargets.includes(TARGETS.SELF);
+		},
 		collect: (monitor) => ({
 			isOver: !!monitor.isOver(),
 			canDrop: !!monitor.canDrop(),
 		}),
 	});
 
+	const cn = `target-hero ${isOver ? (canDrop ? "isOverTrue" : "isOverFalse") : ""}`;
 
-    const cn = `target-hero ${isOver ? "isOverTrue" : ""}`;
+    if(!canDrop) return null;
 
 	return (
 		<div className={cn} ref={drop}>
-			TARGET ME!
+			TARGET HERO!
 		</div>
 	);
 }

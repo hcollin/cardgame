@@ -34,3 +34,8 @@
 
     color: var(--hero-blue);
 }
+
+.target-hero.isOverFalse {
+    opacity: 0.4;
+    color: red;
+}

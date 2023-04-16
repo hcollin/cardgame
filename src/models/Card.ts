@@ -12,6 +12,12 @@ export enum DAMAGETYPE {
 	HOLY = "HOLY",
 }
 
+export enum TARGETS {
+	ENEMY = "ENEMY",
+	SELF = "SELF",
+	WORLD = "WORLD"
+}
+
 export interface Card extends CardData {
 	id: string;
 	hand: "RIGHT" | "LEFT";
@@ -41,6 +47,8 @@ export interface CardData {
 
 	apCost: number;
 	reach: number;
+
+	allowedTargets: TARGETS[];
 
     effectsOnHit: EFFECTS[];
 

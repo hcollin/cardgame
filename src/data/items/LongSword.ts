@@ -1,4 +1,4 @@
-import { CARDRARITY, DAMAGETYPE } from "../../models/Card";
+import { CARDRARITY, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
 import { Item } from "../../models/Items";
 
@@ -21,6 +21,7 @@ export const LongSword: Item = {
 			],
 			apCost: 3,
 			reach: 1,
+			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
 			onHit: (gs) => {
 				return { ...gs };
@@ -44,6 +45,7 @@ export const LongSword: Item = {
 			],
 			apCost: 4,
 			reach: 1,
+			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [EFFECTS.STUNNED],
 			onHit: (gs) => {
 				return { ...gs };
@@ -67,6 +69,7 @@ export const LongSword: Item = {
 			],
 			apCost: 1,
 			reach: 1,
+			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
 			onHit: (gs) => {
 				return { ...gs };
@@ -90,6 +93,7 @@ export const LongSword: Item = {
 			],
 			apCost: 2,
 			reach: 1,
+			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [EFFECTS.STUNNED],
 			onHit: (gs) => {
 				return { ...gs };

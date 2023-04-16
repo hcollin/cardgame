@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { TestArena } from "../data/TestArena";
 import { createGame, startGame, endEnemyTurn, playItemCard, endTurn } from "../game/GameService";
-import { Card } from "../models/Card";
+import { Card, TARGETS } from "../models/Card";
 import { GameState, GAMESTATES } from "../models/GameState";
 import EnemyCard from "./EnemyCard";
 import HandCard from "./HandCard";
@@ -121,6 +121,7 @@ function Arena() {
 							card={card}
 							onDragStart={(c: Card) => {
 								setIsDragging(true);
+								setSelectedCard(c);
 							}}
 							onDragEnd={(c: Card) => {
 								setSelectedCard(c);

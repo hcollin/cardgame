@@ -1,4 +1,4 @@
-import { Enemy } from "../game/Enemy";
+import { ENEMYSTATUS, Enemy } from "../game/Enemy";
 
 import attImg from "./pics/attack.png";
 import healthImg from "./pics/health.png";
@@ -6,6 +6,7 @@ import healthImg from "./pics/health.png";
 import "./enemycard.css";
 import { EffectRow } from "./EffectIcon";
 import { useDrop } from "react-dnd";
+import { Card, TARGETS } from "../models/Card";
 
 interface EnemyCardProps {
 	enemy: Enemy;
@@ -16,21 +17,23 @@ interface EnemyCardProps {
 }
 
 export default function EnemyCard(props: EnemyCardProps) {
-	
-	const [{isOver, canDrop}, drop] = useDrop({
+	const [{ isOver, canDrop, isDragging }, drop] = useDrop({
 		accept: "Card",
 		drop: (item: any) => {
-			if(props.onDrop) {
+			if (props.onDrop) {
 				props.onDrop(props.enemy);
 			}
+		},
+		canDrop: (card: Card) => {
+			return card.allowedTargets.includes(TARGETS.ENEMY);
 		},
 		collect: (monitor) => ({
 			isOver: !!monitor.isOver(),
 			canDrop: !!monitor.canDrop(),
-		})
+			isDragging: !!monitor.getItem(),
+		}),
 	});
-		
-	
+
 	function handleClick() {
 		if (props.onClick) {
 			props.onClick(props.index);
@@ -42,27 +45,40 @@ export default function EnemyCard(props: EnemyCardProps) {
 		}
 	}
 
-	if (props.enemy.isDead()) {
-		return null;
+	// if (props.enemy.isDead()) {
+	// 	return null;
+	// }
+
+	const stats = props.enemy.getStats();
+	const cns: string[] = ["enemy"];
+	if (!props.enemy.isDead()) {
+		if (isDragging && canDrop && !isOver) cns.push("valid-target");
+		if (isDragging && canDrop && isOver) cns.push("isOverTrue");
+		if (isDragging && !canDrop) cns.push("invalid-target");
+	} else {
+		cns.push("is-dead");
 	}
 
-    const stats = props.enemy.getStats();
-	
-	const cn = `enemy ${isOver ? "isOverTrue" : ""}`;
+	// const cn = `enemy ${isDragging ? (canDrop ? (isOver ? "isOverTrue" : "valid-target") : "invalid-target"): ""}`;
+	const cn = cns.join(" ");
+
 	return (
 		<div className={cn} onClick={handleClick} ref={drop}>
-            {props.enemy.image.length > 10 && <img src={props.enemy.image} alt={props.enemy.getName()} />}
-            <div className="data">
-                <h1>{props.enemy.getName()}</h1>
+			{props.enemy.image.length > 10 && <img src={props.enemy.image} alt={props.enemy.getName()} />}
+			<div className="data">
+				<h1>{props.enemy.getName()}</h1>
 
 				<EffectRow effects={stats.effects} />
 
-                <footer>
-                    <div className="att"><img src={attImg} alt="Attack Damage" /> {stats.damage}</div>
-                    <div className="health"><img src={healthImg} alt="Health" /> {stats.health}</div>
-                </footer>
-            </div>
-			
+				<footer>
+					<div className="att">
+						<img src={attImg} alt="Attack Damage" /> {stats.damage}
+					</div>
+					<div className="health">
+						<img src={healthImg} alt="Health" /> {stats.health}
+					</div>
+				</footer>
+			</div>
 		</div>
 	);
 }
