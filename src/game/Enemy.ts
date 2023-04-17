@@ -3,6 +3,7 @@ import { DAMAGETYPE, Damage } from "../models/Card";
 import { GameState } from "../models/GameState";
 import { getDamageRange } from "./ItemTools";
 import { EFFECTS } from "../models/Effects";
+import { v4 } from "uuid";
 
 export enum ENEMYSTATUS {
 	ALIVE = "alive",
@@ -69,7 +70,7 @@ export class Enemy {
 	protected nextAction: number = 0;
 
 	constructor() {
-		this.id = Math.random().toString(36).substr(2, 9);
+		this.id = v4();
 		this.health = this.maxHealth;
 	}
 
@@ -89,18 +90,9 @@ export class Enemy {
 	}
 
 	public takeDamage(damage: Damage): void {
-		const damageRange = getDamageRange(damage);
 
-		if (this.vulnerableTo.includes(damage.type)) {
-			damageRange[0] = Math.round(damageRange[0] * 1.5);
-			damageRange[1] = Math.round(damageRange[1] * 1.5);
-		}
-
-		if (this.resistantTo.includes(damage.type)) {
-			damageRange[0] = Math.round(damageRange[0] * 0.5);
-			damageRange[1] = Math.round(damageRange[1] * 0.5);
-		}
-
+		const damageRange = this.getDamagePotential(damage);
+		
 		const damageTaken = rnd(damageRange[0], damageRange[1]);
 
 		this.health -= damageTaken;
@@ -110,12 +102,51 @@ export class Enemy {
 		}
 	}
 
+	public getDamagePotential(damage: Damage): [number, number] {
+		if(this.vulnerableTo.includes(damage.type)) {
+			damage.amount = Math.round(damage.amount * 1.5);
+		}
+
+		if(this.resistantTo.includes(damage.type)) {
+			damage.amount = Math.round(damage.amount * 0.5);
+		}
+
+		if(this.effectIsActive(EFFECTS.STUNNED)) {
+			damage.amount = Math.round(damage.amount * 1.25);
+		}
+
+		const damageRange = getDamageRange(damage);
+
+		return damageRange;
+	}
+
 	public causeEffect(effect: EFFECTS) {
 		if (this.effects.has(effect)) {
 			this.effects.set(effect, this.effects.get(effect)! + 1);
 		} else {
 			this.effects.set(effect, 1);
 		}
+
+		// If the enemy has both burning and frozen effects, only leave the one with most turns left and substract the other from it
+		if (this.effects.has(EFFECTS.BURNING) && this.effects.has(EFFECTS.FROZEN)) {
+			const burningTurns = this.effects.get(EFFECTS.BURNING)!;
+			const frozenTurns = this.effects.get(EFFECTS.FROZEN)!;
+			if (burningTurns > frozenTurns) {
+				this.effects.set(EFFECTS.BURNING, burningTurns - frozenTurns);
+				this.effects.delete(EFFECTS.FROZEN);
+			} else {
+				if (frozenTurns > burningTurns) {
+					this.effects.set(EFFECTS.FROZEN, frozenTurns - burningTurns);
+					this.effects.delete(EFFECTS.BURNING);
+				} else {
+					this.effects.delete(EFFECTS.BURNING);
+					this.effects.delete(EFFECTS.FROZEN);
+				}
+			}
+		}
+
+
+
 	}
 
 	public resolveAction(gs: GameState): GameState {
@@ -133,7 +164,7 @@ export class Enemy {
 			case ENEMYACTIONS.ESCAPE:
 				break;
 			case ENEMYACTIONS.WAIT:
-				return {...gs};
+				return { ...gs };
 			case ENEMYACTIONS.SPECIAL1:
 				break;
 			case ENEMYACTIONS.SPECIAL2:
@@ -144,7 +175,7 @@ export class Enemy {
 				break;
 		}
 
-		return {...gs};
+		return { ...gs };
 	}
 
 	protected actionAttack(gs: GameState, act: EnemyAction): GameState {
@@ -152,33 +183,33 @@ export class Enemy {
 			return gs;
 		}
 		let damage = act.value || this.attackValue;
-		
-		if(damage <= gs.hero.armor) {
+
+		if (damage <= gs.hero.armor) {
 			gs.hero.armor -= damage;
 			damage = 0;
 		}
-		if(damage > gs.hero.armor) {
+		if (damage > gs.hero.armor) {
 			damage -= gs.hero.armor;
 			gs.hero.armor = 0;
 		}
 
 		gs.hero.health -= damage;
-		return {...gs};
+		return { ...gs };
 	}
 
 	protected actionHeal(gs: GameState, act: EnemyAction): GameState {
-	
+
 		this.health += act.value || 0;
-		if(this.health > this.maxHealth) {
+		if (this.health > this.maxHealth) {
 			this.health = this.maxHealth;
 		}
 
-		return {...gs};
+		return { ...gs };
 	}
 
 	protected actionDefend(gs: GameState, act: EnemyAction): GameState {
 		this.armor += act.value || 0;
-		return {...gs};
+		return { ...gs };
 	}
 
 
@@ -189,6 +220,14 @@ export class Enemy {
 
 	public isDead(): boolean {
 		return this.status === ENEMYSTATUS.DEAD;
+	}
+
+	public effectIsActive(effect: EFFECTS): number {
+		const val = this.effects.get(effect);
+		if (!val) {
+			return 0;
+		}
+		return val;
 	}
 
 	/**
@@ -251,9 +290,9 @@ export class Enemy {
 		});
 
 		this.nextAction++;
-		if(this.nextAction >= this.actions.length) this.nextAction = 0;
+		if (this.nextAction >= this.actions.length) this.nextAction = 0;
 
-		return {...gs};
+		return { ...gs };
 	}
 
 	public getStats(): EnemyStats {
@@ -279,13 +318,13 @@ export class Enemy {
 	}
 
 	protected nextActionString(): string {
-		if(!this.actions[this.nextAction]) return "";
+		if (!this.actions[this.nextAction]) return "";
 		const act = this.actions[this.nextAction];
-		
+
 		const strs: string[] = [];
 		strs.push(act.action);
 		// strs.push(act.target.toLowerCase());
-		if(act.value) {
+		if (act.value) {
 			// strs.push("for")
 			strs.push(act.value.toString());
 		}

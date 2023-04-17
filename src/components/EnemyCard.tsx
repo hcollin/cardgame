@@ -7,6 +7,7 @@ import "./enemycard.css";
 import { EffectRow } from "./EffectIcon";
 import { useDrop } from "react-dnd";
 import { Card, TARGETS } from "../models/Card";
+import { EFFECTS } from "../models/Effects";
 
 interface EnemyCardProps {
 	enemy: Enemy;
@@ -55,12 +56,21 @@ export default function EnemyCard(props: EnemyCardProps) {
 		if (isDragging && canDrop && !isOver) cns.push("valid-target");
 		if (isDragging && canDrop && isOver) cns.push("isOverTrue");
 		if (isDragging && !canDrop) cns.push("invalid-target");
+
+		if (props.enemy.effectIsActive(EFFECTS.STUNNED)) cns.push("is-stunned no-action");
+		if (props.enemy.effectIsActive(EFFECTS.BURNING)) cns.push("is-burning");
+		if (props.enemy.effectIsActive(EFFECTS.POISONED)) cns.push("is-poisoned");
+		if (props.enemy.effectIsActive(EFFECTS.FROZEN)) cns.push("is-frozen no-action");
+
+
 	} else {
 		cns.push("is-dead");
 	}
 
 	// const cn = `enemy ${isDragging ? (canDrop ? (isOver ? "isOverTrue" : "valid-target") : "invalid-target"): ""}`;
 	const cn = cns.join(" ");
+
+	
 
 	return (
 		<div className={cn} onClick={handleClick} ref={drop}>

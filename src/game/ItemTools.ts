@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Card, Damage } from "../models/Card";
 
 import { Item } from "../models/Items";
@@ -10,7 +11,7 @@ export function createCardsFromItem(item: Item, hand: "RIGHT"|"LEFT"): Card[] {
     item.cards.forEach((cardData) => {
         const ccount = cardData.count || 1;
         for(let i = 0; i < ccount; i++) {
-            const c = { ...cardData, id: `${cardData.name}-${i}`, item: item.name, hand: hand };
+            const c = { ...cardData, id: v4(), item: item.name, hand: hand };
             cards.push(c);
         }
     });

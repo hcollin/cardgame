@@ -42,6 +42,7 @@ function Arena() {
 			setSelectedCard(null);
 			console.log(`Card ${card.name} attacks enemy ${target}`);
 			setGameState(playItemCard(gameState, card, targetIndex));
+			
 		}
 	}, [targetIndex, selectedCard]);
 
@@ -69,7 +70,7 @@ function Arena() {
 
 	function onEnemyDrop(e: Enemy) {
 		const eIndex = gameState.arena.enemies.findIndex((enemy) => enemy.id === e.id);
-		console.log(`Dropped ${selectedCard?.name} on ${e.getName()} at index ${eIndex}.`);
+		// console.log(`Dropped ${selectedCard?.name} on ${e.getName()} at index ${eIndex}.`);
 		if (eIndex > -1) {
 			setTarget(eIndex);
 		}
@@ -82,7 +83,7 @@ function Arena() {
 		height: "100vh",		
 	};
 	if(gameState.arena.bgImage) {
-		console.log(gameState.arena);
+		// console.log(gameState.arena);
 		arenaStyle.backgroundImage = `url(${gameState.arena.bgImage})`;
 		arenaStyle.backgroundSize = "cover";
 	}
@@ -94,7 +95,7 @@ function Arena() {
 
 			<div className="enemies">
 				{gameState.arena.enemies.map((enemy, index) => {
-					return <EnemyCard key={`enemy-${index}`} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} />;
+					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} />;
 				})}
 			</div>
 
@@ -107,7 +108,7 @@ function Arena() {
 				{gameState.leftHand.map((card, index) => {
 					return (
 						<HandCard
-							key={`card-left-${index}`}
+							key={card.id}
 							card={card}
 							onDragStart={(c: Card) => {
 								setIsDragging(true);
@@ -128,7 +129,7 @@ function Arena() {
 				{gameState.rightHand.map((card, index) => {
 					return (
 						<HandCard
-							key={`card-right-${index}`}
+							key={card.id}
 							card={card}
 							onDragStart={(c: Card) => {
 								setIsDragging(true);

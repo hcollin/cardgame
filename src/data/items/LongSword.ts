@@ -83,7 +83,7 @@ export const LongSword: Item = {
 			name: "Pommel Strike",
 			description: "A non-lethal attack that uses the pommel to strike the opponent.",
 			rarity: CARDRARITY.RARE,
-			count: 2,
+			count: 5,
 			damage: [
 				{
 					amount: 1,

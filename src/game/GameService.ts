@@ -19,7 +19,7 @@ export function createGame(arena: Arena): GameState {
 		state: GAMESTATES.WAITING,
 		arena: arena,
 
-        hero: createHero()
+		hero: createHero()
 	};
 }
 
@@ -43,7 +43,7 @@ export function startGame(gameState: GameState): GameState {
 
 	gameState.arena.resetArena();
 	gameState.turn = 1;
-	
+
 
 	return { ...gameState };
 }
@@ -64,9 +64,9 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 			enemy.takeDamage(dmg);
 		});
 
-        card.effectsOnHit.forEach((effect) => {
-            enemy.causeEffect(effect);
-        });
+		card.effectsOnHit.forEach((effect) => {
+			enemy.causeEffect(effect);
+		});
 
 		if (enemy.isDead()) {
 			gameState = enemy.atDeath(gameState);
@@ -77,8 +77,9 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 
 	// Discard used card
 	if (card.hand === "RIGHT") {
+		console.log("Discard", card.id, card);
 		gameState.rightHandDeck.discardCards([card]);
-		gameState.rightHand = gameState.rightHand.filter((c) => c.id !== card.id);
+		gameState.rightHand = [...gameState.rightHand.filter((c) => c.id !== card.id)];
 	} else {
 		gameState.leftHandDeck.discardCards([card]);
 		gameState.leftHand = gameState.leftHand.filter((c) => c.id !== card.id);
@@ -110,12 +111,12 @@ export function endTurn(gameState: GameState): GameState {
 }
 
 export function endEnemyTurn(gameState: GameState): GameState {
-	
+
 	// Resolve enemy actions
 	gameState = gameState.arena.enemies.reduce((gs, enemy) => {
 		return enemy.resolveAction(gs);
-	}, {...gameState});
-	
+	}, { ...gameState });
+
 	gameState.arena.enemies.forEach((enemy) => {
 		gameState = enemy.atEndOfEnemyTurn(gameState);
 		gameState = enemy.cleanUpEndOfEnemyTurn(gameState);

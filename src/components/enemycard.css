@@ -56,12 +56,125 @@
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0.8;
-    
-    
+}
+
+.enemy.is-stunned {
+    /* transform: grayscale(100%); */
+    transform: perspective(400px) rotateX(25deg);
+    filter: grayscale(75%) blur(1px);
+}
+
+.enemy.is-stunned::after {
+    content: "";
+    position: absolute;
+    top:0;
+    left:-2rem;
+    right:-2rem;
+    bottom:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    background-image: url("./icons/stunned.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+}
+
+.enemy.is-frozen {
+    transform: perspective(400px) rotateX(25deg);
+    filter: sepia(75%) hue-rotate(180deg);
+}
+
+.enemy.is-frozen::after {
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    background-image: url("./icons/frozen.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+}
+
+.enemy.is-burning {
+    /* filter: sepia(75%) hue-rotate(320deg); */
     
 }
 
+.enemy.is-burning::after {
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    background-image: url("./icons/burning.png");
+    background-size: contain;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    
+}
 
+.enemy.is-poisoned {
+    z-index: 10;
+}
+/* 
+.enemy.is-poisoned::before {
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    
+    background-image: url("./icons/blackbox.png");
+    background-blend-mode: hue;
+    opacity: 0.5;
+
+    z-index: 15;
+} */
+
+.enemy.is-poisoned::after {
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    background-image: url("./icons/poisonedlarge.png");
+    background-size: contain;
+    background-position: center top;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    filter: initial;
+    z-index: 20;
+}
 
 .enemy>.data {
     position: relative;
@@ -166,6 +279,9 @@
     /* color: white; */
     /* box-shadow: inset 0 0 0.5rem 3px #00000088, 0.25rem 0.25rem 6px 3px #00000033; */
     /* border-radius: 1rem; */
-    
+}
 
+.enemy.no-action > .next-action {
+    opacity: 0.5;
+    
 }

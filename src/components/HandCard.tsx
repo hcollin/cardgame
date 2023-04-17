@@ -20,7 +20,7 @@ export default function HandCard(props: HandCardProps) {
 		() => ({
 			type: "Card",
       item: () => {
-        console.log("Dragging started");
+        
         if(props.onDragStart) {
           props.onDragStart(props.card);
           return props.card;  
@@ -69,12 +69,13 @@ export default function HandCard(props: HandCardProps) {
 			</div>
 
 			<p>{props.card.description}</p>
+			{/* <p>{props.card.id}</p> */}
 
 			<footer>
 				{props.card.damage.map((dmg, index) => {
 					if (dmg.variation === 0) {
 						return (
-							<div className="dmg">
+							<div className="dmg" key={`${props.card.id}-dmg-${index}`}>
 								<span className="type">{dmg.type}</span>
 								<span className="amount">{dmg.amount}</span>
 							</div>
@@ -83,7 +84,7 @@ export default function HandCard(props: HandCardProps) {
 
 					const range = getDamageRange(dmg);
 					return (
-						<div className="dmg">
+						<div className="dmg" key={`${props.card.id}-dmg-${index}`}>
 							<span className="type">{dmg.type}</span>
 							<span className="amount">
 								{range[0]} - {range[1]}
