@@ -18,6 +18,8 @@
     position: relative;
 
     user-select: none;
+
+    z-index: 20;
 }
 
 .card.common {

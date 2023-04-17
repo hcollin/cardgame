@@ -13,6 +13,8 @@
     box-shadow: inset 0 0 0.5rem 3px #FFFFFF44, 0.25rem 0.25rem 1rem 0.5rem #00000088;
 
     position: relative;
+
+    transition: all 0.25s ease-in-out;
 }
 
 .enemy.isOverTrue {

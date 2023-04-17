@@ -25,13 +25,16 @@ div.arena {
     padding: 0.5rem;
     padding-top: 3rem;
 
-    background: linear-gradient(0deg, #444, #667);
+    background: linear-gradient(0deg, #44554488, #66886688);
     box-shadow: inset 0 0 1rem 0.25rem #FFFFFF33, 0 0 1rem 0.5rem #00000033;
 
     /* border-top-right-radius: 5% 50%; */
     border-top-left-radius: 90% 25%;
     padding-right: 2rem;
+}
 
+.lefthand > div, .righthand > div {
+    z-index: 20;
 }
 
 .righthand {
@@ -47,7 +50,8 @@ div.arena {
     padding-top: 3rem;
 
     /* background: #00000022; */
-    background: linear-gradient(0deg, #444, #667);
+    /* background: linear-gradient(0deg, #444, #667); */
+    background: linear-gradient(0deg, #44554488, #66886688);
     box-shadow: inset 0 0 1rem 0.25rem #FFFFFF33, 0 0 1rem 0.5rem #00000033;
 
     /* border-top-left-radius: 5% 50%; */

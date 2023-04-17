@@ -19,7 +19,6 @@ export interface EnemyStats {
 	action: string;
 }
 
-
 export enum ENEMYACTIONS {
 	ATTACK = "ATTACK",
 	DEFEND = "DEFEND",
@@ -28,14 +27,14 @@ export enum ENEMYACTIONS {
 	ESCAPE = "ESCAPE",
 	SPECIAL1 = "SPECIAL1",
 	SPECIAL2 = "SPECIAL2",
-	SPECIAL3 = "SPECIAL3"
+	SPECIAL3 = "SPECIAL3",
 }
 
 export enum ENEMYACTIONTARGETS {
 	SELF = "SELF",
 	HERO = "HERO",
 	WORLD = "WORLD",
-	OTHERS = "OTHERS"
+	OTHERS = "OTHERS",
 }
 
 export interface EnemyAction {
@@ -45,9 +44,7 @@ export interface EnemyAction {
 	description?: string;
 }
 
-
 export class Enemy {
-
 	public id: string = "";
 
 	protected name: string = "No name";
@@ -90,9 +87,8 @@ export class Enemy {
 	}
 
 	public takeDamage(damage: Damage): void {
-
 		const damageRange = this.getDamagePotential(damage);
-		
+
 		const damageTaken = rnd(damageRange[0], damageRange[1]);
 
 		this.health -= damageTaken;
@@ -103,15 +99,15 @@ export class Enemy {
 	}
 
 	public getDamagePotential(damage: Damage): [number, number] {
-		if(this.vulnerableTo.includes(damage.type)) {
+		if (this.vulnerableTo.includes(damage.type)) {
 			damage.amount = Math.round(damage.amount * 1.5);
 		}
 
-		if(this.resistantTo.includes(damage.type)) {
+		if (this.resistantTo.includes(damage.type)) {
 			damage.amount = Math.round(damage.amount * 0.5);
 		}
 
-		if(this.effectIsActive(EFFECTS.STUNNED)) {
+		if (this.effectIsActive(EFFECTS.STUNNED)) {
 			damage.amount = Math.round(damage.amount * 1.25);
 		}
 
@@ -144,13 +140,12 @@ export class Enemy {
 				}
 			}
 		}
-
-
-
 	}
 
 	public resolveAction(gs: GameState): GameState {
-		if (this.isDead()) { return gs; }
+		if (this.isDead()) {
+			return gs;
+		}
 
 		const act = this.actions[this.nextAction];
 
@@ -198,7 +193,6 @@ export class Enemy {
 	}
 
 	protected actionHeal(gs: GameState, act: EnemyAction): GameState {
-
 		this.health += act.value || 0;
 		if (this.health > this.maxHealth) {
 			this.health = this.maxHealth;
@@ -211,7 +205,6 @@ export class Enemy {
 		this.armor += act.value || 0;
 		return { ...gs };
 	}
-
 
 	public resetEnemy(): void {
 		this.health = this.maxHealth;
@@ -296,9 +289,7 @@ export class Enemy {
 	}
 
 	public getStats(): EnemyStats {
-
 		const act = this.actions[this.nextAction];
-
 
 		return {
 			name: this.name,
@@ -331,5 +322,3 @@ export class Enemy {
 		return strs.join(" ");
 	}
 }
-
-
