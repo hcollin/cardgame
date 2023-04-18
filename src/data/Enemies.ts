@@ -1,8 +1,10 @@
-import { ENEMYACTIONS, ENEMYACTIONTARGETS, Enemy, EnemyAction } from "../game/Enemy";
+import { ENEMYACTIONS, ENEMYACTIONTARGETS, ENEMYSIZE, Enemy, EnemyAction } from "../game/Enemy";
 import { DAMAGETYPE } from "../models/Card";
 
 import img from "./pics/orc.png";
 import imtSkel from "./pics/skeleton.png";
+import imgDrag from "./pics/dragon.png";
+import { EFFECTS } from "../models/Effects";
 
 
 export class Orc extends Enemy {
@@ -67,4 +69,55 @@ export class Skeleton extends Enemy {
         constructor() {
             super();
         }   
+}
+
+export class Dragon extends Enemy {
+    protected name: string = "Dragon";
+    protected maxHealth: number = 250; 
+    protected attackValue: number = 5;
+
+    protected size: ENEMYSIZE = ENEMYSIZE.LARGE;
+
+    protected resistantTo = [DAMAGETYPE.FIRE];
+    protected vulnerableTo = [DAMAGETYPE.ICE];
+
+    protected effectImmunities = [EFFECTS.BURNING, EFFECTS.STUNNED];
+
+    public image: string = imgDrag;
+
+    protected actions: EnemyAction[] = [
+        {
+            action: ENEMYACTIONS.WAIT,
+            target: ENEMYACTIONTARGETS.SELF,
+        },
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 8,
+        },
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 16,
+        },
+        {
+            action: ENEMYACTIONS.WAIT,
+            target: ENEMYACTIONTARGETS.SELF,
+        },
+        {
+            action: ENEMYACTIONS.HEAL,
+            target: ENEMYACTIONTARGETS.SELF,
+            value: 5,
+        },
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 8,
+        }
+    ];
+
+
+    constructor() {
+        super();
+    }
 }

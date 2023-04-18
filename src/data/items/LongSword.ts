@@ -83,7 +83,7 @@ export const LongSword: Item = {
 			name: "Pommel Strike",
 			description: "A non-lethal attack that uses the pommel to strike the opponent.",
 			rarity: CARDRARITY.RARE,
-			count: 5,
+			count: 2,
 			damage: [
 				{
 					amount: 1,
@@ -99,6 +99,26 @@ export const LongSword: Item = {
 				return { ...gs };
 			},
 			onUse: (gs) => {
+				return { ...gs };
+			},
+		},
+		{
+			name: "Parry",
+			description: "ARMOR 4. A defensive action that can be followed with riposte.",
+			rarity: CARDRARITY.RARE,
+			count: 2,
+			damage: [
+				
+			],
+			apCost: 1,
+			reach: 1,
+			allowedTargets: [TARGETS.SELF],
+			effectsOnHit: [],
+			onHit: (gs) => {
+				return { ...gs };
+			},
+			onUse: (gs) => {
+				gs.hero.armor += 3;
 				return { ...gs };
 			},
 		},

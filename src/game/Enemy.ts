@@ -12,6 +12,7 @@ export enum ENEMYSTATUS {
 
 export interface EnemyStats {
 	name: string;
+	size: ENEMYSIZE;
 	damage: number;
 	health: number;
 	status: ENEMYSTATUS;
@@ -44,6 +45,12 @@ export interface EnemyAction {
 	description?: string;
 }
 
+export enum ENEMYSIZE {
+	SMALL = "SMALL",
+	MEDIUM = "MEDIUM",
+	LARGE = "LARGE",
+	HUGE = "HUGE"
+}
 export class Enemy {
 	public id: string = "";
 
@@ -52,10 +59,14 @@ export class Enemy {
 	protected maxHealth: number = 100;
 	protected attackValue: number = 5;
 
+	protected size: ENEMYSIZE = ENEMYSIZE.MEDIUM; 
+
 	protected armor: number = 0;
 
 	protected vulnerableTo: DAMAGETYPE[] = [];
 	protected resistantTo: DAMAGETYPE[] = [];
+
+	protected effectImmunities: EFFECTS[] = [];
 
 	protected effects: Map<EFFECTS, number> = new Map();
 
@@ -117,6 +128,7 @@ export class Enemy {
 	}
 
 	public causeEffect(effect: EFFECTS) {
+		if(this.effectImmunities.includes(effect)) { return; }
 		if (this.effects.has(effect)) {
 			this.effects.set(effect, this.effects.get(effect)! + 1);
 		} else {
@@ -293,6 +305,7 @@ export class Enemy {
 
 		return {
 			name: this.name,
+			size: this.size,
 			damage: this.attackValue,
 			health: this.health,
 			status: this.status,

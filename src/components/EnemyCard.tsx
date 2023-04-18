@@ -67,10 +67,12 @@ export default function EnemyCard(props: EnemyCardProps) {
 		cns.push("is-dead");
 	}
 
+	cns.push(stats.size.toLowerCase());
 	// const cn = `enemy ${isDragging ? (canDrop ? (isOver ? "isOverTrue" : "valid-target") : "invalid-target"): ""}`;
 	const cn = cns.join(" ");
 
 	
+
 
 	return (
 		<div className={cn} onClick={handleClick} ref={drop}>
@@ -81,9 +83,7 @@ export default function EnemyCard(props: EnemyCardProps) {
 				<EffectRow effects={stats.effects} />
 
 				<footer>
-					<div className="att">
-						<img src={attImg} alt="Attack Damage" /> {stats.damage}
-					</div>
+					
 					<div className="health">
 						<img src={healthImg} alt="Health" /> {stats.health}
 					</div>

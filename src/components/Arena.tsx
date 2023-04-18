@@ -12,18 +12,18 @@ import HeroInfo from "./HeroInfo";
 import { Enemy } from "../game/Enemy";
 import TargetHero from "./TargetHero";
 
-function Arena() {
-	const [gameState, setGameState] = useState<GameState>(createGame(new TestArena()));
+function Arena(props: {gs: GameState}) {
+	const [gameState, setGameState] = useState<GameState>(props.gs);
 
 	const [targetIndex, setTarget] = useState<number | null>(null);
 	const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
 	const [isDragging, setIsDragging] = useState<boolean>(false);
 
-	useEffect(() => {
-		const gs = createGame(new TestArena());
-		setGameState(startGame(gs));
-	}, []);
+	// useEffect(() => {
+	// 	const gs = createGame(new TestArena());
+	// 	setGameState(startGame(gs));
+	// }, []);
 
 	useEffect(() => {
 		console.log(gameState.state);
@@ -88,12 +88,14 @@ function Arena() {
 		arenaStyle.backgroundSize = "cover";
 	}
 
+	const arenaActive = gameState.state !== GAMESTATES.DEAD && gameState.state !== GAMESTATES.ARENA_COMPLETED;
+
 
 	return (
 		<div className="arena" style={arenaStyle}>
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
-			<div className="enemies">
+			<div className="enemies">§
 				{gameState.arena.enemies.map((enemy, index) => {
 					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} />;
 				})}

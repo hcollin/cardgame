@@ -6,6 +6,11 @@ function HeroInfo(props: { gameState: GameState }) {
 	const { gameState } = props;
 
 	const healthPercentage = Math.round((gameState.hero.health / gameState.hero.maxHealth) * 100);
+	console.log("HEALTH PERCENTAGE", healthPercentage);
+	const percCns: string[] = ["current"];
+	if (healthPercentage < 50) {
+		percCns.push("low");
+	}
 	return (
 		<div className="hero-info">
 			<div className="energy">
@@ -13,10 +18,15 @@ function HeroInfo(props: { gameState: GameState }) {
 				<small>MAX: {gameState.hero.maxAps}</small>
 			</div>
 			<div className="armor">
-				{gameState.hero.armor} <small>/ {gameState.hero.defaultArmor}</small>
+
+			<span className="default">{gameState.hero.armor}</span>
+
+			{/* + {gameState.hero.armor}  */}
 			</div>
 			<div className="health">
-				<div className="current" style={{bottom: `${healthPercentage}%`}}>{gameState.hero.health}</div>
+				<div className={percCns.join(" ")} style={!percCns.includes("low") ? { top: `${100 - healthPercentage}%` } : { bottom: `${healthPercentage}%` }}>
+					{gameState.hero.health}
+				</div>
 				<div className="meter">
 					<div className="bar" style={{ height: `${healthPercentage}%` }}></div>
 				</div>

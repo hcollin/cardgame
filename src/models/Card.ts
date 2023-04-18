@@ -53,5 +53,5 @@ export interface CardData {
     effectsOnHit: EFFECTS[];
 
 	onHit: (gs: GameState) => GameState;
-	onUse: (gs: GameState) => GameState;
+	onUse: (gs: GameState, card: Card) => GameState;
 }

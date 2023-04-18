@@ -3,10 +3,10 @@ import { Dragon, Orc, Skeleton } from "./Enemies";
 
 import bgImg from "./pics/forestbg.jpg";
 
-export class TestArena extends Arena {
+export class ArenaOrcVillage extends Arena {
 
     constructor() {
-        super("Test Arena", [new Dragon()], "#559944", bgImg);
+        super("Orc Village", [new Orc(), new Orc(), new Orc()], "#559944", bgImg);
     }
 
 }

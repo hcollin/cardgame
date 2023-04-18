@@ -7,18 +7,25 @@ import { createCardsFromItem } from "./ItemTools";
 import { LongSword } from "../data/items/LongSword";
 import { Shield } from "../data/items/Shield";
 import { createHero } from "./HeroTools";
+import { Mace } from "../data/items/Mace";
+import { arnd } from "rndlib";
+import { v4 } from "uuid";
+import { EmptyArena } from "../data/EmptyArena";
+import { createWorld, selectNextLocation } from "./WorldTools";
+import { LOCATIONS } from "../data/Locations";
 
-export function createGame(arena: Arena): GameState {
+export function createGame(): GameState {
 	return {
-		id: "testGame",
+		id: v4(),
 		turn: 0,
 		leftHandDeck: new Deck([]),
 		rightHandDeck: new Deck([]),
 		leftHand: [],
 		rightHand: [],
-		state: GAMESTATES.WAITING,
-		arena: arena,
-
+		state: GAMESTATES.INIT,
+		arena: new EmptyArena(),
+		world: createWorld(LOCATIONS),
+		currentLocationId: "",
 		hero: createHero()
 	};
 }
@@ -31,15 +38,24 @@ export function selectItems(gs: GameState, left: Item, right: Item): GameState {
 }
 
 export function startGame(gameState: GameState): GameState {
+
+	const nextLoc = selectNextLocation(gameState);
+	gameState.currentLocationId = nextLoc.id;
+	gameState.arena = nextLoc.arena[0];
+
+	console.log("NEXT ARENA", nextLoc.arena[0].name)
+
 	gameState.state = GAMESTATES.MYTURN;
 
-	gameState = selectItems(gameState, Shield, LongSword);
+	gameState = selectItems(gameState, Shield, arnd([LongSword, Mace]));
+	// gameState = selectItems(gameState, Shield, Mace);
 
 	gameState.rightHandDeck.shuffleDeck();
 	gameState.leftHandDeck.shuffleDeck();
 
 	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
+
 
 	gameState.arena.resetArena();
 	gameState.turn = 1;
@@ -55,7 +71,7 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 	}
 
 	// If the card has an onUse effect, use it
-	gameState = card.onUse(gameState);
+	gameState = card.onUse(gameState, card);
 
 	// If target is specified, use the card on the target
 	if (targetIndex !== undefined && targetIndex > -1) {
@@ -83,6 +99,10 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 	} else {
 		gameState.leftHandDeck.discardCards([card]);
 		gameState.leftHand = gameState.leftHand.filter((c) => c.id !== card.id);
+	}
+
+	if(checkForWin(gameState)) {
+		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
 	}
 
 	return { ...gameState };
@@ -122,13 +142,21 @@ export function endEnemyTurn(gameState: GameState): GameState {
 		gameState = enemy.cleanUpEndOfEnemyTurn(gameState);
 	});
 
-
 	gameState.hero.armor = gameState.hero.defaultArmor;
 
+	if(checkForDeath(gameState)) {
+		return { ...gameState, state: GAMESTATES.DEAD };
+	}
+
+	if(checkForWin(gameState)) {
+		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
+	}
 
 	gameState.state = GAMESTATES.MYTURN;
 	gameState.turn++;
 	gameState.hero.aps = gameState.hero.maxAps;
+
+
 
 	// Draw 3 cards to both hands
 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
@@ -139,4 +167,20 @@ export function endEnemyTurn(gameState: GameState): GameState {
 	});
 
 	return { ...gameState };
+}
+
+export function checkForWin(gs: GameState): boolean {
+
+
+
+	// Count all dead enemies in the arena
+	const deadEnemies = gs.arena.enemies.filter((enemy) => enemy.isDead()).length;
+
+
+	return deadEnemies === gs.arena.enemies.length;
+}
+
+export function checkForDeath(gs: GameState): boolean {
+
+	return gs.hero.health <= 0;
 }
