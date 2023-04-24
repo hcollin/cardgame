@@ -1,4 +1,5 @@
 import { EFFECTS } from "./Effects";
+import { Item } from "./Items";
 
 
 export interface HeroStats {
@@ -14,5 +15,10 @@ export interface HeroStats {
     effects: Map<EFFECTS, number>;
 
     score: number;
+
+    inventory: Item[];
+
+    activeItemRight: Item | null;
+    activeItemLeft: Item | null;
 
 }

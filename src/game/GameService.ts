@@ -13,8 +13,9 @@ import { v4 } from "uuid";
 import { EmptyArena } from "../data/EmptyArena";
 import { createWorld, selectNextLocation } from "./WorldTools";
 import { LOCATIONS } from "../data/Locations";
+import { HeroStats } from "../models/HeroStats";
 
-export function createGame(): GameState {
+export function createGame(hero?: HeroStats): GameState {
 	return {
 		id: v4(),
 		turn: 0,
@@ -26,7 +27,7 @@ export function createGame(): GameState {
 		arena: new EmptyArena(),
 		world: createWorld(LOCATIONS),
 		currentLocationId: "",
-		hero: createHero()
+		hero: hero || createHero()
 	};
 }
 
