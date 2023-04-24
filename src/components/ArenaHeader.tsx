@@ -3,11 +3,10 @@ import { GAMESTATES, GameState } from "../models/GameState";
 
 import "./arena-header.css";
 
-function ArenaHeader(props: { gameState: GameState, updateGameState: (gs: GameState) => void }) {
+function ArenaHeader(props: { gameState: GameState; updateGameState: (gs: GameState) => void }) {
 	const { gameState } = props;
 
-
-    function handleEndTurn() {
+	function handleEndTurn() {
 		if (gameState && gameState.state === GAMESTATES.MYTURN) {
 			console.log("end turn");
 			props.updateGameState(endTurn(gameState));
@@ -23,7 +22,7 @@ function ArenaHeader(props: { gameState: GameState, updateGameState: (gs: GameSt
 						{" "}
 						Turn {gameState.turn}
 						<br />
-						{gameState.arena.name}
+						{gameState.arena.name} {gameState.state}
 					</span>
 				)}
 				{gameState.state === GAMESTATES.ENEMYTURN && <span className="header-enemy">Enemy turn</span>}

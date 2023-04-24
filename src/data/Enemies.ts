@@ -1,10 +1,11 @@
 import { ENEMYACTIONS, ENEMYACTIONTARGETS, ENEMYSIZE, Enemy, EnemyAction } from "../game/Enemy";
 import { DAMAGETYPE } from "../models/Card";
+import { EFFECTS } from "../models/Effects";
 
 import img from "./pics/orc.png";
 import imtSkel from "./pics/skeleton.png";
 import imgDrag from "./pics/dragon.png";
-import { EFFECTS } from "../models/Effects";
+import imgGoblin from "./pics/goblin.png";
 
 
 export class Orc extends Enemy {
@@ -38,6 +39,55 @@ export class Orc extends Enemy {
     }
 
 }
+
+export class Goblin extends Enemy {
+
+    protected name: string = "Goblin";
+    protected maxHealth: number = 8; 
+    protected attackValue: number = 3;
+
+    public image: string = imgGoblin;
+
+    protected actions: EnemyAction[] = [
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 3,
+        },
+        {
+            action: ENEMYACTIONS.WAIT,
+            target: ENEMYACTIONTARGETS.SELF,
+            
+        },
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 3,
+        },
+        {
+            action: ENEMYACTIONS.WAIT,
+            target: ENEMYACTIONTARGETS.SELF,
+            
+        },
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 6,
+        },
+        {
+            action: ENEMYACTIONS.WAIT,
+            target: ENEMYACTIONTARGETS.SELF,
+            
+        },
+    ];
+
+
+    constructor() {
+        super();
+    }
+
+}
+
 
 export class Skeleton extends Enemy {
     

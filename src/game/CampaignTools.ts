@@ -1,10 +1,14 @@
 import { v4 } from "uuid";
 import { createHero } from "./HeroTools";
-import { LocationId, Location } from "../models/World";
+import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
 import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
 import { Deck } from "./Deck";
 import { selectItems } from "./GameService";
+import { createWorld } from "./WorldTools";
+import { LOCATIONS } from "../data/Locations";
+import { HeroStats } from "../models/HeroStats";
+import { Arena } from "./Arena";
 
 
 
@@ -12,18 +16,18 @@ export function createCampaign(): Campaign {
     return {
         id: v4(),
         hero: createHero(),
-        world: new Map<LocationId, Location>(),
+        world: createWorld(LOCATIONS),
         currentLocationId: ""
     };
 
 }
 
-export function selectNextLocationForCampaign(campaign: Campaign): Location {
+export function selectActiveLocationFromCampaign(campaign: Campaign): Location {
     if (campaign.world.size === 0) { throw new Error("World not initialized"); }
     if (campaign.currentLocationId === "") {
         const locs = Array.from(campaign.world.values());
-        const loc = locs.find(l => l.startLocation);
-        if (!loc) { throw new Error("No start location found"); }
+        const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
+        if (!loc) { throw new Error("No active location found"); }
         return loc;
     }
 
@@ -33,6 +37,45 @@ export function selectNextLocationForCampaign(campaign: Campaign): Location {
     if (!nloc) { throw new Error("Next location not found"); }
     return nloc;
 }
+
+export function activateNextLocationForCampaign(campaign: Campaign): Campaign {
+    if (campaign.world.size === 0) { throw new Error("World not initialized"); }
+    
+    const locs = Array.from(campaign.world.values());
+    const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
+
+    if(!loc) { throw new Error("No active location found"); }
+    if(loc.nextLocations.length === 0) { throw new Error("No next locations found"); }
+
+    const nextLocId = campaign.world.get(loc.nextLocations[0]);
+    if(!nextLocId) { throw new Error("Next location not found"); }
+
+    return {...campaign, currentLocationId: nextLocId.id};
+}
+
+export function markCurrentLocationCompleted(campaign: Campaign): Campaign { 
+    if (campaign.world.size === 0) { throw new Error("World not initialized"); }
+    
+
+    const loc = campaign.world.get(campaign.currentLocationId);
+    if(!loc) { throw new Error(`Current location ${campaign.currentLocationId} not found`); }
+    loc.status = LOCATIONSTATUS.COMPLETED;
+    campaign.world.set(loc.id, loc);
+    return {...campaign};
+}
+
+export function setActiveLocationForCampaign(campaign: Campaign, locationId: LocationId): Campaign {
+
+    const nc = {...campaign};
+    const loc = nc.world.get(locationId);
+    if(!loc) { throw new Error("Location not found"); }
+    loc.status = LOCATIONSTATUS.ACTIVE;
+    nc.world.set(loc.id, loc);
+    nc.currentLocationId = loc.id;
+    return {...nc};
+    
+}
+
 
 export function createGameFromCampaign(campaign: Campaign): GameState {
 
@@ -48,8 +91,8 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
         rightHand: [],
         state: GAMESTATES.MYTURN,
         arena: location.arena[0],
-        world: campaign.world,
-        currentLocationId: campaign.currentLocationId,
+        // world: campaign.world,
+        // currentLocationId: campaign.currentLocationId,
         hero: campaign.hero
     }
 
@@ -66,4 +109,33 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
     gameState.turn = 1;
 
     return gameState;
+}
+
+export function createGameForArena(arena: Arena, hero: HeroStats): GameState {
+    let gameState: GameState = {
+        id: v4(),
+        turn: 0,
+        leftHandDeck: new Deck([]),
+        rightHandDeck: new Deck([]),
+        leftHand: [],
+        rightHand: [],
+        state: GAMESTATES.MYTURN,
+        arena: arena,
+        hero: {...hero}
+    }
+
+    if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
+
+    gameState = selectItems(gameState, hero.activeItemLeft, hero.activeItemRight);
+    gameState.rightHandDeck.shuffleDeck();
+    gameState.leftHandDeck.shuffleDeck();
+
+    gameState.rightHand = gameState.rightHandDeck.drawCards(3);
+    gameState.leftHand = gameState.leftHandDeck.drawCards(3);
+
+    gameState.arena.resetArena();
+    gameState.turn = 1;
+
+    return gameState;
+
 }

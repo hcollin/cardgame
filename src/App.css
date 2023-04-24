@@ -9,3 +9,12 @@
 
   --hero-blue: #ADD8E6;
 }
+
+
+div.main-screen {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+}

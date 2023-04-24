@@ -1,7 +1,7 @@
 import { useState, useEffect, CSSProperties } from "react";
-import { TestArena } from "../data/TestArena";
-import { createGame, startGame, endEnemyTurn, playItemCard, endTurn } from "../game/GameService";
-import { Card, TARGETS } from "../models/Card";
+
+import { endEnemyTurn, playItemCard } from "../game/GameService";
+import { Card } from "../models/Card";
 import { GameState, GAMESTATES } from "../models/GameState";
 import EnemyCard from "./EnemyCard";
 import HandCard from "./HandCard";
@@ -12,7 +12,7 @@ import HeroInfo from "./HeroInfo";
 import { Enemy } from "../game/Enemy";
 import TargetHero from "./TargetHero";
 
-function Arena(props: {gs: GameState}) {
+function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
 
 	const [targetIndex, setTarget] = useState<number | null>(null);
@@ -26,11 +26,17 @@ function Arena(props: {gs: GameState}) {
 	// }, []);
 
 	useEffect(() => {
-		console.log(gameState.state);
+		console.log("STATE:", gameState.state);
 		if (gameState.state === GAMESTATES.ENEMYTURN) {
 			setTimeout(() => {
 				setGameState(endEnemyTurn(gameState));
 			}, 1000);
+		}
+		if(gameState.state === GAMESTATES.ARENA_COMPLETED || gameState.state === GAMESTATES.DEAD) {
+			setTimeout(() => {
+				props.onArenaFinished(gameState);
+			}, 1000);
+			
 		}
 	}, [gameState.state]);
 
@@ -40,9 +46,8 @@ function Arena(props: {gs: GameState}) {
 			const target = targetIndex;
 			setTarget(null);
 			setSelectedCard(null);
-			console.log(`Card ${card.name} attacks enemy ${target}`);
+			// console.log(`Card ${card.name} attacks enemy ${target}`);
 			setGameState(playItemCard(gameState, card, targetIndex));
-			
 		}
 	}, [targetIndex, selectedCard]);
 
@@ -80,9 +85,9 @@ function Arena(props: {gs: GameState}) {
 
 	const arenaStyle: CSSProperties = {
 		backgroundColor: gameState.arena.background,
-		height: "100vh",		
+		height: "100vh",
 	};
-	if(gameState.arena.bgImage) {
+	if (gameState.arena.bgImage) {
 		// console.log(gameState.arena);
 		arenaStyle.backgroundImage = `url(${gameState.arena.bgImage})`;
 		arenaStyle.backgroundSize = "cover";
@@ -90,12 +95,12 @@ function Arena(props: {gs: GameState}) {
 
 	const arenaActive = gameState.state !== GAMESTATES.DEAD && gameState.state !== GAMESTATES.ARENA_COMPLETED;
 
-
 	return (
 		<div className="arena" style={arenaStyle}>
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
-			<div className="enemies">§
+			<div className="enemies">
+				§
 				{gameState.arena.enemies.map((enemy, index) => {
 					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} />;
 				})}
@@ -153,9 +158,7 @@ function Arena(props: {gs: GameState}) {
 
 			<HeroInfo gameState={gameState} />
 
-			{isDragging && (
-				<TargetHero onDrop={playCardOnHero}/>
-			)}
+			{isDragging && <TargetHero onDrop={playCardOnHero} />}
 		</div>
 	);
 }

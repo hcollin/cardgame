@@ -1,0 +1,19 @@
+
+div.location-view {
+    padding: 1rem;
+
+    background-color: #68A;
+    border-radius: 1rem;
+    color: white;
+
+    .arenas {
+        
+        .ar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+    }
+}

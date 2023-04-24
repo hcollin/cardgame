@@ -6,7 +6,7 @@ function HeroInfo(props: { gameState: GameState }) {
 	const { gameState } = props;
 
 	const healthPercentage = Math.round((gameState.hero.health / gameState.hero.maxHealth) * 100);
-	console.log("HEALTH PERCENTAGE", healthPercentage);
+	
 	const percCns: string[] = ["current"];
 	if (healthPercentage < 50) {
 		percCns.push("low");

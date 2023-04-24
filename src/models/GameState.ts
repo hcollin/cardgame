@@ -43,6 +43,6 @@ export interface GameState {
     state: GAMESTATES;
     
     arena: Arena;
-    currentLocationId: LocationId;
-    world: Map<LocationId, Location>    
+    // currentLocationId: LocationId;
+    // world: Map<LocationId, Location>    
 }

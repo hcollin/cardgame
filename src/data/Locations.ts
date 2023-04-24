@@ -1,4 +1,4 @@
-import { WORLDLOCATIONTYPE, Location } from "../models/World";
+import { WORLDLOCATIONTYPE, Location, LOCATIONSTATUS } from "../models/World";
 import { ArenaDragonsLair } from "./ArenaDragonsLair";
 import { ArenaOrcVillage } from "./ArenaOrcVillage";
 import { ArenaSkeleDungeon } from "./ArenaSkeleDungeon";
@@ -6,23 +6,23 @@ import { ArenaSkeleDungeon } from "./ArenaSkeleDungeon";
 export const LOCATIONS: Location[] = [
     {
         id: "OrcVillage",
+        status: LOCATIONSTATUS.ACTIVE,
         type: WORLDLOCATIONTYPE.ARENA,
         arena: [new ArenaOrcVillage()],
         nextLocations: ["SkeletonDungeon"],
-        startLocation: true
     },
     {
         id: "SkeletonDungeon",
+        status: LOCATIONSTATUS.LOCKED,
         type: WORLDLOCATIONTYPE.ARENA,
         arena: [new ArenaSkeleDungeon()],
         nextLocations: ["DragonsLair"],
-        startLocation: false
     },
     {
         id: "DragonsLair",
+        status: LOCATIONSTATUS.LOCKED,
         type: WORLDLOCATIONTYPE.ARENA,
         arena: [new ArenaDragonsLair()],
         nextLocations: ["OrcVillage"],
-        startLocation: false
     }
 ];

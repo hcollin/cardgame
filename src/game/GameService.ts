@@ -11,7 +11,7 @@ import { Mace } from "../data/items/Mace";
 import { arnd } from "rndlib";
 import { v4 } from "uuid";
 import { EmptyArena } from "../data/EmptyArena";
-import { createWorld, selectNextLocation } from "./WorldTools";
+import { createWorld } from "./WorldTools";
 import { LOCATIONS } from "../data/Locations";
 import { HeroStats } from "../models/HeroStats";
 
@@ -25,8 +25,8 @@ export function createGame(hero?: HeroStats): GameState {
 		rightHand: [],
 		state: GAMESTATES.INIT,
 		arena: new EmptyArena(),
-		world: createWorld(LOCATIONS),
-		currentLocationId: "",
+		// world: createWorld(LOCATIONS),
+		// currentLocationId: "",
 		hero: hero || createHero()
 	};
 }
@@ -38,32 +38,32 @@ export function selectItems(gs: GameState, left: Item, right: Item): GameState {
 	return { ...gs };
 }
 
-export function startGame(gameState: GameState): GameState {
+// export function startGame(gameState: GameState): GameState {
 
-	const nextLoc = selectNextLocation(gameState);
-	gameState.currentLocationId = nextLoc.id;
-	gameState.arena = nextLoc.arena[0];
+// 	const nextLoc = selectNextLocation(gameState);
+// 	gameState.currentLocationId = nextLoc.id;
+// 	gameState.arena = nextLoc.arena[0];
 
-	console.log("NEXT ARENA", nextLoc.arena[0].name)
+// 	console.log("NEXT ARENA", nextLoc.arena[0].name)
 
-	gameState.state = GAMESTATES.MYTURN;
+// 	gameState.state = GAMESTATES.MYTURN;
 
-	gameState = selectItems(gameState, Shield, arnd([LongSword, Mace]));
-	// gameState = selectItems(gameState, Shield, Mace);
+// 	gameState = selectItems(gameState, Shield, arnd([LongSword, Mace]));
+// 	// gameState = selectItems(gameState, Shield, Mace);
 
-	gameState.rightHandDeck.shuffleDeck();
-	gameState.leftHandDeck.shuffleDeck();
+// 	gameState.rightHandDeck.shuffleDeck();
+// 	gameState.leftHandDeck.shuffleDeck();
 
-	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
-	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
-
-
-	gameState.arena.resetArena();
-	gameState.turn = 1;
+// 	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
+// 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
 
 
-	return { ...gameState };
-}
+// 	gameState.arena.resetArena();
+// 	gameState.turn = 1;
+
+
+// 	return { ...gameState };
+// }
 
 export function playItemCard(gameState: GameState, card: Card, targetIndex?: number): GameState {
 	if (gameState.hero.aps < card.apCost) {
@@ -94,7 +94,6 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 
 	// Discard used card
 	if (card.hand === "RIGHT") {
-		console.log("Discard", card.id, card);
 		gameState.rightHandDeck.discardCards([card]);
 		gameState.rightHand = [...gameState.rightHand.filter((c) => c.id !== card.id)];
 	} else {
@@ -115,6 +114,8 @@ export function endTurn(gameState: GameState): GameState {
 		gameState = enemy.atEndOfPlayerTurn(gameState);
 	});
 
+	
+
 	gameState.state = GAMESTATES.ENEMYTURN;
 
 	// Move cards from hand to discard
@@ -122,6 +123,16 @@ export function endTurn(gameState: GameState): GameState {
 	gameState.rightHandDeck.discardCards(gameState.rightHand);
 	gameState.leftHand = [];
 	gameState.rightHand = [];
+
+	if(checkForDeath(gameState)) {
+		return { ...gameState, state: GAMESTATES.DEAD };
+	}
+
+
+	if(checkForWin(gameState)) {
+		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
+	}
+
 
 	// Events at the start of the enemy turn
 	gameState.arena.enemies.forEach((enemy) => {

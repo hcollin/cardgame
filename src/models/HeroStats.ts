@@ -3,6 +3,8 @@ import { Item } from "./Items";
 
 
 export interface HeroStats {
+    name: string;
+
     health: number;
     maxHealth: number;
 
