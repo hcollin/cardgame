@@ -13,7 +13,7 @@ import { v4 } from "uuid";
 import { EmptyArena } from "../data/EmptyArena";
 import { createWorld } from "./WorldTools";
 import { LOCATIONS } from "../data/Locations";
-import { HeroStats } from "../models/HeroStats";
+import { HeroStats, ITEMSLOT } from "../models/HeroStats";
 
 export function createGame(hero?: HeroStats): GameState {
 	return {
@@ -31,9 +31,30 @@ export function createGame(hero?: HeroStats): GameState {
 	};
 }
 
-export function selectItems(gs: GameState, left: Item, right: Item): GameState {
-	gs.leftHandDeck = new Deck(createCardsFromItem(left, "LEFT"));
-	gs.rightHandDeck = new Deck(createCardsFromItem(right, "RIGHT"));
+export function createDecks(gs: GameState): GameState {
+
+	const rightHandItem = gs.hero.activeItems.get(ITEMSLOT.RIGHT_HAND);
+	const leftHandItem = gs.hero.activeItems.get(ITEMSLOT.LEFT_HAND);
+
+	if (rightHandItem) {
+		gs.rightHandDeck = new Deck(createCardsFromItem(rightHandItem, "RIGHT"));
+		const ring = gs.hero.activeItems.get(ITEMSLOT.RIGHT_FINGER);
+		if (ring) {
+			console.log("Ring on right hand", ring);
+			gs.rightHandDeck.addCards(createCardsFromItem(ring, "RIGHT"));
+		}
+	}
+	if (leftHandItem) {
+		gs.leftHandDeck = new Deck(createCardsFromItem(leftHandItem, "LEFT"));
+		const ring = gs.hero.activeItems.get(ITEMSLOT.LEFT_FINGER);
+		if (ring) {
+			console.log("Ring on left hand", ring);
+			gs.leftHandDeck.addCards(createCardsFromItem(ring, "LEFT"));
+		}
+
+	}
+	// gs.leftHandDeck = new Deck(createCardsFromItem(left, "LEFT"));
+	// gs.rightHandDeck = new Deck(createCardsFromItem(right, "RIGHT"));
 
 	return { ...gs };
 }
@@ -101,7 +122,7 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 		gameState.leftHand = gameState.leftHand.filter((c) => c.id !== card.id);
 	}
 
-	if(checkForWin(gameState)) {
+	if (checkForWin(gameState)) {
 		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
 	}
 
@@ -109,12 +130,21 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 }
 
 export function endTurn(gameState: GameState): GameState {
+
+	// Item onEndOfTurn effects
+	gameState.hero.activeItems.forEach((item) => {
+		if(item.onEndOfTurn) {
+			gameState = item.onEndOfTurn(gameState);
+		}
+		
+	});
+
 	// Events at the end of the player turn
 	gameState.arena.enemies.forEach((enemy) => {
 		gameState = enemy.atEndOfPlayerTurn(gameState);
 	});
 
-	
+
 
 	gameState.state = GAMESTATES.ENEMYTURN;
 
@@ -124,12 +154,12 @@ export function endTurn(gameState: GameState): GameState {
 	gameState.leftHand = [];
 	gameState.rightHand = [];
 
-	if(checkForDeath(gameState)) {
+	if (checkForDeath(gameState)) {
 		return { ...gameState, state: GAMESTATES.DEAD };
 	}
 
 
-	if(checkForWin(gameState)) {
+	if (checkForWin(gameState)) {
 		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
 	}
 
@@ -156,11 +186,11 @@ export function endEnemyTurn(gameState: GameState): GameState {
 
 	gameState.hero.armor = gameState.hero.defaultArmor;
 
-	if(checkForDeath(gameState)) {
+	if (checkForDeath(gameState)) {
 		return { ...gameState, state: GAMESTATES.DEAD };
 	}
 
-	if(checkForWin(gameState)) {
+	if (checkForWin(gameState)) {
 		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
 	}
 

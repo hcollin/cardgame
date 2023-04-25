@@ -4,7 +4,7 @@ import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
 import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
 import { Deck } from "./Deck";
-import { selectItems } from "./GameService";
+import { createDecks } from "./GameService";
 import { createWorld } from "./WorldTools";
 import { LOCATIONS } from "../data/Locations";
 import { HeroStats } from "../models/HeroStats";
@@ -96,9 +96,10 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
         hero: campaign.hero
     }
 
-    if (campaign.hero.activeItemLeft === null || campaign.hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
+    // if (campaign.hero.activeItemLeft === null || campaign.hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
 
-    gameState = selectItems(gameState, campaign.hero.activeItemLeft, campaign.hero.activeItemRight);
+    gameState = createDecks(gameState);
+
     gameState.rightHandDeck.shuffleDeck();
     gameState.leftHandDeck.shuffleDeck();
 
@@ -124,9 +125,9 @@ export function createGameForArena(arena: Arena, hero: HeroStats): GameState {
         hero: {...hero}
     }
 
-    if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
+    // if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
 
-    gameState = selectItems(gameState, hero.activeItemLeft, hero.activeItemRight);
+    gameState = createDecks(gameState);
     gameState.rightHandDeck.shuffleDeck();
     gameState.leftHandDeck.shuffleDeck();
 

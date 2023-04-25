@@ -1,11 +1,13 @@
 import { CARDRARITY, Card, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
 import { GameState } from "../../models/GameState";
+import { ITEMSLOT } from "../../models/HeroStats";
 import { Item } from "../../models/Items";
 
 export const Mace: Item = {
 	id: "mace",
 	name: "Mace",
+	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Heavy club with a metal head, designed for delivering powerful blows.",
 	cards: [
 		{

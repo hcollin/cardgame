@@ -59,4 +59,8 @@ export class Deck {
 		this.shuffleDeck();
 		this.discard = [];
 	}
+
+	public addCards(cards: Card[]): void {
+		this.deck = this.deck.concat(cards);
+	}
 }

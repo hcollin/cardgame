@@ -3,17 +3,17 @@ import { EFFECTS } from "../../models/Effects";
 import { ITEMSLOT } from "../../models/HeroStats";
 import { Item } from "../../models/Items";
 
-export const Shield: Item = {
-	id: "shield",
-	name: "Shield",
+export const Buckler: Item = {
+	id: "buckler",
+	name: "Buckler",
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
-	description: "A simple shield",
+	description: "A simple Buckler",
 	cards: [
 		{
 			name: "Quick Block",
-			description: "Increase your Armor by 2 until end of next enemy turn",
+			description: "Increase your Armor by 1 until end of next enemy turn",
 			rarity: CARDRARITY.COMMON,
-			count: 4,
+			count: 3,
 			damage: [],
 			apCost: 1,
 			reach: 1,
@@ -24,13 +24,13 @@ export const Shield: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.armor += 2;
+				gs.hero.armor += 1;
 				return { ...gs };
 			},
 		},
 		{
 			name: "Defend",
-			description: "Increase your Armor by 5 until end of next enemy turn",
+			description: "Increase your Armor by 3 until end of next enemy turn",
 			rarity: CARDRARITY.COMMON,
 			count: 2,
 			damage: [],
@@ -43,24 +43,24 @@ export const Shield: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.armor += 5;
+				gs.hero.armor += 3;
 				return { ...gs };
 			},
 		},
 		{
-			name: "Bash",
-			description: "Bash enemy with your shield",
+			name: "Edge hit",
+			description: "Bash enemy with your bucklers sharpened edge",
 			rarity: CARDRARITY.RARE,
 			count: 1,
 			damage: [{
-				amount: 1,
-				type: DAMAGETYPE.BLUNT,
+				amount: 3,
+				type: DAMAGETYPE.SLASH,
 				variation: 0,
 			}],
 			apCost: 3,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
-			effectsOnHit: [EFFECTS.STUNNED],
+			effectsOnHit: [],
 			onHit: (gs) => {
 				return { ...gs };
 			},

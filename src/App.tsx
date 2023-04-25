@@ -23,6 +23,7 @@ import HeroView from "./components/HeroView";
 import { LOCATIONSTATUS, Location } from "./models/World";
 import LocationView from "./components/LocationView";
 import { resetHero } from "./game/HeroTools";
+import { HeroStats } from "./models/HeroStats";
 
 const isMobile = false;
 
@@ -82,7 +83,10 @@ function App() {
 		if(currentLocation?.status === LOCATIONSTATUS.COMPLETED) {
 			setCampaign(setActiveLocationForCampaign(campaign, lid));
 		}
-		
+	}
+
+	function updateHero(hero: HeroStats) {
+		setCampaign({...campaign, hero: hero});
 	}
 
 	const backend = isMobile ? TouchBackend : HTML5Backend;
@@ -102,7 +106,7 @@ function App() {
 				<div className="main-screen">
 					<MainMenu campaign={campaign} update={setCampaign} />
 					{currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>}
-					<HeroView hero={campaign.hero} />
+					<HeroView hero={campaign.hero} updateHero={updateHero}/>
 				</div>
 			)}
 			{gameState !== null && <Arena gs={gameState} onArenaFinished={arenaDone} />}

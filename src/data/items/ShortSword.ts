@@ -3,25 +3,25 @@ import { EFFECTS } from "../../models/Effects";
 import { ITEMSLOT } from "../../models/HeroStats";
 import { Item } from "../../models/Items";
 
-export const LongSword: Item = {
-	id: "long-sword",
-	name: "Long Sword",
+export const ShortSword: Item = {
+	id: "short-sword",
+	name: "Short Sword",
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
-	description: "A long sword",
+	description: "A short sword",
 	cards: [
 		{
 			name: "Slash",
 			description: "A wide, sweeping attack that targets the opponent's torso or neck.",
 			rarity: CARDRARITY.COMMON,
-			count: 6,
+			count: 4,
 			damage: [
 				{
-					amount: 8,
+					amount: 4,
 					type: DAMAGETYPE.SLASH,
 					variation: 0,
 				},
 			],
-			apCost: 3,
+			apCost: 2,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
@@ -32,39 +32,15 @@ export const LongSword: Item = {
 			onUse: (gs) => {
 				return { ...gs };
 			},
-		},
-		{
-			name: "Overhead Strike",
-			description: "A powerful vertical attack that targets the opponent's head or shoulders.",
-			rarity: CARDRARITY.EPIC,
-			count: 1,
-			damage: [
-				{
-					amount: 10,
-					type: DAMAGETYPE.SLASH,
-					variation: 4,
-				},
-			],
-			apCost: 4,
-			reach: 1,
-			allowedTargets: [TARGETS.ENEMY],
-			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
-			},
-
-			onUse: (gs) => {
-				return { ...gs };
-			},
-		},
+		},		
 		{
 			name: "Thrust",
 			description: "A quick, direct attack that focuses on piercing the opponent's body.",
 			rarity: CARDRARITY.UNCOMMON,
-			count: 3,
+			count: 2,
 			damage: [
 				{
-					amount: 3,
+					amount: 2,
 					type: DAMAGETYPE.PIERCE,
 					variation: 0,
 				},
@@ -81,34 +57,12 @@ export const LongSword: Item = {
 				return { ...gs };
 			},
 		},
-		{
-			name: "Pommel Strike",
-			description: "A non-lethal attack that uses the pommel to strike the opponent.",
-			rarity: CARDRARITY.RARE,
-			count: 2,
-			damage: [
-				{
-					amount: 1,
-					type: DAMAGETYPE.BLUNT,
-					variation: 0,
-				},
-			],
-			apCost: 2,
-			reach: 1,
-			allowedTargets: [TARGETS.ENEMY],
-			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
-			},
-			onUse: (gs) => {
-				return { ...gs };
-			},
-		},
+		
 		{
 			name: "Parry",
-			description: "ARMOR 4. A defensive action that can be followed with riposte.",
+			description: "ARMOR 2. Using the blade to block.",
 			rarity: CARDRARITY.RARE,
-			count: 2,
+			count: 1,
 			damage: [
 				
 			],
@@ -120,7 +74,7 @@ export const LongSword: Item = {
 				return { ...gs };
 			},
 			onUse: (gs) => {
-				gs.hero.armor += 3;
+				gs.hero.armor += 2;
 				return { ...gs };
 			},
 		},
