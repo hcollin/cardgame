@@ -13,6 +13,7 @@ import { LeatherArmor } from "../data/items/LeatherArmor";
 import { GameState } from "../models/GameState";
 import { RingOfHealing } from "../data/items/RingOfHealing";
 import { RingOfRegeneration } from "../data/items/RingOfRegeneration";
+import { CloakOfSwiftness } from "../data/items/CloakOfSwiftness";
 
 export function createHero(): HeroStats {
 	let hero: HeroStats = {
@@ -51,12 +52,15 @@ export function createHero(): HeroStats {
 	hero.inventory.push(RingOfHealing);
 	hero.inventory.push(RingOfRegeneration);
 
+	hero.inventory.push(CloakOfSwiftness);
+
 	hero = equipItemRight(hero, LongSword);
 	hero = equipItemLeft(hero, Shield);
 
 	hero = equipItem(hero, LeatherArmor, ITEMSLOT.BODY);
 	hero = equipItem(hero, RingOfHealing, ITEMSLOT.LEFT_FINGER);
 	hero = equipItem(hero, RingOfRegeneration, ITEMSLOT.RIGHT_FINGER);
+	hero = equipItem(hero, CloakOfSwiftness, ITEMSLOT.CAPE);
 
 	return hero;
 }

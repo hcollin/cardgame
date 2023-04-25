@@ -109,6 +109,8 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
     gameState.arena.resetArena();
     gameState.turn = 1;
 
+    gameState.hero.aps = gameState.hero.maxAps;
+
     return gameState;
 }
 
