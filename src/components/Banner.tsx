@@ -1,7 +1,13 @@
 
 import "./banner.css";
 
-function Banner(props: {text: string}) {
+function Banner(props: {text: string, targetColor?: string}) {
+
+    const targetColor = props.targetColor || "red";
+
+    // TODO Change color of the banner
+    const cns: string[] = ["banner"];
+    cns.push(targetColor.toLowerCase())
 
     return (
         <div className="banner">

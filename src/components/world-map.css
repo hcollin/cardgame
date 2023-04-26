@@ -60,8 +60,6 @@ div.world-map {
         justify-content: center;
         align-items: center;
 
-        /* border: solid 1px pink; */
-
         &>div.icon {
             position: absolute;
             top: 0;
@@ -72,27 +70,15 @@ div.world-map {
             border: groove 3px #420A;
             border-radius: 50%;
             box-shadow: inset 0 0 2rem 1rem #FCC4;
-            /* border-top-left-radius: 25% 50%; */
-            /* border-top-right-radius: 25% 50%; */
-
 
             overflow: hidden;
-
-
-            /* background: radial-gradient(#228B22, #1b6f1b); */
-
-            /* box-shadow: inset 0 0 4px 2px #0008; */
 
             &>img {
                 width: 80%;
                 height: 80%;
                 margin: 10%;
-
                 filter: opacity(0.9);
-                /* filter: invert(1) drop-shadow(0 0 3px #0008); */
-                /* filter: invert(1) opacity(0.9) drop-shadow(0 0 3px #0008); */
             }
-
         }
 
         &>div.name {
@@ -102,28 +88,32 @@ div.world-map {
             width: auto;
             overflow: visible;
 
-
-            /* text-align: center;
-            font-weight: bold;
-
-            color: #FFFA;
-            text-shadow: var(--text-stroke-small);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-
-            background: #000;
-            height: 3rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            border-top-right-radius: 50% 10%;
-            border-top-left-radius: 50% 10%;
-
-            z-index: 10; */
-
-
         }
+         &.active {
+
+            &>div.icon {
+                border: groove 3px #2C28;
+                box-shadow: inset 0 0 2rem 1rem #FCC4, 0 0 1rem 0.5rem #fff8;
+                /* background: #4A48; */
+            }
+         }
+
+         &.locked {
+            
+            & >div.icon {
+                border: groove 3px #420A;
+                box-shadow: inset 0 0 2rem 1rem #0006;
+                
+            }
+
+            & > div.locked > img{
+                position: relative;
+                margin-top: 4rem;
+                width: 50%;
+                z-index: 50;
+                opacity: 0.75;
+            }
+         }
 
     }
 }

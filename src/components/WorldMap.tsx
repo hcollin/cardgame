@@ -1,10 +1,12 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { Location, MapLocation } from "../models/World";
+import { LOCATIONSTATUS, Location, MapLocation } from "../models/World";
 
 
 import "./world-map.css";
 import { buildMapLocations } from "../game/WorldTools";
+import Banner from "./Banner";
+import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 
 import iconCamp from "./icons/camp.png";
@@ -15,8 +17,8 @@ import iconCastle from "./icons/castle.png";
 import iconHut from "./icons/hut.png";
 import iconTent from "./icons/tent.png";
 import iconGraveyard from "./icons/graveyard.png";
-import Banner from "./Banner";
-import { useWindowDimensions } from "../utils/useWindowDimensions";
+
+import iconLocked from "./icons/locked.png";
 
 function WorldMap(props: { campaign: Campaign }) {
 
@@ -36,11 +38,6 @@ function WorldMap(props: { campaign: Campaign }) {
     const maxTrak = Math.max(...mapLocs.map((l) => l.trak)) +1;
 
     const nps = Math.min(width / maxTrak, (height-100) / maxDepth) * 0.8;
-
-    console.log(height, width, nps);
-
-
-
 
     return (
         <div className="world-map">
@@ -87,8 +84,12 @@ function LocationNode(props: { location: MapLocation, maxDepth: number, maxTrak:
         height: nodeSpace + "px",
     }
 
+    const cns: string[] = ["location-node"];
+    cns.push(props.location.type.toLowerCase());
+    cns.push(props.location.status.toLowerCase());
+
     return (
-        <div className="location-node" style={nodeStyle}>
+        <div className={cns.join(" ")} style={nodeStyle}>
             <div className="icon">
                 {props.location.icon === "dungeon" && <img src={iconDungeon} alt="dungeon" />}
                 {props.location.icon === "forest" && <img src={iconForest} alt="forest" />}
@@ -98,8 +99,11 @@ function LocationNode(props: { location: MapLocation, maxDepth: number, maxTrak:
             
             <div className="name">
                 <Banner text={props.location.arena[0].name} />
-                
             </div>
+
+            {props.location.status === LOCATIONSTATUS.LOCKED && <div className="locked">
+                <img src={iconLocked} alt="locked" />
+            </div>}
 
         </div>
     )
