@@ -16,8 +16,11 @@ import iconHut from "./icons/hut.png";
 import iconTent from "./icons/tent.png";
 import iconGraveyard from "./icons/graveyard.png";
 import Banner from "./Banner";
+import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 function WorldMap(props: { campaign: Campaign }) {
+
+    const { height, width } = useWindowDimensions();
 
     const locations = props.campaign.world;
 
@@ -32,6 +35,13 @@ function WorldMap(props: { campaign: Campaign }) {
     const maxDepth = Math.max(...mapLocs.map((l) => l.depth)) +1;
     const maxTrak = Math.max(...mapLocs.map((l) => l.trak)) +1;
 
+    const nps = Math.min(width / maxTrak, (height-100) / maxDepth) * 0.8;
+
+    console.log(height, width, nps);
+
+
+
+
     return (
         <div className="world-map">
             
@@ -39,7 +49,7 @@ function WorldMap(props: { campaign: Campaign }) {
                 {mapLocs.map((ml, i) => {
 
                     return (
-                        <LocationNode key={ml.id} location={ml} maxDepth={maxDepth} maxTrak={maxTrak}/>
+                        <LocationNode key={ml.id} location={ml} maxDepth={maxDepth} maxTrak={maxTrak} nodeSpace={nps}/>
                     )
                 })}
             </div>
@@ -53,11 +63,11 @@ function WorldMap(props: { campaign: Campaign }) {
     )
 }
 
-function LocationNode(props: { location: MapLocation, maxDepth: number, maxTrak: number }) {
+function LocationNode(props: { location: MapLocation, maxDepth: number, maxTrak: number, nodeSpace?: number }) {
 
     
-
-    const nodeSpace = 200;
+    const nodeSpace = props.nodeSpace || 200;
+    
 
     const maxWidth = nodeSpace * props.maxTrak;
     const maxDepth = nodeSpace * props.maxDepth;
@@ -65,6 +75,8 @@ function LocationNode(props: { location: MapLocation, maxDepth: number, maxTrak:
     // const startFrom = nodeSpace * (props.maxTrak / 2) * -1;
     // const myPosLeft = startFrom + (nodeSpace * props.location.trak);
     
+    
+
     
     const nodeStyle: CSSProperties = {
         left: ((props.location.trak * nodeSpace)) + "px",
