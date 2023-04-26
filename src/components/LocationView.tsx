@@ -1,14 +1,17 @@
-import { LOCATIONSTATUS, Location } from "../models/World";
+import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "../models/World";
 
 import "./location-view.css";
 
 function LocationView(props: { loc: Location; onArenaSelect: (i: number) => void; onSelectLocation: (lid: string) => void }) {
+
+
+
 	return (
 		<div className="location-view">
 			<h1>Location</h1>
-			<h2>{props.loc.status}</h2>
+			<h2>{props.loc.status} / {props.loc.type}</h2>
 
-			{props.loc.status === LOCATIONSTATUS.ACTIVE && (
+			{props.loc.status === LOCATIONSTATUS.ACTIVE && props.loc.type !== WORLDLOCATIONTYPE.START && (
 				<>
 					<h3>Select Arena</h3>
 					<div className="arenas">
@@ -24,7 +27,7 @@ function LocationView(props: { loc: Location; onArenaSelect: (i: number) => void
 				</>
 			)}
 
-			{props.loc.status === LOCATIONSTATUS.COMPLETED && (
+			{(props.loc.status === LOCATIONSTATUS.COMPLETED || props.loc.type === WORLDLOCATIONTYPE.START) && (
 				<>
 					<h3>Select next location</h3>
 					<div className="locations">

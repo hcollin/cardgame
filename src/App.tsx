@@ -24,6 +24,7 @@ import { LOCATIONSTATUS, Location } from "./models/World";
 import LocationView from "./components/LocationView";
 import { resetHero } from "./game/HeroTools";
 import { HeroStats } from "./models/HeroStats";
+import WorldMap from "./components/WorldMap";
 
 const isMobile = false;
 
@@ -104,8 +105,9 @@ function App() {
 		<DndProvider backend={backend}>
 			{gameState === null && (
 				<div className="main-screen">
-					<MainMenu campaign={campaign} update={setCampaign} />
-					{currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>}
+					{/* <MainMenu campaign={campaign} update={setCampaign} /> */}
+					<WorldMap campaign={campaign} />
+					{/* {currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>} */}
 					<HeroView hero={campaign.hero} updateHero={updateHero}/>
 				</div>
 			)}

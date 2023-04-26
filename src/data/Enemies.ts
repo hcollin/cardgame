@@ -6,7 +6,7 @@ import img from "./pics/orc.png";
 import imtSkel from "./pics/skeleton.png";
 import imgDrag from "./pics/dragon.png";
 import imgGoblin from "./pics/goblin.png";
-
+import imgTroll from "./pics/troll.png";
 
 export class Orc extends Enemy {
 
@@ -30,6 +30,43 @@ export class Orc extends Enemy {
         {
             action: ENEMYACTIONS.WAIT,
             target: ENEMYACTIONTARGETS.SELF,
+        },
+    ];
+
+
+    constructor() {
+        super();
+    }
+
+}
+
+export class FrostTroll extends Enemy {
+
+    protected name: string = "Frost Troll";
+    protected maxHealth: number = 100; 
+    protected attackValue: number = 5;
+
+    public image: string = imgTroll;
+
+    protected actions: EnemyAction[] = [
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 10,
+        },
+        {
+            action: ENEMYACTIONS.WAIT,
+            target: ENEMYACTIONTARGETS.SELF,
+        },
+        {
+            action: ENEMYACTIONS.ATTACK,
+            target: ENEMYACTIONTARGETS.HERO,
+            value: 10,
+        },
+        {
+            action: ENEMYACTIONS.HEAL,
+            target: ENEMYACTIONTARGETS.SELF,
+            value: 20,
         },
     ];
 

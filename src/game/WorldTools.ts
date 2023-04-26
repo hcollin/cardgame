@@ -1,6 +1,7 @@
 import { ArenaOrcVillage } from "../data/ArenaOrcVillage";
+import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
-import { LOCATIONSTATUS, Location, LocationId, WORLDLOCATIONTYPE } from "../models/World";
+import { LOCATIONSTATUS, Location, LocationId, MapLocation, WORLDLOCATIONTYPE } from "../models/World";
 
 
 export function createWorld(locs: Location[]): Map<LocationId, Location> {
@@ -28,3 +29,72 @@ export function createWorld(locs: Location[]): Map<LocationId, Location> {
 //     return nloc;
 // }
 
+
+
+export function buildMapLocations(campaign: Campaign): MapLocation[] {
+    
+    
+    const startingLocs: Location[] = Array.from(campaign.world.values()).filter(l => l.flags.includes("first"));
+    
+    function travelLocations(camp: Campaign, locId: LocationId, mplocs: MapLocation[], depth: number, trak: number): MapLocation[] {
+
+        if(depth > 10) return mplocs;
+
+        const loc = camp.world.get(locId);
+        if(!loc) return mplocs;
+
+        const mploc: MapLocation = {
+            ...loc,
+            depth: depth,
+            trak: trak,
+        };
+        const locExists = mplocs.find(l => l.id === mploc.id);
+        if(locExists) {
+            if(locExists.depth < mploc.depth) {
+                locExists.depth = mploc.depth;                
+            } else {
+                return mplocs;
+            }
+        } else {
+            mplocs.push(mploc);
+        }
+        
+
+        if(loc.flags.includes("final")) return mplocs;
+
+        if(loc.nextLocations.length > 0) {
+            const nid = loc.nextLocations[0];
+            
+            if(!nid) return mplocs;
+            return travelLocations(camp, nid, mplocs, depth + 1, trak);
+            
+
+            // let newLocs: MapLocation[] = [];
+            // loc.nextLocations.forEach((nl, i) => {
+            //     const nloc = camp.world.get(nl);
+            //     if(!nloc) { throw new Error("Next location not found"); }
+                
+            //     // const nlocs = travelLocations(camp, nloc, mplocs, depth + 1, trak);
+            //     // newLocs = newLocs.concat(nlocs);
+            // });
+            // return newLocs;
+         }
+
+        return mplocs;
+    }
+
+    const locs = startingLocs.reduce((mplocs, loc, trak) => { 
+        
+        return travelLocations(campaign, loc.id, mplocs, 0, trak);
+        
+    }, [] as MapLocation[]);
+
+    return locs.sort((a, b) => a.depth - b.depth);
+
+    // startingLocs.forEach((loc, trak) => {
+        
+    //     travelLocations(campaign, loc, mapLocations, 0, trak);
+    // });
+
+    // return [];
+}

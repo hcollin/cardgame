@@ -11,6 +11,8 @@ div.hero-view {
     font-size: 1rem;
     padding: 2rem;
     border-radius: 1rem;
+
+    flex: 1 1 auto;
     
 }
 

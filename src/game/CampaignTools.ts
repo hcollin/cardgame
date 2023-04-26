@@ -13,12 +13,15 @@ import { Arena } from "./Arena";
 
 
 export function createCampaign(): Campaign {
-    return {
+    
+    const campaign: Campaign = {
         id: v4(),
         hero: createHero(),
         world: createWorld(LOCATIONS),
         currentLocationId: ""
-    };
+    }
+
+    return campaign;
 
 }
 

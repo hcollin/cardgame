@@ -2,6 +2,8 @@ import { Arena } from "../game/Arena";
 
 
 export enum WORLDLOCATIONTYPE {
+    START = "START",
+    END = "END",
     ARENA = "ARENA",
     SHOP = "SHOP",
 }
@@ -15,6 +17,9 @@ export enum LOCATIONSTATUS {
     COMPLETED = "COMPLETED",
 }
 
+
+export type LOCATIONFLAG = "first"|"final";
+
 export interface Location {
 
     id: LocationId;
@@ -22,4 +27,13 @@ export interface Location {
     type: WORLDLOCATIONTYPE;
     arena: Arena[];
     nextLocations: LocationId[];
+    flags: LOCATIONFLAG[];
+    icon: string;
+}
+
+
+export interface MapLocation extends Location { 
+    depth: number;
+    trak: number;
+
 }
