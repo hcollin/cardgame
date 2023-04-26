@@ -1,18 +1,10 @@
 import { Card } from "../models/Card";
 import { Deck } from "./Deck";
-import { Arena } from "./Arena";
 import { GAMESTATES, GameState } from "../models/GameState";
-import { Item } from "../models/Items";
 import { createCardsFromItem } from "./ItemTools";
-import { LongSword } from "../data/items/LongSword";
-import { Shield } from "../data/items/Shield";
 import { createHero } from "./HeroTools";
-import { Mace } from "../data/items/Mace";
-import { arnd } from "rndlib";
 import { v4 } from "uuid";
 import { EmptyArena } from "../data/EmptyArena";
-import { createWorld } from "./WorldTools";
-import { LOCATIONS } from "../data/Locations";
 import { HeroStats, ITEMSLOT } from "../models/HeroStats";
 
 export function createGame(hero?: HeroStats): GameState {

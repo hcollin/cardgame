@@ -32,11 +32,11 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 				setGameState(endEnemyTurn(gameState));
 			}, 1000);
 		}
-		if(gameState.state === GAMESTATES.ARENA_COMPLETED || gameState.state === GAMESTATES.DEAD) {
+		if (gameState.state === GAMESTATES.ARENA_COMPLETED || gameState.state === GAMESTATES.DEAD) {
 			setTimeout(() => {
 				props.onArenaFinished(gameState);
-			}, 1000);
-			
+			}, 2000);
+
 		}
 	}, [gameState.state]);
 
@@ -95,12 +95,14 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 
 	const arenaActive = gameState.state !== GAMESTATES.DEAD && gameState.state !== GAMESTATES.ARENA_COMPLETED;
 
+
+
+
 	return (
 		<div className="arena" style={arenaStyle}>
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
 			<div className="enemies">
-				§
 				{gameState.arena.enemies.map((enemy, index) => {
 					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} />;
 				})}
@@ -124,9 +126,9 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 								setSelectedCard(c);
 								setIsDragging(false);
 							}}
-							// onClick={onHandCardClick}
+						// onClick={onHandCardClick}
 
-							// selected={selectedCard && selectedCard.id === card.id ? true : false}
+						// selected={selectedCard && selectedCard.id === card.id ? true : false}
 						/>
 					);
 				})}
@@ -146,7 +148,7 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 								setSelectedCard(c);
 								setIsDragging(false);
 							}}
-							// selected={selectedCard && selectedCard.id === card.id ? true : false}
+						// selected={selectedCard && selectedCard.id === card.id ? true : false}
 						/>
 					);
 				})}
@@ -159,6 +161,18 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 			<HeroInfo gameState={gameState} />
 
 			{isDragging && <TargetHero onDrop={playCardOnHero} />}
+
+			{gameState.state === GAMESTATES.DEAD && (
+				<div className="large-info dead">
+					<span>DEFEAT</span>
+				</div>
+			)}
+
+			{gameState.state === GAMESTATES.ARENA_COMPLETED && (
+				<div className="large-info victory">
+					<span>VICTORY</span>
+				</div>
+			)}
 		</div>
 	);
 }

@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { createHero } from "./HeroTools";
+import { createHero, resetHero } from "./HeroTools";
 import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
 import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
@@ -138,6 +138,8 @@ export function createGameForArena(arena: Arena, hero: HeroStats): GameState {
 
     gameState.arena.resetArena();
     gameState.turn = 1;
+
+    gameState.hero = resetHero(gameState.hero, false);
 
     return gameState;
 

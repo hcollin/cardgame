@@ -1,5 +1,56 @@
 div.arena {
     height: 100vh;
+
+    & > div.large-info {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 8rem;
+        font-weight: bold;
+        letter-spacing: 0.5rem;
+
+        z-index: 100;
+
+
+        & > span {
+            width: 100%;
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(90deg, #0008 0%, #000 40%, #000 60%, #0008 100%);
+            border-top: groove 5px #0004;
+            border-bottom: groove 5px #0004;
+            
+        }
+
+        &.victory {
+            font-family: "Times New Roman", serif;
+            color: gold;
+            text-shadow: var(--text-stroke-large);
+
+            & > span {
+                background: linear-gradient(90deg, #2208 0%, #000 40%, #000 60%, #2208 100%);
+                box-shadow: inset 0 0 1rem 0.5rem #8802;
+            }
+        }
+
+        &.dead {
+            font-family: "Times New Roman", serif;
+            color: red;
+            text-shadow: var(--text-stroke-large);
+            
+            & > span {
+                background: linear-gradient(90deg, #2008 0%, #000 40%, #000 60%, #2008 100%);
+                box-shadow: inset 0 0 1rem 0.5rem #8002;
+            }
+        }
+    }
 }
 
 
