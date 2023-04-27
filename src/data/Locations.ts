@@ -10,7 +10,7 @@ import { ArenaTrollCave } from "./ArenaTrollCave";
 export const LOCATIONS: Location[] = [
     {
         id: "OrcVillage",
-        status: LOCATIONSTATUS.ACTIVE,
+        status: LOCATIONSTATUS.LOCKED,
         type: WORLDLOCATIONTYPE.ARENA,
         arena: [new ArenaOrcVillage()],
         nextLocations: ["SkeletonDungeon"],
@@ -19,7 +19,7 @@ export const LOCATIONS: Location[] = [
     },
     {
         id: "GoblinRaid",
-        status: LOCATIONSTATUS.ACTIVE,
+        status: LOCATIONSTATUS.LOCKED,
         type: WORLDLOCATIONTYPE.ARENA,
         arena: [new ArenaGoblinAmbush()],
         nextLocations: ["GoblinCamp"],

@@ -35,33 +35,21 @@ function App() {
 
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
 
-	// useEffect(() => {
-	// 	if (campaign.currentLocationId !== "") {
-	// 		console.log("Start Arena!", campaign.currentLocationId);
-	// 		// setGameState(createGameFromCampaign(campaign));
-	// 	}
-	// }, [campaign]);
-
 	useEffect(() => {
 		const loc = campaign.world.get(campaign.currentLocationId);
 		if (loc) {
 			console.log(`Current Location ${loc.arena[0].name}`);
 			setCurrentLocation(loc);
-		} else {
-			const nloc = selectActiveLocationFromCampaign(campaign);
-			if (nloc) {
-				console.log("New location", nloc.arena[0].name);
-				setCurrentLocation(nloc);
-				setCampaign({...campaign, currentLocationId: nloc.id});
-			}
 		}
 	}, [campaign.currentLocationId]);
 
 	function arenaDone(gs: GameState) {
-		console.log("ARENA COMPLETED: ", gs.state," : ", campaign);
+		console.log("ARENA COMPLETED: ", gs.state, " : ", campaign);
+
+
 
 		const ngs = { ...gs };
-		
+
 		if (ngs.state === GAMESTATES.ARENA_COMPLETED) {
 			setCampaign({ ...markCurrentLocationCompleted(campaign), hero: resetHero(ngs.hero, false) });
 		} else {
@@ -70,9 +58,10 @@ function App() {
 		setGameState(null);
 	}
 
-	function startArena(arenaIndex: number) {
+	function startArena() {
 		if (currentLocation) {
-			const ar = currentLocation.arena[arenaIndex];
+
+			const ar = currentLocation.arena[0];
 			if (ar) {
 				console.log(`Start Arena ${ar.name}`, campaign);
 				setGameState(createGameForArena(ar, campaign.hero));
@@ -81,23 +70,28 @@ function App() {
 	}
 
 	function selectNextLocation(lid: string) {
-		if(currentLocation?.status === LOCATIONSTATUS.COMPLETED) {
+		if (currentLocation?.status === LOCATIONSTATUS.COMPLETED) {
 			setCampaign(setActiveLocationForCampaign(campaign, lid));
 		}
 	}
 
 	function updateHero(hero: HeroStats) {
-		setCampaign({...campaign, hero: hero});
+		setCampaign({ ...campaign, hero: hero });
+	}
+
+	function updateCampaign(campaign: Campaign) {
+		console.log("Update Campaign", campaign.currentLocationId);
+		setCampaign({ ...campaign });
 	}
 
 	const backend = isMobile ? TouchBackend : HTML5Backend;
 
 	let viewMode = "MENU";
 
-	if(gameState !== null) {
+	if (gameState !== null) {
 		viewMode = "ARENA";
 	}
-	
+
 
 
 
@@ -106,9 +100,9 @@ function App() {
 			{gameState === null && (
 				<div className="main-screen">
 					{/* <MainMenu campaign={campaign} update={setCampaign} /> */}
-					<WorldMap campaign={campaign} />
+					<WorldMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />
 					{/* {currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>} */}
-					<HeroView hero={campaign.hero} updateHero={updateHero}/>
+					<HeroView hero={campaign.hero} updateHero={updateHero} />
 				</div>
 			)}
 			{gameState !== null && <Arena gs={gameState} onArenaFinished={arenaDone} />}

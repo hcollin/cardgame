@@ -13,12 +13,14 @@ export type LocationId = string;
 export enum LOCATIONSTATUS {
     LOCKED = "LOCKED",
     ACTIVE = "ACTIVE",
+    SELECTABLE = "SELECTABLE", 
+    PASSEDBY = "PASSEDBY",
     CHOOSINGPATH = "CHOOSINGPATH",
     COMPLETED = "COMPLETED",
 }
 
 
-export type LOCATIONFLAG = "first"|"final";
+export type LOCATIONFLAG = "first"|"final"|"completed";
 
 export interface Location {
 

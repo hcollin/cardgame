@@ -63,6 +63,7 @@ export function markCurrentLocationCompleted(campaign: Campaign): Campaign {
     const loc = campaign.world.get(campaign.currentLocationId);
     if(!loc) { throw new Error(`Current location ${campaign.currentLocationId} not found`); }
     loc.status = LOCATIONSTATUS.COMPLETED;
+    loc.flags.push("completed");
     campaign.world.set(loc.id, loc);
     return {...campaign};
 }
