@@ -4,7 +4,7 @@ import { LOCATIONSTATUS, Location, MapLocation } from "../models/World";
 import { buildMapLocations } from "../game/WorldTools";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
-import Banner from "./Banner";
+import Banner from "../components/Banner";
 
 import iconCamp from "./icons/camp.png";
 import iconDungeon from "./icons/dungeon.png";

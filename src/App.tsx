@@ -19,15 +19,18 @@ import {
 	selectActiveLocationFromCampaign,
 	setActiveLocationForCampaign,
 } from "./game/CampaignTools";
-import HeroView from "./components/HeroView";
+
 import { LOCATIONSTATUS, Location } from "./models/World";
 import LocationView from "./components/LocationView";
 import { resetHero } from "./game/HeroTools";
 import { HeroStats } from "./models/HeroStats";
-import WorldMap from "./components/WorldMap";
+import WorldMap from "./views/WorldMap";
 
 import iconMap from "./components/icons/map.png";
 import iconCharacter from "./components/icons/character.png";
+import HeroView from "./views/HeroView";
+
+import frostTrollLogo from "./views/pics/frosttrolllogo.png";
 
 const isMobile = false;
 
@@ -38,7 +41,7 @@ function App() {
 
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
 
-	const [vm, setVm] = useState<string>("MAP"); // MAP || CHARACTER
+	const [vm, setVm] = useState<string>("CHARACTER"); // MAP || CHARACTER
 
 	useEffect(() => {
 		const loc = campaign.world.get(campaign.currentLocationId);
@@ -50,8 +53,6 @@ function App() {
 
 	function arenaDone(gs: GameState) {
 		console.log("ARENA COMPLETED: ", gs.state, " : ", campaign);
-
-
 
 		const ngs = { ...gs };
 
@@ -65,7 +66,6 @@ function App() {
 
 	function startArena() {
 		if (currentLocation) {
-
 			const ar = currentLocation.arena[0];
 			if (ar) {
 				console.log(`Start Arena ${ar.name}`, campaign);
@@ -97,19 +97,23 @@ function App() {
 		viewMode = "ARENA";
 	}
 
-
-
-
 	return (
 		<DndProvider backend={backend}>
 			{gameState === null && (
 				<div className="main-screen">
 					<nav>
-						<button onClick={() => setVm("MAP")}>
+						<button onClick={() => setVm("MAP")} className={`left ${vm === "MAP" ? "selected" : ""}`}>
 							<img src={iconMap} alt="Map" />
 							Map
-							</button>
-						<button onClick={() => setVm("CHARACTER")}>
+						</button>
+						<div className="logo">
+							<img src={frostTrollLogo} alt="Frost Troll" />
+							<div className="txt">
+								<h2>Frost Troll</h2>
+								<h3>Quest</h3>
+							</div>
+						</div>
+						<button onClick={() => setVm("CHARACTER")} className={`right ${vm === "CHARACTER" ? "selected" : ""}`}>
 							<img src={iconCharacter} alt="Character" />
 							Character
 						</button>
@@ -124,6 +128,5 @@ function App() {
 		</DndProvider>
 	);
 }
-
 
 export default App;

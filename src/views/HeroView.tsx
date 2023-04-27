@@ -4,6 +4,9 @@ import { Item } from "../models/Items";
 
 import "./hero-view.css";
 import { equipItem, unequipItem } from "../game/HeroTools";
+import HealthValueContainer from "../components/HealthValueContainer";
+import ArmorValueContainer from "../components/ArmorValueContainer";
+import EnergyValueContainer from "../components/EnergyValueContainer";
 
 /**
  * Functional React Component called HeroView that takes HeroStats as a prop and renders the hero's stats
@@ -11,22 +14,21 @@ import { equipItem, unequipItem } from "../game/HeroTools";
 function HeroView(props: { hero: HeroStats, updateHero: (hero: HeroStats) => void }) {
     return (
         <div className="hero-view">
+
             <h1>{props.hero.name}</h1>
 
-            <h4>Health</h4>
-            <div className="life">
+            <div className="container">
+                <HealthValueContainer hero={props.hero} />
 
-                {props.hero.health} / {props.hero.maxHealth}
-            </div>
+                <ArmorValueContainer hero={props.hero} />
 
-            <h4>Armor</h4>
-            <div className="armor">
-                {props.hero.defaultArmor}
-            </div>
+                <EnergyValueContainer hero={props.hero} />
+            </div>          
+          
+          <div className="container">
+              <HeroItems hero={props.hero} updateHero={props.updateHero} />
 
-            <h4>Equipped</h4>
-            <HeroItems hero={props.hero} updateHero={props.updateHero} />
-
+          </div>
 
             {/* <h4>Inventory</h4>
             <div className="inventory">

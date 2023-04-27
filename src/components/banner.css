@@ -49,10 +49,12 @@ div.banner {
     
         padding: 0.5rem 2rem;
         background: linear-gradient(90deg, #500 0%, #C00 40%, #C00 60%, #500 100%);
+        
+        font-family: "Lobster Two";
         color: #FFFD;   
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        /* font-weight: bold; */
+        /* text-transform: uppercase; */
+        letter-spacing: 1px;
         text-shadow: var(--text-stroke-small);
         
         border-top-left-radius: 5% 0.5rem;

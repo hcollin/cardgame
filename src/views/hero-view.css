@@ -6,13 +6,67 @@ div.hero-view {
     /* align-items: center; */
     justify-content: space-between;
     
-    background-color: var(--hero-blue);
+    /* background: url("./pics/papyrus.jpg");
+    background-size: cover; */
+    /* background-color: var(--hero-blue); */
     color: white;
     font-size: 1rem;
     padding: 2rem;
-    border-radius: 1rem;
+    margin-top: 6rem;
 
-    flex: 1 1 auto;
+    width: 100%;
+    
+
+
+    & > h1 {
+        font-family: "Tangerine", "Times New Roman", Serif;
+        font-size: 6rem;
+        font-weight: normal;
+        text-shadow: var(--text-stroke-large);
+        margin: 2rem 0 0 0;
+        /* border-bottom: solid 8px #0008; */
+
+        /* background: url("./pics/tribal.png"); */
+        /* background-repeat: no-repeat; */
+        /* background-size: 200%; */
+        /* background-position: center 20%; */
+        padding: 1.5rem 3rem 1rem 3rem;
+
+        background: linear-gradient(180deg, #024 0, #9CF8 5%, #0121 50%, #0124 90%, #000A);
+
+        border-top-left-radius: 8rem 4rem;
+        border-top-right-radius: 8rem 4rem;
+
+        box-shadow: -1rem 0 1rem 0.5rem #0008;
+        
+        
+        
+        
+    }
+
+    & > div.container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+
+        /* border-bottom: solid 8px #0004; */
+        /* border-top: solid 8px #0004; */
+
+        padding: 3rem 0 2rem 0;
+        /* margin: 1rem 0; */
+
+        background: linear-gradient(0deg, #000A, transparent 10%, transparent 90%, #000A);
+
+        & > div {
+            margin-right: 2rem;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+    }
+    
     
 }
 
