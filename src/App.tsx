@@ -26,6 +26,9 @@ import { resetHero } from "./game/HeroTools";
 import { HeroStats } from "./models/HeroStats";
 import WorldMap from "./components/WorldMap";
 
+import iconMap from "./components/icons/map.png";
+import iconCharacter from "./components/icons/character.png";
+
 const isMobile = false;
 
 function App() {
@@ -34,6 +37,8 @@ function App() {
 	const [gameState, setGameState] = useState<GameState | null>(null);
 
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
+
+	const [vm, setVm] = useState<string>("MAP"); // MAP || CHARACTER
 
 	useEffect(() => {
 		const loc = campaign.world.get(campaign.currentLocationId);
@@ -99,10 +104,20 @@ function App() {
 		<DndProvider backend={backend}>
 			{gameState === null && (
 				<div className="main-screen">
+					<nav>
+						<button onClick={() => setVm("MAP")}>
+							<img src={iconMap} alt="Map" />
+							Map
+							</button>
+						<button onClick={() => setVm("CHARACTER")}>
+							<img src={iconCharacter} alt="Character" />
+							Character
+						</button>
+					</nav>
 					{/* <MainMenu campaign={campaign} update={setCampaign} /> */}
-					<WorldMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />
+					{vm === "MAP" && <WorldMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />}
 					{/* {currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>} */}
-					<HeroView hero={campaign.hero} updateHero={updateHero} />
+					{vm === "CHARACTER" && <HeroView hero={campaign.hero} updateHero={updateHero} />}
 				</div>
 			)}
 			{gameState !== null && <Arena gs={gameState} onArenaFinished={arenaDone} />}

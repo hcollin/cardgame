@@ -22,8 +22,44 @@ div.main-screen {
   align-items: center;
   justify-content: space-between;
   height: 100vh;
+  width: 100%;  
+}
 
-  & > div {
-    margin: 1rem;
+
+nav {
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  /* height: 3rem; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+
+  background: #0008;
+  padding: 0.5rem;
+  box-shadow: 0 0 1rem 0.5rem #0008;
+
+  & > button {
+    margin: 0 1rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+
+    border-radius: 1rem;
+
+    background: #CCCA;
+    border: groove 3px #0008;
+
+    & > img {
+      height: 3rem;
+      margin-right: 1rem;
+    }
   }
+  
 }

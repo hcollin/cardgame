@@ -15,125 +15,45 @@ export function createWorld(locs: Location[]): Map<LocationId, Location> {
 
 export function updateLocations(mlocs: Map<LocationId, Location>, currentId: LocationId): Map<LocationId, Location> {
 
+    const tlocs = new Map<LocationId, Location>();
+    const nlocs = new Map<LocationId, Location>();
 
-    // const nlocs: Map<LocationId, Location> = new Map<LocationId, Location>();
+    let completedCount: number = 0;
 
-    // Location rules
-    // All are locked by default (in the beginning)
-    // If a location is completed, it's children are selectable (unless they are already completed or passed)
-    // If a location is in the same or lower depth than the currently active location it is passed
-    // If the location is currently selected it is active (DONE)
-    // Only one location can be active at a time 
-    // if all locations are locked, make locations with flag "first" selectable (DONE)
-
-    const currentLocation = mlocs.get(currentId);
-
-    const mlocArr = Array.from(mlocs.values());
-
-    const allLocked = mlocArr.every(l => l.status === LOCATIONSTATUS.LOCKED);
-
-    // Get an array of locationIds that are completed
-    const completedLocations = mlocArr.filter(l => l.status === LOCATIONSTATUS.COMPLETED).map(l => l.id);
-
-    function getLocParent(loc: Location): Location[]|null {
-        const parents = mlocArr.filter(l => l.nextLocations.includes(loc.id));
-        if(parents.length <= 0) return null;
-        return parents;
-    }
-
-    function myParentIsCompleted(loc: Location): boolean {
-        const parents = getLocParent(loc);
-        if(!parents) return false;
-        return parents.filter(p => completedLocations.includes(p.id)).length > 0;
-    }
-
-
-    const tempLocs: Location[] = [];
-
-    mlocs.forEach(l => {
-
-        // SELECTABLE & ACTIVE
-        if(l.status === LOCATIONSTATUS.SELECTABLE && currentId === l.id) {
-            l.status = LOCATIONSTATUS.ACTIVE;
+    mlocs.forEach((l) => {
+        if (l.flags.includes("completed")) {
+            l.status = LOCATIONSTATUS.COMPLETED;
+            completedCount++;
+        } else {
+            l.status = LOCATIONSTATUS.LOCKED;
         }
-
-        if(l.status === LOCATIONSTATUS.ACTIVE && currentId !== l.id) {
-            l.status = LOCATIONSTATUS.SELECTABLE;
-        }
-
-        // Locked locations with completed parents are selectable
-        if(l.status === LOCATIONSTATUS.LOCKED && myParentIsCompleted(l)) {
-            l.status = LOCATIONSTATUS.SELECTABLE;
-        }
-
-        
-
-        // if(l.status === LOCATIONSTATUS.SELECTABLE ) {
-        //     // Find all locations that have this location as a next location and their status is COMPLETED
-        //     const nextLocs = Array.from(mlocs.values()).filter(nl => nl.nextLocations.includes(l.id) && nl.status === LOCATIONSTATUS.COMPLETED);
-        //     if(nextLocs.length <= 0) {  
-        //         l.status = LOCATIONSTATUS.PASSEDBY;
-        //     } 
-        // }
-
-        // if (l.status === LOCATIONSTATUS.LOCKED) {
-        //     if (l.flags.includes("first")) {
-        //         if (l.id === currentId) {
-        //             l.status = LOCATIONSTATUS.ACTIVE;
-        //         } else {
-        //             l.status = LOCATIONSTATUS.SELECTABLE;
-        //         }
-        //     } else {
-        //         l.nextLocations.forEach(nl => {
-        //             const nloc = mlocs.get(nl);
-        //             if (!nloc) { throw new Error("Next location not found"); }
-        //             if (nloc.status === LOCATIONSTATUS.COMPLETED) {
-        //                 l.status = LOCATIONSTATUS.SELECTABLE;
-        //             }
-        //         });
-        //     }
-        // }
-
-        // if(l.flags.includes("first") && !allLocked && l.status === LOCATIONSTATUS.SELECTABLE) {
-        //     l.status = LOCATIONSTATUS.LOCKED;
-        // }
-
-        if(allLocked && l.flags.includes("first")) {
-            l.status = LOCATIONSTATUS.SELECTABLE;
-        }
-
-        
-            
-        
-
-        
-        // nlocs.set(l.id, l);
-        tempLocs.push(l);
+        tlocs.set(l.id, l);
     });
 
-    // Go through passed locations
-    return tempLocs.reduce((nlocs, loc, ind, locs) => {
 
-        // Get statuses of all child locations
-        const childStatusesNotLocked = loc.nextLocations.map(nl => {
-            const nloc = locs.find(l => l.id === nl);
-            if(!nloc) { throw new Error("Next location not found"); }
-            return nloc.status;
-        }).filter(s => s !== LOCATIONSTATUS.LOCKED);
+    tlocs.forEach((l) => {
+        if (l.status === LOCATIONSTATUS.COMPLETED) {
+            l.nextLocations.forEach((nl) => {
+                const nloc = tlocs.get(nl);
+                if (nloc && nloc.status !== LOCATIONSTATUS.COMPLETED) {
+                    nloc.status = LOCATIONSTATUS.SELECTABLE;
+                    nlocs.set(nloc.id, nloc);
+                }
+            });
+        }
+        if (completedCount === 0 && l.flags.includes("first")) {
+            l.status = LOCATIONSTATUS.SELECTABLE;
+        }
+        nlocs.set(l.id, l);
+    });
 
-        console.log("child statuses", childStatusesNotLocked);
-        // if(childStatusesNotLocked.length > 0) {
-        //     loc.status = LOCATIONSTATUS.PASSEDBY;
-        // }
-        
+    const currentLoc = nlocs.get(currentId);
+    if (currentLoc && currentLoc.status !== LOCATIONSTATUS.COMPLETED) {
+        currentLoc.status = LOCATIONSTATUS.ACTIVE;
+        nlocs.set(currentLoc.id, currentLoc);
+    }
 
-        nlocs.set(loc.id, {...loc});
-
-        return nlocs;
-    }, new Map<LocationId, Location>())
-
-
-    // return nlocs;
+    return nlocs;
 }
 
 
