@@ -8,22 +8,19 @@ function ArenaHeader(props: { gameState: GameState; updateGameState: (gs: GameSt
 
 	function handleEndTurn() {
 		if (gameState && gameState.state === GAMESTATES.MYTURN) {
-			console.log("end turn");
 			props.updateGameState(endTurn(gameState));
 		}
 	}
 
 	return (
 		<header className="arena-header">
-			<div className="title">Frost Troll Quest</div>
+			<div className="title">Frost Troll <span>Quest</span></div>
 			<div className="data">
 				{gameState.state === GAMESTATES.MYTURN && (
-					<span className="header-info">
-						{" "}
-						Turn {gameState.turn}
-						<br />
-						{gameState.arena.name} {gameState.state}
-					</span>
+					<>
+						<span className="turn-info">Turn <big>{gameState.turn}</big></span>
+						<span className="state-info"><small>in</small> {gameState.arena.name}</span>
+					</>
 				)}
 				{gameState.state === GAMESTATES.ENEMYTURN && <span className="header-enemy">Enemy turn</span>}
 			</div>

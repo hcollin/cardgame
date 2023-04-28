@@ -1,4 +1,4 @@
-import Arena from "./components/Arena";
+
 
 import "./App.css";
 import { TouchBackend } from "react-dnd-touch-backend";
@@ -31,6 +31,7 @@ import iconCharacter from "./components/icons/character.png";
 import HeroView from "./views/HeroView";
 
 import frostTrollLogo from "./views/pics/frosttrolllogo.png";
+import Arena from "./views/Arena";
 
 const isMobile = false;
 

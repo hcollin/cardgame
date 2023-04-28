@@ -3,16 +3,16 @@ import { useState, useEffect, CSSProperties } from "react";
 import { endEnemyTurn, playItemCard } from "../game/GameService";
 import { Card } from "../models/Card";
 import { GameState, GAMESTATES } from "../models/GameState";
-import EnemyCard from "./EnemyCard";
-import HandCard from "./HandCard";
 
 import "./arena.css";
-import ArenaHeader from "./ArenaHeader";
-import HeroInfo from "./HeroInfo";
 import { Enemy } from "../game/Enemy";
-import TargetHero from "./TargetHero";
+import ArenaHeader from "../components/ArenaHeader";
+import EnemyCard from "../components/EnemyCard";
+import HandCard from "../components/HandCard";
+import HeroInfo from "../components/HeroInfo";
+import TargetHero from "../components/TargetHero";
 
-function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) => void }) {
+function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
 
 	const [targetIndex, setTarget] = useState<number | null>(null);
@@ -36,7 +36,6 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 			setTimeout(() => {
 				props.onArenaFinished(gameState);
 			}, 2000);
-
 		}
 	}, [gameState.state]);
 
@@ -95,9 +94,6 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 
 	const arenaActive = gameState.state !== GAMESTATES.DEAD && gameState.state !== GAMESTATES.ARENA_COMPLETED;
 
-
-
-
 	return (
 		<div className="arena" style={arenaStyle}>
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
@@ -126,9 +122,9 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 								setSelectedCard(c);
 								setIsDragging(false);
 							}}
-						// onClick={onHandCardClick}
+							// onClick={onHandCardClick}
 
-						// selected={selectedCard && selectedCard.id === card.id ? true : false}
+							// selected={selectedCard && selectedCard.id === card.id ? true : false}
 						/>
 					);
 				})}
@@ -148,7 +144,7 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 								setSelectedCard(c);
 								setIsDragging(false);
 							}}
-						// selected={selectedCard && selectedCard.id === card.id ? true : false}
+							// selected={selectedCard && selectedCard.id === card.id ? true : false}
 						/>
 					);
 				})}
@@ -164,13 +160,13 @@ function Arena(props: { gs: GameState, onArenaFinished: (gameState: GameState) =
 
 			{gameState.state === GAMESTATES.DEAD && (
 				<div className="large-info dead">
-					<span>DEFEAT</span>
+					<span>Defeat</span>
 				</div>
 			)}
 
 			{gameState.state === GAMESTATES.ARENA_COMPLETED && (
 				<div className="large-info victory">
-					<span>VICTORY</span>
+					<span>Victory</span>
 				</div>
 			)}
 		</div>

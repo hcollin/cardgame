@@ -13,8 +13,8 @@ div.arena {
         align-items: center;
 
         font-size: 8rem;
-        font-weight: bold;
-        letter-spacing: 0.5rem;
+        /* font-weight: bold; */
+        letter-spacing: 3px;
 
         z-index: 100;
 
@@ -30,9 +30,11 @@ div.arena {
         }
 
         &.victory {
-            font-family: "Times New Roman", serif;
+            font-family: "Tangerine", "Times New Roman", serif;
             color: gold;
-            text-shadow: var(--text-stroke-large);
+            /* font-weight: 400; */
+            /* text-shadow: var(--text-stroke-large); */
+            text-shadow: 2px 2px 4px #FFF8, -2px -2px 4px #FFF8, 2px -2px 4px #FFF8, -2px 2px 4px #FFF8;
 
             & > span {
                 background: linear-gradient(90deg, #2208 0%, #000 40%, #000 60%, #2208 100%);
@@ -41,9 +43,10 @@ div.arena {
         }
 
         &.dead {
-            font-family: "Times New Roman", serif;
-            color: red;
-            text-shadow: var(--text-stroke-large);
+            font-family: "Tangerine", "Times New Roman", serif;
+            color: #F00;
+            
+            text-shadow: 2px 2px 4px #FFF8, -2px -2px 4px #FFF8, 2px -2px 4px #FFF8, -2px 2px 4px #FFF8;
             
             & > span {
                 background: linear-gradient(90deg, #2008 0%, #000 40%, #000 60%, #2008 100%);
@@ -67,7 +70,7 @@ div.arena {
 .lefthand {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 8rem;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -91,7 +94,7 @@ div.arena {
 .righthand {
     position: absolute;
     right: 0;
-    bottom: 0;
+    bottom: 8rem;
     display: flex;
     flex-direction: row;
     justify-content: space-around;

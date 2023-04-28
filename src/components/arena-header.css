@@ -1,12 +1,13 @@
 
 .arena-header {
     height: 6rem;
-    background: #444;
-    background-image: url("./pics/rustymetal.jpg");
+    background: linear-gradient(0deg, #444 0, #888 1.25rem, #EEE 3rem, #888 6rem);
+    filter: sepia(25%);
+    /* background-image: url("./pics/rustymetal.jpg"); */
     background-size: cover;
     background-position: center;
     background-blend-mode: soft-light;
-    border-bottom: solid 2px #00000055;
+    border-bottom: groove 3px #00000080;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -15,36 +16,92 @@
     border-bottom-left-radius: 50% 3rem;
     border-bottom-right-radius: 50% 3rem;
     overflow: hidden;
+
+    box-shadow: 0.5rem 0 1rem 0.5rem #0008;
   }
   
   .arena-header>.title {
+    position: relative;
     font-size: 2rem;
-    color: #ADD8E6;
-    padding: 0.5rem 1rem;
-    text-shadow: 0 0 6px #00000044, 0 0 12px #FFFFFFCC;
+    color: #0008;
+    
+    padding: 0.5rem 5rem 0.5rem 1rem;
+    text-shadow: 0 1px 1px #08F8, 0 -2px 4px #FFFC;
     text-transform: uppercase;
     font-weight: bold;
   
-    background: #00000099;
+    /* background: linear-gradient(0deg, transparent 30%, #4AF4 ); */
+    background: #4464;    
+    
   
-    border-right: solid 2px #00000088;
+    border-right: solid 2px #0008;
+    border-top: solid 2px #0008;
     border-top-right-radius: 1rem 30%;
     border-bottom-right-radius: 8rem 70%;
     height: 100%;
+
+    
+
+    & > span {
+        position: absolute;
+        font-family: "Lobster Two";
+        transform: rotate(-10deg);
+        font-size: 1.5rem;
+        color: #8BFD;
+        font-weight: normal;
+        letter-spacing: 1.5px;
+        text-shadow: var(--text-stroke-small);
+        left: 11rem;
+        bottom: 1.6rem;
+    }
   }
   .arena-header>.data {
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
   }
   
-  .arena-header>.data>span.header-info {
-    color: #FFFFFFAA;
+  .arena-header>.data > span {
+    font-family: "Lobster Two";
+    color: #0008;
+    /* font-weight: bold; */
     font-size: 1.4rem;
-    text-shadow: 0 0 2px #000000, 0 0 1rem #ADD8E6;
+    /* text-shadow: 0 0 2px #000000, 0 0 1rem #ADD8E6; */
+    text-shadow: 0 0 4px #0008, 0 0 1rem #0258;
     text-align: center;
+    
+    &.turn-info {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+  
+      margin-right: 1rem;
+      & > big {
+        font-size: 3rem;
+        width: 6rem;
+        height: 4rem;
+        margin: 0 1rem;
+        border: solid 2px #0008;
+        border-top-left-radius: 2rem;
+        border-top-right-radius: 2rem;
+        border-bottom-left-radius: 3rem;
+        border-bottom-right-radius: 3rem;
+        
+        background: #EDF5;
+        box-shadow: inset 0 0 1rem 3px #0003;
+        
+
+      }
+    }
   }
   
   .arena-header>.data>span.header-enemy {
-    color: #FF0000;
+    font-family: "Lobster Two";
+    color: #F008;
     font-size: 2rem;
     text-shadow: 0 0 1rem #FFFFFF55, 0 0 2px #000000;
     font-weight: bold;
@@ -59,8 +116,9 @@
   }
   
   .arena-header>.end-turn>button {
-    background: #ADD8E6;
+    /* background: #ADD8E6; */
     color: #00000088;
+    filter: brightness(0.9) sepia(45%) hue-rotate(180deg);
     font-size: 1.5rem;
     text-transform: uppercase;
     padding-bottom: 1rem;
@@ -75,6 +133,17 @@
     border-left: solid 2px #00000088;
   
     box-shadow: inset 0 0 2rem 5px #00000044;
+
+    transition: all 0.1s ease;
+
+    &:hover {
+      filter: brightness(1.1) sepia(45%) hue-rotate(60deg);
+    }
+    
+    &:active {
+      filter: brightness(1.1) sepia(45%);
+      box-shadow: inset 0 0 2.5rem 8px #00000088;
+    }
   }
   
   .arena-header>.end-turn>button:hover {
