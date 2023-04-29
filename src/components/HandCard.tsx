@@ -10,29 +10,27 @@ import cardBackImage from "./pics/cardback.png";
 interface HandCardProps {
 	card: Card;
 	onClick?: (card: Card) => void;
-  onDragStart?: (card: Card) => void;
-  onDragEnd?: (card: Card) => void;
+	onDragStart?: (card: Card) => void;
+	onDragEnd?: (card: Card) => void;
 	selected?: boolean;
+	style?: React.CSSProperties;
 }
 
 export default function HandCard(props: HandCardProps) {
 	const [collected, drag, dragPreview] = useDrag(
 		() => ({
 			type: "Card",
-      item: () => {
-        
-        if(props.onDragStart) {
-          props.onDragStart(props.card);
-          return props.card;  
-        }
-
-        
-      },
-      end: (item, monitor) => {
-        if(props.onDragEnd) {
-          props.onDragEnd(props.card);
-        }
-      },
+			item: () => {
+				if (props.onDragStart) {
+					props.onDragStart(props.card);
+					return props.card;
+				}
+			},
+			end: (item, monitor) => {
+				if (props.onDragEnd) {
+					props.onDragEnd(props.card);
+				}
+			},
 			collect: (monitor) => ({
 				isDragging: !!monitor.isDragging(),
 			}),
@@ -52,9 +50,9 @@ export default function HandCard(props: HandCardProps) {
 	if (props.card.name.length > 14) nameSize = "xsmall";
 
 	const cn = `card ${props.card.rarity.toLowerCase()} ${props.selected ? "selected" : ""} ${collected.isDragging ? "dragging" : ""}`;
-	
+
 	return (
-		<div className={cn} ref={drag}>
+		<div className={cn} ref={drag} style={props.style || {}}>
 			<header>
 				<div className={`name ${nameSize}`}>{props.card.name}</div>
 				<div className="aps">{props.card.apCost}</div>

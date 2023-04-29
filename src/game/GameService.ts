@@ -90,6 +90,9 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 	// If target is specified, use the card on the target
 	if (targetIndex !== undefined && targetIndex > -1) {
 		const enemy = gameState.arena.enemies[targetIndex];
+		
+		enemy.beforeDamage();
+		console.log(card.damage);
 		card.damage.forEach((dmg) => {
 			enemy.takeDamage(dmg);
 		});
@@ -134,7 +137,11 @@ export function endTurn(gameState: GameState): GameState {
 	// Events at the end of the player turn
 	gameState.arena.enemies.forEach((enemy) => {
 		gameState = enemy.atEndOfPlayerTurn(gameState);
+		gameState = enemy.cleanUpEndOfPlayerTurn(gameState);
 	});
+
+
+
 
 
 

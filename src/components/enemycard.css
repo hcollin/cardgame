@@ -292,3 +292,76 @@
     opacity: 0.5;
     
 }
+
+
+.enemy > .damage-taken {
+
+    --hit-size: 5rem;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+
+    & > div.hit {
+        position: relative;
+        background: url("./icons/damage.png");
+        background-size: contain;
+        height: var(--hit-size);
+        width: var(--hit-size);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: calc(var(--hit-size) *0.66);
+        font-weight: bold;
+        color: #FFF;
+        text-shadow: var(--text-stroke-small);
+
+        &.small {
+            height: calc(var(--hit-size) * 0.66);
+            width: calc(var(--hit-size) * 0.66);
+            font-size: calc(var(--hit-size) *0.5);
+        }
+
+        &.resistant {
+            color: #888;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 25%;
+                left: -40%;
+                width: 50%;
+                height: 50%;
+                background: url("./icons/reddown.png");
+                background-size: contain;
+
+            }
+        }
+
+        &.vulnerable {
+            color: #8F8;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 25%;
+                right: -40%;
+                width: 50%;
+                height: 50%;
+                background: url("./icons/greenup.png");
+                background-size: contain;
+
+            }
+        }
+    }
+}

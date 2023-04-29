@@ -1,6 +1,9 @@
 import { useDrop } from "react-dnd";
-import "./target-hero.css";
 import { Card, TARGETS } from "../models/Card";
+
+import targetHeroImg from "./icons/target-hero.png";
+
+import "./target-hero.css";
 
 function TargetHero(props: { onDrop?: () => void }) {
 	const [{ isOver, canDrop }, drop] = useDrop({
@@ -25,7 +28,10 @@ function TargetHero(props: { onDrop?: () => void }) {
 
 	return (
 		<div className={cn} ref={drop}>
-			TARGET HERO!
+			<div className="img">
+				<img src={targetHeroImg} alt="target hero" />
+			</div>
+			<div className="text">TARGET HERO!</div>
 		</div>
 	);
 }

@@ -11,6 +11,7 @@ import EnemyCard from "../components/EnemyCard";
 import HandCard from "../components/HandCard";
 import HeroInfo from "../components/HeroInfo";
 import TargetHero from "../components/TargetHero";
+import CardHand from "../components/CardHand";
 
 function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
@@ -104,55 +105,9 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 				})}
 			</div>
 
-			<div className="lefthand">
-				<div>
-					<div className="deck">{gameState.leftHandDeck.deckSize()}</div>
-					<div className="deck discard">{gameState.leftHandDeck.discardSize()}</div>
-				</div>
-
-				{gameState.leftHand.map((card, index) => {
-					return (
-						<HandCard
-							key={card.id}
-							card={card}
-							onDragStart={(c: Card) => {
-								setIsDragging(true);
-							}}
-							onDragEnd={(c: Card) => {
-								setSelectedCard(c);
-								setIsDragging(false);
-							}}
-							// onClick={onHandCardClick}
-
-							// selected={selectedCard && selectedCard.id === card.id ? true : false}
-						/>
-					);
-				})}
-			</div>
-
-			<div className="righthand">
-				{gameState.rightHand.map((card, index) => {
-					return (
-						<HandCard
-							key={card.id}
-							card={card}
-							onDragStart={(c: Card) => {
-								setIsDragging(true);
-								setSelectedCard(c);
-							}}
-							onDragEnd={(c: Card) => {
-								setSelectedCard(c);
-								setIsDragging(false);
-							}}
-							// selected={selectedCard && selectedCard.id === card.id ? true : false}
-						/>
-					);
-				})}
-				<div>
-					<div className="deck">{gameState.rightHandDeck.deckSize()}</div>
-					<div className="deck discard">{gameState.rightHandDeck.discardSize()}</div>
-				</div>
-			</div>
+			<CardHand gs={gameState} side="LEFT" onDrag={setIsDragging} onSelect={setSelectedCard}/>
+		
+			<CardHand gs={gameState} side="RIGHT" onDrag={setIsDragging} onSelect={setSelectedCard}/>
 
 			<HeroInfo gameState={gameState} />
 

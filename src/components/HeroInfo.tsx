@@ -3,6 +3,11 @@ import ArmorValueContainer from "./ArmorValueContainer";
 import EnergyValueContainer from "./EnergyValueContainer";
 import HealthValueContainer from "./HealthValueContainer";
 
+import healthIcon from "./icons/health.png";
+import armorIcon from "./icons/armor.png";
+import energyIcon from "./icons/energy.png";
+
+
 import "./hero-info.css";
 
 function HeroInfo(props: { gameState: GameState }) {
@@ -16,47 +21,38 @@ function HeroInfo(props: { gameState: GameState }) {
 	}
 	return (
 		<div className="hero-info">
-			<EnergyValueContainer hero={gameState.hero} />
-			<HealthValueContainer hero={gameState.hero} />
-			<ArmorValueContainer hero={gameState.hero} />
-			{/* <div className="energy">
-				{gameState.hero.aps}
-				<small>MAX: {gameState.hero.maxAps}</small>
-			</div> */}
-			{/* <div className="armor">
-				<span className="default">{gameState.hero.armor}</span>
+			{/* <EnergyValueContainer hero={gameState.hero} /> */}
+			{/* <HealthValueContainer hero={gameState.hero} /> */}
+			{/* <ArmorValueContainer hero={gameState.hero} /> */}
 
-			</div> */}
-			{/* <div className="health">
-				<div
-					className={percCns.join(" ")}
-					style={!percCns.includes("low") ? { top: `${100 - healthPercentage}%` } : { bottom: `${healthPercentage}%` }}
-				>
-					{gameState.hero.health}
+			<div className="value energy">
+				<div className="icon"><img src={energyIcon} alt="Energy" /></div>
+				<div className="values">
+					<span className="main">{gameState.hero.aps}</span>
+					<span className="base"> / {gameState.hero.maxAps}</span>
 				</div>
-				<div className="meter">
-					<div className="bar" style={{ height: `${healthPercentage}%` }}></div>
-				</div>
-				<div className="max">{gameState.hero.maxHealth}</div>
-			</div> */}
-			{/* <div className="effects">EF</div> */}
+			</div>
 
-			{/* <div className="numbers">
-				<h3>Armor</h3>
-				<h1>
-					{gameState.hero.armor} <small>/ {gameState.hero.defaultArmor}</small>
-				</h1>
-				<h3>Health</h3>
-				<h1>
-					{gameState.hero.health} <small> / {gameState.hero.maxHealth}</small>
-				</h1>
-				<h3>Energy</h3>
-				<h1>
-					{gameState.hero.aps} <small> / {gameState.hero.maxAps}</small>
-				</h1>
-			</div> */}
+			<div className="value health">
+				<div className="icon"><img src={healthIcon} alt="Health" /></div>
+				<div className="values">
+					<span className="main">{gameState.hero.health}</span>
+					<span className="base"> / {gameState.hero.maxHealth}</span>
+				</div>
+			</div>
+
+			<div className="value armor">
+				<div className="icon"><img src={armorIcon} alt="Armor" /></div>
+				<div className="values">
+					<span className="main">{gameState.hero.armor}</span>
+					<span className="base"> / {gameState.hero.defaultArmor}</span>
+				</div>
+			</div>
+
 		</div>
 	);
 }
 
 export default HeroInfo;
+
+

@@ -2,231 +2,99 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
-
-
-    /* height: calc(var(--cardSize) * 2.4); */
-    /* border-top-left-radius: 4rem 3rem; */
-    /* border-top-right-radius: 4rem 3rem; */
-
-    /* border-bottom-left-radius: 20% 75%; */
-    /* border-bottom-right-radius: 20% 75%; */
-
-    /* background-image: url("./pics/rustymetal.jpg"); */
-    /* background-size: cover; */
-
-    /* background: linear-gradient(0deg, #448 31%, #844 33%, #844 61%, #444 63%); */
-    /* box-shadow: inset 0 0 1rem 0.5rem #00000099, 0 0 1rem 0.5rem #00000033; */
+    right: 0;
 
     display: flex;
     flex-direction: row;
 
     justify-content: center;
-    align-items: space-around;
-    padding: 1rem;
-    overflow: hidden;
+    align-items: center;
+    /* padding: 1rem; */
+    /* padding-bottom: 0.5rem; */
+    /* overflow: hidden; */
     z-index: 10;
 
-}
+    background: linear-gradient(0deg, #444 0, #888 1.25rem, #EEE 3rem, #888 6rem);
+    filter: sepia(25%);
 
-.hero-info::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* background: linear-gradient(0deg, #448 31%, #844 33%, #844 61%, #444 63%); */
-    background: linear-gradient(0deg, #222 0%, #444 20%, #777 80%, #222 100%);
+    border-top-left-radius: 30% 100%;
+    border-top-right-radius: 30% 100%;
 
-    opacity: 0.5;
-    z-index: 11;
-}
-
-.hero-info>.energy {
-    --energySize: 12rem;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: var(--energySize);
-    height: calc(var(--energySize) / 2);
-    margin-left: calc(-1* var(--energySize)/2);
-    background: linear-gradient(0deg, #4466AACC, #8899FFCC 80%, #004C 100%);
-    box-shadow: inset 0 0 1rem 8px #00000088;
-    /* border-radius: 40%; */
-    border: solid 2px #000;
-    /* border-top-left-radius: 40% 20%;
-    border-top-right-radius: 40% 20%;*/
-    border-bottom-left-radius: 40% 80%;
-    border-bottom-right-radius: 40% 80%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    color: #EEEEFFDD;
-    font-size: calc(var(--energySize)/3.5);
-    font-weight: bold;
-    text-shadow: 2px 2px 2px #000000, -2px -2px 2px #000000, 2px -2px 2px #000000, -2px 2px 2px #000000;
-    padding: 0;
-    padding-bottom: 0.75rem;
-
-}
-
-.hero-info>.energy>small {
-    color: #EEEEFFAA;
-    font-size: calc(var(--energySize)/12);
-    font-weight: bold;
-    text-shadow: 2px 2px 2px #000000, -2px -2px 2px #000000, 2px -2px 2px #000000, -2px 2px 2px #000000;
-    padding: 0;
-    margin-top: -0.5rem;
-}
-
-.hero-info>.health {
-    position: absolute;
-    bottom: 1rem;
-    top: 7rem;
-    right: 0;
-    width: 8rem;
-    
-    /* background: #44000044; */
-    
-    /* border: groove 2px #0008; */
-    /* border: solid 1px pink; */
-    
-
-    >.current {
-        position: absolute;
-        right: 0;
-
-        color: #FFF;
-        font-size: 1.5rem;
-        font-weight: bold;
-        border-top: solid 2px #FFF8;
-        border-left: solid 2px #FFF8;
-        padding: 0 5rem 0 0.25rem;
-        z-index: 20;
-
-        text-shadow: 2px 2px 2px #000000, -2px -2px 2px #000000, 2px -2px 2px #000000, -2px 2px 2px #000000;
-
-        &.low {
-            border-bottom: solid 2px #FFF8;
-            border-top: none;
-        }
+    & > div {
+        /* flex: 0 0 auto; */
+        /* margin: 0 1rem; */
     }
 
-    >.max {
-        position: absolute;
-        right: 0;
-        width: 4.5rem;
-        text-align: center;
-        top: 0;
-        color: #FFF8;
-        font-size: 1.8rem;
-        font-weight: bold;
 
-        padding: 0 0 0 0;
-        z-index: 19;
-
-    }
-
-    >.meter {
-        position: absolute;
-        bottom: 0;
-        right: 0;
+    & > div.value {
+        position: relative;
         
-        width: 4.5rem;
-        background: #00000088;
-        box-shadow: inset 0 0 0.5rem 0.25rem #000000;
-        height: 100%;
+        height: 6rem;
 
-        >.bar {
-            position: absolute;
-            bottom: 0;
-            left: 0.25rem;
-            right: 0;
-            height: 50%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
 
-            background: linear-gradient(0deg, #880000CC 0%, #AA0000CC 100%);
-            box-shadow: inset 0 0 12px 3px #0008;
+        padding: 0 2rem;
+
+        border-left: solid 5px #0008;
+        border-right: solid 5px #0008;
+
+        /* border-radius: 2rem; */
+
+        
+        box-shadow: inset 0 0 0.5rem 3px #0003;
+
+        &.health {
+            background: #4002;
+        }
+
+        &.energy {
+            background: #8802;
+            border-right: none;
+            /* border-top-right-radius: 0; */
+            /* border-bottom-right-radius: 0; */
+            border-top-left-radius: 3rem;
+            border-bottom-left-radius: 3rem;
+            
+        }
+
+        &.armor {
+            background: #0042;
+            border-left: none;
+            border-top-right-radius: 3rem;
+            border-bottom-right-radius: 3rem;
+        }
+
+        & > div.icon {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            & > img {
+                height: 80%;
+            }
+
+            margin-right: 0.5rem;
+        }
+
+        & > div.values {
+
+            & > span.main {
+                font-size: 3rem;
+                color: #000;;
+                font-weight: bold;
+                text-shadow: 0 0 3px #FFF;
+            }
+
+            & > span.base {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #000A;
+                text-shadow: 0 0 1px #FFFA;
+            }
         }
     }
-}
-
-
-.hero-info > .armor {
-    position: absolute;
-    left: -2rem;
-    top: 7rem;
-    width: 8rem;
-    height: 10rem;
-
-    background: radial-gradient(circle at 50% 40%, #CDE 20%, #666 90%, #222 100%);
-
-    border: groove 5px #F80C;
-    border-bottom-right-radius: 50% 80%;
-    border-bottom-left-radius: 50% 80%;
-
-    border-top-right-radius: 50% 10%;
-    border-top-left-radius: 50% 10%;
-
-    box-shadow: inset 0 0 4rem 0.75rem #0002, 0 0 1rem 0.5rem #0008;
-
-
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding-bottom: 3rem;
-}
-
-.hero-info > .armor > span.default {
-    font-size: 3rem;
-    color: #E0F0FF;
-    font-weight: bold;
-    text-shadow: 2px 2px 2px #000000, -2px -2px 2px #000000, 2px -2px 2px #000000, -2px 2px 2px #000000;
-}
-
-
-
-.hero-info>.numbers>h1 {
-    --shadowcolor: #00000088;
-    --shadowdist: 4px;
-    color: #FFFFFFBB;
-    font-size: 2.5rem;
-    margin: 0;
-    z-index: 20;
-    text-shadow: 2px 2px var(--shadowdist) var(--shadowcolor), -2px -2px var(--shadowdist) var(--shadowcolor), 2px -2px var(--shadowdist) var(--shadowcolor), -2px 2px var(--shadowdist) var(--shadowcolor);
-}
-
-.hero-info>.numbers>h1>small {
-    font-size: 1.3rem;
-    /* opacity: 0.6; */
-    color: #CCCCCC99;
-
-}
-
-.hero-info>.numbers>h3 {
-    --shadowcolor: #00000066;
-    --shadowdist: 2px;
-    color: #FFFFFFDD;
-    font-size: 0.9rem;
-    margin: 0;
-    font-style: italic;
-    margin-top: 1rem;
-    /* border-top: solid 3px #FFFFFF44; */
-    border-bottom: none;
-    width: 100%;
-    z-index: 20;
-    text-transform: uppercase;
-
-    text-shadow: 2px 2px var(--shadowdist) var(--shadowcolor), -2px -2px var(--shadowdist) var(--shadowcolor), 2px -2px var(--shadowdist) var(--shadowcolor), -2px 2px var(--shadowdist) var(--shadowcolor);
-
-    text-align: center;
-
-    /* border-top-right-radius: 25% 80%; */
-    /* border-top-left-radius: 25% 80%; */
-    padding-top: 0.2rem;
 }

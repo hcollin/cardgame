@@ -14,6 +14,9 @@ export class Orc extends Enemy {
     protected maxHealth: number = 25; 
     protected attackValue: number = 5;
 
+    protected vulnerableTo: DAMAGETYPE[] = [DAMAGETYPE.SLASH];
+    protected resistantTo: DAMAGETYPE[] = [DAMAGETYPE.BLUNT];
+
     public image: string = img;
 
     protected actions: EnemyAction[] = [

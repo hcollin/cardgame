@@ -74,8 +74,13 @@ export class Enemy {
 
 	public image: string = "";
 
+	// This is array contains the latest damage taken by the enemy, so that in can be shown on the screen
+	public damageTaken: {type: DAMAGETYPE, amount: number}[] = [];
+
 	protected actions: EnemyAction[] = [];
 	protected nextAction: number = 0;
+
+	
 
 	constructor() {
 		this.id = v4();
@@ -97,6 +102,10 @@ export class Enemy {
 		return this.attackValue;
 	}
 
+	public beforeDamage() {
+		this.damageTaken = [];
+	}
+
 	public takeDamage(damage: Damage): void {
 		const damageRange = this.getDamagePotential(damage);
 
@@ -104,27 +113,38 @@ export class Enemy {
 
 		this.health -= damageTaken;
 
+		this.damageTaken.push({type: damage.type, amount: damageTaken});
+
 		if (this.health <= 0) {
 			this.status = ENEMYSTATUS.DEAD;
 		}
 	}
 
 	public getDamagePotential(damage: Damage): [number, number] {
+		let dmg: number = damage.amount;
 		if (this.vulnerableTo.includes(damage.type)) {
-			damage.amount = Math.round(damage.amount * 1.5);
+			dmg = Math.round(damage.amount * 1.5);
 		}
 
 		if (this.resistantTo.includes(damage.type)) {
-			damage.amount = Math.round(damage.amount * 0.5);
+			dmg = Math.round(damage.amount * 0.5);
 		}
 
 		if (this.effectIsActive(EFFECTS.STUNNED)) {
-			damage.amount = Math.round(damage.amount * 1.25);
+			dmg = Math.round(dmg * 1.25);
 		}
 
-		const damageRange = getDamageRange(damage);
+		const damageRange = getDamageRange({...damage, amount: dmg});
 
 		return damageRange;
+	}
+
+	public isVulnerableTo(type: DAMAGETYPE): boolean {
+		return this.vulnerableTo.includes(type);
+	}
+
+	public isResistantTo(type: DAMAGETYPE): boolean {
+		return this.resistantTo.includes(type);
 	}
 
 	public causeEffect(effect: EFFECTS) {
@@ -277,6 +297,12 @@ export class Enemy {
 	 * @returns GameState
 	 */
 	public atEndOfPlayerTurn(gs: GameState): GameState {
+		return gs;
+	}
+
+	public cleanUpEndOfPlayerTurn(gs: GameState): GameState {
+		this.damageTaken = [];
+		
 		return gs;
 	}
 
