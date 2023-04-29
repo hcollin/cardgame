@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card } from "../models/Card";
 import { GameState } from "../models/GameState";
 import HandCard from "./HandCard";
@@ -5,6 +6,8 @@ import HandCard from "./HandCard";
 import "./card-hand.css";
 
 function CardHand(props: { gs: GameState; side: "LEFT" | "RIGHT"; onDrag: (on: boolean) => void; onSelect: (card: Card) => void }) {
+
+	
 	const cards = props.side === "LEFT" ? props.gs.leftHand : props.gs.rightHand;
 
 	const cardCount = cards.length;
@@ -22,6 +25,7 @@ function CardHand(props: { gs: GameState; side: "LEFT" | "RIGHT"; onDrag: (on: b
                     transformOrigin: "bottom center",
 					transform: `rotate(${angle}deg)`,
 					bottom: `${offset}px`,
+					
 				};
 
 				return (

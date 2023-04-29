@@ -25,8 +25,8 @@ div.card-hand {
         position: relative;
         margin: 0 0.5rem;
 
-        &::hover {
-            border: solid 2px pink;
+        &:hover {
+            
         }
     }
 

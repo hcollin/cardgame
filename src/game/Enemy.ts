@@ -225,6 +225,7 @@ export class Enemy {
 	}
 
 	protected actionHeal(gs: GameState, act: EnemyAction): GameState {
+		if(this.effectIsActive(EFFECTS.STUNNED)) { return gs; }
 		this.health += act.value || 0;
 		if (this.health > this.maxHealth) {
 			this.health = this.maxHealth;

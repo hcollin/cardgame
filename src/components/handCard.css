@@ -170,3 +170,191 @@
 .card.selected {
     border: solid 2px white;
 }
+
+div.zoomed-card-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0008;
+    z-index: 200;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    &>div.zoomed-card {
+
+        border: solid 4px #00000044;
+        border-radius: 1rem;
+
+        width: calc(var(--cardSize) * 3);
+        height: calc(var(--cardSize) * 3 * 1.6);
+
+        background: #888888;
+
+        color: black;
+        font-size: calc(var(--cardSize) / 4);
+
+        box-shadow: inset 0 0 0.5rem 3px #FFFFFF44;
+
+        display: flex;
+        flex-direction: column;
+
+        position: relative;
+
+        user-select: none;
+
+        z-index: 20;
+
+
+        &.common {
+            background: #888888;
+        }
+
+        &.uncommon {
+            background: #8888AA;
+        }
+
+        &.rare {
+            background: #CFB53B;
+        }
+
+        &.epic {
+            background: #9867C5;
+        }
+
+        &>header {
+            height: 4rem;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            background: #00000055;
+            border-top-right-radius: 0.75rem;
+            border-top-left-radius: 0.75rem;
+
+            &>.name {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #FFFFFFAA;
+                width: 75%;
+                padding: 0.5rem;
+            }
+
+            &>.aps {
+                font-size: 2.75rem;
+                font-weight: bold;
+                width: 25%;
+                height: 100%;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+
+                background: #FFDDBB33;
+                color: white;
+                padding: 0;
+                margin: 0;
+                text-align: center;
+                border-top-left-radius: 2rem;
+                border-bottom-left-radius: 2rem;
+                border-left: solid 3px #00000088;
+                border-bottom: solid 3px #00000088;
+            }
+        }
+
+        &>.item {
+            font-size: 1rem;
+            font-style: italic;
+            text-align: center;
+            font-weight: bold;
+            padding: 0.5rem;
+            background: #00000022;
+            color: #000;
+            text-shadow: 1px 1px 1px #FFFFFF, -1px -1px 1px #FFFFFF, 1px -1px 1px #FFFFFF, -1px 1px 1px #FFFFFF;
+
+            border-bottom-left-radius: 40%;
+            border-bottom-right-radius: 40%;
+            border-bottom: solid 2px #00000022;
+
+        }
+
+        &>p {
+            font-size: 1.3rem;
+            text-align: center;
+            padding: 0.5rem;
+            margin: 0;
+            color: white;
+            text-shadow: 0 0 3px #000000, 1px 1px 1px #000000AA, -1px -1px 1px #000000AA, 1px -1px 1px #000000AA, -1px 1px 1px #000000AA;
+        }
+
+
+        &>.effects {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            height: 4rem;
+            margin: 0.1rem 0;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #FFFA;
+
+
+            &>img {
+                height: 4rem;
+                flex: 0 0 auto;
+                margin-right: 1rem;
+            }
+        }
+
+
+
+        &>footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            background: #FFFFFF33;
+
+            &>.dmg {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                padding: 0.5rem 0;
+            }
+
+            &>.dmg>span.type {
+                font-size: 1rem;
+                font-weight: bold;
+                font-style: italic;
+                flex: 2;
+                text-align: center;
+                text-shadow: 1px 1px 1px #FFF, -1px -1px 1px #FFF, 1px -1px 1px #FFF, -1px 1px 1px #FFF;
+            }
+
+            &>.dmg>span.amount {
+                font-size: 1.5rem;
+                font-weight: bold;
+                flex: 1;
+                text-align: left;
+                text-shadow: 1px 1px 1px #FFF, -1px -1px 1px #FFF, 1px -1px 1px #FFF, -1px 1px 1px #FFF;
+            }
+
+
+        }
+
+
+    }
+
+}

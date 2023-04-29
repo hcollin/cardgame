@@ -97,6 +97,7 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 
 	return (
 		<div className="arena" style={arenaStyle}>
+			
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
 			<div className="enemies">
@@ -124,6 +125,7 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 					<span>Victory</span>
 				</div>
 			)}
+			<div id="zoomedContent"></div>
 		</div>
 	);
 }
