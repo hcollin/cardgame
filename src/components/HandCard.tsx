@@ -80,7 +80,9 @@ export default function HandCard(props: HandCardProps) {
 				))}
 			</div>
 
-			<p>{props.card.description}</p>
+			{props.card.rulesText && <p className="rules">{props.card.rulesText}</p>}
+
+			{!props.card.rulesText && <p>{props.card.description}</p>}
 			{/* <p>{props.card.id}</p> */}
 
 			<footer>

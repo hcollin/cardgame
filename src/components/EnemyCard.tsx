@@ -31,7 +31,7 @@ export default function EnemyCard(props: EnemyCardProps) {
 			}
 		},
 		canDrop: (card: Card) => {
-			return card.allowedTargets.includes(TARGETS.ENEMY);
+			return card.allowedTargets.includes(TARGETS.ENEMY) || card.allowedTargets.includes(TARGETS.ALLENEMIES);
 		},
 		collect: (monitor) => ({
 			isOver: !!monitor.isOver(),

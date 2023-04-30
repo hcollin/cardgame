@@ -12,7 +12,7 @@ export const Katana: Item = {
 	cards: [
 		{
 			name: "Rising Dragon",
-			description: ": An upward diagonal slash that starts from a low stance, aiming to cut through an opponent's defenses.",
+			description: "An upward diagonal slash that starts from a low stance, aiming to cut through an opponent's defenses.",
 			rarity: CARDRARITY.UNCOMMON,
 			count: 2,
 			damage: [

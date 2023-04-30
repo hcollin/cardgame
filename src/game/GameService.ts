@@ -1,4 +1,4 @@
-import { Card } from "../models/Card";
+import { Card, TARGETS } from "../models/Card";
 import { Deck } from "./Deck";
 import { GAMESTATES, GameState } from "../models/GameState";
 import { createCardsFromItem } from "./ItemTools";
@@ -87,22 +87,39 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 
 	// If target is specified, use the card on the target
 	if (targetIndex !== undefined && targetIndex > -1) {
-		const enemy = gameState.arena.enemies[targetIndex];
+		let allTargets: number[] = [targetIndex];
 
-		enemy.beforeDamage();
-
-		card.damage.forEach((dmg) => {
-			enemy.takeDamage(dmg);
-		});
-
-		card.effectsOnHit.forEach((effect) => {
-			enemy.causeEffect(effect);
-		});
-
-		if (enemy.isDead()) {
-			gameState.hero.gainExperience(enemy.getExperienceValue());
-			gameState = enemy.atDeath(gameState);
+		if (card.allowedTargets.includes(TARGETS.ALLENEMIES)) {
+			allTargets = gameState.arena.enemies.map((e, i) => i);
+		} else if (card.allowedTargets.includes(TARGETS.ADJACENT)) {
+			if (targetIndex > 0) {
+				allTargets.push(targetIndex - 1);
+			}
+			if (targetIndex < gameState.arena.enemies.length - 1) {
+				allTargets.push(targetIndex + 1);
+			}
 		}
+
+		allTargets.forEach((ind) => {
+			const enemy = gameState.arena.enemies[ind];
+
+			if (!enemy.isDead()) {
+				enemy.beforeDamage();
+
+				card.damage.forEach((dmg) => {
+					enemy.takeDamage(dmg);
+				});
+
+				card.effectsOnHit.forEach((effect) => {
+					enemy.causeEffect(effect);
+				});
+
+				if (enemy.isDead()) {
+					gameState.hero.gainExperience(enemy.getExperienceValue());
+					gameState = enemy.atDeath(gameState);
+				}
+			}
+		});
 	}
 
 	gameState.hero.useEnergy(card.apCost);
@@ -180,7 +197,6 @@ export function endEnemyTurn(gameState: GameState): GameState {
 		gameState = enemy.cleanUpEndOfEnemyTurn(gameState);
 	});
 
-	
 	// gameState.hero.armor = getBaseArmorValue(gameState.hero);
 
 	if (checkForDeath(gameState)) {
