@@ -1,6 +1,9 @@
 import { Arena } from "../game/Arena";
 import { Dragon, Goblin, Orc, Skeleton } from "./Enemies";
+import { Buckler } from "./items/Buckler";
+import { Dagger } from "./items/Dagger";
 import { HandAxe } from "./items/HandAxe";
+import { LeatherBoots } from "./items/LeatherBoots";
 import { LongSword } from "./items/LongSword";
 import { Mace } from "./items/Mace";
 import { RingOfHealing } from "./items/RingOfHealing";
@@ -14,15 +17,17 @@ export class ArenaGoblinAmbush extends Arena {
     protected rewardItems = [
         LongSword,
         HandAxe,
-        RingOfRegeneration,
-        RingOfHealing,
-        
+        Mace,
+        Dagger,
+        Buckler,
+        LeatherBoots,
+        Shield,
     ];
 
     constructor() {
         
-        // super("Goblin Ambush", [new Goblin(), new Goblin(), new Goblin()], "#559944", bgImg);
-        super("Goblin Ambush", [new Goblin()], "#559944", bgImg);
+        super("Goblin Ambush", [new Goblin(), new Goblin(), new Goblin()], "#559944", bgImg);
+        // super("Goblin Ambush", [new Goblin()], "#559944", bgImg);
     }
 
 }

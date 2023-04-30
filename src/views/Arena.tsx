@@ -156,7 +156,7 @@ export default Arena;
 
 function RewardsScreen(props: { gs: GameState, onCompleteArena: () => void }) {
 	const [itemRewards, setItemRewards] = useState<Item[]>(() => {
-		return props.gs.arena.getRewardOptions(4);
+		return props.gs.arena.getRewardOptions();
 	});
 
 	function pickItem(item: Item) {

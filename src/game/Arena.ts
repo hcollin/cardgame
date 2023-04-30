@@ -9,6 +9,12 @@ import { RingOfRegeneration } from "../data/items/RingOfRegeneration";
 import { Shield } from "../data/items/Shield";
 import { Item } from "../models/Items";
 import { Enemy } from "./Enemy";
+import { ShortSword } from "../data/items/ShortSword";
+import { Dagger } from "../data/items/Dagger";
+import { LeatherBoots } from "../data/items/LeatherBoots";
+import { CloakOfSwiftness } from "../data/items/CloakOfSwiftness";
+import { MinorWandOfFire } from "../data/items/MinorWandOfFire";
+import { Katana } from "../data/items/Katana";
 
 
 export class Arena {
@@ -19,15 +25,32 @@ export class Arena {
     public bgImage: string|null = null;
 
     protected rewardItems: Item[] = [
+        Dagger,
+        ShortSword,
         LongSword,
+        Katana,
+
         Mace,
+
         HandAxe,
+
+        Buckler,
         Shield,
+        
         LeatherArmor,
+        
+        LeatherBoots,
+
         RingOfHealing,
         RingOfRegeneration,
-        Buckler
+
+        CloakOfSwiftness,
+
+        MinorWandOfFire,
+        
     ];
+
+    protected rewardCount: number = 3;
 
     constructor(name: string, enemies: Enemy[], background: string, bgImage?: string) {
         this.name = name;
@@ -42,9 +65,9 @@ export class Arena {
             enemy.resetEnemy();
         });
     }
-    public getRewardOptions(count=3): Item[] {
-        if(this.rewardItems.length <= count) return this.rewardItems;
-        return arnds(this.rewardItems, count, true);
+    public getRewardOptions(): Item[] {
+        if(this.rewardItems.length <= this.rewardCount) return this.rewardItems;
+        return arnds(this.rewardItems, this.rewardCount, true);
     }
 
 }
