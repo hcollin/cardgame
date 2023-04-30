@@ -1,5 +1,5 @@
 import { ITEMSLOT } from "../../models/HeroStats";
-import { Item } from "../../models/Items";
+import { ITEMRARITY, Item } from "../../models/Items";
 
 export const CloakOfSwiftness: Item = {
     id: "cloak-swiftness",
@@ -7,6 +7,7 @@ export const CloakOfSwiftness: Item = {
     itemSlots: [ITEMSLOT.CAPE],
     description: "+1 Energy per turn",
     cards: [],
+    rarity: ITEMRARITY.RARE,
     onEquip: (hero) => {
         hero.modifyEffectEnergy(1);
 

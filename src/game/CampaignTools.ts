@@ -98,7 +98,8 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
         arena: location.arena[0],
         // world: campaign.world,
         // currentLocationId: campaign.currentLocationId,
-        hero: campaign.hero
+        hero: campaign.hero,
+        playedCardsThisTurn: [],
     }
 
     // if (campaign.hero.activeItemLeft === null || campaign.hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
@@ -131,7 +132,8 @@ export function createGameForArena(arena: Arena, hero: Hero): GameState {
         rightHand: [],
         state: GAMESTATES.MYTURN,
         arena: arena,
-        hero: hero
+        hero: hero,
+        playedCardsThisTurn: [],
     }
 
     // if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }

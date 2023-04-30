@@ -12,6 +12,12 @@
 
   --hero-blue: #ADD8E6;
 
+
+  --rarity-common: #888888;
+  --rarity-uncommon: #0066AA;
+  --rarity-rare: #CC9900;
+  --rarity-epic: #AA00AA;
+
   --text-stroke-small: 2px 2px 2px #0008, -2px -2px 2px #0008, 2px -2px 2px #0008, -2px 2px 2px #0008;
   --text-stroke-large: 4px 4px 4px #000A, -4px -4px 4px #000A, 4px -4px 4px #000A, -4px 4px 4px #000A;
 }

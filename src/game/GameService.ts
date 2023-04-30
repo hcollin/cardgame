@@ -22,6 +22,7 @@ export function createGame(hero?: Hero): GameState {
 		// world: createWorld(LOCATIONS),
 		// currentLocationId: "",
 		hero: hero || new Hero(RaceHuman, ClassWarrior),
+		playedCardsThisTurn: [],
 	};
 }
 
@@ -107,6 +108,8 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 	gameState.hero.useEnergy(card.apCost);
 	// gameState.hero.aps -= card.apCost;
 
+	gameState.playedCardsThisTurn.push(card);
+
 	// Discard used card
 	if (card.hand === "RIGHT") {
 		gameState.rightHandDeck.discardCards([card]);
@@ -117,7 +120,7 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 	}
 
 	if (checkForWin(gameState)) {
-		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
+		return { ...gameState, state: GAMESTATES.ARENA_VICTORY };
 	}
 
 	return { ...gameState };
@@ -145,12 +148,14 @@ export function endTurn(gameState: GameState): GameState {
 	gameState.leftHand = [];
 	gameState.rightHand = [];
 
+	gameState.playedCardsThisTurn = [];
+
 	if (checkForDeath(gameState)) {
 		return { ...gameState, state: GAMESTATES.DEAD };
 	}
 
 	if (checkForWin(gameState)) {
-		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
+		return { ...gameState, state: GAMESTATES.ARENA_VICTORY };
 	}
 
 	// Events at the start of the enemy turn
@@ -183,7 +188,7 @@ export function endEnemyTurn(gameState: GameState): GameState {
 	}
 
 	if (checkForWin(gameState)) {
-		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
+		return { ...gameState, state: GAMESTATES.ARENA_VICTORY };
 	}
 
 	gameState.state = GAMESTATES.MYTURN;

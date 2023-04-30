@@ -11,6 +11,8 @@ export enum GAMESTATES {
 
     ARENA_MYTURN = "My turn on Arena",
     ARENA_ENEMYTURN = "Enemy turn on Arena",
+    ARENA_VICTORY = "Arena victory",
+    ARENA_REWARDS = "Arena rewards",
     ARENA_COMPLETED = "Arena completed",
 
     MAP_ARENAS = "Select next Arena",
@@ -40,8 +42,9 @@ export interface GameState {
     rightHand: Card[];
     
     state: GAMESTATES;
-    
     arena: Arena;
+
+    playedCardsThisTurn: Card[];
     // currentLocationId: LocationId;
     // world: Map<LocationId, Location>    
 }

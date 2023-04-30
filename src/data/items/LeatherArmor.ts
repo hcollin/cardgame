@@ -1,5 +1,5 @@
 import { ITEMSLOT } from "../../models/HeroStats";
-import { Item } from "../../models/Items";
+import { ITEMRARITY, Item } from "../../models/Items";
 
 export const LeatherArmor: Item = {
 	id: "leather-armor",
@@ -7,6 +7,7 @@ export const LeatherArmor: Item = {
 	itemSlots: [ITEMSLOT.BODY],
 	description: "ARMOR 2. A simple leather ammor",
 	cards: [],
+	rarity: ITEMRARITY.COMMON,
 	onEquip: (hero) => {
 		hero.modifyEffectArmor(2);
 	},

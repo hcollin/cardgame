@@ -3,7 +3,7 @@ div.arena {
     position: relative;
     overflow: hidden;
 
-    & > div.large-info {
+    &>div.large-info {
         position: absolute;
         top: 0;
         left: 0;
@@ -21,14 +21,14 @@ div.arena {
         z-index: 100;
 
 
-        & > span {
+        &>span {
             width: 100%;
             text-align: center;
             padding: 3rem;
             background: linear-gradient(90deg, #0008 0%, #000 40%, #000 60%, #0008 100%);
             border-top: groove 5px #0004;
             border-bottom: groove 5px #0004;
-            
+
         }
 
         &.victory {
@@ -38,7 +38,7 @@ div.arena {
             /* text-shadow: var(--text-stroke-large); */
             text-shadow: 2px 2px 4px #FFF8, -2px -2px 4px #FFF8, 2px -2px 4px #FFF8, -2px 2px 4px #FFF8;
 
-            & > span {
+            &>span {
                 background: linear-gradient(90deg, #2208 0%, #000 40%, #000 60%, #2208 100%);
                 box-shadow: inset 0 0 1rem 0.5rem #8802;
             }
@@ -47,10 +47,10 @@ div.arena {
         &.dead {
             font-family: "Tangerine", "Times New Roman", serif;
             color: #F00;
-            
+
             text-shadow: 2px 2px 4px #FFF8, -2px -2px 4px #FFF8, 2px -2px 4px #FFF8, -2px 2px 4px #FFF8;
-            
-            & > span {
+
+            &>span {
                 background: linear-gradient(90deg, #2008 0%, #000 40%, #000 60%, #2008 100%);
                 box-shadow: inset 0 0 1rem 0.5rem #8002;
             }
@@ -89,7 +89,8 @@ div.arena {
     padding-right: 2rem;
 }
 
-.lefthand > div, .righthand > div {
+.lefthand>div,
+.righthand>div {
     z-index: 20;
 }
 
@@ -146,7 +147,7 @@ div.arena {
 
 
 div#zoomedContent {
-    
+
     /* position: absolute;
 
 
@@ -158,5 +159,134 @@ div#zoomedContent {
     z-index: 200;
 
     background: pink; */
+
+}
+
+
+div.rewards-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 100;
+
+
+    &>div.reward-bar {
+        width: 100%;
+        background: linear-gradient(90deg, #0004, #000, #0004);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        padding: 1rem 1rem 3rem 1rem;
+
+        border-top: groove 3px #0008;
+        border-bottom: groove 3px #0008;
+
+        &>div.title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: gold;
+            font-family: "Lobster Two";
+            text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 1px 1px 6px #FFF, -1px -1px 6px #FFF, 1px -1px 6px #FFF, -1px 1px 6px #FFF;
+        }
+
+        &>div.rewards {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+
+            &>div {
+                margin: 0.5rem;
+
+                &.heal {
+                    position: relative;
+
+                    width: calc(var(--cardSize) * 1.4);
+                    height: calc(var(--cardSize) * 1.6 * 1.4);
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    background: url("./pics/tribal.png");
+                    background-size: cover;
+                    background-position: center;
+                    box-shadow: inset 0 0 3rem .5rem #F008;
+                    border-radius: 0.5rem;
+                    border: solid 2px #0008;
+
+
+                    font-size: 2rem;
+                    font-family: "Lobster Two";
+                    color: white;
+                    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+
+                    cursor: pointer;
+                    transition: all 0.25s ease-in-out;
+
+                    &:hover {
+                        transform: scale(1.1);
+                        box-shadow: inset 0 0 3rem .5rem #F008, 0 0 4rem 1rem #FFF8;
+                        z-index: 100;
+                    }
+                }
+
+                &.experience {
+                    position: relative;
+
+                    width: calc(var(--cardSize) * 1.4);
+                    height: calc(var(--cardSize) * 1.6 * 1.4);
+
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    background: url("./pics/papyrus.jpg");
+                    background-size: cover;
+                    box-shadow: inset 0 0 2rem .5rem #0F04;
+                    border-radius: 0.5rem;
+                    border: solid 2px #0008;
+
+
+                    font-size: 1.5rem;
+                    font-family: "Lobster Two";
+                    color: #0F0A;
+                    text-align: center;
+                    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+
+                    cursor: pointer;
+                    transition: all 0.25s ease-in-out;
+
+                    & > big {
+                        font-size: 2.5rem;
+                        display: block;
+                        color: #0F0;
+                        font-weight: bold;
+                        /* text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000; */
+                    }
+                    
+                    &:hover {
+                        transform: scale(1.1);
+                        box-shadow: inset 0 0 2rem .5rem #0F04, 0 0 4rem 1rem #FFF8;
+                        z-index: 100;
+                    }
+
+                }
+            }
+        }
+    }
+
 
 }

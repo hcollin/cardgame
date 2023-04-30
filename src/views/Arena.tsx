@@ -12,6 +12,8 @@ import HandCard from "../components/HandCard";
 import HeroInfo from "../components/HeroInfo";
 import TargetHero from "../components/TargetHero";
 import CardHand from "../components/CardHand";
+import { Item } from "../models/Items";
+import ItemCard from "../components/ItemCard";
 
 function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
@@ -27,16 +29,30 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 	// }, []);
 
 	useEffect(() => {
-		console.log("STATE:", gameState.state);
+		// Some delay on for opponent actions
 		if (gameState.state === GAMESTATES.ENEMYTURN) {
 			setTimeout(() => {
 				setGameState(endEnemyTurn(gameState));
 			}, 1000);
 		}
-		if (gameState.state === GAMESTATES.ARENA_COMPLETED || gameState.state === GAMESTATES.DEAD) {
+
+		// If hero is dead, wait and return to map screen
+		if (gameState.state === GAMESTATES.DEAD) {
 			setTimeout(() => {
 				props.onArenaFinished(gameState);
 			}, 2000);
+		}
+
+		// If all enemies are dead, show victory and then move to rewards
+		if (gameState.state === GAMESTATES.ARENA_VICTORY) {
+			setTimeout(() => {
+				setGameState({ ...gameState, state: GAMESTATES.ARENA_REWARDS });
+			}, 2000);
+		}
+
+		// If the arena is completed, wait and return to map screen
+		if (gameState.state === GAMESTATES.ARENA_COMPLETED) {
+			props.onArenaFinished(gameState);
 		}
 	}, [gameState.state]);
 
@@ -81,23 +97,27 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 		}
 	}
 
+	function completeArena() {
+		setGameState({ ...gameState, state: GAMESTATES.ARENA_COMPLETED });
+	}
+
 	if (!gameState) return null;
 
 	const arenaStyle: CSSProperties = {
 		backgroundColor: gameState.arena.background,
 		height: "100vh",
 	};
+
 	if (gameState.arena.bgImage) {
 		// console.log(gameState.arena);
 		arenaStyle.backgroundImage = `url(${gameState.arena.bgImage})`;
 		arenaStyle.backgroundSize = "cover";
 	}
 
-	const arenaActive = gameState.state !== GAMESTATES.DEAD && gameState.state !== GAMESTATES.ARENA_COMPLETED;
+	// const arenaActive = gameState.state !== GAMESTATES.DEAD && gameState.state !== GAMESTATES.ARENA_COMPLETED;
 
 	return (
 		<div className="arena" style={arenaStyle}>
-			
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
 			<div className="enemies">
@@ -106,9 +126,9 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 				})}
 			</div>
 
-			<CardHand gs={gameState} side="LEFT" onDrag={setIsDragging} onSelect={setSelectedCard}/>
-		
-			<CardHand gs={gameState} side="RIGHT" onDrag={setIsDragging} onSelect={setSelectedCard}/>
+			<CardHand gs={gameState} side="LEFT" onDrag={setIsDragging} onSelect={setSelectedCard} />
+
+			<CardHand gs={gameState} side="RIGHT" onDrag={setIsDragging} onSelect={setSelectedCard} />
 
 			<HeroInfo gameState={gameState} />
 
@@ -120,14 +140,58 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 				</div>
 			)}
 
-			{gameState.state === GAMESTATES.ARENA_COMPLETED && (
+			{gameState.state === GAMESTATES.ARENA_VICTORY && (
 				<div className="large-info victory">
 					<span>Victory</span>
 				</div>
 			)}
+
+			{gameState.state === GAMESTATES.ARENA_REWARDS && <RewardsScreen gs={gameState} onCompleteArena={completeArena} />}
 			<div id="zoomedContent"></div>
 		</div>
 	);
 }
 
 export default Arena;
+
+function RewardsScreen(props: { gs: GameState, onCompleteArena: () => void }) {
+	const [itemRewards, setItemRewards] = useState<Item[]>(() => {
+		return props.gs.arena.getRewardOptions(4);
+	});
+
+	function pickItem(item: Item) {
+		props.gs.hero.addItem(item);
+		props.onCompleteArena();
+	}
+
+	function healHero() {
+		props.gs.hero.healHero(Math.round(props.gs.hero.getMaxHealth() * 0.33));
+		props.onCompleteArena();
+	}
+
+	function gainExperience() {
+		props.gs.hero.gainExperience(props.gs.hero.getLevel() * 50);
+		props.onCompleteArena();
+	}
+
+	return (
+		<div className="rewards-container">
+			<div className="reward-bar">
+				<div className="title">Pick a reward</div>
+
+				<div className="rewards">
+					{itemRewards.map((item, index) => {
+						return (
+							<ItemCard key={item.id} item={item} onClick={pickItem}/>
+						);
+					})}
+
+					<div className="heal" onClick={healHero}>Heal {Math.round(props.gs.hero.getMaxHealth() * 0.33)} </div>
+
+					<div className="experience" onClick={gainExperience}>Gain <big>{props.gs.hero.getLevel() * 50 }</big> bonus experience.</div>
+
+				</div>
+			</div>
+		</div>
+	);
+}

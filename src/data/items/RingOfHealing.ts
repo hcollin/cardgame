@@ -1,13 +1,14 @@
 import { CARDRARITY, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
 import { ITEMSLOT } from "../../models/HeroStats";
-import { Item } from "../../models/Items";
+import { ITEMRARITY, Item } from "../../models/Items";
 
 export const RingOfHealing: Item = {
     id: "ring-of-healing",
     name: "Ring of Healing",
     itemSlots: [ITEMSLOT.LEFT_FINGER, ITEMSLOT.RIGHT_FINGER],
     description: "This is an ornate ring with a large gem in the center. It provides its wearer an ability to heal themselves.",
+    rarity: ITEMRARITY.RARE,
     cards: [
         {
             name: "Heal",

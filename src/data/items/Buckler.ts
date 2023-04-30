@@ -1,13 +1,13 @@
 import { CARDRARITY, DAMAGETYPE, TARGETS } from "../../models/Card";
-import { EFFECTS } from "../../models/Effects";
 import { ITEMSLOT } from "../../models/HeroStats";
-import { Item } from "../../models/Items";
+import { ITEMRARITY, Item } from "../../models/Items";
 
 export const Buckler: Item = {
 	id: "buckler",
 	name: "Buckler",
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple Buckler",
+	rarity: ITEMRARITY.COMMON,
 	cards: [
 		{
 			name: "Quick Block",
@@ -24,7 +24,7 @@ export const Buckler: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.modifyArmor(1)
+				gs.hero.modifyArmor(1);
 				return { ...gs };
 			},
 		},
@@ -43,7 +43,7 @@ export const Buckler: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.modifyArmor(3)
+				gs.hero.modifyArmor(3);
 				return { ...gs };
 			},
 		},
@@ -52,11 +52,13 @@ export const Buckler: Item = {
 			description: "Bash enemy with your bucklers sharpened edge",
 			rarity: CARDRARITY.RARE,
 			count: 1,
-			damage: [{
-				amount: 3,
-				type: DAMAGETYPE.SLASH,
-				variation: 0,
-			}],
+			damage: [
+				{
+					amount: 3,
+					type: DAMAGETYPE.SLASH,
+					variation: 0,
+				},
+			],
 			apCost: 3,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],

@@ -1,0 +1,191 @@
+div.item-card {
+    position: relative;
+
+    width: calc(var(--cardSize) * 1.4);
+    height: calc(var(--cardSize) * 1.6 * 1.4);
+
+    background: gray;
+
+    border-radius: 0.5rem;
+    border: solid 2px #0008;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    &.common {
+        background: var(--rarity-common);
+    }
+
+    &.uncommon {
+        background: var(--rarity-uncommon);
+    }
+
+    &.rare {
+        background: var(--rarity-rare);
+    }
+
+    &.epic {
+        background: var(--rarity-epic);
+    }
+
+    &.clickable {
+        cursor: pointer;
+        transition: all 0.25s ease-in-out;
+        &:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 4rem 1rem #FFF8;
+            z-index: 100;
+        }
+    }
+
+    &>div.item-name {
+        flex: 0 0 auto;
+        width: 100%;
+        padding: 0.5rem;
+
+        font-family: "Lobster Two";
+        text-align: center;
+        font-size: 1.2rem;
+        color: #FFF;
+        text-shadow: 2px 2px 2px #0008, -2px -2px 2px #0008, 2px -2px 2px #0008, -2px 2px 2px #0008;
+
+        background: #FFF2;
+        border-bottom: groove 2px #0004;
+
+    }
+
+    & > div.item-rules {
+        flex: 1 1 auto;
+        padding: 0.25rem;
+        font-size: 0.85rem;
+        text-align: center;
+        color: #FFF;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &>div.item-description {
+        flex: 1 1 auto;
+        padding: 0.25rem;
+
+        font-size: 0.75rem;
+        font-style: italic;
+        text-align: center;
+        color: #000;
+        font-weight: normal;
+        text-shadow: 1px 1px 2px #FFF8, -1px -1px 2px #FFF8, 1px -1px 2px #FFF8, -1px 1px 2px #FFF8; 
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        
+    }
+
+    & > div.slots {
+
+        --slot-size: 0.75rem;
+        --slot-cell: 0.85rem;
+
+        position: absolute;
+        bottom: 0.1rem;
+        right: 0.25rem;
+        width: calc(var(--slot-cell) * 3);
+        height: calc(var(--slot-cell) * 4);
+
+        /* border: solid 1px #000; */
+
+        & > div.slot {
+            position: absolute;
+            width: var(--slot-size);
+            height: var(--slot-size);
+            background: #444A;
+
+            /* border-radius: 3px; */
+
+            &.valid {
+                background: #0F0;
+                
+            }
+
+            &.head {
+                top: calc(var(--slot-cell) * 0);
+                right: calc(var(--slot-cell) * 1);
+            }
+
+            &.body {
+                top: calc(var(--slot-cell) * 1);
+                right: calc(var(--slot-cell) * 1);
+            }
+
+            &.cape {
+                top: calc(var(--slot-cell) * 2);
+                right: calc(var(--slot-cell) * 1);
+            }
+
+            &.feet {
+                top: calc(var(--slot-cell) * 3);
+                right: calc(var(--slot-cell) * 1);
+            }
+
+            &.lhand {
+                top: calc(var(--slot-cell) * 1);
+                right: calc(var(--slot-cell) * 2);
+            }
+
+            &.lfinger {
+                top: calc(var(--slot-cell) * 2);
+                right: calc(var(--slot-cell) * 2);
+            }
+
+            &.rhand {
+                top: calc(var(--slot-cell) * 1);
+                right: calc(var(--slot-cell) * 0);
+            }
+
+            &.rfinger {
+                top: calc(var(--slot-cell) * 2);
+                right: calc(var(--slot-cell) * 0);
+            }
+
+        }
+    }
+
+    &>footer {
+
+        flex: 0 0 auto;
+        width: 100%;
+        height: 2.3rem;
+
+        border-top: groove 2px #0004;
+        background: #0003;
+
+        &>div.cards {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            width: 50%;
+
+            color: #FFFA;
+            font-weight: bold;
+
+            
+
+            &>img {
+                height: 90%;
+            }
+        }
+    }
+
+}

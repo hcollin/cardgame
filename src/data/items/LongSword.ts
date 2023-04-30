@@ -1,13 +1,14 @@
 import { CARDRARITY, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
 import { ITEMSLOT } from "../../models/HeroStats";
-import { Item } from "../../models/Items";
+import { ITEMRARITY, Item } from "../../models/Items";
 
 export const LongSword: Item = {
 	id: "long-sword",
 	name: "Long Sword",
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A long sword",
+	rarity: ITEMRARITY.UNCOMMON,
 	cards: [
 		{
 			name: "Slash",

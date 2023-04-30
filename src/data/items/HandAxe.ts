@@ -2,13 +2,14 @@ import { CARDRARITY, Card, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
 import { GameState } from "../../models/GameState";
 import { ITEMSLOT } from "../../models/HeroStats";
-import { Item } from "../../models/Items";
+import { ITEMRARITY, Item } from "../../models/Items";
 
 export const HandAxe: Item = {
 	id: "hand-axe",
 	name: "Hand Axe",
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Small utilitarian Axe used to chopping wood and heads.",
+	rarity: ITEMRARITY.COMMON,
 	cards: [
 		{
 			name: "Swing",

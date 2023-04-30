@@ -37,13 +37,6 @@ function HeroView(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 				<HeroItems hero={props.hero} updateHero={props.updateHero} />
 			</div>
 
-			{/* <h4>Inventory</h4>
-            <div className="inventory">
-
-                {props.hero.inventory.map((item, index) => (
-                    <div className="item" key={`inventory-${index}`}>{item.name}</div>
-                ))}
-            </div> */}
 		</div>
 	);
 }

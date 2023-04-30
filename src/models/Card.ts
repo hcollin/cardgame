@@ -14,6 +14,8 @@ export enum DAMAGETYPE {
 
 export enum TARGETS {
 	ENEMY = "ENEMY",
+	ADJACENT = "ADJACENT",
+	ALLENEMIES = "ALLENEMIES",
 	SELF = "SELF",
 	WORLD = "WORLD"
 }
@@ -41,6 +43,7 @@ export interface CardData {
 	item?: string;
 	count?: number;
 
+	rulesText?: string;
 	description: string;
 
 	damage: Damage[];
