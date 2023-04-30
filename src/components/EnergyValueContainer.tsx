@@ -1,10 +1,10 @@
-import { HeroStats } from "../models/HeroStats";
+import Hero from "../game/Hero";
 
 import energyIcon from "./icons/energy.png";
 
 import "./value-container.css";
 
-function EnergyValueContainer(props: {hero: HeroStats}) {
+function EnergyValueContainer(props: {hero: Hero}) {
 
     return (
         <div className="value-container energy-container">
@@ -14,9 +14,9 @@ function EnergyValueContainer(props: {hero: HeroStats}) {
             
             <div className="title">Energy</div>
 
-            <div className="value">{props.hero.aps}</div>
+            <div className="value">{props.hero.getBaseEnergy()}</div>
 
-            <div className="base-value">{props.hero.maxAps}</div>
+            <div className="base-value">{props.hero.getEffectedEnergy()}</div>
 
             
         </div>

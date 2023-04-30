@@ -1,8 +1,5 @@
 import { ClassWarrior } from "../data/Classes";
 import { RaceHuman } from "../data/Races";
-import { LeatherArmor } from "../data/items/LeatherArmor";
-import { LongSword } from "../data/items/LongSword";
-import { Shield } from "../data/items/Shield";
 import { Damage } from "../models/Card";
 import { CharacterClass, CharacterRace, ITEMSLOT, LevelMods } from "../models/HeroStats";
 import { Item } from "../models/Items";
@@ -22,7 +19,7 @@ export default class Hero {
 
 	// Health
 	protected health: number = 40;
-    protected effectHealth: number = 0;
+	protected effectHealth: number = 0;
 
 	// Armor
 	protected armor: number = 0;
@@ -42,22 +39,56 @@ export default class Hero {
 		this.heroClass = chrClass;
 		this.heroRace = chrRace;
 
-        this.fullReset();
+		this.fullReset();
 	}
 
-    // EVENTS TO HERO
+	// EVENTS TO HERO
 
-    public healHero(amount: number) {
-        this.health += amount;
-        if(this.health > this.getEffectHealth()) {
-            this.health = this.getEffectHealth();
-        }   
+	/**
+	 * Heal hero for the given amount. Cannot exeed maximum health
+	 * @param amount
+	 */
+	public healHero(amount: number) {
+		this.health += amount;
+		if (this.health > this.getMaxHealth()) {
+			this.health = this.getMaxHealth();
+		}
+	}
+
+	/**
+	 * Take damage from source
+	 *
+	 * @param dmg
+	 */
+	public takeDamage(dmg: number) {
+        if(dmg <= this.armor) {
+            this.armor -= dmg;
+            return;
+        }
+
+        this.health -= dmg - this.armor;
+        this.armor = 0;
     }
 
-    public takeDamage(dmg: Damage) {
+	/**
+	 * Hero gains experience. Level up happes only after arena is completed
+	 * @param amount
+	 */
+	public gainExperience(amount: number) {
+		this.experience += amount;
+	}
 
-    }
-
+	/**
+	 * Spend some energy. Returns true if hero had enough energy to spend
+	 *
+	 * @param amount
+	 * @returns
+	 */
+	public useEnergy(amount: number): boolean {
+		if (this.energy < amount) return false;
+		this.energy -= amount;
+		return true;
+	}
 
 	// INVENTORY MANAGEMENT
 
@@ -79,7 +110,17 @@ export default class Hero {
 
 		if (item.onEquip) {
 			// TODO: Fix this
-			// item.onEquip(this) ;
+			item.onEquip(this);
+		}
+	}
+
+	public unequipItem(slot: ITEMSLOT) {
+		const item = this.itemSlots.get(slot);
+		if (item) {
+			if (item.onUnequip) {
+				item.onUnequip(this);
+			}
+			this.itemSlots.delete(slot);
 		}
 	}
 
@@ -93,13 +134,16 @@ export default class Hero {
 		this.experience = 0;
 
 		this.effectArmor = 0;
-        this.effectEnergy = 0;
-        this.effectHealth = 0;
+		this.effectEnergy = 0;
+		this.effectHealth = 0;
 
-        this.inventory = [];
-        this.heroClass.startingItems.forEach((item) => {
-            this.inventory.push(item);
-        });
+		this.inventory = [];
+		this.heroClass.startingItems.forEach((item) => {
+			this.inventory.push(item[0]);
+			if(item[1]) {
+				this.equipItem(item[0], item[1]);
+			}
+		});
 
 		this.arenaReset();
 	}
@@ -113,9 +157,9 @@ export default class Hero {
 			this.level++;
 		}
 
-        if(heal) {
-            this.health = this.getEffectHealth();
-        }
+		if (heal) {
+			this.health = this.getMaxHealth();
+		}
 
 		this.turnReset();
 	}
@@ -124,8 +168,8 @@ export default class Hero {
 	 * Reset heros data at the beginning of the player turn
 	 */
 	public turnReset() {
-		this.armor = this.getEffectArmor();
-		this.energy = this.getEffectEnergy();
+		this.armor = this.getEffectedArmor();
+		this.energy = this.getEffectedEnergy();
 	}
 
 	// LEVELING UP
@@ -136,26 +180,33 @@ export default class Hero {
 		return this.heroRace.baseArmor + this.heroClass.levelStats[this.level].armor;
 	}
 
-    public getEffectArmor(): number {
-        return this.effectArmor + this.getBaseArmor();
-    }
+	public getEffectedArmor(): number {
+		return this.effectArmor + this.getBaseArmor();
+	}
 
 	public getBaseHealth(): number {
 		return this.heroRace.baseHealth + this.heroClass.levelStats[this.level].health;
 	}
 
-    public getEffectHealth(): number {
-        return this.effectHealth + this.getBaseHealth();
-    }
+	public getMaxHealth(): number {
+		return this.effectHealth + this.getBaseHealth();
+	}
 
-    public getBaseEnergy(): number {
-        return this.heroRace.baseEnergy + this.heroClass.levelStats[this.level].energy;
-    }
+	public getBaseEnergy(): number {
+		return this.heroRace.baseEnergy + this.heroClass.levelStats[this.level].energy;
+	}
 
-    public getEffectEnergy(): number {
-        return this.effectEnergy + this.getBaseEnergy();
-    }
+	public getEffectedEnergy(): number {
+		return this.effectEnergy + this.getBaseEnergy();
+	}
 
+	public getHandSize(hand: "RIGHT" | "LEFT"): number {
+		if (hand === "RIGHT") {
+			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize;
+		} else {
+			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].lHandSize;
+		}
+	}
 
 	// Default Getters
 	public getName(): string {
@@ -168,6 +219,10 @@ export default class Hero {
 
 	public getArmor(): number {
 		return this.armor;
+	}
+
+	public getEnergy(): number {
+		return this.energy;
 	}
 
 	public getExperience(): number {
@@ -184,5 +239,60 @@ export default class Hero {
 
 	public getItemSlots(): Map<ITEMSLOT, Item> {
 		return this.itemSlots;
+	}
+
+	public getEquippedItem(slot: ITEMSLOT): Item | undefined {
+		return this.itemSlots.get(slot);
+	}
+
+	public getEquippableSlots(): ITEMSLOT[] {
+		const slots: ITEMSLOT[] = [
+			ITEMSLOT.BODY,
+			ITEMSLOT.HEAD,
+			ITEMSLOT.LEGS,
+			ITEMSLOT.FEET,
+			ITEMSLOT.LEFT_HAND,
+			ITEMSLOT.LEFT_FINGER,
+			ITEMSLOT.RIGHT_HAND,
+			ITEMSLOT.RIGHT_FINGER,
+		];
+		if (this.heroClass.levelStats[this.level].cape) {
+			slots.push(ITEMSLOT.CAPE);
+		}
+		return slots;
+	}
+
+	// Setters
+
+    public modifyArmor(amount: number, floorToZero?: boolean) {
+        this.armor += amount;
+        if(floorToZero) {
+            this.armor = Math.max(0, this.armor);
+        }
+
+    }    
+
+	public setEffectArmor(amount: number) {
+		this.effectArmor = amount;
+	}
+
+	public modifyEffectArmor(amount: number) {
+		this.effectArmor += amount;
+	}
+
+	public setEffectHealth(amount: number) {
+		this.effectHealth = amount;
+	}
+
+	public modifyEffectHealth(amount: number) {
+		this.effectHealth += amount;
+	}
+
+	public setEffectEnergy(amount: number) {
+		this.effectEnergy = amount;
+	}
+
+	public modifyEffectEnergy(amount: number) {
+		this.effectEnergy += amount;
 	}
 }

@@ -1,10 +1,10 @@
-import { HeroStats } from "./HeroStats";
+import Hero from "../game/Hero";
+
 import { LocationId, Location } from "./World";
 
-
 export interface Campaign {
-    id: string;
-    hero: HeroStats;
-    world: Map<LocationId, Location>;
-    currentLocationId: LocationId;
+	id: string;
+	hero: Hero;
+	world: Map<LocationId, Location>;
+	currentLocationId: LocationId;
 }

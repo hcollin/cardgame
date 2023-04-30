@@ -8,12 +8,10 @@ export const CloakOfSwiftness: Item = {
     description: "+1 Energy per turn",
     cards: [],
     onEquip: (hero) => {
-        hero.maxAps += 1;
-        
-        return { ...hero };
+        hero.modifyEffectEnergy(1);
+
     },
     onUnequip: (hero) => {
-        hero.maxAps -= 1;
-        return { ...hero };
+        hero.modifyEffectEnergy(-1);
     }
 };

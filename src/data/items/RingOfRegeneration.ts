@@ -11,9 +11,7 @@ export const RingOfRegeneration: Item = {
     description: "This is simple silver ring with engraved runes. It heals it's wearer everyturn.",
     cards: [],
     onEndOfTurn: (gs: GameState) => {
-        if(gs.hero.health < gs.hero.maxHealth) {
-            gs.hero.health += 1;
-        }
+        gs.hero.healHero(1);
         return { ...gs };
     }
 

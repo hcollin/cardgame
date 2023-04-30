@@ -1,8 +1,7 @@
 import { Arena } from "../game/Arena";
 import { Deck } from "../game/Deck";
+import Hero from "../game/Hero";
 import { Card } from "./Card";
-import { HeroStats } from "./HeroStats";
-import { Location, LocationId } from "./World";
 
 
 export enum GAMESTATES {
@@ -32,7 +31,7 @@ export interface GameState {
     id: string;
     turn: number;
     
-    hero: HeroStats;
+    hero: Hero;
 
     leftHandDeck: Deck;
     rightHandDeck: Deck;

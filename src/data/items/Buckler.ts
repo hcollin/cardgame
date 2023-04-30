@@ -24,7 +24,7 @@ export const Buckler: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.armor += 1;
+				gs.hero.modifyArmor(1)
 				return { ...gs };
 			},
 		},
@@ -43,7 +43,7 @@ export const Buckler: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.armor += 3;
+				gs.hero.modifyArmor(3)
 				return { ...gs };
 			},
 		},

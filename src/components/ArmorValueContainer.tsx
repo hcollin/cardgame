@@ -1,13 +1,12 @@
-import { getBaseArmorValue, getLevelMods } from "../game/HeroTools";
-import { HeroStats } from "../models/HeroStats";
+import Hero from "../game/Hero";
 
 import armorLogo from "./icons/armor.png";
 
 import "./value-container.css";
 
-function ArmorValueContainer(props: {hero: HeroStats}) {
+function ArmorValueContainer(props: {hero: Hero}) {
 
-    const lMod = getLevelMods(props.hero.level);
+    
 
     return (
         <div className="value-container armor-container">
@@ -17,9 +16,9 @@ function ArmorValueContainer(props: {hero: HeroStats}) {
             
             <div className="title">Armor</div>
 
-            <div className="value">{props.hero.armor}</div>
+            <div className="value">{props.hero.getArmor()}</div>
 
-            <div className="base-value">{getBaseArmorValue(props.hero)}</div>
+            <div className="base-value">{props.hero.getEffectedArmor()}</div>
 
             
         </div>

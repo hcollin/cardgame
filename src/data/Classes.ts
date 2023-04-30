@@ -1,4 +1,4 @@
-import { CharacterClass } from "../models/HeroStats";
+import { CharacterClass, ITEMSLOT } from "../models/HeroStats";
 import { Shield } from "./items/Shield";
 import { ShortSword } from "./items/ShortSword";
 
@@ -6,7 +6,7 @@ import { ShortSword } from "./items/ShortSword";
 
 export const ClassWarrior: CharacterClass = {
     name: "Warrior",
-    startingItems: [ShortSword, Shield],
+    startingItems: [[ShortSword, ITEMSLOT.RIGHT_HAND], [Shield, ITEMSLOT.LEFT_HAND]],
     levelStats: [
         { health: 0, armor: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false },
         { health: 5, armor: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false }, // 1

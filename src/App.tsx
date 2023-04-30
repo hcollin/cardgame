@@ -4,26 +4,18 @@ import "./App.css";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { createGame } from "./game/GameService";
 import { useEffect, useState } from "react";
 import { GAMESTATES, GameState } from "./models/GameState";
 
-import { arnd } from "rndlib";
-import MainMenu from "./components/MainMenu";
 import { Campaign } from "./models/Campaign";
 import {
 	createCampaign,
 	createGameForArena,
-	createGameFromCampaign,
 	markCurrentLocationCompleted,
-	selectActiveLocationFromCampaign,
 	setActiveLocationForCampaign,
 } from "./game/CampaignTools";
 
 import { LOCATIONSTATUS, Location } from "./models/World";
-import LocationView from "./components/LocationView";
-import { resetHero } from "./game/HeroTools";
-import { HeroStats } from "./models/HeroStats";
 import WorldMap from "./views/WorldMap";
 
 import iconMap from "./components/icons/map.png";
@@ -33,13 +25,9 @@ import HeroView from "./views/HeroView";
 import frostTrollLogo from "./views/pics/frosttrolllogo.png";
 import Arena from "./views/Arena";
 import Hero from "./game/Hero";
-import { RaceHuman } from "./data/Races";
-import { ClassWarrior } from "./data/Classes";
 
 const isMobile = false;
 
-const h = new Hero(RaceHuman, ClassWarrior);
-console.log("HERO",h);
 
 function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createCampaign());
@@ -64,7 +52,8 @@ function App() {
 		const ngs = { ...gs };
 
 		if (ngs.state === GAMESTATES.ARENA_COMPLETED) {
-			setCampaign({ ...markCurrentLocationCompleted(campaign), hero: resetHero(ngs.hero, false) });
+			ngs.hero.arenaReset();
+			setCampaign({ ...markCurrentLocationCompleted(campaign), hero: ngs.hero });
 		} else {
 			setCampaign({ ...campaign, hero: gs.hero });
 		}
@@ -87,7 +76,7 @@ function App() {
 		}
 	}
 
-	function updateHero(hero: HeroStats) {
+	function updateHero(hero: Hero) {
 		setCampaign({ ...campaign, hero: hero });
 	}
 

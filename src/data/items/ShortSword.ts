@@ -32,7 +32,7 @@ export const ShortSword: Item = {
 			onUse: (gs) => {
 				return { ...gs };
 			},
-		},		
+		},
 		{
 			name: "Thrust",
 			description: "A quick, direct attack that focuses on piercing the opponent's body.",
@@ -57,15 +57,13 @@ export const ShortSword: Item = {
 				return { ...gs };
 			},
 		},
-		
+
 		{
 			name: "Parry",
 			description: "ARMOR 2. Using the blade to block.",
 			rarity: CARDRARITY.RARE,
 			count: 1,
-			damage: [
-				
-			],
+			damage: [],
 			apCost: 1,
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
@@ -74,7 +72,8 @@ export const ShortSword: Item = {
 				return { ...gs };
 			},
 			onUse: (gs) => {
-				gs.hero.armor += 2;
+				gs.hero.modifyArmor(2);
+
 				return { ...gs };
 			},
 		},

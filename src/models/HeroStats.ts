@@ -13,38 +13,38 @@ export enum ITEMSLOT {
 	CAPE = "CAPE",
 }
 
-export interface HeroStats {
-	name: string;
+// export interface HeroStats {
+// 	name: string;
 
-	health: number;
-	maxHealth: number;
+// 	health: number;
+// 	maxHealth: number;
 
-	aps: number;
-	maxAps: number;
+// 	aps: number;
+// 	maxAps: number;
 
-    // Base armor comes from level, race etc. An armor that cannot be taken away.
-    baseArmor: number;
+//     // Base armor comes from level, race etc. An armor that cannot be taken away.
+//     baseArmor: number;
 
-    // Effect armor is armor that is provided by effects and equipment. It can be taken away, but not by damage.
-    effectArmor: number;
+//     // Effect armor is armor that is provided by effects and equipment. It can be taken away, but not by damage.
+//     effectArmor: number;
 
-    // Armor is the current armor value that is used to block damage. Armor value is resetted at the beginning of the pleayers turn (baseArmor + effectArmor).
-	armor: number;
+//     // Armor is the current armor value that is used to block damage. Armor value is resetted at the beginning of the pleayers turn (baseArmor + effectArmor).
+// 	armor: number;
 
-	effects: Map<EFFECTS, number>;
+// 	effects: Map<EFFECTS, number>;
 
-	score: number;
+// 	score: number;
 
-	inventory: Item[];
+// 	inventory: Item[];
 
-	activeItems: Map<ITEMSLOT, Item>;
+// 	activeItems: Map<ITEMSLOT, Item>;
 
-	experience: number;
-	level: number;
+// 	experience: number;
+// 	level: number;
 
-	// activeItemRight: Item | null;
-	// activeItemLeft: Item | null;
-}
+// 	// activeItemRight: Item | null;
+// 	// activeItemLeft: Item | null;
+// }
 
 export interface LevelMods {
 	health: number;
@@ -66,7 +66,7 @@ export interface CharacterRace {
 
 export interface CharacterClass {
     name: string;
-    startingItems: Item[];
+    startingItems: [Item, ITEMSLOT|null][];
     levelStats: LevelMods[];
 
 }

@@ -89,9 +89,7 @@ export const HandAxe: Item = {
 			},
 
 			onUse: (gs: GameState, card: Card) => {
-                gs.hero.armor -= 2;
-                if(gs.hero.armor < 0) gs.hero.armor = 0;
-
+				gs.hero.modifyArmor(-2, true);
 				return { ...gs };
 			},
 		},

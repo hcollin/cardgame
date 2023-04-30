@@ -24,10 +24,7 @@ export const RingOfHealing: Item = {
             },
 
             onUse: (gs) => {
-                gs.hero.health += 5;
-                if (gs.hero.health > gs.hero.maxHealth) {
-                    gs.hero.health = gs.hero.maxHealth;
-                }
+                gs.hero.healHero(5);
                 return { ...gs };
             },
         },

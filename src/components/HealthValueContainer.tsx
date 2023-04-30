@@ -1,10 +1,10 @@
-import { HeroStats } from "../models/HeroStats";
+import Hero from "../game/Hero";
 
 import healthLogo from "./icons/health.png";
 
 import "./value-container.css";
 
-function HealthValueContainer(props: {hero: HeroStats}) {
+function HealthValueContainer(props: {hero: Hero}) {
 
     return (
         <div className="value-container health-container">
@@ -14,9 +14,9 @@ function HealthValueContainer(props: {hero: HeroStats}) {
             
             <div className="title">Health</div>
 
-            <div className="value">{props.hero.health}</div>
+            <div className="value">{props.hero.getHealth()}</div>
 
-            <div className="base-value">{props.hero.maxHealth}</div>
+            <div className="base-value">{props.hero.getMaxHealth()}</div>
 
             
         </div>

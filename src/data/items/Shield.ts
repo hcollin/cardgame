@@ -24,7 +24,7 @@ export const Shield: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.armor += 2;
+				gs.hero.modifyArmor(2);
 				return { ...gs };
 			},
 		},
@@ -43,7 +43,7 @@ export const Shield: Item = {
 			},
 
 			onUse: (gs) => {
-				gs.hero.armor += 5;
+				gs.hero.modifyArmor(5);
 				return { ...gs };
 			},
 		},
@@ -52,11 +52,13 @@ export const Shield: Item = {
 			description: "Bash enemy with your shield",
 			rarity: CARDRARITY.RARE,
 			count: 1,
-			damage: [{
-				amount: 1,
-				type: DAMAGETYPE.BLUNT,
-				variation: 0,
-			}],
+			damage: [
+				{
+					amount: 1,
+					type: DAMAGETYPE.BLUNT,
+					variation: 0,
+				},
+			],
 			apCost: 3,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],

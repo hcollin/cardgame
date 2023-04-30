@@ -217,16 +217,7 @@ export class Enemy {
 		}
 		let damage = act.value || this.attackValue;
 
-		if (damage <= gs.hero.armor) {
-			gs.hero.armor -= damage;
-			damage = 0;
-		}
-		if (damage > gs.hero.armor) {
-			damage -= gs.hero.armor;
-			gs.hero.armor = 0;
-		}
-
-		gs.hero.health -= damage;
+		gs.hero.takeDamage(damage);
 		return { ...gs };
 	}
 

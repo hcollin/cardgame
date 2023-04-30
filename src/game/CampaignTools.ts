@@ -1,5 +1,4 @@
 import { v4 } from "uuid";
-import { createHero, resetHero } from "./HeroTools";
 import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
 import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
@@ -7,8 +6,10 @@ import { Deck } from "./Deck";
 import { createDecks } from "./GameService";
 import { createWorld } from "./WorldTools";
 import { LOCATIONS } from "../data/Locations";
-import { HeroStats } from "../models/HeroStats";
 import { Arena } from "./Arena";
+import Hero from "./Hero";
+import { RaceHuman } from "../data/Races";
+import { ClassWarrior } from "../data/Classes";
 
 
 
@@ -16,7 +17,7 @@ export function createCampaign(): Campaign {
     
     const campaign: Campaign = {
         id: v4(),
-        hero: createHero(),
+        hero: new Hero(RaceHuman, ClassWarrior),
         world: createWorld(LOCATIONS),
         currentLocationId: ""
     }
@@ -107,18 +108,20 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
     gameState.rightHandDeck.shuffleDeck();
     gameState.leftHandDeck.shuffleDeck();
 
-    gameState.rightHand = gameState.rightHandDeck.drawCards(3);
-    gameState.leftHand = gameState.leftHandDeck.drawCards(3);
+    gameState.rightHand = gameState.rightHandDeck.drawCards(gameState.hero.getHandSize("RIGHT"));
+    gameState.leftHand = gameState.leftHandDeck.drawCards(gameState.hero.getHandSize("LEFT"));
 
     gameState.arena.resetArena();
+    gameState.hero.arenaReset();
     gameState.turn = 1;
 
-    gameState.hero.aps = gameState.hero.maxAps;
+    
+    // gameState.hero.aps = gameState.hero.maxAps;
 
     return gameState;
 }
 
-export function createGameForArena(arena: Arena, hero: HeroStats): GameState {
+export function createGameForArena(arena: Arena, hero: Hero): GameState {
     let gameState: GameState = {
         id: v4(),
         turn: 0,
@@ -128,7 +131,7 @@ export function createGameForArena(arena: Arena, hero: HeroStats): GameState {
         rightHand: [],
         state: GAMESTATES.MYTURN,
         arena: arena,
-        hero: {...hero}
+        hero: hero
     }
 
     // if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
@@ -143,7 +146,8 @@ export function createGameForArena(arena: Arena, hero: HeroStats): GameState {
     gameState.arena.resetArena();
     gameState.turn = 1;
 
-    gameState.hero = resetHero(gameState.hero, false);
+    gameState.hero.arenaReset();
+    // gameState.hero = resetHero(gameState.hero, false);
 
     return gameState;
 

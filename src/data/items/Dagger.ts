@@ -74,7 +74,7 @@ export const Dagger: Item = {
 				return { ...gs };
 			},
 			onUse: (gs) => {
-				gs.hero.armor += 2;
+				gs.hero.modifyArmor(2);
 				return { ...gs };
 			},
 		},

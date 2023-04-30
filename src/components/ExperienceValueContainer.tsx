@@ -1,11 +1,11 @@
+import Hero from "../game/Hero";
 import { expForNextLevel } from "../game/HeroTools";
-import { HeroStats } from "../models/HeroStats";
 
 import expIcon from "./icons/experience.png";
 
 import "./value-container.css";
 
-function ExperienceValueContainer(props: {hero: HeroStats}) {
+function ExperienceValueContainer(props: {hero: Hero}) {
 
     return (
         <div className="value-container level-container">
@@ -15,7 +15,7 @@ function ExperienceValueContainer(props: {hero: HeroStats}) {
             
             <div className="title">Experience</div>
 
-            <div className="value">{props.hero.experience}</div>
+            <div className="value">{props.hero.getExperience()}</div>
 
             <div className="base-value">{expForNextLevel(props.hero)}</div>
 

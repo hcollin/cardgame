@@ -1,4 +1,4 @@
-import { HeroStats, ITEMSLOT, LevelMods } from "../models/HeroStats";
+import { ITEMSLOT, LevelMods } from "../models/HeroStats";
 
 import { LongSword } from "../data/items/LongSword";
 import { Shield } from "../data/items/Shield";
@@ -14,118 +14,106 @@ import { GameState } from "../models/GameState";
 import { RingOfHealing } from "../data/items/RingOfHealing";
 import { RingOfRegeneration } from "../data/items/RingOfRegeneration";
 import { CloakOfSwiftness } from "../data/items/CloakOfSwiftness";
+import Hero from "./Hero";
 
-export function createHero(): HeroStats {
-	let hero: HeroStats = {
-		name: nameGenerator(),
-		health: 50,
-		maxHealth: 50,
+// export function createHero(): HeroStats {
+// 	let hero: HeroStats = {
+// 		name: nameGenerator(),
+// 		health: 50,
+// 		maxHealth: 50,
 
-		aps: 4,
-		maxAps: 4,
+// 		aps: 4,
+// 		maxAps: 4,
 
-		baseArmor: 0,
-		effectArmor: 0,
-		armor: 0,
+// 		baseArmor: 0,
+// 		effectArmor: 0,
+// 		armor: 0,
 		
 
-		effects: new Map(),
+// 		effects: new Map(),
 
-		score: 0,
-		experience: 0,
-		level: 1,
+// 		score: 0,
+// 		experience: 0,
+// 		level: 1,
 
-		inventory: [],
+// 		inventory: [],
 
-		activeItems: new Map<ITEMSLOT, Item>(),
-		// activeItemRight: null,
-		// activeItemLeft: null,
-	};
+// 		activeItems: new Map<ITEMSLOT, Item>(),
+// 		// activeItemRight: null,
+// 		// activeItemLeft: null,
+// 	};
 
-	hero.inventory.push(LongSword);
-	hero.inventory.push(ShortSword);
-	hero.inventory.push(HandAxe);
-	hero.inventory.push(Mace);
+// 	hero.inventory.push(LongSword);
+// 	hero.inventory.push(ShortSword);
+// 	hero.inventory.push(HandAxe);
+// 	hero.inventory.push(Mace);
 
-	hero.inventory.push(Shield);
-	hero.inventory.push(Buckler);
-	hero.inventory.push(Dagger);
+// 	hero.inventory.push(Shield);
+// 	hero.inventory.push(Buckler);
+// 	hero.inventory.push(Dagger);
 
-	hero.inventory.push(LeatherArmor);
+// 	hero.inventory.push(LeatherArmor);
 
-	hero.inventory.push(RingOfHealing);
-	hero.inventory.push(RingOfRegeneration);
+// 	hero.inventory.push(RingOfHealing);
+// 	hero.inventory.push(RingOfRegeneration);
 
-	// hero.inventory.push(CloakOfSwiftness);
+// 	// hero.inventory.push(CloakOfSwiftness);
 
-	hero = equipItemRight(hero, LongSword);
-	hero = equipItemLeft(hero, Shield);
+// 	hero = equipItemRight(hero, LongSword);
+// 	hero = equipItemLeft(hero, Shield);
 
-	hero = equipItem(hero, LeatherArmor, ITEMSLOT.BODY);
-	hero = equipItem(hero, RingOfHealing, ITEMSLOT.LEFT_FINGER);
-	hero = equipItem(hero, RingOfRegeneration, ITEMSLOT.RIGHT_FINGER);
-	// hero = equipItem(hero, CloakOfSwiftness, ITEMSLOT.CAPE);
+// 	hero = equipItem(hero, LeatherArmor, ITEMSLOT.BODY);
+// 	hero = equipItem(hero, RingOfHealing, ITEMSLOT.LEFT_FINGER);
+// 	hero = equipItem(hero, RingOfRegeneration, ITEMSLOT.RIGHT_FINGER);
+// 	// hero = equipItem(hero, CloakOfSwiftness, ITEMSLOT.CAPE);
 
+// 	return hero;
+// }
+
+// export function resetHero(hero: HeroStats, heal = true): HeroStats {
+// 	const nHero = checkForLevelUp(hero);
+// 	const lMods = getLevelMods(nHero.level);
+// 	console.log("Reset Hero", lMods);
+
+// 	nHero.health = heal ? hero.maxHealth + lMods.health : hero.health;
+// 	nHero.armor = getBaseArmorValue(nHero);
+// 	nHero.effects.clear();
+// 	nHero.maxAps = lMods.energy;
+// 	nHero.aps = hero.maxAps;
+// 	return { ...nHero };
+// }
+
+// export function cleanUpHeroAtTheEndOfTurn(hero: HeroStats): HeroStats {
+// 	return { ...hero };
+// }
+
+export function equipItemRight(hero: Hero, item: Item): Hero {
+	// hero.activeItemRight = item;
+	equipItem(hero, item, ITEMSLOT.RIGHT_HAND);
+	return hero;
+	
+}
+
+export function equipItemLeft(hero: Hero, item: Item): Hero {
+	// hero.activeItemLeft = item;
+	equipItem(hero, item, ITEMSLOT.LEFT_HAND);
+	return hero;	
+}
+
+export function equipItem(hero: Hero, item: Item, slot: ITEMSLOT): Hero {
+	hero.equipItem(item, slot);
 	return hero;
 }
 
-export function resetHero(hero: HeroStats, heal = true): HeroStats {
-	const nHero = checkForLevelUp(hero);
-	const lMods = getLevelMods(nHero.level);
-	console.log("Reset Hero", lMods);
-
-	nHero.health = heal ? hero.maxHealth + lMods.health : hero.health;
-	nHero.armor = getBaseArmorValue(nHero);
-	nHero.effects.clear();
-	nHero.maxAps = lMods.energy;
-	nHero.aps = hero.maxAps;
-	return { ...nHero };
+export function unequipItem(hero: Hero, slot: ITEMSLOT): Hero {
+	hero.unequipItem(slot);
+	return hero;
 }
 
-export function cleanUpHeroAtTheEndOfTurn(hero: HeroStats): HeroStats {
-	return { ...hero };
-}
-
-export function equipItemRight(hero: HeroStats, item: Item): HeroStats {
-	// hero.activeItemRight = item;
-	equipItem(hero, item, ITEMSLOT.RIGHT_HAND);
-	return { ...hero };
-}
-
-export function equipItemLeft(hero: HeroStats, item: Item): HeroStats {
-	// hero.activeItemLeft = item;
-	equipItem(hero, item, ITEMSLOT.LEFT_HAND);
-	return { ...hero };
-}
-
-export function equipItem(hero: HeroStats, item: Item, slot: ITEMSLOT): HeroStats {
-	if (hero.inventory.find((i) => i.name === item.name) === undefined) {
-		throw new Error("Hero does not have this item in inventory");
-	}
-	hero.activeItems.set(slot, item);
-
-	if (item.onEquip) {
-		return { ...item.onEquip(hero) };
-	}
-	return { ...hero };
-}
-
-export function unequipItem(hero: HeroStats, slot: ITEMSLOT): HeroStats {
-	const item = hero.activeItems.get(slot);
-	if (!item) return hero;
-
-	hero.activeItems.delete(slot);
-
-	if (item.onUnequip) {
-		return { ...item.onUnequip(hero) };
-	}
-	return { ...hero };
-}
-
-export function getBaseArmorValue(hero: HeroStats): number {
-	const lMod = getLevelMods(hero.level);
-	return hero.baseArmor + lMod.armor + hero.effectArmor;
-}
+// export function getBaseArmorValue(hero: HeroStats): number {
+// 	const lMod = getLevelMods(hero.level);
+// 	return hero.baseArmor + lMod.armor + hero.effectArmor;
+// }
 
 const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 40, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
@@ -148,17 +136,17 @@ const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 40, 300, 600, 1000, 1500, 2
  * @param hero
  * @returns
  */
-export function checkForLevelUp(hero: HeroStats): HeroStats {
-	if (hero.experience >= LEVELEXPERIENCEREQUIREMENTS[hero.level + 1]) {
-		hero.level += 1;
-		console.log(`Level up to ${hero.level}`);
-	}
+// export function checkForLevelUp(hero: HeroStats): HeroStats {
+// 	if (hero.experience >= LEVELEXPERIENCEREQUIREMENTS[hero.level + 1]) {
+// 		hero.level += 1;
+// 		console.log(`Level up to ${hero.level}`);
+// 	}
 
-	return { ...hero };
-}
+// 	return { ...hero };
+// }
 
-export function expForNextLevel(hero: HeroStats): number {
-	return LEVELEXPERIENCEREQUIREMENTS[hero.level + 1];
+export function expForNextLevel(hero: Hero): number {
+	return LEVELEXPERIENCEREQUIREMENTS[hero.getLevel() + 1];
 }
 
 /**

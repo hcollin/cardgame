@@ -120,7 +120,7 @@ export const LongSword: Item = {
 				return { ...gs };
 			},
 			onUse: (gs) => {
-				gs.hero.armor += 3;
+				gs.hero.modifyArmor(3);
 				return { ...gs };
 			},
 		},
