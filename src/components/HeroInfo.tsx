@@ -6,9 +6,11 @@ import HealthValueContainer from "./HealthValueContainer";
 import healthIcon from "./icons/health.png";
 import armorIcon from "./icons/armor.png";
 import energyIcon from "./icons/energy.png";
+import experienceIcon from "./icons/experience.png";
 
 
 import "./hero-info.css";
+import { getBaseArmorValue } from "../game/HeroTools";
 
 function HeroInfo(props: { gameState: GameState }) {
 	const { gameState } = props;
@@ -21,10 +23,7 @@ function HeroInfo(props: { gameState: GameState }) {
 	}
 	return (
 		<div className="hero-info">
-			{/* <EnergyValueContainer hero={gameState.hero} /> */}
-			{/* <HealthValueContainer hero={gameState.hero} /> */}
-			{/* <ArmorValueContainer hero={gameState.hero} /> */}
-
+			
 			<div className="value energy">
 				<div className="icon"><img src={energyIcon} alt="Energy" /></div>
 				<div className="values">
@@ -45,8 +44,14 @@ function HeroInfo(props: { gameState: GameState }) {
 				<div className="icon"><img src={armorIcon} alt="Armor" /></div>
 				<div className="values">
 					<span className="main">{gameState.hero.armor}</span>
-					<span className="base"> / {gameState.hero.defaultArmor}</span>
+					<span className="base"> / {getBaseArmorValue(gameState.hero)}</span>
 				</div>
+			</div>
+
+
+			<div className="small-value experience">
+				<div className="icon"><img src={experienceIcon} alt="Experience" /></div>
+				<div className="value">{gameState.hero.experience}</div>
 			</div>
 
 		</div>

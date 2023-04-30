@@ -61,6 +61,8 @@ div.world-map {
         justify-content: center;
         align-items: center;
 
+        overflow: visible;
+
         &>div.icon {
             position: absolute;
             top: 0;
@@ -94,6 +96,7 @@ div.world-map {
         &.selectable {
 
             cursor: pointer;
+
             &>div.icon {
                 /* border: groove 3px #2C28; */
                 border: groove 3px #0004;
@@ -103,7 +106,7 @@ div.world-map {
                 /* box-shadow: inset 0 0 2rem 1rem #0004, 0 0 1rem 0.5rem #fff8; */
                 /* background: #4A48; */
                 animation: pulseWhite 2s infinite alternate;
-                
+
             }
 
             &:hover {
@@ -140,6 +143,7 @@ div.world-map {
 
         &.active {
             cursor: pointer;
+
             &>div.icon {
                 background: linear-gradient(0deg, #123 0, #345 10%, #789 20%, #DEF 50%, #789 100%);
                 /* background: #CEF8; */

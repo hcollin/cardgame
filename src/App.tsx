@@ -39,10 +39,10 @@ function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createCampaign());
 
 	const [gameState, setGameState] = useState<GameState | null>(null);
-
+	
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
 
-	const [vm, setVm] = useState<string>("CHARACTER"); // MAP || CHARACTER
+	const [vm, setVm] = useState<string>("MAP"); // MAP || CHARACTER
 
 	useEffect(() => {
 		const loc = campaign.world.get(campaign.currentLocationId);

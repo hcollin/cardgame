@@ -8,11 +8,11 @@ export const LeatherArmor: Item = {
     description: "ARMOR 2. A simple leather ammor",
     cards: [],
     onEquip: (hero) => {
-        hero.defaultArmor += 2;
+        hero.effectArmor += 2;
         return { ...hero };
     },
     onUnequip: (hero) => {
-        hero.defaultArmor -= 2;
+        hero.effectArmor -= 2;
         return { ...hero };
     }
 };

@@ -39,8 +39,43 @@ div.hero-view {
 
         box-shadow: -1rem 0 1rem 0.5rem #0008;
         
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         
-        
+        & > small {
+            font-size: 1.5rem;
+            font-family: "Lobster Two";
+            font-weight: normal;
+            color: #FFF8;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            
+
+            & > span {
+                
+                margin-left: 0.5rem;
+                border: solid 2px #0008;
+                font-size: 2.5rem;
+                width: 4rem;
+                height: 4rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #FFFC;
+
+                border-radius: 40%;
+                background: #0004;
+                box-shadow: inset 0 0 6px 3px #0004;
+                text-shadow: 0 0 2px #000;
+            }
+            
+
+
+        }
         
     }
 
@@ -206,6 +241,11 @@ div.hero-view div.item-slot {
     &.selected {
         border: groove 3px #060A;
         box-shadow: inset 0 0 1rem 0.25rem #0808;
+    }
+
+    &.disabled {
+        opacity: 0.4;
+        cursor: default;
     }
 
    

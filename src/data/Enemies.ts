@@ -19,6 +19,8 @@ export class Orc extends Enemy {
 
     public image: string = img;
 
+    protected experienceValue: number = 50;
+
     protected actions: EnemyAction[] = [
         {
             action: ENEMYACTIONS.ATTACK,
@@ -48,6 +50,8 @@ export class FrostTroll extends Enemy {
     protected name: string = "Frost Troll";
     protected maxHealth: number = 100; 
     protected attackValue: number = 5;
+
+    protected experienceValue: number = 200;
 
     public image: string = imgTroll;
 
@@ -85,6 +89,8 @@ export class Goblin extends Enemy {
     protected name: string = "Goblin";
     protected maxHealth: number = 8; 
     protected attackValue: number = 3;
+
+    protected experienceValue: number = 15;
 
     public image: string = imgGoblin;
 
@@ -137,6 +143,8 @@ export class Skeleton extends Enemy {
     
         protected vulnerableTo = [DAMAGETYPE.BLUNT];
 
+        protected experienceValue: number = 35;
+
         public image: string = imtSkel;
 
         protected actions: EnemyAction[] = [
@@ -172,6 +180,8 @@ export class Dragon extends Enemy {
     protected vulnerableTo = [DAMAGETYPE.ICE];
 
     protected effectImmunities = [EFFECTS.BURNING, EFFECTS.STUNNED];
+
+    protected experienceValue: number = 500;
 
     public image: string = imgDrag;
 

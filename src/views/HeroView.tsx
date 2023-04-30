@@ -3,10 +3,11 @@ import { HeroStats, ITEMSLOT } from "../models/HeroStats";
 import { Item } from "../models/Items";
 
 import "./hero-view.css";
-import { equipItem, unequipItem } from "../game/HeroTools";
+import { equipItem, getLevelMods, unequipItem } from "../game/HeroTools";
 import HealthValueContainer from "../components/HealthValueContainer";
 import ArmorValueContainer from "../components/ArmorValueContainer";
 import EnergyValueContainer from "../components/EnergyValueContainer";
+import ExperienceValueContainer from "../components/ExperienceValueContainer";
 
 /**
  * Functional React Component called HeroView that takes HeroStats as a prop and renders the hero's stats
@@ -15,7 +16,7 @@ function HeroView(props: { hero: HeroStats, updateHero: (hero: HeroStats) => voi
     return (
         <div className="hero-view">
 
-            <h1>{props.hero.name}</h1>
+            <h1>{props.hero.name} <small>level <span>{props.hero.level}</span></small></h1>
 
             <div className="container">
                 <HealthValueContainer hero={props.hero} />
@@ -23,6 +24,8 @@ function HeroView(props: { hero: HeroStats, updateHero: (hero: HeroStats) => voi
                 <ArmorValueContainer hero={props.hero} />
 
                 <EnergyValueContainer hero={props.hero} />
+
+                <ExperienceValueContainer hero={props.hero} />
             </div>          
           
           <div className="container">
@@ -78,6 +81,9 @@ function HeroItems(props: { hero: HeroStats, updateHero: (hero: HeroStats) => vo
 
     }
 
+    const lMod = getLevelMods(props.hero.level);
+    console.log(lMod);
+
     return (
         <div className="equipped-items">
             <div className="slots">
@@ -95,7 +101,7 @@ function HeroItems(props: { hero: HeroStats, updateHero: (hero: HeroStats) => vo
                         </tr>
                         <tr>
                             <td><HeroItemSlot hero={props.hero} slot={ITEMSLOT.RIGHT_FINGER} onSlotClick={handleSlotClick} selected={targetSlot === ITEMSLOT.RIGHT_FINGER} /></td>
-                            <td><HeroItemSlot hero={props.hero} slot={ITEMSLOT.CAPE} onSlotClick={handleSlotClick} selected={targetSlot === ITEMSLOT.CAPE} /></td>
+                            <td><HeroItemSlot hero={props.hero} slot={ITEMSLOT.CAPE} onSlotClick={handleSlotClick} selected={targetSlot === ITEMSLOT.CAPE} disabled={!lMod.cape} /></td>
                             <td><HeroItemSlot hero={props.hero} slot={ITEMSLOT.LEFT_FINGER} onSlotClick={handleSlotClick} selected={targetSlot === ITEMSLOT.LEFT_FINGER} /></td>
                         </tr>
                         <tr>
@@ -129,10 +135,11 @@ function HeroItems(props: { hero: HeroStats, updateHero: (hero: HeroStats) => vo
 }
 
 
-function HeroItemSlot(props: { hero: HeroStats, slot: ITEMSLOT, selected: boolean, onSlotClick: (slot: ITEMSLOT) => void }) {
+function HeroItemSlot(props: { hero: HeroStats, slot: ITEMSLOT, selected: boolean, onSlotClick: (slot: ITEMSLOT) => void, disabled?: boolean }) {
     const item = props.hero.activeItems.get(props.slot);
 
     function handleClick() {
+        if(props.disabled === true) return;
         props.onSlotClick(props.slot);
     }
 
@@ -142,6 +149,7 @@ function HeroItemSlot(props: { hero: HeroStats, slot: ITEMSLOT, selected: boolea
 
     if (item) { cns.push("equipped") };
     if (props.selected) { cns.push("selected") };
+    if(props.disabled === true) { cns.push("disabled") };
 
     if (!item) return (<div className={cns.join(" ")} onClick={handleClick}>
         &nbsp;

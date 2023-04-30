@@ -72,6 +72,8 @@ export class Enemy {
 
 	private status: ENEMYSTATUS = ENEMYSTATUS.ALIVE;
 
+	protected experienceValue: number = 0;
+
 	public image: string = "";
 
 	// This is array contains the latest damage taken by the enemy, so that in can be shown on the screen
@@ -93,6 +95,10 @@ export class Enemy {
 
 	public getHealth(): number {
 		return this.health;
+	}
+
+	public getExperienceValue(): number {
+		return this.experienceValue;
 	}
 
 	public attack(): number {

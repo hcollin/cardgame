@@ -2,7 +2,7 @@ import { Card } from "../models/Card";
 import { Deck } from "./Deck";
 import { GAMESTATES, GameState } from "../models/GameState";
 import { createCardsFromItem } from "./ItemTools";
-import { createHero } from "./HeroTools";
+import { createHero, getBaseArmorValue } from "./HeroTools";
 import { v4 } from "uuid";
 import { EmptyArena } from "../data/EmptyArena";
 import { HeroStats, ITEMSLOT } from "../models/HeroStats";
@@ -19,12 +19,11 @@ export function createGame(hero?: HeroStats): GameState {
 		arena: new EmptyArena(),
 		// world: createWorld(LOCATIONS),
 		// currentLocationId: "",
-		hero: hero || createHero()
+		hero: hero || createHero(),
 	};
 }
 
 export function createDecks(gs: GameState): GameState {
-
 	const rightHandItem = gs.hero.activeItems.get(ITEMSLOT.RIGHT_HAND);
 	const leftHandItem = gs.hero.activeItems.get(ITEMSLOT.LEFT_HAND);
 
@@ -43,7 +42,6 @@ export function createDecks(gs: GameState): GameState {
 			console.log("Ring on left hand", ring);
 			gs.leftHandDeck.addCards(createCardsFromItem(ring, "LEFT"));
 		}
-
 	}
 	// gs.leftHandDeck = new Deck(createCardsFromItem(left, "LEFT"));
 	// gs.rightHandDeck = new Deck(createCardsFromItem(right, "RIGHT"));
@@ -70,10 +68,8 @@ export function createDecks(gs: GameState): GameState {
 // 	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
 // 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
 
-
 // 	gameState.arena.resetArena();
 // 	gameState.turn = 1;
-
 
 // 	return { ...gameState };
 // }
@@ -90,9 +86,9 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 	// If target is specified, use the card on the target
 	if (targetIndex !== undefined && targetIndex > -1) {
 		const enemy = gameState.arena.enemies[targetIndex];
-		
+
 		enemy.beforeDamage();
-		console.log(card.damage);
+
 		card.damage.forEach((dmg) => {
 			enemy.takeDamage(dmg);
 		});
@@ -102,6 +98,7 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 		});
 
 		if (enemy.isDead()) {
+			gameState.hero.experience += enemy.getExperienceValue();
 			gameState = enemy.atDeath(gameState);
 		}
 	}
@@ -125,13 +122,11 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 }
 
 export function endTurn(gameState: GameState): GameState {
-
 	// Item onEndOfTurn effects
 	gameState.hero.activeItems.forEach((item) => {
-		if(item.onEndOfTurn) {
+		if (item.onEndOfTurn) {
 			gameState = item.onEndOfTurn(gameState);
 		}
-		
 	});
 
 	// Events at the end of the player turn
@@ -141,9 +136,7 @@ export function endTurn(gameState: GameState): GameState {
 	});
 
 
-
-
-
+	
 
 	gameState.state = GAMESTATES.ENEMYTURN;
 
@@ -157,11 +150,9 @@ export function endTurn(gameState: GameState): GameState {
 		return { ...gameState, state: GAMESTATES.DEAD };
 	}
 
-
 	if (checkForWin(gameState)) {
 		return { ...gameState, state: GAMESTATES.ARENA_COMPLETED };
 	}
-
 
 	// Events at the start of the enemy turn
 	gameState.arena.enemies.forEach((enemy) => {
@@ -172,18 +163,20 @@ export function endTurn(gameState: GameState): GameState {
 }
 
 export function endEnemyTurn(gameState: GameState): GameState {
-
 	// Resolve enemy actions
-	gameState = gameState.arena.enemies.reduce((gs, enemy) => {
-		return enemy.resolveAction(gs);
-	}, { ...gameState });
+	gameState = gameState.arena.enemies.reduce(
+		(gs, enemy) => {
+			return enemy.resolveAction(gs);
+		},
+		{ ...gameState },
+	);
 
 	gameState.arena.enemies.forEach((enemy) => {
 		gameState = enemy.atEndOfEnemyTurn(gameState);
 		gameState = enemy.cleanUpEndOfEnemyTurn(gameState);
 	});
 
-	gameState.hero.armor = gameState.hero.defaultArmor;
+	gameState.hero.armor = getBaseArmorValue(gameState.hero);
 
 	if (checkForDeath(gameState)) {
 		return { ...gameState, state: GAMESTATES.DEAD };
@@ -197,8 +190,6 @@ export function endEnemyTurn(gameState: GameState): GameState {
 	gameState.turn++;
 	gameState.hero.aps = gameState.hero.maxAps;
 
-
-
 	// Draw 3 cards to both hands
 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
 	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
@@ -211,17 +202,12 @@ export function endEnemyTurn(gameState: GameState): GameState {
 }
 
 export function checkForWin(gs: GameState): boolean {
-
-
-
 	// Count all dead enemies in the arena
 	const deadEnemies = gs.arena.enemies.filter((enemy) => enemy.isDead()).length;
-
 
 	return deadEnemies === gs.arena.enemies.length;
 }
 
 export function checkForDeath(gs: GameState): boolean {
-
 	return gs.hero.health <= 0;
 }

@@ -20,15 +20,15 @@
     border-top-left-radius: 30% 100%;
     border-top-right-radius: 30% 100%;
 
-    & > div {
+    &>div {
         /* flex: 0 0 auto; */
         /* margin: 0 1rem; */
     }
 
 
-    & > div.value {
+    &>div.value {
         position: relative;
-        
+
         height: 6rem;
 
         display: flex;
@@ -43,7 +43,7 @@
 
         /* border-radius: 2rem; */
 
-        
+
         box-shadow: inset 0 0 0.5rem 3px #0003;
 
         &.health {
@@ -57,7 +57,7 @@
             /* border-bottom-right-radius: 0; */
             border-top-left-radius: 3rem;
             border-bottom-left-radius: 3rem;
-            
+
         }
 
         &.armor {
@@ -67,34 +67,92 @@
             border-bottom-right-radius: 3rem;
         }
 
-        & > div.icon {
+        &>div.icon {
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            
-            & > img {
+
+            &>img {
                 height: 80%;
             }
 
             margin-right: 0.5rem;
         }
 
-        & > div.values {
+        &>div.values {
 
-            & > span.main {
+            &>span.main {
                 font-size: 3rem;
-                color: #000;;
+                color: #000;
+                ;
                 font-weight: bold;
                 text-shadow: 0 0 3px #FFF;
             }
 
-            & > span.base {
+            &>span.base {
                 font-size: 1.5rem;
                 font-weight: bold;
                 color: #000A;
                 text-shadow: 0 0 1px #FFFA;
             }
         }
+    }
+
+    &>div.small-value {
+        height: 3rem;
+
+
+        margin: 0 1rem;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        background: #0004;
+        border-radius: 1.5rem;
+        border-bottom-left-radius: 40% 1.5rem;
+        border-bottom-right-radius: 40% 1.5rem;
+        box-shadow: inset 0 0 6px 3px #0004;
+        padding: 0.5rem 0.5rem;
+
+        & > div {
+
+            height: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            padding: 0 0.5rem;
+
+            &.icon {
+                height: 3rem;
+            
+                &>img {
+                    height: 2.5rem;
+
+                }
+            }
+
+            &.value {
+
+            
+                height: 3rem;
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #000A;
+                text-shadow: 0 0 3px #FFF;
+                /* margin-left: 0.5rem; */
+                padding: 0 0.5rem;
+                border-left: groove 2px #0002;
+
+            }
+        }
+
+
+
     }
 }
