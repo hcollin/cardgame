@@ -218,7 +218,7 @@ export function getLevelMods(level: number): LevelMods {
 	return mods;
 }
 
-function nameGenerator(): string {
+export function nameGenerator(): string {
 	const firstNames: string[] = [
 		"Gorath",
 		"Lirien",

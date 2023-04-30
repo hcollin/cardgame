@@ -32,8 +32,14 @@ import HeroView from "./views/HeroView";
 
 import frostTrollLogo from "./views/pics/frosttrolllogo.png";
 import Arena from "./views/Arena";
+import Hero from "./game/Hero";
+import { RaceHuman } from "./data/Races";
+import { ClassWarrior } from "./data/Classes";
 
 const isMobile = false;
+
+const h = new Hero(RaceHuman, ClassWarrior);
+console.log("HERO",h);
 
 function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createCampaign());

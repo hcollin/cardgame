@@ -54,3 +54,19 @@ export interface LevelMods {
 	lHandSize: number;
 	cape: boolean;
 }
+
+
+export interface CharacterRace {
+    name: string;
+    baseArmor: number;
+    baseHealth: number;
+    baseEnergy: number;
+    baseHandSize: number;
+}
+
+export interface CharacterClass {
+    name: string;
+    startingItems: Item[];
+    levelStats: LevelMods[];
+
+}
