@@ -25,7 +25,7 @@ export function createGame(hero?: Hero): GameState {
 		playedCardsThisTurn: [],
 	};
 }
-
+	
 export function createDecks(gs: GameState): GameState {
 	const rightHandItem = gs.hero.getEquippedItem(ITEMSLOT.RIGHT_HAND);
 	const leftHandItem = gs.hero.getEquippedItem(ITEMSLOT.LEFT_HAND);

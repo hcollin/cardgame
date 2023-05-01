@@ -20,25 +20,6 @@ div.world-map {
         position: relative;
     }
 
-    &>div.line-v {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: calc(50% - 5px);
-        width: 10px;
-        background: #0004;
-    }
-
-    &>div.line-h {
-        position: absolute;
-        top: calc(50% - 5px);
-        left: 0;
-
-        width: 100%;
-        height: 10px;
-        background: #0004;
-    }
-
     &>div.map-title {
         font-family: "Tangerine", "Times New Roman", Serif;
         position: absolute;
@@ -63,6 +44,7 @@ div.world-map {
 
         overflow: visible;
 
+
         &>div.icon {
             position: absolute;
             top: 0;
@@ -86,10 +68,30 @@ div.world-map {
 
         &>div.name {
             position: absolute;
-            top: 75%;
+            top: 70%;
 
             width: auto;
             overflow: visible;
+
+        }
+
+        &>div.difficulty {
+            position: absolute;
+            bottom: 1rem;
+            left: 3px;
+
+
+
+            color: white;
+            z-index: 100;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            transform-origin: top left;
+            transform: rotate(-90deg) scale(0.8);
 
         }
 

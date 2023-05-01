@@ -1,4 +1,5 @@
 import { Arena } from "../game/Arena";
+import { Campaign } from "./Campaign";
 
 
 export enum WORLDLOCATIONTYPE {
@@ -31,6 +32,7 @@ export interface Location {
     nextLocations: LocationId[];
     flags: LOCATIONFLAG[];
     icon: string;
+    init: (campaign: Campaign) => void;
 }
 
 

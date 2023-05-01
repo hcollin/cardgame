@@ -12,50 +12,74 @@ import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
 
 
+/**
+ * This is used to initialize the state
+ * @returns 
+ */
+export function createEmptyCampaign(): Campaign {
+    return {
+        id: "EMPTY",
+        hero: new Hero(RaceHuman, ClassWarrior),
+        world: new Map<LocationId, Location>(),
+        currentLocationId: "",
+        options: {
+            healAfterArena: 0,
+            fullHealOnLevelUp: false,
+            endlessLoop: false
+        }
+    };
+}
 
 export function createCampaign(): Campaign {
     
     const campaign: Campaign = {
         id: v4(),
         hero: new Hero(RaceHuman, ClassWarrior),
-        world: createWorld(LOCATIONS),
-        currentLocationId: ""
+        world: new Map<LocationId, Location>(),
+        currentLocationId: "",
+        options: {
+            healAfterArena: 0,
+            fullHealOnLevelUp: false,
+            endlessLoop: false
+        }
     }
+
+    campaign.world = createWorld([...LOCATIONS], campaign);
 
     return campaign;
 
 }
 
-export function selectActiveLocationFromCampaign(campaign: Campaign): Location {
-    if (campaign.world.size === 0) { throw new Error("World not initialized"); }
-    if (campaign.currentLocationId === "") {
-        const locs = Array.from(campaign.world.values());
-        const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
-        if (!loc) { throw new Error("No active location found"); }
-        return loc;
-    }
+// export function selectActiveLocationFromCampaign(campaign: Campaign): Location {
+//     if (campaign.world.size === 0) { throw new Error("World not initialized"); }
+//     if (campaign.currentLocationId === "") {
+//         const locs = Array.from(campaign.world.values());
+//         const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
+//         if (!loc) { throw new Error("No active location found"); }
+//         return loc;
+//     }
 
-    const cloc = campaign.world.get(campaign.currentLocationId);
-    if (!cloc) { throw new Error("Current location not found"); }
-    const nloc = campaign.world.get(cloc.nextLocations[0]);
-    if (!nloc) { throw new Error("Next location not found"); }
-    return nloc;
-}
+//     const cloc = campaign.world.get(campaign.currentLocationId);
+//     if (!cloc) { throw new Error("Current location not found"); }
+//     const nloc = campaign.world.get(cloc.nextLocations[0]);
+//     if (!nloc) { throw new Error("Next location not found"); }
+//     return nloc;
+// }
 
-export function activateNextLocationForCampaign(campaign: Campaign): Campaign {
-    if (campaign.world.size === 0) { throw new Error("World not initialized"); }
+// export function activateNextLocationForCampaign(campaign: Campaign): Campaign {
+//     if (campaign.world.size === 0) { throw new Error("World not initialized"); }
     
-    const locs = Array.from(campaign.world.values());
-    const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
+//     const locs = Array.from(campaign.world.values());
+//     const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
 
-    if(!loc) { throw new Error("No active location found"); }
-    if(loc.nextLocations.length === 0) { throw new Error("No next locations found"); }
+//     if(!loc) { throw new Error("No active location found"); }
+//     if(loc.nextLocations.length === 0) { throw new Error("No next locations found"); }
 
-    const nextLocId = campaign.world.get(loc.nextLocations[0]);
-    if(!nextLocId) { throw new Error("Next location not found"); }
+//     const nextLocId = campaign.world.get(loc.nextLocations[0]);
+//     if(!nextLocId) { throw new Error("Next location not found"); }
 
-    return {...campaign, currentLocationId: nextLocId.id};
-}
+//     return {...campaign, currentLocationId: nextLocId.id};
+// }
 
 export function markCurrentLocationCompleted(campaign: Campaign): Campaign { 
     if (campaign.world.size === 0) { throw new Error("World not initialized"); }
@@ -66,6 +90,12 @@ export function markCurrentLocationCompleted(campaign: Campaign): Campaign {
     loc.status = LOCATIONSTATUS.COMPLETED;
     loc.flags.push("completed");
     campaign.world.set(loc.id, loc);
+
+    if(campaign.options.healAfterArena > 0) {
+        const healAmount = Math.round(campaign.hero.getMaxHealth() * campaign.options.healAfterArena);
+        campaign.hero.healHero(healAmount);
+    }
+
     return {...campaign};
 }
 
@@ -113,7 +143,7 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
     gameState.leftHand = gameState.leftHandDeck.drawCards(gameState.hero.getHandSize("LEFT"));
 
     gameState.arena.resetArena();
-    gameState.hero.arenaReset();
+    gameState.hero.arenaReset(campaign.options);
     gameState.turn = 1;
 
     
@@ -122,7 +152,8 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
     return gameState;
 }
 
-export function createGameForArena(arena: Arena, hero: Hero): GameState {
+export function createGameForArena(arena: Arena, campaign: Campaign): GameState {
+    const hero = campaign.hero;
     let gameState: GameState = {
         id: v4(),
         turn: 0,
@@ -148,7 +179,7 @@ export function createGameForArena(arena: Arena, hero: Hero): GameState {
     gameState.arena.resetArena();
     gameState.turn = 1;
 
-    gameState.hero.arenaReset();
+    gameState.hero.arenaReset(campaign.options);
     // gameState.hero = resetHero(gameState.hero, false);
 
     return gameState;

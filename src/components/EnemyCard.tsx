@@ -1,14 +1,15 @@
 import { ENEMYSTATUS, Enemy } from "../game/Enemy";
 
-import attImg from "./pics/attack.png";
-import healthImg from "./pics/health.png";
-
-import "./enemycard.css";
 import { EffectRow } from "./EffectIcon";
 import { useDrop } from "react-dnd";
 import { Card, DAMAGETYPE, TARGETS } from "../models/Card";
 import { EFFECTS } from "../models/Effects";
 import { useEffect, useState } from "react";
+
+import blockImg from "./icons/armor.png";
+import healthImg from "./icons/health.png";
+
+import "./enemycard.css";
 
 interface EnemyCardProps {
 	enemy: Enemy;
@@ -107,7 +108,12 @@ export default function EnemyCard(props: EnemyCardProps) {
 
 				<footer>
 					<div className="health">
-						<img src={healthImg} alt="Health" /> {stats.health}
+						{/* <img src={healthImg} alt="Health" /> */}
+						<span> {stats.health}</span>
+					</div>
+					<div className="block">
+						{/* <img src={blockImg} alt="block" /> */}
+						<span>{stats.block}</span>
 					</div>
 				</footer>
 			</div>
@@ -117,8 +123,8 @@ export default function EnemyCard(props: EnemyCardProps) {
 					{currentDamage.map((dmg, index) => {
 						const cns: string[] = ["hit"];
 						cns.push(dmg.type.toLowerCase());
-						if(props.enemy.isVulnerableTo(dmg.type)) cns.push("vulnerable");
-						if(props.enemy.isResistantTo(dmg.type)) cns.push("resistant");
+						if (props.enemy.isVulnerableTo(dmg.type)) cns.push("vulnerable");
+						if (props.enemy.isResistantTo(dmg.type)) cns.push("resistant");
 
 						if (currentDamage.length > 2) cns.push("small");
 						return (

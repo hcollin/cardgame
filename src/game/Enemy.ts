@@ -13,8 +13,9 @@ export enum ENEMYSTATUS {
 export interface EnemyStats {
 	name: string;
 	size: ENEMYSIZE;
-	damage: number;
+
 	health: number;
+	block: number;
 	status: ENEMYSTATUS;
 	effects: Map<EFFECTS, number>;
 	action: string;
@@ -22,7 +23,7 @@ export interface EnemyStats {
 
 export enum ENEMYACTIONS {
 	ATTACK = "ATTACK",
-	DEFEND = "DEFEND",
+	BLOCK = "BLOCK",
 	WAIT = "WAIT",
 	HEAL = "HEAL",
 	ESCAPE = "ESCAPE",
@@ -49,7 +50,7 @@ export enum ENEMYSIZE {
 	SMALL = "SMALL",
 	MEDIUM = "MEDIUM",
 	LARGE = "LARGE",
-	HUGE = "HUGE"
+	HUGE = "HUGE",
 }
 export class Enemy {
 	public id: string = "";
@@ -57,11 +58,12 @@ export class Enemy {
 	protected name: string = "No name";
 	protected health: number;
 	protected maxHealth: number = 100;
-	protected attackValue: number = 5;
 
-	protected size: ENEMYSIZE = ENEMYSIZE.MEDIUM; 
+	public readonly difficulty: number = 1;
 
-	protected armor: number = 0;
+	protected size: ENEMYSIZE = ENEMYSIZE.MEDIUM;
+
+	protected block: number = 0;
 
 	protected vulnerableTo: DAMAGETYPE[] = [];
 	protected resistantTo: DAMAGETYPE[] = [];
@@ -77,12 +79,10 @@ export class Enemy {
 	public image: string = "";
 
 	// This is array contains the latest damage taken by the enemy, so that in can be shown on the screen
-	public damageTaken: {type: DAMAGETYPE, amount: number}[] = [];
+	public damageTaken: { type: DAMAGETYPE; amount: number }[] = [];
 
 	protected actions: EnemyAction[] = [];
 	protected nextAction: number = 0;
-
-	
 
 	constructor() {
 		this.id = v4();
@@ -101,13 +101,6 @@ export class Enemy {
 		return this.experienceValue;
 	}
 
-	public attack(): number {
-		if (!this.isAbletoAct()) {
-			return 0;
-		}
-		return this.attackValue;
-	}
-
 	public beforeDamage() {
 		this.damageTaken = [];
 	}
@@ -115,11 +108,19 @@ export class Enemy {
 	public takeDamage(damage: Damage): void {
 		const damageRange = this.getDamagePotential(damage);
 
-		const damageTaken = rnd(damageRange[0], damageRange[1]);
+		let damageTaken = rnd(damageRange[0], damageRange[1]);
+
+		if(damageTaken < this.block) {
+			this.block -= damageTaken;
+			damageTaken = 0;
+		} else {
+			damageTaken -= this.block;
+			this.block = 0;
+		}
 
 		this.health -= damageTaken;
 
-		this.damageTaken.push({type: damage.type, amount: damageTaken});
+		this.damageTaken.push({ type: damage.type, amount: damageTaken });
 
 		if (this.health <= 0) {
 			this.status = ENEMYSTATUS.DEAD;
@@ -140,7 +141,7 @@ export class Enemy {
 			dmg = Math.round(dmg * 1.25);
 		}
 
-		const damageRange = getDamageRange({...damage, amount: dmg});
+		const damageRange = getDamageRange({ ...damage, amount: dmg });
 
 		return damageRange;
 	}
@@ -154,7 +155,9 @@ export class Enemy {
 	}
 
 	public causeEffect(effect: EFFECTS) {
-		if(this.effectImmunities.includes(effect)) { return; }
+		if (this.effectImmunities.includes(effect)) {
+			return;
+		}
 		if (this.effects.has(effect)) {
 			this.effects.set(effect, this.effects.get(effect)! + 1);
 		} else {
@@ -190,8 +193,8 @@ export class Enemy {
 		switch (act.action) {
 			case ENEMYACTIONS.ATTACK:
 				return this.actionAttack(gs, act);
-			case ENEMYACTIONS.DEFEND:
-				return this.actionDefend(gs, act);
+			case ENEMYACTIONS.BLOCK:
+				return this.actionBlock(gs, act);
 			case ENEMYACTIONS.HEAL:
 				return this.actionHeal(gs, act);
 			case ENEMYACTIONS.ESCAPE:
@@ -215,14 +218,16 @@ export class Enemy {
 		if (!this.isAbletoAct()) {
 			return gs;
 		}
-		let damage = act.value || this.attackValue;
+		let damage = act.value || 0;
 
 		gs.hero.takeDamage(damage);
 		return { ...gs };
 	}
 
 	protected actionHeal(gs: GameState, act: EnemyAction): GameState {
-		if(this.effectIsActive(EFFECTS.STUNNED)) { return gs; }
+		if (this.effectIsActive(EFFECTS.STUNNED)) {
+			return gs;
+		}
 		this.health += act.value || 0;
 		if (this.health > this.maxHealth) {
 			this.health = this.maxHealth;
@@ -231,8 +236,8 @@ export class Enemy {
 		return { ...gs };
 	}
 
-	protected actionDefend(gs: GameState, act: EnemyAction): GameState {
-		this.armor += act.value || 0;
+	protected actionBlock(gs: GameState, act: EnemyAction): GameState {
+		this.block += act.value || 0;
 		return { ...gs };
 	}
 
@@ -295,18 +300,23 @@ export class Enemy {
 	 * @returns GameState
 	 */
 	public atEndOfPlayerTurn(gs: GameState): GameState {
+		this.block = 0;
 		return gs;
 	}
 
 	public cleanUpEndOfPlayerTurn(gs: GameState): GameState {
 		this.damageTaken = [];
-		
+
 		return gs;
 	}
 
 	public cleanUpEndOfEnemyTurn(gs: GameState): GameState {
 		if (this.effects.has(EFFECTS.POISONED)) {
 			this.takeDamage({ amount: 1, type: DAMAGETYPE.POISON, variation: 0 });
+		}
+
+		if (this.effects.has(EFFECTS.BURNING)) {
+			this.takeDamage({ amount: 2, type: DAMAGETYPE.FIRE, variation: 1 });
 		}
 
 		// Remove 1 from each effect
@@ -330,8 +340,8 @@ export class Enemy {
 		return {
 			name: this.name,
 			size: this.size,
-			damage: this.attackValue,
 			health: this.health,
+			block: this.block,
 			status: this.status,
 			action: this.nextActionString(),
 			effects: this.effects,

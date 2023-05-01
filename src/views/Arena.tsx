@@ -14,6 +14,7 @@ import TargetHero from "../components/TargetHero";
 import CardHand from "../components/CardHand";
 import { Item } from "../models/Items";
 import ItemCard from "../components/ItemCard";
+import ArenaDevTools from "../components/ArenaDevTools";
 
 function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
@@ -101,6 +102,8 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 		setGameState({ ...gameState, state: GAMESTATES.ARENA_COMPLETED });
 	}
 
+	
+
 	if (!gameState) return null;
 
 	const arenaStyle: CSSProperties = {
@@ -148,6 +151,8 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 
 			{gameState.state === GAMESTATES.ARENA_REWARDS && <RewardsScreen gs={gameState} onCompleteArena={completeArena} />}
 			<div id="zoomedContent"></div>
+
+			<ArenaDevTools gs={gameState} update={setGameState} />
 		</div>
 	);
 }

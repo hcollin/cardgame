@@ -33,6 +33,107 @@ div.main-screen {
   background: url("./views/pics/papyrus.jpg");
   background-size: cover;
   box-shadow: inset 0 0 5rem 2rem #0008;
+
+  
+  & > div.death {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: #0008;
+    z-index: 200;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & > h2 {
+        color: #FFFA;
+        font-size: 4rem;
+        font-family: "Tangerine", "Times New Roman", Serif;
+        font-weight: normal;
+        background: #0008;
+
+        width: 100%;
+        text-align: center;
+        padding: 2rem;
+        border-top: groove 3px #0008;
+        margin: 0;
+
+        & > span {
+            color: #F00A;
+        }
+    }
+
+    & > div.restart {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: top;
+
+        & > div.empty {
+            background: #0008;
+            height: 0rem;
+            flex: 1 1 auto;
+            border-bottom: groove 3px #0008;
+        }
+
+        & > div.btn {
+            background: #0008;
+            /* height: 3rem; */
+            flex: 1 1 auto;
+            border: groove 3px #0008;
+            border-top: none;
+            padding: 1rem;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            
+            border-bottom-left-radius: 25% 100%;
+            border-bottom-right-radius: 25% 100%;
+
+            & > button {
+                padding: 0.5rem 1rem;
+                
+                font-size: 2.5rem;
+                font-family: "Tangerine", "Times New Roman", Serif;
+                font-weight: bold;
+                color: #000A;
+                text-shadow: 1px 1px 2px #FFF8,-1px -1px 2px #FFF8, 1px -1px 2px #FFF8, -1px 1px 2px #FFF8;
+
+                cursor: pointer;
+
+                border: groove 2px #0008;
+                border-radius: 1rem;
+                background: linear-gradient(0deg, #654, gold, #654);
+                box-shadow: inset 0 0 0.5rem 0.5rem #0004;
+
+                filter: brightness(1);
+                transition: all 0.2s ease-in-out;
+
+                outline: none;
+
+                &:hover {
+                    filter: brightness(1.1);
+                }
+
+                &:active {
+                    filter: brightness(1.4);
+                }
+                
+            }
+        }
+    }
+    
+}
+
+
 }
 
 

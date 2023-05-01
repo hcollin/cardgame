@@ -6,8 +6,9 @@ import { CharacterClass, CharacterRace, ITEMSLOT, LevelMods } from "../models/He
 import { Item } from "../models/Items";
 import { nameGenerator } from "./HeroTools";
 import { chance } from "rndlib";
+import { CampaignOptions } from "../models/Campaign";
 
-const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 40, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
+const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
 export default class Hero {
 	// Basic information
@@ -49,7 +50,11 @@ export default class Hero {
 		this.heroClass = chrClass;
 		this.heroRace = chrRace;
 
-		this.fullReset();
+		this.fullReset({
+			healAfterArena: 0,
+			fullHealOnLevelUp: false,
+			endlessLoop: false,
+		});
 	}
 
 	// EVENTS TO HERO
@@ -144,7 +149,7 @@ export default class Hero {
 	/**
 	 * Reset heros data at the beginning of the game
 	 */
-	public fullReset() {
+	public fullReset(options: CampaignOptions) {
 		this.level = 1;
 		this.experience = 0;
 
@@ -160,22 +165,24 @@ export default class Hero {
 			}
 		});
 
-		this.arenaReset();
+		this.health = this.getMaxHealth();
+
+		this.arenaReset(options);
 	}
 
 	/**
 	 * Reset heros data af the arena is completed
 	 */
-	public arenaReset(heal?: boolean) {
+	public arenaReset(options: CampaignOptions) {
 		// Check for level up
 		if (this.experience >= LEVELEXPERIENCEREQUIREMENTS[this.level + 1]) {
 			this.level++;
+			if(options.fullHealOnLevelUp) {
+				this.health = this.getMaxHealth();
+			}
 		}
 
-		if (heal) {
-			this.health = this.getMaxHealth();
-		}
-
+		
 		this.turnReset();
 	}
 
@@ -188,6 +195,14 @@ export default class Hero {
 		this.temporaryDodge = 0;	// Reset temporary dodge
 		
 	}
+
+	// Status
+
+	public isDead(): boolean {
+		return this.health <= 0;
+	}
+
+	
 
 	// LEVELING UP
 

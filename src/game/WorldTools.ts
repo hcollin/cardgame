@@ -3,65 +3,76 @@ import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
 import { LOCATIONSTATUS, Location, LocationId, MapLocation, WORLDLOCATIONTYPE } from "../models/World";
 
+export function createWorld(locs: Location[], campaign: Campaign): Map<LocationId, Location> {
+	return locs.reduce((world, loc) => {
+		const nloc = createLocation(loc);
 
-export function createWorld(locs: Location[]): Map<LocationId, Location> {
-    return locs.reduce((world, loc) => {
-        world.set(loc.id, loc);
-        return world;
-    }, new Map<LocationId, Location>());
+		nloc.init(campaign);
+		world.set(nloc.id, nloc);
+		return world;
+	}, new Map<LocationId, Location>());
 }
 
-
+function createLocation(loc: Location): Location {
+	const nloc: Location = {
+		id: loc.id,
+		status: LOCATIONSTATUS.LOCKED,
+		type: loc.type,
+		arena: [...loc.arena],
+		nextLocations: [...loc.nextLocations],
+		flags: [...loc.flags],
+		icon: loc.icon,
+		init: loc.init,
+	};
+	return nloc;
+}
 
 export function updateLocations(mlocs: Map<LocationId, Location>, currentId: LocationId): Map<LocationId, Location> {
+	const tlocs = new Map<LocationId, Location>();
+	const nlocs = new Map<LocationId, Location>();
 
-    const tlocs = new Map<LocationId, Location>();
-    const nlocs = new Map<LocationId, Location>();
+	let completedCount: number = 0;
 
-    let completedCount: number = 0;
+	mlocs.forEach((l) => {
+		if (l.flags.includes("completed")) {
+			l.status = LOCATIONSTATUS.COMPLETED;
+			completedCount++;
+		} else {
+			l.status = LOCATIONSTATUS.LOCKED;
+		}
+		tlocs.set(l.id, l);
+	});
 
-    mlocs.forEach((l) => {
-        if (l.flags.includes("completed")) {
-            l.status = LOCATIONSTATUS.COMPLETED;
-            completedCount++;
-        } else {
-            l.status = LOCATIONSTATUS.LOCKED;
-        }
-        tlocs.set(l.id, l);
-    });
+	tlocs.forEach((l) => {
+		if (l.status === LOCATIONSTATUS.COMPLETED) {
+			l.nextLocations.forEach((nl) => {
+				const nloc = tlocs.get(nl);
+				if (nloc && nloc.status !== LOCATIONSTATUS.COMPLETED) {
+					nloc.status = LOCATIONSTATUS.SELECTABLE;
+					nlocs.set(nloc.id, nloc);
+				}
+			});
+		}
+		if (completedCount === 0 && l.flags.includes("first")) {
+			l.status = LOCATIONSTATUS.SELECTABLE;
+		}
+		nlocs.set(l.id, l);
+	});
 
+	const currentLoc = nlocs.get(currentId);
+	if (currentLoc && currentLoc.status !== LOCATIONSTATUS.COMPLETED) {
+		currentLoc.status = LOCATIONSTATUS.ACTIVE;
+		nlocs.set(currentLoc.id, currentLoc);
+	}
 
-    tlocs.forEach((l) => {
-        if (l.status === LOCATIONSTATUS.COMPLETED) {
-            l.nextLocations.forEach((nl) => {
-                const nloc = tlocs.get(nl);
-                if (nloc && nloc.status !== LOCATIONSTATUS.COMPLETED) {
-                    nloc.status = LOCATIONSTATUS.SELECTABLE;
-                    nlocs.set(nloc.id, nloc);
-                }
-            });
-        }
-        if (completedCount === 0 && l.flags.includes("first")) {
-            l.status = LOCATIONSTATUS.SELECTABLE;
-        }
-        nlocs.set(l.id, l);
-    });
-
-    const currentLoc = nlocs.get(currentId);
-    if (currentLoc && currentLoc.status !== LOCATIONSTATUS.COMPLETED) {
-        currentLoc.status = LOCATIONSTATUS.ACTIVE;
-        nlocs.set(currentLoc.id, currentLoc);
-    }
-
-    return nlocs;
+	return nlocs;
 }
 
-
 // export function selectNextLocation(gs: GameState): Location {
-//     if(gs.world.size === 0) { throw new Error("World not initialized"); } 
-//     if(gs.currentLocationId === "") { 
+//     if(gs.world.size === 0) { throw new Error("World not initialized"); }
+//     if(gs.currentLocationId === "") {
 //         const locs = Array.from(gs.world.values());
-//         const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE); 
+//         const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
 //         if(!loc) { throw new Error("No start location found"); }
 //         return loc;
 //     }
@@ -73,73 +84,63 @@ export function updateLocations(mlocs: Map<LocationId, Location>, currentId: Loc
 //     return nloc;
 // }
 
-
-
 export function buildMapLocations(campaign: Campaign): MapLocation[] {
+	campaign.world = updateLocations(campaign.world, campaign.currentLocationId);
 
+	const startingLocs: Location[] = Array.from(campaign.world.values()).filter((l) => l.flags.includes("first"));
 
-    campaign.world = updateLocations(campaign.world, campaign.currentLocationId);
+	function travelLocations(camp: Campaign, locId: LocationId, mplocs: MapLocation[], depth: number, trak: number): MapLocation[] {
+		if (depth > 10) return mplocs;
 
-    const startingLocs: Location[] = Array.from(campaign.world.values()).filter(l => l.flags.includes("first"));
+		const loc = camp.world.get(locId);
+		if (!loc) return mplocs;
 
-    function travelLocations(camp: Campaign, locId: LocationId, mplocs: MapLocation[], depth: number, trak: number): MapLocation[] {
+		const mploc: MapLocation = {
+			...loc,
+			depth: depth,
+			trak: trak,
+		};
+		const locExists = mplocs.find((l) => l.id === mploc.id);
+		if (locExists) {
+			if (locExists.depth < mploc.depth) {
+				locExists.depth = mploc.depth;
+			} else {
+				return mplocs;
+			}
+		} else {
+			mplocs.push(mploc);
+		}
 
-        if (depth > 10) return mplocs;
+		if (loc.flags.includes("final")) return mplocs;
 
-        const loc = camp.world.get(locId);
-        if (!loc) return mplocs;
+		if (loc.nextLocations.length > 0) {
+			const nid = loc.nextLocations[0];
 
-        const mploc: MapLocation = {
-            ...loc,
-            depth: depth,
-            trak: trak,
-        };
-        const locExists = mplocs.find(l => l.id === mploc.id);
-        if (locExists) {
-            if (locExists.depth < mploc.depth) {
-                locExists.depth = mploc.depth;
-            } else {
-                return mplocs;
-            }
-        } else {
-            mplocs.push(mploc);
-        }
+			if (!nid) return mplocs;
+			return travelLocations(camp, nid, mplocs, depth + 1, trak);
+		}
 
+		return mplocs;
+	}
 
-        if (loc.flags.includes("final")) return mplocs;
+	const locs = startingLocs.reduce((mplocs, loc, trak) => {
+		return travelLocations(campaign, loc.id, mplocs, 0, trak);
+	}, [] as MapLocation[]);
 
-        if (loc.nextLocations.length > 0) {
-            const nid = loc.nextLocations[0];
-
-            if (!nid) return mplocs;
-            return travelLocations(camp, nid, mplocs, depth + 1, trak);
-
-        }
-
-        return mplocs;
-    }
-
-    const locs = startingLocs.reduce((mplocs, loc, trak) => {
-
-        return travelLocations(campaign, loc.id, mplocs, 0, trak);
-
-    }, [] as MapLocation[]);
-
-    return locs.sort((a, b) => a.depth - b.depth);
+	return locs.sort((a, b) => a.depth - b.depth);
 }
 
 export function convertMapLocationToLocation(mloc: MapLocation): Location {
+	const loc: Location = {
+		id: mloc.id,
+		arena: mloc.arena,
+		type: mloc.type,
+		status: LOCATIONSTATUS.ACTIVE,
+		nextLocations: mloc.nextLocations,
+		flags: mloc.flags,
+		icon: mloc.icon,
+		init: mloc.init,
+	};
 
-    const loc: Location = {
-        id: mloc.id,
-        arena: mloc.arena,
-        type: mloc.type,
-        status: LOCATIONSTATUS.ACTIVE,
-        nextLocations: mloc.nextLocations,
-        flags: mloc.flags,
-        icon: mloc.icon,
-    };
-
-    return { ...loc }
-
+	return { ...loc };
 }

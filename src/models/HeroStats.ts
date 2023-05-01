@@ -1,3 +1,4 @@
+import { Card } from "./Card";
 import { EFFECTS } from "./Effects";
 import { Item } from "./Items";
 
@@ -68,5 +69,6 @@ export interface CharacterClass {
     name: string;
     startingItems: [Item, ITEMSLOT|null][];
     levelStats: LevelMods[];
+	cards?: Card[];
 
 }

@@ -1,22 +1,55 @@
+import { ARENADIFFICULTY } from "../game/Arena";
 import { WORLDLOCATIONTYPE, Location, LOCATIONSTATUS } from "../models/World";
 import { ArenaDragonsLair } from "./ArenaDragonsLair";
+import { ArenaForestEncounter } from "./ArenaForestEncounter";
 import { ArenaGoblinAmbush } from "./ArenaGoblinAmbush";
 import { ArenaGoblinLair } from "./ArenaGoblinLair";
 import { ArenaOrcVillage } from "./ArenaOrcVillage";
 import { ArenaSkeleDungeon } from "./ArenaSkeleDungeon";
 import { ArenaTrollCave } from "./ArenaTrollCave";
+import { EmptyArena } from "./EmptyArena";
 
 
 export const LOCATIONS: Location[] = [
     {
-        id: "OrcVillage",
+        id: "EasyForest",
         status: LOCATIONSTATUS.LOCKED,
         type: WORLDLOCATIONTYPE.ARENA,
-        arena: [new ArenaOrcVillage()],
-        nextLocations: ["SkeletonDungeon"],
+        arena: [new EmptyArena()],
+        nextLocations: ["MediumForest"],
         flags: ["first"],
-        icon: "camp"
+        icon: "forest",
+        init: function(c) {
+            this.arena = [new ArenaForestEncounter(ARENADIFFICULTY.VERYEASY)];
+        }
     },
+
+    {
+        id: "MediumForest",
+        status: LOCATIONSTATUS.LOCKED,
+        type: WORLDLOCATIONTYPE.ARENA,
+        arena: [new EmptyArena()],
+        nextLocations: ["HardForest"],
+        flags: [],
+        icon: "forest",
+        init: function(c) {
+            this.arena = [new ArenaForestEncounter(ARENADIFFICULTY.EASY)];
+        }
+    },
+
+    {
+        id: "HardForest",
+        status: LOCATIONSTATUS.LOCKED,
+        type: WORLDLOCATIONTYPE.ARENA,
+        arena: [new EmptyArena()],
+        nextLocations: ["SkeletonDungeon"],
+        flags: [],
+        icon: "forest",
+        init: function(c) {
+            this.arena = [new ArenaForestEncounter(ARENADIFFICULTY.MEDIUM)];
+        }
+    },
+    
     {
         id: "GoblinRaid",
         status: LOCATIONSTATUS.LOCKED,
@@ -24,7 +57,10 @@ export const LOCATIONS: Location[] = [
         arena: [new ArenaGoblinAmbush()],
         nextLocations: ["GoblinCamp"],
         flags: ["first"],
-        icon: "forest"
+        icon: "forest",
+        init: function(c) {
+            this.arena = [new ArenaGoblinAmbush()];
+        }
     },
     {
         id: "GoblinCamp",
@@ -33,7 +69,10 @@ export const LOCATIONS: Location[] = [
         arena: [new ArenaGoblinLair()],
         nextLocations: ["SkeletonDungeon"],
         flags: [],
-        icon: "camp"
+        icon: "camp",
+        init: function(c) {
+            this.arena = [new ArenaGoblinLair()];
+        }
     },
     
     {
@@ -43,7 +82,10 @@ export const LOCATIONS: Location[] = [
         arena: [new ArenaSkeleDungeon()],
         nextLocations: ["TrollCave"],
         flags: [],
-        icon: "dungeon"
+        icon: "dungeon",
+        init: function(c) {
+            this.arena = [new ArenaSkeleDungeon()];
+        }
     },
     {
         id: "DragonsLair",
@@ -52,7 +94,10 @@ export const LOCATIONS: Location[] = [
         arena: [new ArenaDragonsLair()],
         nextLocations: [],
         flags: ["final"],
-        icon: "mountain"
+        icon: "mountain",
+        init: function(c) {
+            this.arena = [new ArenaDragonsLair()];
+        }
     },
     {
         id: "TrollCave",
@@ -61,7 +106,10 @@ export const LOCATIONS: Location[] = [
         arena: [new ArenaTrollCave()],
         nextLocations: [],
         flags: ["final"],
-        icon: "dungeon"
+        icon: "dungeon",
+        init: function(c) {
+            this.arena = [new ArenaTrollCave()];
+        }
     }
     
 ];
