@@ -18,6 +18,7 @@ import HeroView from "./views/HeroView";
 import frostTrollLogo from "./views/pics/frosttrolllogo.png";
 import Arena from "./views/Arena";
 import Hero from "./game/Hero";
+import { generateRandomWorld } from "./utils/RandomWorldGenerator";
 
 const isMobile = false;
 
@@ -39,7 +40,7 @@ function App() {
 	useEffect(() => {
 		const loc = campaign.world.get(campaign.currentLocationId);
 		if (loc) {
-			console.log(`Current Location ${loc.arena[0].name}`);
+			// console.log(`Current Location ${loc.arena[0].name}`);
 			setCurrentLocation(loc);
 		}
 	}, [campaign.currentLocationId]);
@@ -56,7 +57,7 @@ function App() {
 	}
 
 	function arenaDone(gs: GameState) {
-		console.log("ARENA COMPLETED: ", gs.state, " : ", campaign);
+		// console.log("ARENA COMPLETED: ", gs.state, " : ", campaign);
 
 		const ngs = { ...gs };
 
@@ -73,7 +74,7 @@ function App() {
 		if (currentLocation) {
 			const ar = currentLocation.arena[0];
 			if (ar) {
-				console.log(`Start Arena ${ar.name}`, campaign);
+				// console.log(`Start Arena ${ar.name}`, campaign);
 				setGameState(createGameForArena(ar, campaign));
 			}
 		}
@@ -90,7 +91,7 @@ function App() {
 	}
 
 	function updateCampaign(campaign: Campaign) {
-		console.log("Update Campaign", campaign.currentLocationId);
+		// console.log("Update Campaign", campaign.currentLocationId);
 		setCampaign({ ...campaign });
 	}
 

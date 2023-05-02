@@ -4,6 +4,7 @@ import { GameState } from "../models/GameState";
 import { getDamageRange } from "./ItemTools";
 import { EFFECTS } from "../models/Effects";
 import { v4 } from "uuid";
+import { Cloneable } from "../utils/Clonable";
 
 export enum ENEMYSTATUS {
 	ALIVE = "alive",
@@ -52,7 +53,7 @@ export enum ENEMYSIZE {
 	LARGE = "LARGE",
 	HUGE = "HUGE",
 }
-export class Enemy {
+export class Enemy extends Cloneable {
 	public id: string = "";
 
 	protected name: string = "No name";
@@ -85,6 +86,7 @@ export class Enemy {
 	protected nextAction: number = 0;
 
 	constructor() {
+		super();
 		this.id = v4();
 		this.health = this.maxHealth;
 	}
@@ -368,4 +370,6 @@ export class Enemy {
 		}
 		return strs.join(" ");
 	}
+
+	
 }

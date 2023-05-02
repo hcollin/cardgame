@@ -15,6 +15,7 @@ import { LeatherBoots } from "../data/items/LeatherBoots";
 import { CloakOfSwiftness } from "../data/items/CloakOfSwiftness";
 import { MinorWandOfFire } from "../data/items/MinorWandOfFire";
 import { Katana } from "../data/items/Katana";
+import { Cloneable } from "../utils/Clonable";
 
 export enum ARENADIFFICULTY {
 	VERYEASY = "Very Easy",
@@ -26,7 +27,7 @@ export enum ARENADIFFICULTY {
 	INSANE = "Insane",
 }
 
-export class Arena {
+export class Arena extends Cloneable {
 	public name: string = "Arena";
 	public enemies: Enemy[];
 	public background: string;
@@ -73,6 +74,7 @@ export class Arena {
 	protected rewardCount: number = 3;
 
 	constructor(name: string, enemies: Enemy[], background: string, bgImage?: string) {
+		super();
 		this.name = name;
 		this.enemies = enemies;
 		this.background = background;

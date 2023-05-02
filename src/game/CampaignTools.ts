@@ -10,6 +10,7 @@ import { Arena } from "./Arena";
 import Hero from "./Hero";
 import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
+import { generateRandomWorld } from "../utils/RandomWorldGenerator";
 
 
 /**
@@ -44,7 +45,10 @@ export function createCampaign(): Campaign {
         }
     }
 
-    campaign.world = createWorld([...LOCATIONS], campaign);
+    // campaign.world = createWorld([...LOCATIONS], campaign);
+    campaign.world = createWorld(generateRandomWorld(), campaign);
+
+    console.log(campaign.world);
 
     return campaign;
 
