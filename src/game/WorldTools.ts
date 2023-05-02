@@ -1,7 +1,9 @@
+import { rnd } from "rndlib";
 import { ArenaOrcVillage } from "../data/ArenaOrcVillage";
 import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
-import { LOCATIONSTATUS, Location, LocationId, MapLocation, WORLDLOCATIONTYPE } from "../models/World";
+import { LOCATIONSTATUS, Location, LocationId, MapLocation, NodeLocation, WORLDLOCATIONTYPE } from "../models/World";
+import { LocNode, LocNodeLink, calculateForces } from "../utils/forceCalc";
 
 export function createWorld(locs: Location[], campaign: Campaign): Map<LocationId, Location> {
 	return locs.reduce((world, loc) => {
@@ -24,6 +26,9 @@ function createLocation(loc: Location): Location {
 		icon: loc.icon,
 		init: loc.init,
 	};
+	if (loc.name) {
+		nloc.name = loc.name;
+	}
 	return nloc;
 }
 
@@ -91,10 +96,9 @@ export function buildMapLocations(campaign: Campaign): MapLocation[] {
 
 	function travelLocations(camp: Campaign, locId: LocationId, mplocs: MapLocation[], depth: number, trak: number): MapLocation[] {
 		if (depth > 10) return mplocs;
-
+		
 		const loc = camp.world.get(locId);
 		if (!loc) return mplocs;
-
 		const mploc: MapLocation = {
 			...loc,
 			depth: depth,
@@ -123,11 +127,61 @@ export function buildMapLocations(campaign: Campaign): MapLocation[] {
 		return mplocs;
 	}
 
+	console.log("\nLocations", campaign.world.size, Array.from(campaign.world.values()).map((l) => l.name).join(", "))
 	const locs = startingLocs.reduce((mplocs, loc, trak) => {
 		return travelLocations(campaign, loc.id, mplocs, 0, trak);
 	}, [] as MapLocation[]);
 
 	return locs.sort((a, b) => a.depth - b.depth);
+}
+
+export function buildNodeLocations(campaign: Campaign): NodeLocation[] {
+	const lnodes: LocNode[] = Array.from(campaign.world.values()).map((loc, ind) => {
+		let x = rnd(-150, 150);
+		let y = rnd(-150, 150);
+		if(loc.flags.includes("first")) {
+			x = 0;
+			y = 0;
+		}
+		return {
+			id: loc.id,
+			x: x,
+			y: y,
+			vx: 0,
+			vy: 0,
+		};
+	});
+
+	const links = Array.from(
+		Array.from(campaign.world.values()).reduce((links, loc) => {
+			// Add ext next location as a link to the current location
+			loc.nextLocations.forEach((nl) => {
+				const link: LocNodeLink = {
+					source: loc.id,
+					target: nl,
+				};
+				links.add(link);
+			});
+
+			return links;
+		}, new Set<LocNodeLink>()),
+	);
+
+	calculateForces(lnodes, links, 100);
+
+	const nodeLocations: NodeLocation[] = lnodes.map((ln) => {
+		const loc = campaign.world.get(ln.id);
+		if (!loc) throw new Error("Location not found");
+		const nloc: NodeLocation = {
+			...loc,
+			x: ln.x,
+			y: ln.y,
+		};
+		console.log(nloc.name, nloc.x, nloc.y);
+		return nloc;
+	});
+
+	return nodeLocations;
 }
 
 export function convertMapLocationToLocation(mloc: MapLocation): Location {

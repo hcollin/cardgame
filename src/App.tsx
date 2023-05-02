@@ -19,6 +19,7 @@ import frostTrollLogo from "./views/pics/frosttrolllogo.png";
 import Arena from "./views/Arena";
 import Hero from "./game/Hero";
 import { generateRandomWorld } from "./utils/RandomWorldGenerator";
+import WorldNodeMap from "./views/WorldNodeMap";
 
 const isMobile = false;
 
@@ -33,7 +34,9 @@ function App() {
 
 	useEffect(() => {
 		if(campaign.id === "EMPTY") {
-			setCampaign(createCampaign());
+			const camp = createCampaign();
+			console.log(Array.from(camp.world.values()).map((l) => l.name).join(", "));
+			setCampaign(camp);
 		}
 	}, [campaign.id]);
 
@@ -102,6 +105,8 @@ function App() {
 	if (gameState !== null) {
 		viewMode = "ARENA";
 	}
+	
+	
 
 	// console.log(campaign.id, currentLocation);
 
@@ -128,6 +133,7 @@ function App() {
 					</nav>
 					{/* <MainMenu campaign={campaign} update={setCampaign} /> */}
 					{vm === "MAP" && <WorldMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />}
+					{/* {vm === "MAP" && <WorldNodeMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />} */}
 					{/* {currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>} */}
 					{vm === "CHARACTER" && <HeroView hero={campaign.hero} updateHero={updateHero} />}
 

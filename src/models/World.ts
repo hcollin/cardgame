@@ -26,6 +26,7 @@ export type LOCATIONFLAG = "first"|"final"|"completed";
 export interface Location {
 
     id: LocationId;
+    name?: string;
     status: LOCATIONSTATUS;
     type: WORLDLOCATIONTYPE;
     arena: Arena[];
@@ -39,5 +40,9 @@ export interface Location {
 export interface MapLocation extends Location { 
     depth: number;
     trak: number;
+}
 
+export interface NodeLocation extends Location {
+    x: number;
+    y: number;
 }

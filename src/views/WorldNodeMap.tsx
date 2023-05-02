@@ -1,7 +1,10 @@
+
+
+
 import { CSSProperties, useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { LOCATIONSTATUS, Location, MapLocation } from "../models/World";
-import { buildMapLocations } from "../game/WorldTools";
+import { LOCATIONSTATUS, Location, MapLocation, NodeLocation } from "../models/World";
+import { buildMapLocations, buildNodeLocations } from "../game/WorldTools";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 import Banner from "../components/Banner";
@@ -21,15 +24,15 @@ import "./world-map.css";
 import DifficultyMeter from "../components/DifficultyMeter";
 import { createCampaign } from "../game/CampaignTools";
 
-function WorldMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => void; startArena: () => void }) {
+function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => void; startArena: () => void }) {
 	const { height, width } = useWindowDimensions();
 
 	const locations = props.campaign.world;
 
-	const [mapLocs, setMapLocs] = useState<MapLocation[]>(buildMapLocations(props.campaign));
+	const [mapLocs, setMapLocs] = useState<NodeLocation[]>(buildNodeLocations(props.campaign));
 
 	useEffect(() => {
-		const newMapLocs = buildMapLocations(props.campaign);
+		const newMapLocs = buildNodeLocations(props.campaign);
 
 		if (newMapLocs.filter((l) => l.status === LOCATIONSTATUS.SELECTABLE).length === 0) {
 			// console.log("MAP COMPLETED");
@@ -38,7 +41,7 @@ function WorldMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => 
 		setMapLocs(newMapLocs);
 	}, [props.campaign]);
 
-	function selectLocation(mloc: MapLocation) {
+	function selectLocation(mloc: NodeLocation) {
 		if (mloc.status === LOCATIONSTATUS.ACTIVE) {
 			props.startArena();
 			return;
@@ -53,20 +56,17 @@ function WorldMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => 
 	function restartCampaign() {
 		console.log("RESTART CAMPAIGN");
 		const nCampaign = createCampaign();
-		setMapLocs(buildMapLocations(nCampaign));
+		setMapLocs(buildNodeLocations(nCampaign));
 		props.updateCampaign(nCampaign);
 	}
 
-	const maxDepth = Math.max(...mapLocs.map((l) => l.depth)) + 1;
-	const maxTrak = Math.max(...mapLocs.map((l) => l.trak)) + 1;
-
-	const nps = Math.min(width / maxTrak, (height - 100) / maxDepth) * 0.8;
-
+	
 	return (
 		<div className="world-map">
 			<div className="nodes">
 				{mapLocs.map((ml, i) => {
-					return <LocationNode key={ml.id} location={ml} maxDepth={maxDepth} maxTrak={maxTrak} nodeSpace={nps} selectLocation={selectLocation} />;
+					return <LocationNode key={ml.id} location={ml} selectLocation={selectLocation} />;
+					// return <LocationNode key={ml.id} location={ml} maxDepth={maxDepth} maxTrak={maxTrak} nodeSpace={nps} selectLocation={selectLocation} />;
 				})}
 			</div>
 			<div className="map-title">World Map</div>
@@ -88,29 +88,23 @@ function WorldMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => 
 	);
 }
 
-function LocationNode(props: { location: MapLocation; maxDepth: number; maxTrak: number; nodeSpace: number; selectLocation: (mloc: MapLocation) => void }) {
+function LocationNode(props: { location: NodeLocation; selectLocation: (mloc: NodeLocation) => void }) {
 	function handleClick() {
 		props.selectLocation(props.location);
 	}
 
-	const maxWidth = props.nodeSpace * props.maxTrak;
-	const maxDepth = props.nodeSpace * props.maxDepth;
-
-	const nodeStyle: CSSProperties = {
-		left: props.location.trak * props.nodeSpace + "px",
-		marginLeft: (maxWidth / 2) * -1 + "px",
-		bottom: "50%",
-		marginBottom: (maxDepth / 2) * -1 + props.location.depth * props.nodeSpace + "px",
-		width: props.nodeSpace + "px",
-		height: props.nodeSpace + "px",
+    const nodeStyle: CSSProperties = {
+		left: props.location.x + "px",
+        top: props.location.y + "px",
+		// marginLeft: (maxWidth / 2) * -1 + "px",
+		// bottom: "50%",
+		// marginBottom: (maxDepth / 2) * -1 + props.location.depth * props.nodeSpace + "px",
+		// width: props.nodeSpace + "px",
+		// height: props.nodeSpace + "px",
 	};
 
-	const cns: string[] = ["location-node"];
-	cns.push(props.location.type.toLowerCase());
-	cns.push(props.location.status.toLowerCase());
-
 	return (
-		<div className={cns.join(" ")} style={nodeStyle} onClick={handleClick}>
+		<div className="location-node-two" style={nodeStyle} onClick={handleClick}>
 			<div className="icon">
 				{props.location.icon === "dungeon" && <img src={iconDungeon} alt="dungeon" />}
 				{props.location.icon === "forest" && <img src={iconForest} alt="forest" />}
@@ -121,39 +115,9 @@ function LocationNode(props: { location: MapLocation; maxDepth: number; maxTrak:
 				{props.location.icon === "tent" && <img src={iconTent} alt="tent" />}
 				{props.location.icon === "graveyard" && <img src={iconGraveyard} alt="graveyard" />}
 			</div>
-
-			<div className="name">
-				<Banner text={props.location.name || props.location.arena[0].name} />
-			</div>
-
-			{props.location.arena[0] && (
-				<div className="difficulty">
-					<DifficultyMeter difficulty={props.location.arena[0].getDifficulty()} />
-				</div>
-			)}
-
-			{props.location.status === LOCATIONSTATUS.LOCKED && (
-				<div className="locked">
-					<img src={iconLocked} alt="locked" />
-				</div>
-			)}
-
-			{props.location.status === LOCATIONSTATUS.ACTIVE && <div className="active-ring"></div>}
-
-			{props.location.status === LOCATIONSTATUS.ACTIVE && (
-				<div className="start-text">
-					<span>click to</span>
-					START
-				</div>
-			)}
-
-			{props.location.status === LOCATIONSTATUS.COMPLETED && (
-				<div className="completed">
-					<img src={iconCompleted} alt="completed" />
-				</div>
-			)}
 		</div>
-	);
+	)
+
 }
 
-export default WorldMap;
+export default WorldNodeMap;

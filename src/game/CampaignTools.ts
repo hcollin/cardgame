@@ -4,7 +4,7 @@ import { Campaign } from "../models/Campaign";
 import { GAMESTATES, GameState } from "../models/GameState";
 import { Deck } from "./Deck";
 import { createDecks } from "./GameService";
-import { createWorld } from "./WorldTools";
+import { buildNodeLocations, createWorld } from "./WorldTools";
 import { LOCATIONS } from "../data/Locations";
 import { Arena } from "./Arena";
 import Hero from "./Hero";
@@ -12,46 +12,45 @@ import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
 import { generateRandomWorld } from "../utils/RandomWorldGenerator";
 
-
 /**
  * This is used to initialize the state
- * @returns 
+ * @returns
  */
 export function createEmptyCampaign(): Campaign {
-    return {
-        id: "EMPTY",
-        hero: new Hero(RaceHuman, ClassWarrior),
-        world: new Map<LocationId, Location>(),
-        currentLocationId: "",
-        options: {
-            healAfterArena: 0,
-            fullHealOnLevelUp: false,
-            endlessLoop: false
-        }
-    };
+	return {
+		id: "EMPTY",
+		hero: new Hero(RaceHuman, ClassWarrior),
+		world: new Map<LocationId, Location>(),
+		currentLocationId: "",
+		options: {
+			healAfterArena: 0,
+			fullHealOnLevelUp: false,
+			endlessLoop: false,
+		},
+	};
 }
 
 export function createCampaign(): Campaign {
+	const campaign: Campaign = {
+		id: v4(),
+		hero: new Hero(RaceHuman, ClassWarrior),
+		world: new Map<LocationId, Location>(),
+		currentLocationId: "",
+		options: {
+			healAfterArena: 0,
+			fullHealOnLevelUp: false,
+			endlessLoop: false,
+		},
+	};
+
+	// campaign.world = createWorld([...LOCATIONS], campaign);
+	const myWorld = generateRandomWorld();
+	console.log("MYWORLD:", myWorld);
+	campaign.world = createWorld(myWorld, campaign);
+
+	buildNodeLocations(campaign);
     
-    const campaign: Campaign = {
-        id: v4(),
-        hero: new Hero(RaceHuman, ClassWarrior),
-        world: new Map<LocationId, Location>(),
-        currentLocationId: "",
-        options: {
-            healAfterArena: 0,
-            fullHealOnLevelUp: false,
-            endlessLoop: false
-        }
-    }
-
-    // campaign.world = createWorld([...LOCATIONS], campaign);
-    campaign.world = createWorld(generateRandomWorld(), campaign);
-
-    console.log(campaign.world);
-
-    return campaign;
-
+	return campaign;
 }
 
 // export function selectActiveLocationFromCampaign(campaign: Campaign): Location {
@@ -72,7 +71,7 @@ export function createCampaign(): Campaign {
 
 // export function activateNextLocationForCampaign(campaign: Campaign): Campaign {
 //     if (campaign.world.size === 0) { throw new Error("World not initialized"); }
-    
+
 //     const locs = Array.from(campaign.world.values());
 //     const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
 
@@ -85,107 +84,108 @@ export function createCampaign(): Campaign {
 //     return {...campaign, currentLocationId: nextLocId.id};
 // }
 
-export function markCurrentLocationCompleted(campaign: Campaign): Campaign { 
-    if (campaign.world.size === 0) { throw new Error("World not initialized"); }
-    
+export function markCurrentLocationCompleted(campaign: Campaign): Campaign {
+	if (campaign.world.size === 0) {
+		throw new Error("World not initialized");
+	}
 
-    const loc = campaign.world.get(campaign.currentLocationId);
-    if(!loc) { throw new Error(`Current location ${campaign.currentLocationId} not found`); }
-    loc.status = LOCATIONSTATUS.COMPLETED;
-    loc.flags.push("completed");
-    campaign.world.set(loc.id, loc);
+	const loc = campaign.world.get(campaign.currentLocationId);
+	if (!loc) {
+		throw new Error(`Current location ${campaign.currentLocationId} not found`);
+	}
+	loc.status = LOCATIONSTATUS.COMPLETED;
+	loc.flags.push("completed");
+	campaign.world.set(loc.id, loc);
 
-    if(campaign.options.healAfterArena > 0) {
-        const healAmount = Math.round(campaign.hero.getMaxHealth() * campaign.options.healAfterArena);
-        campaign.hero.healHero(healAmount);
-    }
+	if (campaign.options.healAfterArena > 0) {
+		const healAmount = Math.round(campaign.hero.getMaxHealth() * campaign.options.healAfterArena);
+		campaign.hero.healHero(healAmount);
+	}
 
-    return {...campaign};
+	return { ...campaign };
 }
 
 export function setActiveLocationForCampaign(campaign: Campaign, locationId: LocationId): Campaign {
-
-    const nc = {...campaign};
-    const loc = nc.world.get(locationId);
-    if(!loc) { throw new Error("Location not found"); }
-    loc.status = LOCATIONSTATUS.ACTIVE;
-    nc.world.set(loc.id, loc);
-    nc.currentLocationId = loc.id;
-    return {...nc};
-    
+	const nc = { ...campaign };
+	const loc = nc.world.get(locationId);
+	if (!loc) {
+		throw new Error("Location not found");
+	}
+	loc.status = LOCATIONSTATUS.ACTIVE;
+	nc.world.set(loc.id, loc);
+	nc.currentLocationId = loc.id;
+	return { ...nc };
 }
 
-
 export function createGameFromCampaign(campaign: Campaign): GameState {
+	const location = campaign.world.get(campaign.currentLocationId);
+	if (!location) {
+		throw new Error(`Location ${campaign.id} not found from campaign world.`);
+	}
 
-    const location = campaign.world.get(campaign.currentLocationId);
-    if (!location) { throw new Error(`Location ${campaign.id} not found from campaign world.`); }
+	let gameState: GameState = {
+		id: v4(),
+		turn: 0,
+		leftHandDeck: new Deck([]),
+		rightHandDeck: new Deck([]),
+		leftHand: [],
+		rightHand: [],
+		state: GAMESTATES.MYTURN,
+		arena: location.arena[0],
+		// world: campaign.world,
+		// currentLocationId: campaign.currentLocationId,
+		hero: campaign.hero,
+		playedCardsThisTurn: [],
+	};
 
-    let gameState: GameState = {
-        id: v4(),
-        turn: 0,
-        leftHandDeck: new Deck([]),
-        rightHandDeck: new Deck([]),
-        leftHand: [],
-        rightHand: [],
-        state: GAMESTATES.MYTURN,
-        arena: location.arena[0],
-        // world: campaign.world,
-        // currentLocationId: campaign.currentLocationId,
-        hero: campaign.hero,
-        playedCardsThisTurn: [],
-    }
+	// if (campaign.hero.activeItemLeft === null || campaign.hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
 
-    // if (campaign.hero.activeItemLeft === null || campaign.hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
+	gameState = createDecks(gameState);
 
-    gameState = createDecks(gameState);
+	gameState.rightHandDeck.shuffleDeck();
+	gameState.leftHandDeck.shuffleDeck();
 
-    gameState.rightHandDeck.shuffleDeck();
-    gameState.leftHandDeck.shuffleDeck();
+	gameState.rightHand = gameState.rightHandDeck.drawCards(gameState.hero.getHandSize("RIGHT"));
+	gameState.leftHand = gameState.leftHandDeck.drawCards(gameState.hero.getHandSize("LEFT"));
 
-    gameState.rightHand = gameState.rightHandDeck.drawCards(gameState.hero.getHandSize("RIGHT"));
-    gameState.leftHand = gameState.leftHandDeck.drawCards(gameState.hero.getHandSize("LEFT"));
+	gameState.arena.resetArena();
+	gameState.hero.arenaReset(campaign.options);
+	gameState.turn = 1;
 
-    gameState.arena.resetArena();
-    gameState.hero.arenaReset(campaign.options);
-    gameState.turn = 1;
+	// gameState.hero.aps = gameState.hero.maxAps;
 
-    
-    // gameState.hero.aps = gameState.hero.maxAps;
-
-    return gameState;
+	return gameState;
 }
 
 export function createGameForArena(arena: Arena, campaign: Campaign): GameState {
-    const hero = campaign.hero;
-    let gameState: GameState = {
-        id: v4(),
-        turn: 0,
-        leftHandDeck: new Deck([]),
-        rightHandDeck: new Deck([]),
-        leftHand: [],
-        rightHand: [],
-        state: GAMESTATES.MYTURN,
-        arena: arena,
-        hero: hero,
-        playedCardsThisTurn: [],
-    }
+	const hero = campaign.hero;
+	let gameState: GameState = {
+		id: v4(),
+		turn: 0,
+		leftHandDeck: new Deck([]),
+		rightHandDeck: new Deck([]),
+		leftHand: [],
+		rightHand: [],
+		state: GAMESTATES.MYTURN,
+		arena: arena,
+		hero: hero,
+		playedCardsThisTurn: [],
+	};
 
-    // if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
+	// if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
 
-    gameState = createDecks(gameState);
-    gameState.rightHandDeck.shuffleDeck();
-    gameState.leftHandDeck.shuffleDeck();
+	gameState = createDecks(gameState);
+	gameState.rightHandDeck.shuffleDeck();
+	gameState.leftHandDeck.shuffleDeck();
 
-    gameState.rightHand = gameState.rightHandDeck.drawCards(3);
-    gameState.leftHand = gameState.leftHandDeck.drawCards(3);
+	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
+	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
 
-    gameState.arena.resetArena();
-    gameState.turn = 1;
+	gameState.arena.resetArena();
+	gameState.turn = 1;
 
-    gameState.hero.arenaReset(campaign.options);
-    // gameState.hero = resetHero(gameState.hero, false);
+	gameState.hero.arenaReset(campaign.options);
+	// gameState.hero = resetHero(gameState.hero, false);
 
-    return gameState;
-
+	return gameState;
 }
