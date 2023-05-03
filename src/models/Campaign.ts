@@ -7,6 +7,8 @@ export interface CampaignOptions {
 	healAfterArena: number;	// 0 - 1 percentage of max health, default is 0.
 	fullHealOnLevelUp: boolean;	// default is false.
 	endlessLoop: boolean;	// default is false.
+	mapDepth: number;
+	mapWidth: number;
 }
 
 export interface Campaign {

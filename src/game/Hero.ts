@@ -54,6 +54,8 @@ export default class Hero {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
 			endlessLoop: false,
+			mapDepth: 15,
+			mapWidth: 7,
 		});
 	}
 

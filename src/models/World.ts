@@ -33,6 +33,12 @@ export interface Location {
     nextLocations: LocationId[];
     flags: LOCATIONFLAG[];
     icon: string;
+    loc?: {
+        x: number;
+        y: number;
+        dx: number;
+        dy: number;
+    },
     init: (campaign: Campaign) => void;
 }
 
@@ -45,4 +51,5 @@ export interface MapLocation extends Location {
 export interface NodeLocation extends Location {
     x: number;
     y: number;
+    
 }

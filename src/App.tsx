@@ -35,7 +35,7 @@ function App() {
 	useEffect(() => {
 		if(campaign.id === "EMPTY") {
 			const camp = createCampaign();
-			console.log(Array.from(camp.world.values()).map((l) => l.name).join(", "));
+			// console.log(Array.from(camp.world.values()).map((l) => l.name).join(", "));
 			setCampaign(camp);
 		}
 	}, [campaign.id]);
@@ -132,8 +132,8 @@ function App() {
 						</button>
 					</nav>
 					{/* <MainMenu campaign={campaign} update={setCampaign} /> */}
-					{vm === "MAP" && <WorldMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />}
-					{/* {vm === "MAP" && <WorldNodeMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />} */}
+					{/* {vm === "MAP" && <WorldMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />} */}
+					{vm === "MAP" && <WorldNodeMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />}
 					{/* {currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>} */}
 					{vm === "CHARACTER" && <HeroView hero={campaign.hero} updateHero={updateHero} />}
 

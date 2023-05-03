@@ -26,6 +26,8 @@ export function createEmptyCampaign(): Campaign {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
 			endlessLoop: false,
+			mapDepth: 15,
+			mapWidth: 7,
 		},
 	};
 }
@@ -40,15 +42,17 @@ export function createCampaign(): Campaign {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
 			endlessLoop: false,
+			mapDepth: 15,
+			mapWidth: 7,
 		},
 	};
 
 	// campaign.world = createWorld([...LOCATIONS], campaign);
 	const myWorld = generateRandomWorld();
-	console.log("MYWORLD:", myWorld);
+	
 	campaign.world = createWorld(myWorld, campaign);
 
-	buildNodeLocations(campaign);
+	// buildNodeLocations(campaign);
     
 	return campaign;
 }

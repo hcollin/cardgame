@@ -1,10 +1,6 @@
-
-
-
 import { CSSProperties, useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { LOCATIONSTATUS, Location, MapLocation, NodeLocation } from "../models/World";
-import { buildMapLocations, buildNodeLocations } from "../game/WorldTools";
+import { LOCATIONSTATUS, Location } from "../models/World";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 import Banner from "../components/Banner";
@@ -29,19 +25,19 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 	const locations = props.campaign.world;
 
-	const [mapLocs, setMapLocs] = useState<NodeLocation[]>(buildNodeLocations(props.campaign));
+	const [nodes, setNodes] = useState<(Location | null)[][]>(buildNodes(props.campaign));
 
 	useEffect(() => {
-		const newMapLocs = buildNodeLocations(props.campaign);
+		const newMapLocs = buildNodes(props.campaign);
 
-		if (newMapLocs.filter((l) => l.status === LOCATIONSTATUS.SELECTABLE).length === 0) {
-			// console.log("MAP COMPLETED");
-		}
+		// if (newMapLocs.filter((l) => l.status === LOCATIONSTATUS.SELECTABLE).length === 0) {
+		// 	// console.log("MAP COMPLETED");
+		// }
 
-		setMapLocs(newMapLocs);
+		setNodes(newMapLocs);
 	}, [props.campaign]);
 
-	function selectLocation(mloc: NodeLocation) {
+	function selectLocation(mloc: Location) {
 		if (mloc.status === LOCATIONSTATUS.ACTIVE) {
 			props.startArena();
 			return;
@@ -56,19 +52,26 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 	function restartCampaign() {
 		console.log("RESTART CAMPAIGN");
 		const nCampaign = createCampaign();
-		setMapLocs(buildNodeLocations(nCampaign));
+		// setMapLocs(buildNodeLocations(nCampaign));
 		props.updateCampaign(nCampaign);
 	}
 
-	
 	return (
 		<div className="world-map">
-			<div className="nodes">
-				{mapLocs.map((ml, i) => {
-					return <LocationNode key={ml.id} location={ml} selectLocation={selectLocation} />;
-					// return <LocationNode key={ml.id} location={ml} maxDepth={maxDepth} maxTrak={maxTrak} nodeSpace={nps} selectLocation={selectLocation} />;
-				})}
-			</div>
+			{nodes.map((depth, y) => {
+				return (
+					<div className="depth" key={`map-depth-${y}`}>
+						{depth.map((loc, x) => {
+							if (!loc) {
+								return <div className="node empty" key={`node-${y}-${x}`}></div>;
+							}
+
+							return <LocationNode location={loc} selectLocation={selectLocation} key={`node-${y}-${x}`} />;
+						})}
+					</div>
+				);
+			})}
+
 			<div className="map-title">World Map</div>
 			{props.campaign.hero.isDead() && (
 				<div className="death">
@@ -88,23 +91,41 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 	);
 }
 
-function LocationNode(props: { location: NodeLocation; selectLocation: (mloc: NodeLocation) => void }) {
+function buildNodes(campaign: Campaign): (Location | null)[][] {
+	const locArr = Array.from(campaign.world.values());
+
+	const nnmap: (Location | null)[][] = [];
+	for (let d = 0; d < campaign.options.mapDepth; d++) {
+		const darr: (Location | null)[] = [];
+
+		for (let w = 0; w < campaign.options.mapWidth; w++) {
+			const loc = locArr.find((l) => {
+				if (!l.loc) return false;
+				return l.loc.x === w && l.loc.y === d;
+			});
+			if (loc) {
+				darr.push(loc);
+			} else {
+				darr.push(null);
+			}
+		}
+		nnmap.push([...darr]);
+	}
+
+	console.log(nnmap);
+	// nnmap.forEach((row) => {
+	// 	console.log(row);
+	// });
+	return nnmap;
+}
+
+function LocationNode(props: { location: Location; selectLocation: (mloc: Location) => void }) {
 	function handleClick() {
 		props.selectLocation(props.location);
 	}
 
-    const nodeStyle: CSSProperties = {
-		left: props.location.x + "px",
-        top: props.location.y + "px",
-		// marginLeft: (maxWidth / 2) * -1 + "px",
-		// bottom: "50%",
-		// marginBottom: (maxDepth / 2) * -1 + props.location.depth * props.nodeSpace + "px",
-		// width: props.nodeSpace + "px",
-		// height: props.nodeSpace + "px",
-	};
-
 	return (
-		<div className="location-node-two" style={nodeStyle} onClick={handleClick}>
+		<div className="location-node-two" onClick={handleClick}>
 			<div className="icon">
 				{props.location.icon === "dungeon" && <img src={iconDungeon} alt="dungeon" />}
 				{props.location.icon === "forest" && <img src={iconForest} alt="forest" />}
@@ -116,8 +137,7 @@ function LocationNode(props: { location: NodeLocation; selectLocation: (mloc: No
 				{props.location.icon === "graveyard" && <img src={iconGraveyard} alt="graveyard" />}
 			</div>
 		</div>
-	)
-
+	);
 }
 
 export default WorldNodeMap;

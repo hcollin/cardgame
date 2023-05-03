@@ -226,8 +226,24 @@ div.world-map {
 
     }
 
-    & > div.nodes > div.location-node-two {
-        position: absolute;
+    & > div.depth {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        height: 5rem;
+
+        & > div.node {
+            width: 0 0 auto;
+            width: 7rem;
+
+
+        }
+    }
+
+    & > div.depth > div.location-node-two {
+        position: relative;
         height: 4rem;
         width: 4rem;
 

@@ -29,6 +29,9 @@ function createLocation(loc: Location): Location {
 	if (loc.name) {
 		nloc.name = loc.name;
 	}
+	if(loc.loc) {
+		nloc.loc = {...loc.loc};
+	}
 	return nloc;
 }
 
