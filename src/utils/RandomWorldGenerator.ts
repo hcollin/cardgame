@@ -15,15 +15,15 @@ interface worldGeneratorOptions {
 	starts: number;
 }
 
-export function generateRandomWorld(): Location[] {
-	const options: worldGeneratorOptions = {
-		depth: 15,
-		width: 7,
+export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Location[] {
+	const options: worldGeneratorOptions = Object.assign({
+		depth: 10,
+		width: 9,
 		startingDifficulty: ARENADIFFICULTY.VERYEASY,
 		curve: 2,
 		spread: 3,
 		starts: 1,
-	};
+	}, opts);
 
 	const locs: Location[] = [];
 
@@ -52,8 +52,8 @@ export function generateRandomWorld(): Location[] {
 			nloc.loc = {
 				x: pos,
 				y: d,
-				dx: 0,
-				dy: 0,
+				dx: rnd(0, 100)/100,
+				dy: rnd(0, 100)/100,
 			};
 
 			dLocs[pos] = nloc;

@@ -58,19 +58,25 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 	return (
 		<div className="world-map">
-			{nodes.map((depth, y) => {
-				return (
-					<div className="depth" key={`map-depth-${y}`}>
-						{depth.map((loc, x) => {
-							if (!loc) {
-								return <div className="node empty" key={`node-${y}-${x}`}></div>;
-							}
+			<div className="map-nodes">
+				{nodes.map((depth, y) => {
+					return (
+						<div className="depth" key={`map-depth-${y}`}>
+							{depth.map((loc, x) => {
+								if (!loc) {
+									return <div className="node empty" key={`node-${y}-${x}`}></div>;
+								}
 
-							return <LocationNode location={loc} selectLocation={selectLocation} key={`node-${y}-${x}`} />;
-						})}
-					</div>
-				);
-			})}
+								return (
+									<div className="node" key={`node-${y}-${x}`} >
+										<LocationNode location={loc} selectLocation={selectLocation} />
+									</div>
+								);
+							})}
+						</div>
+					);
+				})}
+			</div>
 
 			<div className="map-title">World Map</div>
 			{props.campaign.hero.isDead() && (
@@ -124,8 +130,18 @@ function LocationNode(props: { location: Location; selectLocation: (mloc: Locati
 		props.selectLocation(props.location);
 	}
 
+	const dx = props.location.loc !== undefined && props.location.loc.x >= 0 ? props.location.loc.dx * 33 : 0;
+	const dy = props.location.loc !== undefined && props.location.loc.y >= 0 ? props.location.loc.dy * 33 : 0;
+	
+	
+	const style: React.CSSProperties ={
+		left: `${dx}%`,
+		top: `${dy}%`,
+	};
+	console.log(props.location.loc, dx ,dy, style);
+
 	return (
-		<div className="location-node-two" onClick={handleClick}>
+		<div className="location-node-two" onClick={handleClick} style={style}>
 			<div className="icon">
 				{props.location.icon === "dungeon" && <img src={iconDungeon} alt="dungeon" />}
 				{props.location.icon === "forest" && <img src={iconForest} alt="forest" />}

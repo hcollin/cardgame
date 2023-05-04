@@ -42,13 +42,16 @@ export function createCampaign(): Campaign {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
 			endlessLoop: false,
-			mapDepth: 15,
-			mapWidth: 7,
+			mapDepth: 9,
+			mapWidth: 6,
 		},
 	};
 
 	// campaign.world = createWorld([...LOCATIONS], campaign);
-	const myWorld = generateRandomWorld();
+	const myWorld = generateRandomWorld({
+		depth: campaign.options.mapDepth,
+		width: campaign.options.mapWidth,
+	});
 	
 	campaign.world = createWorld(myWorld, campaign);
 
