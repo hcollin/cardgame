@@ -44,13 +44,20 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 
 	const locsMap: (Location | null)[][] = [];
 
+	
+	const sDiffIndex = diffs.findIndex((d) => d === options.startingDifficulty);
+
 	for (let d = 0; d < options.depth; d++) {
 		let pos = rnd(0, 2);
 
 		const dLocs: (Location | null)[] = new Array(options.width).fill(null);
 
+		const difInd = sDiffIndex + Math.round(d / (options.depth / options.curve));
+		
+		const dif = difInd < diffs.length - 1 ? diffs[difInd] : diffs[diffs.length - 1];
+
 		while (pos < options.width) {
-			const nloc = randomLocation(options.startingDifficulty, d === 0);
+			const nloc = randomLocation(dif, d === 0);
 			nloc.name = `Loc ${d}-${pos}`;
 			nloc.loc = {
 				x: pos,

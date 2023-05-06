@@ -375,6 +375,15 @@ div.world-map {
         }
     }
 
+    & > div.location-info {
+        position: absolute;
+
+        top: 10rem;
+        left: 10%;
+        right: 10%;
+        height: auto;
+        color: white;
+    }
 
 
 }

@@ -57,6 +57,9 @@ export class Enemy extends Cloneable {
 	public id: string = "";
 
 	protected name: string = "No name";
+
+	protected groups: string[] = [];
+
 	protected health: number;
 	protected maxHealth: number = 100;
 

@@ -84,6 +84,8 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 		height: `${nodeSize}px`,
 	};
 
+	const curLoc = locations.get(props.campaign.currentLocationId);
+
 	return (
 		<div className={`world-map`}>
 			<div className={`map-nodes ${tilt}`}>
@@ -161,6 +163,8 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 				})}
 			</div>
 
+			 
+			{curLoc && <LocationInfo loc={curLoc} />}
 			<div className="map-title">World Map</div>
 			{props.campaign.hero.isDead() && (
 				<div className="death">
@@ -326,6 +330,21 @@ function RouteLine(props: { from: Location; to: Location; size: number; tilt: bo
 			<line x1={sx} y1={sy} x2={ex} y2={ey} stroke="#0006" strokeWidth="6" strokeDasharray={10} />
 		</svg>
 	);
+}
+
+
+
+function LocationInfo(props: { loc: Location }) {
+
+	const { loc } = props;
+
+	const arena = loc.arena[0];
+
+	return (
+		<div className="location-info">
+			{loc.name}, {loc.status}. {arena.getDifficulty()}, {arena.enemies.map((e) => e.getName()).join(", ")}
+		</div>
+	)
 }
 
 export default WorldNodeMap;
