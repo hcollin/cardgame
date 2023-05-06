@@ -2,7 +2,7 @@ import { v4 } from "uuid";
 import { Arena, ARENADIFFICULTY } from "../game/Arena";
 import { Location, LocationId, LOCATIONSTATUS, WORLDLOCATIONTYPE } from "../models/World";
 import { ArenaForestEncounter } from "../data/ArenaForestEncounter";
-import { rnd } from "rndlib";
+import { arnd, rnd } from "rndlib";
 import { EmptyArena } from "../data/EmptyArena";
 import { Campaign } from "../models/Campaign";
 
@@ -16,14 +16,17 @@ interface worldGeneratorOptions {
 }
 
 export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Location[] {
-	const options: worldGeneratorOptions = Object.assign({
-		depth: 10,
-		width: 9,
-		startingDifficulty: ARENADIFFICULTY.VERYEASY,
-		curve: 2,
-		spread: 3,
-		starts: 1,
-	}, opts);
+	const options: worldGeneratorOptions = Object.assign(
+		{
+			depth: 10,
+			width: 9,
+			startingDifficulty: ARENADIFFICULTY.VERYEASY,
+			curve: 2,
+			spread: 3,
+			starts: 1,
+		},
+		opts,
+	);
 
 	const locs: Location[] = [];
 
@@ -52,8 +55,8 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 			nloc.loc = {
 				x: pos,
 				y: d,
-				dx: rnd(0, 100)/100,
-				dy: rnd(0, 100)/100,
+				dx: rnd(0, 100) / 100,
+				dy: rnd(0, 100) / 100,
 			};
 
 			dLocs[pos] = nloc;
@@ -66,6 +69,8 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 
 	// Then create a final location with a boss arena
 
+	// console.log(locsMap.length, locsMap[options.depth]);
+
 	locsMap[options.depth] = new Array(options.width).fill(null);
 	locsMap[options.depth][Math.floor(options.width / 2)] = {
 		id: v4(),
@@ -76,6 +81,12 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		nextLocations: [],
 		flags: [],
 		icon: "forest",
+		loc: {
+			x: Math.floor(options.width / 2),
+			y: options.depth,
+			dx: rnd(0, 100) / 100,
+			dy: rnd(0, 100) / 100,
+		},
 		init: function (c: Campaign) {
 			this.arena = [new EmptyArena()];
 		},
@@ -87,8 +98,6 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 	calculateEdgeConnections(locsMap);
 
 	// Populate the locations with arenas
-
-	
 
 	return locsMap.flatMap((l) => l.filter((l) => l !== null)) as Location[];
 
@@ -172,16 +181,31 @@ function calculateEdgeConnections(locs: (Location | null)[][]): void {
 	const rows = locs.length;
 	const cols = locs[0].length;
 
+	const edges: Array<[number, number, number, number]> = [];
+
 	for (let i = 0; i < rows - 1; i++) {
 		for (let j = 0; j < cols; j++) {
 			const currentNode = locs[i][j];
 			if (!currentNode) continue;
 
 			const nextRowNodes: Array<LocationId> = [];
+			// const routeCount = arnd([1, 1, 1, 2, 2, 3]);
+			
 			for (let k = Math.max(j - 2, 0); k <= Math.min(j + 2, cols - 1); k++) {
+			// for (let k = 1; k <= routeCount; k++) {
 				const nextNode = locs[i + 1][k];
 				if (nextNode) {
 					nextRowNodes.push(nextNode.id);
+
+					// const currentEdge = [j, i, k, i + 1] as [number, number, number, number];
+					// edges.push(currentEdge);
+					// const hasIntersection = edges.some((edge) => linesIntersect(edge, currentEdge));
+
+					// console.log("CROSSING", hasIntersection, currentEdge, edges);
+					// if (!hasIntersection) {
+						// nextRowNodes.push(nextNode.id);
+						// edges.push(currentEdge);
+					// }
 				}
 			}
 
@@ -196,6 +220,20 @@ function calculateEdgeConnections(locs: (Location | null)[][]): void {
 			currentNode.nextLocations = nextRowNodes;
 		}
 	}
+}
+
+// Function to check if two lines intersect
+function linesIntersect(line1: [number, number, number, number], line2: [number, number, number, number]): boolean {
+	const [x1, y1, x2, y2] = line1;
+	const [x3, y3, x4, y4] = line2;
+
+	const det = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+	if (det === 0) return false; // Parallel lines
+
+	const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / det;
+	const u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / det;
+
+	return t >= 0 && t <= 1 && u >= 0 && u <= 1;
 }
 
 export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Location {
@@ -214,9 +252,14 @@ export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Loc
 		},
 	};
 
+	if(first) {
+		loc.flags.push("first");
+	}
+
 	return loc;
 }
 
 function randomArena(diff: ARENADIFFICULTY): Arena {
 	return new ArenaForestEncounter(diff);
 }
+

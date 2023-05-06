@@ -42,8 +42,8 @@ export function createCampaign(): Campaign {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
 			endlessLoop: false,
-			mapDepth: 9,
-			mapWidth: 6,
+			mapDepth: 12,
+			mapWidth: 7,
 		},
 	};
 
@@ -109,6 +109,7 @@ export function markCurrentLocationCompleted(campaign: Campaign): Campaign {
 		campaign.hero.healHero(healAmount);
 	}
 
+	campaign.currentLocationId = "";
 	return { ...campaign };
 }
 

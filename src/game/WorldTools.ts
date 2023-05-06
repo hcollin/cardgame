@@ -41,10 +41,15 @@ export function updateLocations(mlocs: Map<LocationId, Location>, currentId: Loc
 
 	let completedCount: number = 0;
 
+	let currentDepth = 0;
+
 	mlocs.forEach((l) => {
 		if (l.flags.includes("completed")) {
 			l.status = LOCATIONSTATUS.COMPLETED;
 			completedCount++;
+			if(l.loc && l.loc.y > currentDepth) {
+				currentDepth = l.loc.y;
+			}
 		} else {
 			l.status = LOCATIONSTATUS.LOCKED;
 		}
@@ -55,7 +60,8 @@ export function updateLocations(mlocs: Map<LocationId, Location>, currentId: Loc
 		if (l.status === LOCATIONSTATUS.COMPLETED) {
 			l.nextLocations.forEach((nl) => {
 				const nloc = tlocs.get(nl);
-				if (nloc && nloc.status !== LOCATIONSTATUS.COMPLETED) {
+				const nlocy = nloc?.loc?.y || 0;
+				if (nloc && nlocy > currentDepth && nloc.status !== LOCATIONSTATUS.COMPLETED) {
 					nloc.status = LOCATIONSTATUS.SELECTABLE;
 					nlocs.set(nloc.id, nloc);
 				}

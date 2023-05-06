@@ -229,21 +229,54 @@ div.world-map {
     }
 
     &>div.map-nodes {
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &>div.routes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            &>svg {
+                position: absolute;
+            }
+
+
+        }
+
+
         &>div.depth {
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
 
+
             /* height: 5rem; */
 
             &>div.node {
                 position: relative;
                 flex: 0 0 auto;
-                width: 6rem;
-                height: 6rem;
-                
-                border: solid 1px #0004;
+                /* width: 6rem; */
+                /* height: 6rem; */
+
+                border: solid 1px #0000;
+
+
+                &>p {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    color: white;
+                    font-size: 0.7rem;
+                    margin: 0;
+                }
 
 
                 &>div.location-node-two {
@@ -278,11 +311,67 @@ div.world-map {
                             height: 100%;
                         }
                     }
+
+                    &.selectable {
+                        border: solid 2px #7868;
+                        background: #EFDC;
+                        box-shadow: inset 0 0 0.5rem 0.1rem #0004;
+                        opacity: 1;
+                        cursor: pointer;
+
+                        
+
+                    }
+
+                    &.active {
+                        border: solid 2px #7868;
+                        background: #EFDD;
+                        box-shadow: inset 0 0 0.5rem 0.1rem #0004, 0 0 1rem 0.5rem #FFF;
+
+
+                    }
+
+                    &.completed {
+                        border: solid 2px #4468;
+                        background: #AAFA;
+                        box-shadow: inset 0 0 0.5rem 0.1rem #0034;
+                        opacity: 1;
+                    }
+
+                    &>.active-ring {
+                        position: absolute;
+
+                        top: -25%;
+                        left: -25%;
+                        right: -25%;
+                        bottom: -25%;
+
+                        /* height: 100%; */
+
+                        border: dashed 5px #000A;
+
+                        border-radius: 50%;
+
+                        animation: rotateRing2 15s infinite linear;
+                    }
+                }
+
+                &.next {
+                    border: solid 1px #0F04;
+
                 }
 
             }
 
 
+        }
+
+        &.tilt {
+            flex-direction: row-reverse;
+
+            &>div.depth {
+                flex-direction: column;
+            }
         }
     }
 
@@ -364,5 +453,66 @@ div.world-map {
     100% {
         transform: rotate(360deg) scale(1);
         border: dashed 10px #000A;
+    }
+}
+
+
+@keyframes rotateRing2 {
+
+
+
+    0% {
+        transform: rotate(0deg) scale(1);
+        border: dashed 5px #000A;
+    }
+
+    10% {
+        transform: rotate(36deg) scale(var(--scale-value));
+        border: dashed 5px #0048;
+    }
+
+    20% {
+        transform: rotate(72deg) scale(1);
+        border: dashed 5px #000A;
+    }
+
+    30% {
+        transform: rotate(108deg) scale(var(--scale-value));
+        border: dashed 5px #0048;
+    }
+
+    40% {
+        transform: rotate(144deg) scale(1);
+        border: dashed 5px #000A;
+    }
+
+    50% {
+        transform: rotate(180deg) scale(var(--scale-value));
+        border: dashed 5px #0048;
+    }
+
+    60% {
+        transform: rotate(216deg) scale(1);
+        border: dashed 5px #000A;
+    }
+
+    70% {
+        transform: rotate(252deg) scale(var(--scale-value));
+        border: dashed 5px #0048;
+    }
+
+    80% {
+        transform: rotate(288deg) scale(1);
+        border: dashed 5px #000A;
+    }
+
+    90% {
+        transform: rotate(324deg) scale(var(--scale-value));
+        border: dashed 5px #0048;
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+        border: dashed 5px #000A;
     }
 }
