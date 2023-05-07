@@ -14,13 +14,20 @@ import { Shield } from "./items/Shield";
 import bgImg from "./pics/forestbg.jpg";
 import { MinorWandOfFire } from "./items/MinorWandOfFire";
 import { Katana } from "./items/Katana";
+import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "./enemies/Goblins";
+import { OrcBerserker, OrcShaman, OrcWarlord } from "./enemies/Orcs";
 
 const availableEnemies: { enemy: string; difficulty: number }[] = [
-	{ enemy: "Goblin", difficulty: 1 },
-	{ enemy: "Kobold", difficulty: 1 },
-	{ enemy: "Orc", difficulty: 3 },
-	{ enemy: "Ogre", difficulty: 4 },
-	{ enemy: "Dragon", difficulty: 8 },
+	{ enemy: "Goblin Warrior", difficulty: 1 },
+	{ enemy: "Goblin Sorcerer", difficulty: 1 },
+	{ enemy: "Goblin Lord", difficulty: 2 },
+	{ enemy: "Orc Berserker", difficulty: 2 },
+	{ enemy: "Orc Shaman", difficulty: 3 },
+	{ enemy: "Orc Warlord", difficulty: 5 },
+	// { enemy: "Kobold", difficulty: 1 },
+	// { enemy: "Orc", difficulty: 3 },
+	// { enemy: "Ogre", difficulty: 4 },
+	// { enemy: "Dragon", difficulty: 8 },
 ];
 
 export class ArenaForestEncounter extends Arena {
@@ -39,21 +46,30 @@ export class ArenaForestEncounter extends Arena {
 			diff -= en.difficulty;
 
 			switch (en.enemy) {
-				case "Goblin":
-					this.enemies.push(new Goblin());
+				case "Goblin Warrior":
+					this.enemies.push(new GoblinWarrior());
 					break;
-				case "Kobold":
-					this.enemies.push(new Kobold());
+				case "Goblin Sorcerer":
+					this.enemies.push(new GoblinSorcerer());
 					break;
-				case "Orc":
-					this.enemies.push(new Orc());
+				case "Goblin Lord":
+					this.enemies.push(new GoblinLord());
 					break;
-				case "Ogre":
-					this.enemies.push(new Ogre());
+				case "Orc Berserker":
+					this.enemies.push(new OrcBerserker());
 					break;
-				case "Dragon":
-					this.enemies.push(new Dragon());
+				case "Orc Shaman":
+					this.enemies.push(new OrcShaman());
 					break;
+				case "Orc Warlord":
+					this.enemies.push(new OrcWarlord());
+					break;
+				// case "Ogre":
+				// 	this.enemies.push(new Ogre());
+				// 	break;
+				// case "Dragon":
+				// 	this.enemies.push(new Dragon());
+				// 	break;
 				default:
 					break;
 			}

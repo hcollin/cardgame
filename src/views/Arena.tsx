@@ -119,13 +119,15 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 
 	// const arenaActive = gameState.state !== GAMESTATES.DEAD && gameState.state !== GAMESTATES.ARENA_COMPLETED;
 
+	const enemyCardSize = gameState.arena.enemies.length > 3 ? "small" : "medium";
+
 	return (
 		<div className="arena" style={arenaStyle}>
 			<ArenaHeader gameState={gameState} updateGameState={setGameState} />
 
 			<div className="enemies">
 				{gameState.arena.enemies.map((enemy, index) => {
-					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} />;
+					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} size={enemyCardSize} />;
 				})}
 			</div>
 

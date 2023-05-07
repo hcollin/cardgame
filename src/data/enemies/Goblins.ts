@@ -1,9 +1,9 @@
 import { emitKeypressEvents } from "readline";
 import { ENEMYACTIONS, ENEMYACTIONTARGETS, Enemy, EnemyAction } from "../../game/Enemy";
 
-import goblinWarrior from "./pics/goblinWarrior.png";
-import goblinSorcerer from "./pics/goblinSorcerer.png";
-import goblinLord from "./pics/goblinLord.png";
+import goblinWarrior from "./pics/goblinWarrior.jpeg";
+import goblinSorcerer from "./pics/goblinSorcerer.jpeg";
+import goblinLord from "./pics/goblinLord.jpeg";
 
 abstract class Goblin extends Enemy {
 	protected groups: string[] = ["Goblinoid", "Forest"];

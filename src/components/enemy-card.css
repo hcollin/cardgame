@@ -1,0 +1,463 @@
+div.enemy-container {
+    --fullWidth: 822px;
+    --fullHeight: 1122px;
+    position: relative;
+    
+    z-index: 1;
+
+    
+
+    &>div.enemy-card {
+
+       
+
+        position: relative;
+        border: groove 4px #0008;
+        color: white;
+
+        background: #435235;
+        border-radius: 3%;
+
+        box-shadow: 3px 3px 3px 2px #0008;
+        /* overflow: hidden; */
+
+        transition: all 0.1s ease-in-out;
+
+
+
+        &>div.img-container {
+            position: absolute;
+
+            top: 10%;
+            width: 100%;
+            z-index: 5;
+
+
+            &>img {
+                position: relative;
+                width: 100%;
+            }
+
+            &>div.shadow {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+
+                box-shadow: inset 0 0 6rem 3rem #0008;
+
+            }
+        }
+
+        &>div.layout {
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            background: url('./pics/enemycardlayout.png');
+            background-size: cover;
+
+            z-index: 10;
+
+            box-shadow: inset 0 0 2rem 2rem #0008;
+
+            overflow: hidden;
+
+
+        }
+
+        &>div.content {
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+
+            z-index: 100;
+
+            &>div.name {
+                position: absolute;
+                top: 2%;
+                left: 0;
+                width: 100%;
+                height: 10%;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                font-size: 2.5em;
+                font-family: "Lobster Two";
+                color: #FFFE;
+                text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
+
+                background: linear-gradient(0deg, #0002, #0008, #FA84, #0008, #0002);
+            }
+
+
+            &>div.health {
+                position: absolute;
+                top: 70%;
+                left: 50%;
+                margin-left: -25%;
+                width: 50%;
+                height: 21%;
+                background-image: url("./icons/healthbg.png");
+                background-size: contain;
+                background-repeat: no-repeat;
+
+                color: white;
+                font-size: 4em;
+                font-weight: bold;
+                text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                padding-bottom: 5%;
+            }
+
+            & > div.block {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -18%;
+                width: 36%;
+                height: 26%;
+                background-image: url("./icons/blockbg.png");
+                background-size: contain;
+                background-repeat: no-repeat;
+
+
+                color: white;
+                font-size: 4em;
+                font-weight: bold;
+                text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                
+                padding-bottom: 0%;
+            }
+
+            &>div.groups {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 8%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+
+                color: #CCC;
+                font-size: 1.5em;
+
+                font-weight: bold;
+                text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
+
+            }
+         
+
+        }
+
+        &.mini {
+            width: calc(var(--fullWidth) * 0.1);
+            height: calc(var(--fullHeight) * 0.1);
+            border: solid 1px #0008;
+            font-size: 4px;
+
+            &>div.img-container>div.shadow {
+                box-shadow: inset 0 0 0.75rem 0.25rem #0004;
+                /* box-shadow: inset 0 0 6rem 3rem #0008; */
+            }
+        }
+
+
+
+
+        &.small {
+            width: calc(var(--fullWidth) * 0.2);
+            height: calc(var(--fullHeight) * 0.2);
+            font-size: 6px;
+            border: groove 2px #0008;
+
+            &>div.img-container>div.shadow {
+                box-shadow: inset 0 0 2rem 1rem #0008;
+                /* box-shadow: inset 0 0 6rem 3rem #0008; */
+            }
+        }
+
+        &.medium {
+            width: calc(var(--fullWidth) * 0.33);
+            height: calc(var(--fullHeight) * 0.33);
+            font-size: 9px;
+            border: groove 3px #0008;
+
+            &>div.img-container>div.shadow {
+                box-shadow: inset 0 0 2.5rem 1.25rem #0008;
+                /* box-shadow: inset 0 0 6rem 3rem #0008; */
+            }
+
+        }
+
+        &.big {
+            width: calc(var(--fullWidth) * 0.5);
+            height: calc(var(--fullHeight) * 0.5);
+            font-size: 12px;
+        }
+
+        &.full {
+            width: var(--fullWidth);
+            height: var(--fullWidth);
+        }
+
+        &.extra {
+            width: calc(var(--fullWidth) * 1.5);
+            height: calc(var(--fullHeight) * 1.5);
+        }
+
+        &.isOverTrue {
+            box-shadow: 8px 8px 3px 2px #0008, 0 0 3em 2em #FFFD;
+            /* box-shadow: inset 0 0 0.5rem 3px #00000088, 0.25rem 0.25rem 1rem 0.5rem #00000088, 0 0 2rem 1rem #88FF88; */
+            transform: scale(1.1);
+            filter: brightness(120%);
+        }
+
+        &.invalid-target {
+            /* box-shadow: inset 0 0 0.5rem 3px #00000088, 0 0 2rem 1rem #FF8888; */
+            box-shadow: inset 0 0 0.5rem 3px #FFFFFF44, 0.1rem 0.1rem 1rem 0.5rem #00000088;
+            /* opacity: 0.7; */
+            transform: scale(0.8);
+            filter: grayscale(75%);
+        }
+
+        &.valid-target {
+            box-shadow: 8px 8px 3px 2px #0008, 0 0 2em 1em #FFF4;
+            /* box-shadow: inset 0 0 0.5rem 3px #FFFFFF44, 0.5rem 0.5rem 1rem 0.5rem #00000088, 0 0 2rem 1rem #FFFFFF88; */
+            transform: scale(1.1);
+        }
+
+        &.is-stunned {
+            /* transform: grayscale(100%); */
+            transform: perspective(400px) rotateX(25deg);
+            filter: grayscale(75%) blur(1px);
+        }
+
+
+        &.is-dead {
+            transform: perspective(400px) rotateX(50deg) scale(0.6);
+            /* transform: scale(0.6); */
+            filter: grayscale(100%);
+            opacity: 0.5;
+        }
+
+        &.is-stunned {
+            /* transform: grayscale(100%); */
+            transform: perspective(400px) rotateX(25deg);
+            filter: grayscale(75%) blur(1px);
+        }
+        
+
+    }
+
+    &>.next-action {
+
+        --action-size: 8rem;
+        --action-font-size: 0.9rem;
+
+        position: absolute;
+        right: calc(-1 * var(--action-size));
+        top: 0;
+        text-align: center;
+        width: var(--action-size);
+        height: var(--action-size);
+        font-size: var(--action-font-size);
+        font-weight: bold;
+        color: black;
+
+        background-image: url("./icons/chat.png");
+        background-size: cover;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        padding: 0 0 2.5rem 0.75rem;
+
+        transform: rotate(15deg);
+        /* color: white; */
+        /* box-shadow: inset 0 0 0.5rem 3px #00000088, 0.25rem 0.25rem 6px 3px #00000033; */
+        /* border-radius: 1rem; */
+    }
+
+
+    &>.damage-taken {
+
+        --hit-size: 5rem;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        z-index: 200;
+
+        &>div.hit {
+            position: relative;
+            background: url("./icons/damage.png");
+            background-size: contain;
+            height: var(--hit-size);
+            width: var(--hit-size);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: calc(var(--hit-size) *0.66);
+            font-weight: bold;
+            color: #FFF;
+            text-shadow: var(--text-stroke-small);
+
+            &.small {
+                height: calc(var(--hit-size) * 0.66);
+                width: calc(var(--hit-size) * 0.66);
+                font-size: calc(var(--hit-size) *0.5);
+            }
+
+            &.resistant {
+                color: #888;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 25%;
+                    left: -40%;
+                    width: 50%;
+                    height: 50%;
+                    background: url("./icons/reddown.png");
+                    background-size: contain;
+
+                }
+            }
+
+            &.vulnerable {
+                color: #8F8;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 25%;
+                    right: -40%;
+                    width: 50%;
+                    height: 50%;
+                    background: url("./icons/greenup.png");
+                    background-size: contain;
+
+                }
+            }
+        }
+    }
+
+    & > div.tombstone {
+        position: absolute;
+        bottom: 20%;
+        left: 0;
+        right: 0;
+        height: 50%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        transform: perspective(400px) rotateX(25deg) rotateZ(15deg);
+
+        & > img {
+            height: 70%;
+            opacity: 0.5;
+            
+            
+        }
+
+        
+        
+        z-index: 200;
+    }
+
+    &.mini {
+        & > .damage-taken {
+            --hit-size: 4rem;
+        }
+        & > .next-action {
+            --action-size: 6rem;
+            --action-font-size: 0.7rem;
+            padding: 0 0 2.0rem 0.75rem;
+        }
+    }
+
+    &.small {
+        & > .damage-taken {
+            --hit-size: 6rem;
+        }
+        & > .next-action {
+            --action-size: 8rem;
+            --action-font-size: 0.9rem;
+            padding: 0 0 2.5rem 0.75rem;
+        }
+    }
+
+    &.medium {
+        & > .damage-taken {
+            --hit-size: 10rem;
+        }
+
+        & > .next-action {
+            --action-size: 10rem;
+            --action-font-size: 1.2rem;
+            padding: 0 0 3.5rem 0.75rem;
+        }
+    }
+
+    &.big {
+        & > .damage-taken {
+            --hit-size: 14rem;
+        }
+        & > .next-action {
+            --action-size: 12rem;
+            --action-font-size: 1.4rem;
+            padding: 0 0 3.5rem 0.75rem;
+        }
+    }
+
+    &.full {
+        & > .damage-taken {
+            --hit-size: 20rem;
+        }
+    }
+
+    &.no-action {
+
+        & > .next-action {
+            opacity: 0.5;
+
+            text-decoration: line-through;
+            filter: blur(1px);
+        }
+    }
+}

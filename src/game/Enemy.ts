@@ -20,6 +20,7 @@ export interface EnemyStats {
 	status: ENEMYSTATUS;
 	effects: Map<EFFECTS, number>;
 	action: string;
+	groups: string[];
 }
 
 export enum ENEMYACTIONS {
@@ -43,6 +44,8 @@ export enum ENEMYACTIONTARGETS {
 export interface EnemyAction {
 	action: ENEMYACTIONS;
 	target: ENEMYACTIONTARGETS;
+	damageType?: DAMAGETYPE;
+	effect?: EFFECTS;
 	value?: number;
 	description?: string;
 }
@@ -102,6 +105,10 @@ export class Enemy extends Cloneable {
 		return this.health;
 	}
 
+	public getGroups(): string[] {
+		return this.groups;
+	}
+
 	public getExperienceValue(): number {
 		return this.experienceValue;
 	}
@@ -115,7 +122,7 @@ export class Enemy extends Cloneable {
 
 		let damageTaken = rnd(damageRange[0], damageRange[1]);
 
-		if(damageTaken < this.block) {
+		if (damageTaken < this.block) {
 			this.block -= damageTaken;
 			damageTaken = 0;
 		} else {
@@ -129,6 +136,13 @@ export class Enemy extends Cloneable {
 
 		if (this.health <= 0) {
 			this.status = ENEMYSTATUS.DEAD;
+		}
+	}
+
+	public healMe(amount: number): void {
+		this.health += amount || 0;
+		if (this.health > this.maxHealth) {
+			this.health = this.maxHealth;
 		}
 	}
 
@@ -159,14 +173,16 @@ export class Enemy extends Cloneable {
 		return this.resistantTo.includes(type);
 	}
 
-	public causeEffect(effect: EFFECTS) {
+	public causeEffect(effect: EFFECTS, amount?: number) {
 		if (this.effectImmunities.includes(effect)) {
 			return;
 		}
+		const am = amount || 1;
+
 		if (this.effects.has(effect)) {
-			this.effects.set(effect, this.effects.get(effect)! + 1);
+			this.effects.set(effect, this.effects.get(effect)! + am);
 		} else {
-			this.effects.set(effect, 1);
+			this.effects.set(effect, am);
 		}
 
 		// If the enemy has both burning and frozen effects, only leave the one with most turns left and substract the other from it
@@ -207,11 +223,11 @@ export class Enemy extends Cloneable {
 			case ENEMYACTIONS.WAIT:
 				return { ...gs };
 			case ENEMYACTIONS.SPECIAL1:
-				break;
+				return this.actionSpecial1(gs, act);
 			case ENEMYACTIONS.SPECIAL2:
-				break;
+				return this.actionSpecial2(gs, act);
 			case ENEMYACTIONS.SPECIAL3:
-				break;
+				return this.actionSpecial3(gs, act);
 			default:
 				break;
 		}
@@ -225,6 +241,10 @@ export class Enemy extends Cloneable {
 		}
 		let damage = act.value || 0;
 
+		if(this.effectIsActive(EFFECTS.BOOSTED)){
+			damage = Math.round(damage * 1.5);
+		}
+
 		gs.hero.takeDamage(damage);
 		return { ...gs };
 	}
@@ -233,9 +253,14 @@ export class Enemy extends Cloneable {
 		if (this.effectIsActive(EFFECTS.STUNNED)) {
 			return gs;
 		}
-		this.health += act.value || 0;
-		if (this.health > this.maxHealth) {
-			this.health = this.maxHealth;
+
+		if (act.target === ENEMYACTIONTARGETS.SELF) {
+			this.healMe(act.value || 0);
+		}
+		if (act.target === ENEMYACTIONTARGETS.OTHERS) {
+			gs.arena.enemies.forEach((enemy) => {
+				enemy.healMe(act.value || 0);
+			});
 		}
 
 		return { ...gs };
@@ -243,6 +268,18 @@ export class Enemy extends Cloneable {
 
 	protected actionBlock(gs: GameState, act: EnemyAction): GameState {
 		this.block += act.value || 0;
+		return { ...gs };
+	}
+
+	protected actionSpecial1(gs: GameState, act: EnemyAction): GameState {
+		return { ...gs };
+	}
+
+	protected actionSpecial2(gs: GameState, act: EnemyAction): GameState {
+		return { ...gs };
+	}
+
+	protected actionSpecial3(gs: GameState, act: EnemyAction): GameState {
 		return { ...gs };
 	}
 
@@ -350,6 +387,7 @@ export class Enemy extends Cloneable {
 			status: this.status,
 			action: this.nextActionString(),
 			effects: this.effects,
+			groups: this.groups,
 		};
 	}
 
@@ -373,6 +411,4 @@ export class Enemy extends Cloneable {
 		}
 		return strs.join(" ");
 	}
-
-	
 }

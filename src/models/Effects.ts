@@ -6,5 +6,6 @@ export enum EFFECTS {
 	POISONED = "poisoned",
 	BURNING = "burning",
 	STUNNED = "stunned",
+	BOOSTED = "boosted",
 };
 
