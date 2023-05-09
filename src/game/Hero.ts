@@ -235,7 +235,9 @@ export default class Hero {
 	}
 
 	public getHandSize(hand: "RIGHT" | "LEFT"): number {
+		console.log("Hand:", this.heroClass.levelStats[this.level])
 		if (hand === "RIGHT") {
+			console.log("Right hand size:", this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize);
 			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize;
 		} else {
 			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].lHandSize;

@@ -1,4 +1,6 @@
+import { killTargetEnemy } from "../game/GameService";
 import { Campaign } from "../models/Campaign";
+import { DAMAGETYPE } from "../models/Card";
 import { GAMESTATES, GameState } from "../models/GameState";
 
 const styles: React.CSSProperties = {
@@ -24,16 +26,25 @@ function ArenaDevTools(props: { gs: GameState; update: (gs: GameState) => void }
 		props.update({ ...props.gs });
 	}
 
-    function winArena() {
-        props.gs.state = GAMESTATES.ARENA_VICTORY;
-        props.update({ ...props.gs });
-    }
+	function winArena() {
+
+
+		const gameState = props.gs.arena.enemies.reduce((gs, curr) => {
+
+			gs = killTargetEnemy(gs, curr.id);
+
+			return { ...gs };
+		}, props.gs);
+
+		// gameState.state = GAMESTATES.ARENA_VICTORY;
+		props.update({ ...gameState });
+	}
 
 	return (
 		<div className="arena-dev-tools" style={styles}>
 			<div>DEV TOOLS</div>
 			<button onClick={killHero}>Kill Hero</button>
-            <button onClick={winArena}>Win Now</button>
+			<button onClick={winArena}>Win Now</button>
 		</div>
 	);
 }

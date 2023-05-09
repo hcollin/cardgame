@@ -5,6 +5,7 @@ import { ArenaForestEncounter } from "../data/ArenaForestEncounter";
 import { arnd, rnd } from "rndlib";
 import { EmptyArena } from "../data/EmptyArena";
 import { Campaign } from "../models/Campaign";
+import { ArenaDragonsLair } from "../data/ArenaDragonsLair";
 
 interface worldGeneratorOptions {
 	depth: number;
@@ -84,7 +85,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		name: `BOSS`,
 		status: LOCATIONSTATUS.LOCKED,
 		type: WORLDLOCATIONTYPE.ARENA,
-		arena: [new EmptyArena()],
+		arena: [new ArenaDragonsLair()],
 		nextLocations: [],
 		flags: [],
 		icon: "forest",

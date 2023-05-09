@@ -10,8 +10,8 @@ export const ClassWarrior: CharacterClass = {
 	],
 	levelStats: [
 		{ health: 0, armor: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false },
-		{ health: 5, armor: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false }, // 1 +5 health
-		{ health: 8, armor: 1, energy: 0, rHandSize: 0, lHandSize: 0, cape: false }, // 2 +1 armor
+		{ health: 5, armor: 0, energy: 0, rHandSize: 0, lHandSize: 1, cape: false }, // 1 +5 health
+		{ health: 8, armor: 1, energy: 0, rHandSize: 1, lHandSize: 0, cape: false }, // 2 +1 armor
 		{ health: 10, armor: 1, energy: 1, rHandSize: 0, lHandSize: 0, cape: false }, // 3 +1 energy
 		{ health: 20, armor: 1, energy: 1, rHandSize: 0, lHandSize: 0, cape: false }, // 4 +10 health
 		{ health: 30, armor: 1, energy: 1, rHandSize: 0, lHandSize: 0, cape: true }, // 5 +15 health

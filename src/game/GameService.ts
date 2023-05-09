@@ -1,4 +1,4 @@
-import { Card, TARGETS } from "../models/Card";
+import { Card, DAMAGETYPE, TARGETS } from "../models/Card";
 import { Deck } from "./Deck";
 import { GAMESTATES, GameState } from "../models/GameState";
 import { createCardsFromItem } from "./ItemTools";
@@ -8,6 +8,7 @@ import { ITEMSLOT } from "../models/HeroStats";
 import Hero from "./Hero";
 import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
+import { Enemy } from "./Enemy";
 
 export function createGame(hero?: Hero): GameState {
 	return {
@@ -25,7 +26,7 @@ export function createGame(hero?: Hero): GameState {
 		playedCardsThisTurn: [],
 	};
 }
-	
+
 export function createDecks(gs: GameState): GameState {
 	const rightHandItem = gs.hero.getEquippedItem(ITEMSLOT.RIGHT_HAND);
 	const leftHandItem = gs.hero.getEquippedItem(ITEMSLOT.LEFT_HAND);
@@ -140,7 +141,26 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 		return { ...gameState, state: GAMESTATES.ARENA_VICTORY };
 	}
 
+
 	return { ...gameState };
+}
+
+export function killTargetEnemy(gs: GameState, enemyId: string): GameState {
+
+	const enemy = gs.arena.enemies.find((e) => e.id === enemyId);
+
+	if (!enemy) { return gs; }
+
+	enemy.takeDamage({
+		amount: enemy.getHealth() * 2,
+		type: DAMAGETYPE.SLASH,
+		variation: 0
+	});
+
+	gs.hero.gainExperience(enemy.getExperienceValue());
+
+
+	return { ...gs };
 }
 
 export function endTurn(gameState: GameState): GameState {
