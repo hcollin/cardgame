@@ -16,6 +16,7 @@ import { CloakOfSwiftness } from "../data/items/CloakOfSwiftness";
 import { MinorWandOfFire } from "../data/items/MinorWandOfFire";
 import { Katana } from "../data/items/Katana";
 import { Cloneable } from "../utils/Clonable";
+import { ARENATHEMES } from "../data/arenaThemes";
 
 export enum ARENADIFFICULTY {
 	VERYEASY = "Very Easy",
@@ -33,18 +34,18 @@ export class Arena extends Cloneable {
 	public background: string;
 	public bgImage: string | null = null;
 
-    public readonly DIFFICULTYLIMIT: Map<ARENADIFFICULTY, number> = new Map([
-        [ARENADIFFICULTY.VERYEASY, 3],
-        [ARENADIFFICULTY.EASY, 5],
-        [ARENADIFFICULTY.MEDIUM, 8],
-        [ARENADIFFICULTY.HARD, 12],
-        [ARENADIFFICULTY.VERYHARD, 16],
-        [ARENADIFFICULTY.EXTREME, 20],
-        [ARENADIFFICULTY.INSANE, 25]
-    ]);
+	public readonly DIFFICULTYLIMIT: Map<ARENADIFFICULTY, number> = new Map([
+		[ARENADIFFICULTY.VERYEASY, 3],
+		[ARENADIFFICULTY.EASY, 5],
+		[ARENADIFFICULTY.MEDIUM, 8],
+		[ARENADIFFICULTY.HARD, 12],
+		[ARENADIFFICULTY.VERYHARD, 16],
+		[ARENADIFFICULTY.EXTREME, 20],
+		[ARENADIFFICULTY.INSANE, 25]
+	]);
 
-    private difficulty: ARENADIFFICULTY = ARENADIFFICULTY.VERYEASY;
-    private difficultyValue: number = -1;
+	private difficulty: ARENADIFFICULTY = ARENADIFFICULTY.VERYEASY;
+	private difficultyValue: number = -1;
 
 	protected rewardItems: Item[] = [
 		Dagger,
@@ -92,29 +93,45 @@ export class Arena extends Cloneable {
 	}
 
 	public getDifficulty(): ARENADIFFICULTY {
-		if(this.difficultyValue > -1) {
-            return this.difficulty;
-        }
-        
-        const difValue = this.enemies.reduce((a, b) => a + b.difficulty, 0);
-        
-        this.difficultyValue = difValue;
-        // return the ARENADIIFFICULTY enum value that is the closest to the difValue
-        let closest = ARENADIFFICULTY.VERYEASY;
-        let closestValue = this.DIFFICULTYLIMIT.get(ARENADIFFICULTY.VERYEASY) || 0;
-        for (const [key, value] of this.DIFFICULTYLIMIT.entries()) {
-            if (Math.abs(value - difValue) < Math.abs(closestValue - difValue)) {
-                closest = key;
-                closestValue = value;
-            }
-        }
-        this.difficulty = closest;
-        return closest;
+		if (this.difficultyValue > -1) {
+			return this.difficulty;
+		}
+
+		const difValue = this.enemies.reduce((a, b) => a + b.difficulty, 0);
+
+		this.difficultyValue = difValue;
+		// return the ARENADIIFFICULTY enum value that is the closest to the difValue
+		let closest = ARENADIFFICULTY.VERYEASY;
+		let closestValue = this.DIFFICULTYLIMIT.get(ARENADIFFICULTY.VERYEASY) || 0;
+		for (const [key, value] of this.DIFFICULTYLIMIT.entries()) {
+			if (Math.abs(value - difValue) < Math.abs(closestValue - difValue)) {
+				closest = key;
+				closestValue = value;
+			}
+		}
+		this.difficulty = closest;
+		return closest;
 	}
 
-    public getDifficultyValue(): number {
-        this.getDifficulty();
-        return this.difficultyValue;
-    }
+	public getDifficultyValue(): number {
+		this.getDifficulty();
+		return this.difficultyValue;
+	}
+
+	/**
+	 * Generate a random arena based on the difficulty and theme
+	 * @param difficulty 
+	 * @param themeName 
+	 */
+	public static generate(difficulty: ARENADIFFICULTY, themeName: string): Arena {
+
+		const theme = ARENATHEMES[themeName];
+
+		
+		return new Arena(theme.name(), [], "", theme.bgImage);
+
+
+		
+	}
 
 }

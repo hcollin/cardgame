@@ -78,19 +78,19 @@ export default class Hero {
 	 * @param dmg
 	 */
 	public takeDamage(dmg: number) {
-		if(this.dodgeRoll()) return;
+		if (this.dodgeRoll()) return;
 
 		let damage = dmg - this.damageReduction - this.temporaryDamageReduction;
 		if (damage < 0) damage = 0;
 
-        if(damage <= this.armor) {
-            this.armor -= damage;
-            return;
-        }
+		if (damage <= this.armor) {
+			this.armor -= damage;
+			return;
+		}
 
-        this.health -= damage - this.armor;
-        this.armor = 0;
-    }
+		this.health -= damage - this.armor;
+		this.armor = 0;
+	}
 
 	/**
 	 * Hero gains experience. Level up happes only after arena is completed
@@ -162,7 +162,7 @@ export default class Hero {
 		this.inventory = [];
 		this.heroClass.startingItems.forEach((item) => {
 			this.inventory.push(item[0]);
-			if(item[1]) {
+			if (item[1]) {
 				this.equipItem(item[0], item[1]);
 			}
 		});
@@ -179,12 +179,12 @@ export default class Hero {
 		// Check for level up
 		if (this.experience >= LEVELEXPERIENCEREQUIREMENTS[this.level + 1]) {
 			this.level++;
-			if(options.fullHealOnLevelUp) {
+			if (options.fullHealOnLevelUp) {
 				this.health = this.getMaxHealth();
 			}
 		}
 
-		
+
 		this.turnReset();
 	}
 
@@ -195,7 +195,7 @@ export default class Hero {
 		this.armor = this.getEffectedArmor();
 		this.energy = this.getEffectedEnergy();
 		this.temporaryDodge = 0;	// Reset temporary dodge
-		
+
 	}
 
 	// Status
@@ -204,7 +204,7 @@ export default class Hero {
 		return this.health <= 0;
 	}
 
-	
+
 
 	// LEVELING UP
 
@@ -308,12 +308,12 @@ export default class Hero {
 
 	// Setters
 
-    public modifyArmor(amount: number, floorToZero?: boolean) {
-        this.armor += amount;
-        if(floorToZero) {
-            this.armor = Math.max(0, this.armor);
-        }
-    }    
+	public modifyArmor(amount: number, floorToZero?: boolean) {
+		this.armor += amount;
+		if (floorToZero) {
+			this.armor = Math.max(0, this.armor);
+		}
+	}
 
 	public setEffectArmor(amount: number) {
 		this.effectArmor = amount;
@@ -349,11 +349,11 @@ export default class Hero {
 
 	public modifyTemporaryDamageReduction(amount: number) {
 		this.temporaryDamageReduction += amount;
-	}	
+	}
 
 	public modifyDamageReduction(amount: number) {
 		this.damageReduction += amount;
-	}	
+	}
 
 
 

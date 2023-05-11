@@ -10,6 +10,7 @@ import imgKobold from "./pics/kobold.png";
 import imgTroll from "./pics/troll.png";
 import imgOgre from "./pics/ogre.png";
 
+
 export class Orc extends Enemy {
 
     protected name: string = "Orc";

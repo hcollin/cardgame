@@ -45,10 +45,8 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 
 	const locsMap: (Location | null)[][] = [];
 
-	
-	// A function regexp that checks a email validity
-	 
 
+	// A function regexp that checks a email validity
 
 
 	const sDiffIndex = diffs.findIndex((d) => d === options.startingDifficulty);
@@ -59,7 +57,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		const dLocs: (Location | null)[] = new Array(options.width).fill(null);
 
 		const difInd = sDiffIndex + Math.round(d / (options.depth / options.curve));
-		
+
 		const dif = difInd < diffs.length - 1 ? diffs[difInd] : diffs[diffs.length - 1];
 
 		while (pos < options.width) {
@@ -114,80 +112,6 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 
 	return locsMap.flatMap((l) => l.filter((l) => l !== null)) as Location[];
 
-	// let difIndex = diffs.indexOf(options.startingDifficulty);
-
-	// const finalDifIndex = difIndex + (Math.round(options.depth / options.curve));
-	// console.log("FINALDIFINDEX", diffs[finalDifIndex]);
-
-	// let prevLoc: Location | null = null;
-
-	// //TODO: All paths will lead to a single final location, so I need to build this logic backwards starting from the final location
-
-	// const finalLocation = randomLocation(diffs[finalDifIndex], false);
-	// finalLocation.name = "BOSS";
-	// // Then I need to build build the paths as a tree, where each node has a link to the previous node and no node is missing a link to the previous node (except the first node)
-
-	// locs.push(finalLocation);
-
-	// function addNode(locs: Location[], cnode: Location, currentDepth: number, opts: worldGeneratorOptions): Location[] {
-
-	// 	const difficulty = diffs[diffs.indexOf(options.startingDifficulty) + (Math.floor((opts.depth - currentDepth - 1) / opts.curve))];
-	// 	const newNode = randomLocation(difficulty, false);
-
-	// 	newNode.nextLocations.push(cnode.id);
-	// 	if(currentDepth === opts.depth - 2) {
-	// 		newNode.flags.push("first");
-	// 	}
-	// 	locs.push(newNode);
-
-	// 	if (currentDepth < opts.depth - 2) {
-	// 		const childCount = rnd(1, opts.spread);
-	// 		let childLocs: Location[] = [...locs];
-	// 		for (let i = 0; i < childCount; i++) {
-	// 			childLocs = childLocs.concat(addNode(locs, newNode, currentDepth + 1, opts));
-	// 		}
-	// 		// const cloc = addNode(locs, newNode, currentDepth + 1, opts);
-	// 		return childLocs;
-	// 	}
-
-	// 	return locs;
-	// }
-
-	// const flocs = addNode([finalLocation], finalLocation, 0, options);
-	// console.log("FLOCS", flocs);
-	// return flocs;
-
-	// // Generate a starting locations with a random arenas
-	// for (let i = 0; i < options.starts; i++) {
-	// 	const diff = diffs[difIndex];
-	// 	const loc = randomLocation(diff, i === 0);
-	// 	loc.flags.push("first");
-	// 	loc.name = `Loc ${i}`;
-	// 	locs.push(loc);
-	// }
-
-	// let previousDepthNodes: Location[] = locs;
-	// // Generate the rest of the locations where the amount of locations in each depth is between 1 and spread and location must have a link to one or more locations in the previous depth
-	// for (let i = 1; i <= options.depth; i++) {
-	// 	const nodesInDepth = rnd(1, options.spread);
-	// 	const depthNodes: Location[] = [];
-	// 	for (let j = 0; j < nodesInDepth; j++) {
-	// 		const diff = diffs[difIndex];
-	// 		const loc = randomLocation(diff, false);
-	// 		loc.name = `Loc ${i}-${j}`;
-	// 		const prevLoc = previousDepthNodes[rnd(0, previousDepthNodes.length - 1)];
-	// 		locs.push(loc);
-	// 		prevLoc.nextLocations.push(loc.id);
-	// 		depthNodes.push(loc);
-
-	// 	}
-	// 	if (i % options.curve === 0 && difIndex < diffs.length - 1) {
-	// 		difIndex++;
-	// 	}
-	// 	previousDepthNodes = depthNodes;
-	// }
-
-	// return locs;
 }
 
 function calculateEdgeConnections(locs: (Location | null)[][]): void {
@@ -203,22 +127,12 @@ function calculateEdgeConnections(locs: (Location | null)[][]): void {
 
 			const nextRowNodes: Array<LocationId> = [];
 			// const routeCount = arnd([1, 1, 1, 2, 2, 3]);
-			
+
 			for (let k = Math.max(j - 2, 0); k <= Math.min(j + 2, cols - 1); k++) {
-			// for (let k = 1; k <= routeCount; k++) {
+				// for (let k = 1; k <= routeCount; k++) {
 				const nextNode = locs[i + 1][k];
 				if (nextNode) {
 					nextRowNodes.push(nextNode.id);
-
-					// const currentEdge = [j, i, k, i + 1] as [number, number, number, number];
-					// edges.push(currentEdge);
-					// const hasIntersection = edges.some((edge) => linesIntersect(edge, currentEdge));
-
-					// console.log("CROSSING", hasIntersection, currentEdge, edges);
-					// if (!hasIntersection) {
-						// nextRowNodes.push(nextNode.id);
-						// edges.push(currentEdge);
-					// }
 				}
 			}
 
@@ -233,20 +147,6 @@ function calculateEdgeConnections(locs: (Location | null)[][]): void {
 			currentNode.nextLocations = nextRowNodes;
 		}
 	}
-}
-
-// Function to check if two lines intersect
-function linesIntersect(line1: [number, number, number, number], line2: [number, number, number, number]): boolean {
-	const [x1, y1, x2, y2] = line1;
-	const [x3, y3, x4, y4] = line2;
-
-	const det = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-	if (det === 0) return false; // Parallel lines
-
-	const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / det;
-	const u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / det;
-
-	return t >= 0 && t <= 1 && u >= 0 && u <= 1;
 }
 
 export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Location {
@@ -265,7 +165,7 @@ export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Loc
 		},
 	};
 
-	if(first) {
+	if (first) {
 		loc.flags.push("first");
 	}
 
