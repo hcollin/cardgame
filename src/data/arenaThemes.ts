@@ -1,3 +1,4 @@
+import { arnd } from "rndlib";
 import { Enemy } from "../game/Enemy";
 import { Item } from "../models/Items";
 import { Dragon } from "./Enemies";
@@ -30,9 +31,10 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
         id: "FOREST",
         types: ["Forest", "Orcs", "Easy"],
         name: () => {
-            const adjectives = ["Dark", "Old", "Thick", "Misty", "A"]
+            const adjectives = ["Dark", "Old", "Thick", "Misty", "Ancient", "Enchanted"];
+            const nouns = ["Forest", "Woods", "Jungle", "Grove", "Thicket" ,"Woodland" ];
 
-            return "Forest";
+            return `${arnd(adjectives)} ${arnd(nouns)}`;
 
         },
         enemies: ["Orc Shaman", "Orc Berserker", "Orc Warlord", "Goblin Warrior", "Goblin Sorcerer", "Goblin Lord"],

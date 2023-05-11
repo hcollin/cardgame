@@ -17,6 +17,9 @@ import { MinorWandOfFire } from "../data/items/MinorWandOfFire";
 import { Katana } from "../data/items/Katana";
 import { Cloneable } from "../utils/Clonable";
 import { ARENATHEMES } from "../data/arenaThemes";
+import { Orc } from "../data/Enemies";
+import { OrcBerserker, OrcShaman, OrcWarlord } from "../data/enemies/Orcs";
+import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "../data/enemies/Goblins";
 
 export enum ARENADIFFICULTY {
 	VERYEASY = "Very Easy",
@@ -41,7 +44,7 @@ export class Arena extends Cloneable {
 		[ARENADIFFICULTY.HARD, 12],
 		[ARENADIFFICULTY.VERYHARD, 16],
 		[ARENADIFFICULTY.EXTREME, 20],
-		[ARENADIFFICULTY.INSANE, 25]
+		[ARENADIFFICULTY.INSANE, 25],
 	]);
 
 	private difficulty: ARENADIFFICULTY = ARENADIFFICULTY.VERYEASY;
@@ -120,18 +123,36 @@ export class Arena extends Cloneable {
 
 	/**
 	 * Generate a random arena based on the difficulty and theme
-	 * @param difficulty 
-	 * @param themeName 
+	 * @param difficulty
+	 * @param themeName
 	 */
 	public static generate(difficulty: ARENADIFFICULTY, themeName: string): Arena {
-
 		const theme = ARENATHEMES[themeName];
 
-		
 		return new Arena(theme.name(), [], "", theme.bgImage);
-
-
-		
 	}
+}
+
+
+
+function getEnemyByName(ename: string): Enemy {
+
+	switch(ename) {
+		case "Orc Berserker":
+			return new OrcBerserker();
+		case "Orc Shaman":
+			return new OrcShaman();
+		case "Orc Warlord":
+			return new OrcWarlord();
+		case "Goblin Warrior":
+			return new GoblinWarrior();
+		case "Goblin Sorcerer":
+			return new GoblinSorcerer();
+		case "Goblin Lord":
+			return new GoblinLord();
+	}
+
+	throw new Error("Invalid enemy name");
+
 
 }
