@@ -57,7 +57,8 @@ export class Hand {
     }
 
     public discardCard(card: Card, gs: GameState): GameState {
-        
+        const deck = this.getDeck(gs);
+        deck.discardCards([card])
         return { ...gs };
     }
 

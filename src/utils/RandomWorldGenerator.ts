@@ -46,6 +46,11 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 	const locsMap: (Location | null)[][] = [];
 
 	
+	// A function regexp that checks a email validity
+	 
+
+
+
 	const sDiffIndex = diffs.findIndex((d) => d === options.startingDifficulty);
 
 	for (let d = 0; d < options.depth; d++) {
