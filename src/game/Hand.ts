@@ -1,3 +1,4 @@
+import { arnd, rnd } from "rndlib";
 import { Card } from "../models/Card";
 import { GameState } from "../models/GameState";
 import { Deck } from "./Deck";
@@ -23,17 +24,14 @@ export class Hand {
     }
 
     public drawNewHand(gs: GameState): GameState {
-        
-        
         this.discardAll(gs);
         const deck = this.getDeck(gs);
         this.calculateHandSize(gs);
         this.cards = deck.drawCards(this.handSize);
-    
         return { ...gs };
     }
 
-    public drawCards( gs: GameState, amount = 1): GameState {
+    public drawCards(gs: GameState, amount = 1): GameState {
         const deck = this.getDeck(gs);
         const cards = deck.drawCards(amount);
         this.cards = this.cards.concat(cards);
@@ -46,25 +44,21 @@ export class Hand {
 
     public discardAll(gs: GameState): GameState {
         const deck = this.getDeck(gs);
-        deck.addCards(this.cards);
+        deck.discardCards([...this.cards]);
         this.cards = [];
-        return { ...gs };
-    }
-
-    public playCard(card: Card, gs: GameState): GameState {
-        this.cards = this.cards.filter(c => c.id !== card.id);
         return { ...gs };
     }
 
     public discardCard(card: Card, gs: GameState): GameState {
         const deck = this.getDeck(gs);
         deck.discardCards([card])
+        this.cards = this.cards.filter(c => c.id !== card.id);
         return { ...gs };
     }
 
     public discardRandomCard(gs: GameState): GameState {
-
-        return { ...gs };
+        const card = arnd(this.cards);
+        return this.discardCard(card, gs);
     }
 
     private getDeck(gs: GameState) {

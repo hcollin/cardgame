@@ -9,6 +9,7 @@ import Hero from "./Hero";
 import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
 import { Enemy } from "./Enemy";
+import { Hand } from "./Hand";
 
 export function createGame(hero?: Hero): GameState {
 	return {
@@ -16,8 +17,8 @@ export function createGame(hero?: Hero): GameState {
 		turn: 0,
 		leftHandDeck: new Deck([]),
 		rightHandDeck: new Deck([]),
-		leftHand: [],
-		rightHand: [],
+		leftHand: new Hand("LEFT"),
+		rightHand: new Hand("RIGHT"),
 		state: GAMESTATES.INIT,
 		arena: new EmptyArena(),
 		// world: createWorld(LOCATIONS),
@@ -130,11 +131,9 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 
 	// Discard used card
 	if (card.hand === "RIGHT") {
-		gameState.rightHandDeck.discardCards([card]);
-		gameState.rightHand = [...gameState.rightHand.filter((c) => c.id !== card.id)];
+		gameState.rightHand.discardCard(card, gameState);
 	} else {
-		gameState.leftHandDeck.discardCards([card]);
-		gameState.leftHand = gameState.leftHand.filter((c) => c.id !== card.id);
+		gameState.leftHand.discardCard(card, gameState);
 	}
 
 	if (checkForWin(gameState)) {
@@ -180,11 +179,9 @@ export function endTurn(gameState: GameState): GameState {
 	gameState.state = GAMESTATES.ENEMYTURN;
 
 	// Move cards from hand to discard
-	gameState.leftHandDeck.discardCards(gameState.leftHand);
-	gameState.rightHandDeck.discardCards(gameState.rightHand);
-	gameState.leftHand = [];
-	gameState.rightHand = [];
-
+	gameState.leftHand.discardAll(gameState);
+	gameState.rightHand.discardAll(gameState);
+	
 	gameState.playedCardsThisTurn = [];
 
 	if (checkForDeath(gameState)) {
@@ -233,9 +230,9 @@ export function endEnemyTurn(gameState: GameState): GameState {
 	// gameState.hero.aps = gameState.hero.maxAps;
 
 	// Draw X cards to both hands
-	gameState.leftHand = gameState.leftHandDeck.drawCards(gameState.hero.getHandSize("LEFT"));
-	gameState.rightHand = gameState.rightHandDeck.drawCards(gameState.hero.getHandSize("RIGHT"));
-
+	gameState.leftHand.drawNewHand(gameState);
+	gameState.rightHand.drawNewHand(gameState);
+	
 	gameState.arena.enemies.forEach((enemy) => {
 		gameState = enemy.atStartOfPlayerTurn(gameState);
 	});

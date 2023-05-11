@@ -1,5 +1,6 @@
 import { Arena } from "../game/Arena";
 import { Deck } from "../game/Deck";
+import { Hand } from "../game/Hand";
 import Hero from "../game/Hero";
 import { Card } from "./Card";
 
@@ -38,8 +39,8 @@ export interface GameState {
     leftHandDeck: Deck;
     rightHandDeck: Deck;
 
-    leftHand: Card[];
-    rightHand: Card[];
+    leftHand: Hand;
+    rightHand: Hand;
     
     state: GAMESTATES;
     arena: Arena;

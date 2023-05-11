@@ -8,17 +8,19 @@ import "./card-hand.css";
 function CardHand(props: { gs: GameState; side: "LEFT" | "RIGHT"; onDrag: (on: boolean) => void; onSelect: (card: Card) => void }) {
 
 	
-	const cards = props.side === "LEFT" ? props.gs.leftHand : props.gs.rightHand;
+	const hand = props.side === "LEFT" ? props.gs.leftHand : props.gs.rightHand;
 
-	const cardCount = cards.length;
+	
+
+	const cardCount = hand.getHandSize();
 
 	const cns: string[] = ["card-hand", props.side.toLowerCase()];
 
 	return (
 		<div className={cns.join(" ")}>
-			{cards.map((card, index) => {
+			{hand.getCards().map((card, index) => {
 
-                const angle = ((cards.length -1) * -5) + index * 10;
+                const angle = ((cardCount -1) * -5) + index * 10;
                 const offset = 20 - (Math.abs(angle));
 
 				const st: React.CSSProperties = {

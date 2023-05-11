@@ -80,22 +80,17 @@ export const Mace: Item = {
 			},
 
 			onUse: (gs: GameState, card: Card) => {
-                
-                if(card.hand === "RIGHT") {
-                    const c = gs.rightHandDeck.drawCard();
-                    if(c) {
-                        gs.rightHand.push(c);
-                    }
-                } else {
-                    const c = gs.leftHandDeck.drawCard();
-                    if(c) {
-                        gs.leftHand.push(c);
-                    }
-                }
+
+				if (card.hand === "RIGHT") {
+					gs.rightHand.drawCards(gs, 1);
+				} else {
+					gs.leftHand.drawCards(gs, 1);
+
+				}
 
 				return { ...gs };
 			},
 		},
-		
+
 	],
 };

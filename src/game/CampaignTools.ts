@@ -11,6 +11,7 @@ import Hero from "./Hero";
 import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
 import { generateRandomWorld } from "../utils/RandomWorldGenerator";
+import { Hand } from "./Hand";
 
 /**
  * This is used to initialize the state
@@ -136,8 +137,8 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
 		turn: 0,
 		leftHandDeck: new Deck([]),
 		rightHandDeck: new Deck([]),
-		leftHand: [],
-		rightHand: [],
+		leftHand: new Hand("LEFT"),
+		rightHand: new Hand("RIGHT"),
 		state: GAMESTATES.MYTURN,
 		arena: location.arena[0],
 		// world: campaign.world,
@@ -153,9 +154,11 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
 	gameState.rightHandDeck.shuffleDeck();
 	gameState.leftHandDeck.shuffleDeck();
 
-	gameState.rightHand = gameState.rightHandDeck.drawCards(gameState.hero.getHandSize("RIGHT"));
-	gameState.leftHand = gameState.leftHandDeck.drawCards(gameState.hero.getHandSize("LEFT"));
+	gameState.rightHand.drawNewHand(gameState);
 
+	gameState.rightHand.drawNewHand(gameState);
+	gameState.leftHand.drawNewHand(gameState);
+	
 	gameState.arena.resetArena();
 	gameState.hero.arenaReset(campaign.options);
 	gameState.turn = 1;
@@ -172,8 +175,8 @@ export function createGameForArena(arena: Arena, campaign: Campaign): GameState 
 		turn: 0,
 		leftHandDeck: new Deck([]),
 		rightHandDeck: new Deck([]),
-		leftHand: [],
-		rightHand: [],
+		leftHand: new Hand("LEFT"),
+		rightHand: new Hand("RIGHT"),
 		state: GAMESTATES.MYTURN,
 		arena: arena,
 		hero: hero,
@@ -186,8 +189,8 @@ export function createGameForArena(arena: Arena, campaign: Campaign): GameState 
 	gameState.rightHandDeck.shuffleDeck();
 	gameState.leftHandDeck.shuffleDeck();
 
-	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
-	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
+	gameState.rightHand.drawNewHand(gameState);
+	gameState.leftHand.drawNewHand(gameState);
 
 	gameState.arena.resetArena();
 	gameState.turn = 1;
@@ -197,3 +200,4 @@ export function createGameForArena(arena: Arena, campaign: Campaign): GameState 
 
 	return gameState;
 }
+
