@@ -1,5 +1,5 @@
-import { ARENADIFFICULTY } from "../game/Arena";
 
+import { ARENADIFFICULTY } from "../data/Difficulties";
 import "./difficulty-meter.css";
 
 const diffLevels: ARENADIFFICULTY[] = [

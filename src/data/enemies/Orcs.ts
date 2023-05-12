@@ -7,6 +7,7 @@ import orcBerserker from "./pics/orcBerserker.jpeg";
 import orcShaman from "./pics/orcShaman.jpeg";
 import orcWarlord from "./pics/orcWarlord.jpeg";
 import { GameState } from "../../models/GameState";
+import { ENEMYDATA } from "../EnemyData";
 
 abstract class OrcRace extends Enemy {
 	protected groups: string[] = ["Orcs"];
@@ -16,9 +17,9 @@ export class OrcBerserker extends OrcRace {
 	protected name: string = "Orc Berserker";
 	protected maxHealth: number = 18;
 
-	public readonly difficulty: number = 2;
+	public readonly difficulty: number = ENEMYDATA["Orc Berserker"].difficultyNumber;
 
-	protected experienceValue: number = 25;
+	protected experienceValue: number = ENEMYDATA["Orc Berserker"].experienceValue;
 
 	public readonly image: string = orcBerserker;
 
@@ -57,9 +58,9 @@ export class OrcShaman extends OrcRace {
 	protected name: string = "Orc Shaman";
 	protected maxHealth: number = 21;
 
-	public readonly difficulty: number = 3;
+	public readonly difficulty: number = ENEMYDATA["Orc Shaman"].difficultyNumber;
 
-	protected experienceValue: number = 35;
+	protected experienceValue: number = ENEMYDATA["Orc Shaman"].experienceValue;
 
 	public readonly image: string = orcShaman;
 
@@ -96,9 +97,9 @@ export class OrcWarlord extends OrcRace {
 	protected name: string = "Orc Warlord";
 	protected maxHealth: number = 45;
 
-	public readonly difficulty: number = 5;
+	public readonly difficulty: number = ENEMYDATA["Orc Warlord"].difficultyNumber;
 
-	protected experienceValue: number = 125;
+	protected experienceValue: number = ENEMYDATA["Orc Warlord"].experienceValue;
 
 	public readonly image: string = orcWarlord;
 

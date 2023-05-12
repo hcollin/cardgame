@@ -1,5 +1,5 @@
 import { arnd } from "rndlib";
-import { ARENADIFFICULTY, Arena } from "../game/Arena";
+import { Arena } from "../game/Arena";
 import { Dragon, Goblin, Kobold, Ogre, Orc, Skeleton } from "./Enemies";
 import { Buckler } from "./items/Buckler";
 import { Dagger } from "./items/Dagger";
@@ -16,6 +16,7 @@ import { MinorWandOfFire } from "./items/MinorWandOfFire";
 import { Katana } from "./items/Katana";
 import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "./enemies/Goblins";
 import { OrcBerserker, OrcShaman, OrcWarlord } from "./enemies/Orcs";
+import { ARENADIFFICULTY } from "./Difficulties";
 
 const availableEnemies: { enemy: string; difficulty: number }[] = [
 	{ enemy: "Goblin Warrior", difficulty: 1 },

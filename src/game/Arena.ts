@@ -17,19 +17,9 @@ import { MinorWandOfFire } from "../data/items/MinorWandOfFire";
 import { Katana } from "../data/items/Katana";
 import { Cloneable } from "../utils/Clonable";
 import { ARENATHEMES } from "../data/arenaThemes";
-import { Orc } from "../data/Enemies";
-import { OrcBerserker, OrcShaman, OrcWarlord } from "../data/enemies/Orcs";
-import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "../data/enemies/Goblins";
+import { ENEMYDATA, EnemyData } from "../data/EnemyData";
+import { ARENADIFFICULTY, getDifficultyLevel, getEnemyLevelsInDifficulty } from "../data/Difficulties";
 
-export enum ARENADIFFICULTY {
-	VERYEASY = "Very Easy",
-	EASY = "Easy",
-	MEDIUM = "Medium",
-	HARD = "Hard",
-	VERYHARD = "Very Hard",
-	EXTREME = "Extreme",
-	INSANE = "Insane",
-}
 
 export class Arena extends Cloneable {
 	public name: string = "Arena";
@@ -129,6 +119,16 @@ export class Arena extends Cloneable {
 	public static generate(difficulty: ARENADIFFICULTY, themeName: string): Arena {
 		const theme = ARENATHEMES[themeName];
 
+		const eLevels = getEnemyLevelsInDifficulty(difficulty);
+		const getMaxLevel = getDifficultyLevel(difficulty);
+
+		// const validEnemiesData = Array.from(ENEMYDATA.v).filter((ed: EnemyData) => {
+		// 	if(ed.difficultyNumber > eLevels[1]) return false;
+		// 	if(ed.difficultyNumber < eLevels[0]) return false;
+		// 	if(!theme.enemies.includes(ed.name)) return false;
+		// 	return true;
+		// });
+
 		return new Arena(theme.name(), [], "", theme.bgImage);
 	}
 }
@@ -137,22 +137,14 @@ export class Arena extends Cloneable {
 
 function getEnemyByName(ename: string): Enemy {
 
-	switch(ename) {
-		case "Orc Berserker":
-			return new OrcBerserker();
-		case "Orc Shaman":
-			return new OrcShaman();
-		case "Orc Warlord":
-			return new OrcWarlord();
-		case "Goblin Warrior":
-			return new GoblinWarrior();
-		case "Goblin Sorcerer":
-			return new GoblinSorcerer();
-		case "Goblin Lord":
-			return new GoblinLord();
-	}
+	const eData = ENEMYDATA[ename];
+	if (!eData) throw new Error("Invalid enemy name");
 
-	throw new Error("Invalid enemy name");
-
-
+	return new eData.enemyClass();
 }
+
+// function getEnemyLevelLimits(dif: ARENADIFFICULTY): [number, number] {
+	
+// }
+
+

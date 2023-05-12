@@ -4,6 +4,7 @@ import { ENEMYACTIONS, ENEMYACTIONTARGETS, Enemy, EnemyAction } from "../../game
 import goblinWarrior from "./pics/goblinWarrior.jpeg";
 import goblinSorcerer from "./pics/goblinSorcerer.jpeg";
 import goblinLord from "./pics/goblinLord.jpeg";
+import { ENEMYDATA } from "../EnemyData";
 
 abstract class Goblin extends Enemy {
 	protected groups: string[] = ["Goblinoid", "Forest"];
@@ -13,9 +14,9 @@ export class GoblinWarrior extends Goblin {
 	protected name: string = "Goblin Warrior";
 	protected maxHealth: number = 8;
 
-	public readonly difficulty: number = 1;
+	public readonly difficulty: number = ENEMYDATA["Goblin Warrior"].difficultyNumber;
 
-	protected experienceValue: number = 15;
+	protected experienceValue: number = ENEMYDATA["Goblin Warrior"].experienceValue;
 
 	public readonly image: string = goblinWarrior;
 
@@ -58,9 +59,9 @@ export class GoblinSorcerer extends Goblin {
 	protected name: string = "Goblin Sorcerer";
 	protected maxHealth: number = 7;
 
-	public readonly difficulty: number = 1;
+	public readonly difficulty: number = ENEMYDATA["Goblin Sorcerer"].difficultyNumber;
 
-	protected experienceValue: number = 15;
+	protected experienceValue: number = ENEMYDATA["Goblin Sorcerer"].experienceValue;
 
 	public readonly image: string = goblinSorcerer;
 
@@ -86,9 +87,9 @@ export class GoblinLord extends Goblin {
 	protected name: string = "Goblin Lord";
 	protected maxHealth: number = 16;
 
-	public readonly difficulty: number = 2;
+	public readonly difficulty: number = ENEMYDATA["Goblin Lord"].difficultyNumber;
 
-	protected experienceValue: number = 25;
+	protected experienceValue: number = ENEMYDATA["Goblin Lord"].experienceValue;
 
 	public readonly image: string = goblinLord;
 

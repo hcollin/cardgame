@@ -1,4 +1,4 @@
-import { ARENADIFFICULTY } from "../game/Arena";
+
 import { WORLDLOCATIONTYPE, Location, LOCATIONSTATUS } from "../models/World";
 import { ArenaDragonsLair } from "./ArenaDragonsLair";
 import { ArenaForestEncounter } from "./ArenaForestEncounter";
@@ -7,6 +7,7 @@ import { ArenaGoblinLair } from "./ArenaGoblinLair";
 import { ArenaOrcVillage } from "./ArenaOrcVillage";
 import { ArenaSkeleDungeon } from "./ArenaSkeleDungeon";
 import { ArenaTrollCave } from "./ArenaTrollCave";
+import { ARENADIFFICULTY } from "./Difficulties";
 import { EmptyArena } from "./EmptyArena";
 
 

@@ -1,11 +1,12 @@
 import { v4 } from "uuid";
-import { Arena, ARENADIFFICULTY } from "../game/Arena";
+import { Arena } from "../game/Arena";
 import { Location, LocationId, LOCATIONSTATUS, WORLDLOCATIONTYPE } from "../models/World";
 import { ArenaForestEncounter } from "../data/ArenaForestEncounter";
 import { arnd, rnd } from "rndlib";
 import { EmptyArena } from "../data/EmptyArena";
 import { Campaign } from "../models/Campaign";
 import { ArenaDragonsLair } from "../data/ArenaDragonsLair";
+import { ARENADIFFICULTY } from "../data/Difficulties";
 
 interface worldGeneratorOptions {
 	depth: number;
