@@ -46,7 +46,7 @@ export interface EnemyAction {
 	target: ENEMYACTIONTARGETS;
 	damageType?: DAMAGETYPE;
 	effect?: EFFECTS;
-	value?: number;
+	value?: number|((gs: GameState) => number);
 	description?: string;
 }
 
@@ -239,7 +239,7 @@ export class Enemy extends Cloneable {
 		if (!this.isAbletoAct()) {
 			return gs;
 		}
-		let damage = act.value || 0;
+		let damage = parseActValue(act, gs);
 
 		if(this.effectIsActive(EFFECTS.BOOSTED)){
 			damage = Math.round(damage * 1.5);
@@ -250,16 +250,17 @@ export class Enemy extends Cloneable {
 	}
 
 	protected actionHeal(gs: GameState, act: EnemyAction): GameState {
-		if (this.effectIsActive(EFFECTS.STUNNED)) {
+		if (!this.isAbletoAct()) {
 			return gs;
 		}
 
 		if (act.target === ENEMYACTIONTARGETS.SELF) {
-			this.healMe(act.value || 0);
+			
+			this.healMe(parseActValue(act, gs));
 		}
 		if (act.target === ENEMYACTIONTARGETS.OTHERS) {
 			gs.arena.enemies.forEach((enemy) => {
-				enemy.healMe(act.value || 0);
+				enemy.healMe(parseActValue(act, gs));
 			});
 		}
 
@@ -267,7 +268,10 @@ export class Enemy extends Cloneable {
 	}
 
 	protected actionBlock(gs: GameState, act: EnemyAction): GameState {
-		this.block += act.value || 0;
+		if (!this.isAbletoAct()) {
+			return gs;
+		}
+		this.block += parseActValue(act, gs);
 		return { ...gs };
 	}
 
@@ -376,7 +380,7 @@ export class Enemy extends Cloneable {
 		return { ...gs };
 	}
 
-	public getStats(): EnemyStats {
+	public getStats(gs: GameState): EnemyStats {
 		const act = this.actions[this.nextAction];
 
 		return {
@@ -385,7 +389,7 @@ export class Enemy extends Cloneable {
 			health: this.health,
 			block: this.block,
 			status: this.status,
-			action: this.nextActionString(),
+			action: this.nextActionString(gs),
 			effects: this.effects,
 			groups: this.groups,
 		};
@@ -398,17 +402,27 @@ export class Enemy extends Cloneable {
 		return true;
 	}
 
-	protected nextActionString(): string {
+	protected nextActionString(gs: GameState): string {
 		if (!this.actions[this.nextAction]) return "";
 		const act = this.actions[this.nextAction];
+
+		if(act.description) return act.description;
 
 		const strs: string[] = [];
 		strs.push(act.action);
 		// strs.push(act.target.toLowerCase());
-		if (act.value) {
-			// strs.push("for")
-			strs.push(act.value.toString());
-		}
+		strs.push(parseActValue(act, gs).toString());
+		// if (act.value) {
+		// 	// strs.push("for")
+		// 	strs.push(act.value.toString());
+		// }
 		return strs.join(" ");
 	}
+}
+
+export function parseActValue(act: EnemyAction, gs: GameState): number {
+	if(!act.value) return 0;
+	if(typeof act.value === 'number') return act.value;
+	if(typeof act.value === 'function') return act.value(gs);
+	return 0;
 }

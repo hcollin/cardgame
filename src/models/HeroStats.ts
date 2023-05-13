@@ -1,3 +1,4 @@
+import { BONUS } from "./Bonuses";
 import { Card } from "./Card";
 import { EFFECTS } from "./Effects";
 import { Item } from "./Items";
@@ -49,7 +50,7 @@ export enum ITEMSLOT {
 
 export interface LevelMods {
 	health: number;
-	armor: number;
+	block: number;
 	energy: number;
 	rHandSize: number;
 	lHandSize: number;
@@ -67,6 +68,7 @@ export interface CharacterRace {
 
 export interface CharacterClass {
     name: string;
+	bonus: Partial<Record<BONUS, number>>;
     startingItems: [Item, ITEMSLOT|null][];
     levelStats: LevelMods[];
 	cards?: Card[];

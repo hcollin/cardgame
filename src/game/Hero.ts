@@ -7,6 +7,7 @@ import { Item } from "../models/Items";
 import { nameGenerator } from "./HeroTools";
 import { chance } from "rndlib";
 import { CampaignOptions } from "../models/Campaign";
+import { effStore } from "../utils/usePlayerEffect";
 
 const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
@@ -24,9 +25,9 @@ export default class Hero {
 	protected health: number = 40;
 	protected effectHealth: number = 0;
 
-	// Armor
-	protected armor: number = 0;
-	protected effectArmor: number = 0;
+	// Block
+	protected block: number = 0;
+	protected effectBlock: number = 0;
 
 	// Dodge
 	protected dodge: number = 0;
@@ -78,18 +79,28 @@ export default class Hero {
 	 * @param dmg
 	 */
 	public takeDamage(dmg: number) {
-		if (this.dodgeRoll()) return;
-
-		let damage = dmg - this.damageReduction - this.temporaryDamageReduction;
-		if (damage < 0) damage = 0;
-
-		if (damage <= this.armor) {
-			this.armor -= damage;
+		if (this.dodgeRoll()) {
+			effStore.addEffect("info", `Dodged ${dmg} damage!`);
 			return;
 		}
 
-		this.health -= damage - this.armor;
-		this.armor = 0;
+		
+		let damage = dmg;
+		if (damage < 0) damage = 0;
+
+		if (damage <= this.block) {
+			this.block -= damage;
+			effStore.addEffect("dmg", `Blocked ${damage} damage!`);
+			return;
+		}
+
+		// Damage Reduction does not effect block
+		damage = damage - this.getDamageReduction() - this.temporaryDamageReduction;
+		if (damage < 0) damage = 0;
+
+		effStore.addEffect("dmg", `Took ${damage - this.block}  damage!`);
+		this.health -= damage - this.block;
+		this.block = 0;
 	}
 
 	/**
@@ -155,7 +166,7 @@ export default class Hero {
 		this.level = 1;
 		this.experience = 0;
 
-		this.effectArmor = 0;
+		this.effectBlock = 0;
 		this.effectEnergy = 0;
 		this.effectHealth = 0;
 
@@ -184,7 +195,6 @@ export default class Hero {
 			}
 		}
 
-
 		this.turnReset();
 	}
 
@@ -192,10 +202,9 @@ export default class Hero {
 	 * Reset heros data at the beginning of the player turn
 	 */
 	public turnReset() {
-		this.armor = this.getEffectedArmor();
+		this.block = this.getEffectedArmor();
 		this.energy = this.getEffectedEnergy();
-		this.temporaryDodge = 0;	// Reset temporary dodge
-
+		this.temporaryDodge = 0; // Reset temporary dodge
 	}
 
 	// Status
@@ -204,22 +213,23 @@ export default class Hero {
 		return this.health <= 0;
 	}
 
-
-
 	// LEVELING UP
 
 	// Calculated Getters
 
 	public getBaseArmor(): number {
-		return this.heroRace.baseArmor + this.heroClass.levelStats[this.level].armor;
+		return this.heroRace.baseArmor + this.heroClass.levelStats[this.level].block + (this.heroClass.bonus.BLOCK || 0);
 	}
 
 	public getEffectedArmor(): number {
-		return this.effectArmor + this.getBaseArmor();
+		console.log("Get Effected Armor:", this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK"));
+		console.log("Armor?", this.itemSlots.get(ITEMSLOT.BODY)?.name);
+
+		return this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK");
 	}
 
 	public getBaseHealth(): number {
-		return this.heroRace.baseHealth + this.heroClass.levelStats[this.level].health;
+		return this.heroRace.baseHealth + this.heroClass.levelStats[this.level].health + (this.heroClass.bonus.HEALTH || 0);
 	}
 
 	public getMaxHealth(): number {
@@ -227,7 +237,7 @@ export default class Hero {
 	}
 
 	public getBaseEnergy(): number {
-		return this.heroRace.baseEnergy + this.heroClass.levelStats[this.level].energy;
+		return this.heroRace.baseEnergy + this.heroClass.levelStats[this.level].energy + (this.heroClass.bonus.ENERGY || 0);
 	}
 
 	public getEffectedEnergy(): number {
@@ -235,12 +245,12 @@ export default class Hero {
 	}
 
 	public getHandSize(hand: "RIGHT" | "LEFT"): number {
-		console.log("Hand:", this.heroClass.levelStats[this.level])
+		// console.log("Hand:", this.heroClass.levelStats[this.level]);
 		if (hand === "RIGHT") {
-			console.log("Right hand size:", this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize);
-			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize;
+			// console.log("Right hand size:", this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize);
+			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize + this.getEquippedItemBonus("RIGHT_HAND_SIZE");
 		} else {
-			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].lHandSize;
+			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].lHandSize + this.getEquippedItemBonus("LEFT_HAND_SIZE");;
 		}
 	}
 
@@ -249,12 +259,16 @@ export default class Hero {
 		return this.name;
 	}
 
+	public getClassName(): string {
+		return this.heroClass.name;
+	}
+
 	public getHealth(): number {
 		return this.health;
 	}
 
 	public getArmor(): number {
-		return this.armor;
+		return this.block;
 	}
 
 	public getEnergy(): number {
@@ -262,11 +276,11 @@ export default class Hero {
 	}
 
 	public getDodge(): number {
-		return this.dodge + this.temporaryDodge;
+		return this.dodge + this.temporaryDodge + this.getEquippedItemBonus("DODGE") + (this.heroClass.bonus.DODGE || 0);
 	}
 
 	public getDamageReduction(): number {
-		return this.damageReduction;
+		return this.damageReduction + this.getEquippedItemBonus("DAMAGEREDUCTION") + (this.heroClass.bonus.DAMAGEREDUCTION || 0);
 	}
 
 	public getExperience(): number {
@@ -306,21 +320,30 @@ export default class Hero {
 		return slots;
 	}
 
+	public getEquippedItemBonus(key: string): number {
+		return Array.from(this.itemSlots.values()).reduce((acc, item) => {
+			if (item.bonus?.[key]) {
+				return acc + item.bonus[key];
+			}
+			return acc;
+		}, 0);
+	}
+
 	// Setters
 
 	public modifyArmor(amount: number, floorToZero?: boolean) {
-		this.armor += amount;
+		this.block += amount;
 		if (floorToZero) {
-			this.armor = Math.max(0, this.armor);
+			this.block = Math.max(0, this.block);
 		}
 	}
 
 	public setEffectArmor(amount: number) {
-		this.effectArmor = amount;
+		this.effectBlock = amount;
 	}
 
 	public modifyEffectArmor(amount: number) {
-		this.effectArmor += amount;
+		this.effectBlock += amount;
 	}
 
 	public setEffectHealth(amount: number) {
@@ -355,16 +378,14 @@ export default class Hero {
 		this.damageReduction += amount;
 	}
 
-
-
 	/**
 	 * Roll to see if the hero succeeds in dodging
-	 * 
-	 * @returns 
+	 *
+	 * @returns
 	 */
 	private dodgeRoll(): boolean {
-		const dodgeChance = this.dodge + this.temporaryDodge >= 100 ? 99 : this.dodge + this.temporaryDodge <= 0 ? 0 : this.dodge + this.temporaryDodge;
+		const dodge = this.getDodge();
+		const dodgeChance = dodge >= 100 ? 99 : dodge <= 0 ? 0 : dodge;
 		return chance(dodgeChance);
-
 	}
 }

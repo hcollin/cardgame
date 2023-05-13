@@ -50,11 +50,11 @@ export function getDifficultyLevel(diff: ARENADIFFICULTY): number {
 export function getEnemyLevelsInDifficulty(diff: ARENADIFFICULTY): [number, number] {
     switch (diff) {
         case ARENADIFFICULTY.VERYEASY:
-            return [1, 2];
+            return [0, 2];
         case ARENADIFFICULTY.EASY:
-            return [1, 4];
+            return [0, 4];
         case ARENADIFFICULTY.MEDIUM:
-            return [2, 6];
+            return [1, 6];
         case ARENADIFFICULTY.HARD:
             return [3, 10];
         case ARENADIFFICULTY.VERYHARD:

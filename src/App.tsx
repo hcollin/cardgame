@@ -20,6 +20,7 @@ import Arena from "./views/Arena";
 import Hero from "./game/Hero";
 import { generateRandomWorld } from "./utils/RandomWorldGenerator";
 import WorldNodeMap from "./views/WorldNodeMap";
+import { effStore } from "./utils/usePlayerEffect";
 
 const isMobile = false;
 
@@ -77,6 +78,7 @@ function App() {
 		if (currentLocation) {
 			const ar = currentLocation.arena[0];
 			if (ar) {
+				effStore.clear();
 				// console.log(`Start Arena ${ar.name}`, campaign);
 				setGameState(createGameForArena(ar, campaign));
 			}

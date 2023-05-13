@@ -6,6 +6,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const RingOfHealing: Item = {
     id: "ring-of-healing",
     name: "Ring of Healing",
+    groups: ["Ring", "Magic Item", "Healing"],
     itemSlots: [ITEMSLOT.LEFT_FINGER, ITEMSLOT.RIGHT_FINGER],
     description: "This is an ornate ring with a large gem in the center. It provides its wearer an ability to heal themselves.",
     rarity: ITEMRARITY.RARE,

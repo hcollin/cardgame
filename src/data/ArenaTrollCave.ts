@@ -1,5 +1,5 @@
 import { Arena } from "../game/Arena";
-import { Dragon, FrostTroll, Goblin, Orc, Skeleton } from "./Enemies";
+import { FrostTroll } from "./enemies/MountainEnemies";
 
 import bgImg from "./pics/forestbg.jpg";
 

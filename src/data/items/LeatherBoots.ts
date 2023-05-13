@@ -4,6 +4,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const LeatherBoots: Item = {
 	id: "leather-boots",
 	name: "Leather Boots",
+	groups: ["Boots", "Leather"],
 	itemSlots: [ITEMSLOT.FEET],
     rulesText: "DODGE +25%",
 	description: "A nice pair of good quality boots makes you feel like you can dodge anything.",

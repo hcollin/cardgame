@@ -1,0 +1,56 @@
+import { ITEMSLOT } from "../../models/HeroStats";
+import { ITEMRARITY, Item } from "../../models/Items";
+
+export const Gambeson: Item = {
+	id: "gambeson",
+	name: "Gambeson",
+	groups: ["Armor", "Light Armor", "Fabric"],
+	itemSlots: [ITEMSLOT.BODY],
+	rulesText: "ARMOR 1. Damage Reduction 1 against Slash damage.",
+	description: "A thick, padded fabric armor providing both protection and flexibility, often used beneath other armors.",
+	cards: [],
+	rarity: ITEMRARITY.RARE,
+	bonus: {
+		BLOCK: 1,
+		DAMAGEREDUCTION_SLASH: 1,
+	},
+	onEquip: (hero) => {},
+	onUnequip: (hero) => {},
+};
+
+export const LeatherArmor: Item = {
+	id: "leather-armor",
+	name: "Leather Armor",
+	groups: ["Armor", "Light Armor", "Leather"],
+	itemSlots: [ITEMSLOT.BODY],
+	description: "ARMOR 2. A simple leather ammor",
+	cards: [],
+	rarity: ITEMRARITY.COMMON,
+	bonus: {
+		BLOCK: 2,
+	},
+	onEquip: (hero) => {
+		// hero.modifyEffectArmor(2);
+	},
+	onUnequip: (hero) => {
+		// hero.modifyEffectArmor(-2);
+	},
+};
+
+
+
+export const StuddedLeatherArmor: Item = {
+	id: "studded-leather-armor",
+	name: "Studded Leather",
+	groups: ["Armor", "Light Armor", "Leather" , "Studded"],
+	itemSlots: [ITEMSLOT.BODY],
+	rulesText: "ARMOR 3",
+	description: "An upgrade to leather armor, metal studs are added for additional strength and puncture resistance.",
+	cards: [],
+	rarity: ITEMRARITY.UNCOMMON,
+	bonus: {
+		BLOCK: 3,
+	},
+	onEquip: (hero) => {},
+	onUnequip: (hero) => {},
+};

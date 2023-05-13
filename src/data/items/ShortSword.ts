@@ -3,8 +3,9 @@ import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
 
 export const ShortSword: Item = {
-	id: "short-sword",
-	name: "Short Sword",
+	id: "crude-short-sword",
+	name: "Crude Short Sword",
+	groups: ["Sword"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A short sword",
 	rarity: ITEMRARITY.COMMON,

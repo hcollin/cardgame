@@ -4,8 +4,9 @@ import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
 
 export const Shield: Item = {
-	id: "shield",
-	name: "Shield",
+	id: "round-shield",
+	name: "Round Shield",
+	groups: ["Shield"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple shield",
 	rarity: ITEMRARITY.COMMON,

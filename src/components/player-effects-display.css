@@ -1,0 +1,28 @@
+
+
+
+div.player-effects-display {
+    position: absolute;
+    bottom: 7rem;
+    left: 40%;
+    width: 20%;
+    min-height: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    /* background: #FFF3; */
+    /* border: solid 3px pink; */
+
+    & > div {
+        color: #FFFC;
+        font-size: 2rem;
+
+
+        
+    }
+    
+}

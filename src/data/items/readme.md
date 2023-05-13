@@ -19,7 +19,7 @@ Mainly slash attacks with some pierce, with some minor blunt with pommel. Swords
 
 ## Axes
 
-Combines slash and blunt attacks with more random damage curve with higher damage output.
+Combines slash and blunt attacks with more random damage curve with higher damage output. May have Some area attacks
 
 * Battle Axe: Large two-handed axe with immense damage on single target, also some area damage included
 * 

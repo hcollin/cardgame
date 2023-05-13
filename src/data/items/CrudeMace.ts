@@ -5,8 +5,9 @@ import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
 
 export const Mace: Item = {
-	id: "mace",
-	name: "Mace",
+	id: "crude-mace",
+	name: "Crude Mace",
+	groups: ["Club"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Heavy club with a metal head, designed for delivering powerful blows.",
 	rarity: ITEMRARITY.COMMON,

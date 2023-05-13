@@ -1,5 +1,7 @@
 import { Enemy } from "../game/Enemy";
+
 import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "./enemies/Goblins";
+import { FrostTroll, HillHare, Wolf } from "./enemies/MountainEnemies";
 import { OrcWarlord } from "./enemies/Orcs";
 import { OrcShaman } from "./enemies/Orcs";
 import { OrcBerserker } from "./enemies/Orcs";
@@ -14,6 +16,8 @@ export interface EnemyData {
 
 
 export const ENEMYDATA: { [key: string]: EnemyData } = {
+
+    // Forest Enemies
     "Orc Berserker": {
         name: "Orc Berserker",
         difficultyNumber: 2,
@@ -50,4 +54,29 @@ export const ENEMYDATA: { [key: string]: EnemyData } = {
         experienceValue: 25,
         enemyClass: GoblinLord,
     },
+
+    // Mountain Enemies
+    "Hill Hare": {
+        name: "Hill Hare",
+        difficultyNumber: 1,
+        experienceValue: 10,
+        enemyClass: HillHare,
+    },
+    "Frost Troll": {
+        name: "Frost Troll",
+        difficultyNumber: 6,
+        experienceValue: 200,
+        enemyClass: FrostTroll,
+    },
+    "Wolf": {
+        name: "Wolf",
+        difficultyNumber: 2,
+        experienceValue: 20,
+        enemyClass: Wolf,
+    },
+
 };
+
+export function enemyDataArray(): EnemyData[] {
+    return Object.values(ENEMYDATA);
+}

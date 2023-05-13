@@ -15,11 +15,13 @@ export enum ITEMRARITY{
 export interface Item {
     id: string;
     name: string;
+    groups: string[];
     rulesText?: string;
     description: string;
     itemSlots: ITEMSLOT[];
     cards: CardData[];
     rarity: ITEMRARITY;
+    bonus?: { [key: string]: number };
     onEquip?: (hero: Hero) => void;
     onUnequip?: (hero: Hero) => void;
     onEndOfTurn?: (gs: GameState) => GameState;

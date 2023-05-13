@@ -3,10 +3,11 @@ import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
 
 export const Buckler: Item = {
-	id: "buckler",
-	name: "Buckler",
+	id: "bronze-buckler",
+	name: "Bronze Buckler",
+	groups: ["Shield"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
-	description: "A simple Buckler",
+	description: "A simple bronze Buckler",
 	rarity: ITEMRARITY.COMMON,
 	cards: [
 		{

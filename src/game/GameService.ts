@@ -10,6 +10,7 @@ import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
 import { Enemy } from "./Enemy";
 import { Hand } from "./Hand";
+import { effStore } from "../utils/usePlayerEffect";
 
 export function createGame(hero?: Hero): GameState {
 	return {
@@ -102,6 +103,8 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 			}
 		}
 
+		
+
 		allTargets.forEach((ind) => {
 			const enemy = gameState.arena.enemies[ind];
 
@@ -123,6 +126,8 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 			}
 		});
 	}
+
+	effStore.addEffect("CARD", `Played card ${card.name}`);
 
 	gameState.hero.useEnergy(card.apCost);
 	// gameState.hero.aps -= card.apCost;

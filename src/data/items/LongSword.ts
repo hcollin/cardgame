@@ -6,6 +6,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const LongSword: Item = {
 	id: "long-sword",
 	name: "Long Sword",
+	groups: ["Sword"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A long sword",
 	rarity: ITEMRARITY.UNCOMMON,

@@ -4,6 +4,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const CloakOfSwiftness: Item = {
     id: "cloak-swiftness",
     name: "Cloak of Swiftness",
+    groups: ["Cloak", "Magic Item"],
     itemSlots: [ITEMSLOT.CAPE],
     description: "+1 Energy per turn",
     cards: [],

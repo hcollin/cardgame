@@ -6,6 +6,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const MinorWandOfFire: Item = {
 	id: "minor-wand-of-fire",
 	name: "Minor Wand of Fire",
+	groups: ["Wand", "Magic Item", "Fire"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "This wand is a slender, reddish-brown wooden wand, adorned with delicate carvings of dancing flames and inlaid with small, fiery gemstones.",
 	rarity: ITEMRARITY.RARE,

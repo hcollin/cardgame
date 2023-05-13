@@ -100,46 +100,6 @@ export class Ogre extends Enemy {
 }
 
 
-export class FrostTroll extends Enemy {
-
-    protected name: string = "Frost Troll";
-    protected maxHealth: number = 100; 
-
-    public readonly difficulty: number = 6;
-
-    protected experienceValue: number = 200;
-
-    public image: string = imgTroll;
-
-    protected actions: EnemyAction[] = [
-        {
-            action: ENEMYACTIONS.ATTACK,
-            target: ENEMYACTIONTARGETS.HERO,
-            value: 15,
-        },
-        {
-            action: ENEMYACTIONS.WAIT,
-            target: ENEMYACTIONTARGETS.SELF,
-        },
-        {
-            action: ENEMYACTIONS.ATTACK,
-            target: ENEMYACTIONTARGETS.HERO,
-            value: 10,
-        },
-        {
-            action: ENEMYACTIONS.HEAL,
-            target: ENEMYACTIONTARGETS.SELF,
-            value: 20,
-        },
-    ];
-
-
-    constructor() {
-        super();
-    }
-
-}
-
 
 export class Kobold extends Enemy {
 

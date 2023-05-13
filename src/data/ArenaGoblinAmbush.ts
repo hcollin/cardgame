@@ -5,7 +5,7 @@ import { Dagger } from "./items/Dagger";
 import { HandAxe } from "./items/HandAxe";
 import { LeatherBoots } from "./items/LeatherBoots";
 import { LongSword } from "./items/LongSword";
-import { Mace } from "./items/Mace";
+import { Mace } from "./items/CrudeMace";
 import { RingOfHealing } from "./items/RingOfHealing";
 import { RingOfRegeneration } from "./items/RingOfRegeneration";
 import { Shield } from "./items/Shield";

@@ -1,9 +1,9 @@
-import { arnds } from "rndlib";
+import { arnd, arnds } from "rndlib";
 import { Buckler } from "../data/items/Buckler";
 import { HandAxe } from "../data/items/HandAxe";
-import { LeatherArmor } from "../data/items/LeatherArmor";
+
 import { LongSword } from "../data/items/LongSword";
-import { Mace } from "../data/items/Mace";
+import { Mace } from "../data/items/CrudeMace";
 import { RingOfHealing } from "../data/items/RingOfHealing";
 import { RingOfRegeneration } from "../data/items/RingOfRegeneration";
 import { Shield } from "../data/items/Shield";
@@ -17,9 +17,9 @@ import { MinorWandOfFire } from "../data/items/MinorWandOfFire";
 import { Katana } from "../data/items/Katana";
 import { Cloneable } from "../utils/Clonable";
 import { ARENATHEMES } from "../data/arenaThemes";
-import { ENEMYDATA, EnemyData } from "../data/EnemyData";
+import { ENEMYDATA, EnemyData, enemyDataArray } from "../data/EnemyData";
 import { ARENADIFFICULTY, getDifficultyLevel, getEnemyLevelsInDifficulty } from "../data/Difficulties";
-
+import { Gambeson, LeatherArmor, StuddedLeatherArmor } from "../data/items/LightArmor";
 
 export class Arena extends Cloneable {
 	public name: string = "Arena";
@@ -53,7 +53,9 @@ export class Arena extends Cloneable {
 		Buckler,
 		Shield,
 
+		Gambeson,
 		LeatherArmor,
+		StuddedLeatherArmor,
 
 		LeatherBoots,
 
@@ -111,6 +113,11 @@ export class Arena extends Cloneable {
 		return this.difficultyValue;
 	}
 
+	public setRewards(items: Item[], count: number): void {
+		this.rewardItems = items;
+		this.rewardCount = count;
+	}
+
 	/**
 	 * Generate a random arena based on the difficulty and theme
 	 * @param difficulty
@@ -122,21 +129,30 @@ export class Arena extends Cloneable {
 		const eLevels = getEnemyLevelsInDifficulty(difficulty);
 		const getMaxLevel = getDifficultyLevel(difficulty);
 
-		// const validEnemiesData = Array.from(ENEMYDATA.v).filter((ed: EnemyData) => {
-		// 	if(ed.difficultyNumber > eLevels[1]) return false;
-		// 	if(ed.difficultyNumber < eLevels[0]) return false;
-		// 	if(!theme.enemies.includes(ed.name)) return false;
-		// 	return true;
-		// });
+		const validEnemiesData = enemyDataArray().filter((ed: EnemyData) => {
+			if (ed.difficultyNumber > eLevels[1]) return false;
+			if (ed.difficultyNumber < eLevels[0]) return false;
+			if (!theme.enemies.includes(ed.name)) return false;
+			return true;
+		});
 
-		return new Arena(theme.name(), [], "", theme.bgImage);
+		const enemies: Enemy[] = [];
+		let totalDifficulty = 0;
+		while (totalDifficulty < getMaxLevel) {
+			const e = arnd(validEnemiesData);
+			if (e.difficultyNumber + totalDifficulty > getMaxLevel) continue;
+			enemies.push(new e.enemyClass());
+			totalDifficulty += e.difficultyNumber;
+		}
+
+		const arena = new Arena(theme.name(), enemies, "", arnd(theme.bgImage));
+
+		arena.setRewards(theme.rewardItems, theme.rewardCount);
+		return arena;
 	}
 }
 
-
-
 function getEnemyByName(ename: string): Enemy {
-
 	const eData = ENEMYDATA[ename];
 	if (!eData) throw new Error("Invalid enemy name");
 
@@ -144,7 +160,5 @@ function getEnemyByName(ename: string): Enemy {
 }
 
 // function getEnemyLevelLimits(dif: ARENADIFFICULTY): [number, number] {
-	
+
 // }
-
-

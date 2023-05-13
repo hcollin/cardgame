@@ -151,7 +151,10 @@ function calculateEdgeConnections(locs: (Location | null)[][]): void {
 }
 
 export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Location {
-	const arena = randomArena(difficulty);
+	
+	const theme = arnd(["FOREST", "MOUNTAIN"]);
+	
+	const arena = randomArena(difficulty, theme);
 
 	const loc: Location = {
 		id: v4(),
@@ -160,7 +163,7 @@ export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Loc
 		arena: [Arena.clone(arena)],
 		nextLocations: [],
 		flags: [],
-		icon: "forest",
+		icon: theme.toLowerCase(),
 		init: function (campaign) {
 			this.arena = [Arena.clone(arena)];
 		},
@@ -173,7 +176,9 @@ export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Loc
 	return loc;
 }
 
-function randomArena(diff: ARENADIFFICULTY): Arena {
-	return new ArenaForestEncounter(diff);
+function randomArena(diff: ARENADIFFICULTY, theme: string): Arena {
+	return Arena.generate(diff, theme);	
+
+	// return new ArenaForestEncounter(diff);
 }
 

@@ -15,6 +15,7 @@ import CardHand from "../components/CardHand";
 import { Item } from "../models/Items";
 import ItemCard from "../components/ItemCard";
 import ArenaDevTools from "../components/ArenaDevTools";
+import PlayerEffectsDisplay from "../components/PlayerEffectDIsplay";
 
 function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
@@ -23,6 +24,9 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 	const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
 	const [isDragging, setIsDragging] = useState<boolean>(false);
+
+
+	
 
 	// useEffect(() => {
 	// 	const gs = createGame(new TestArena());
@@ -127,7 +131,7 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 
 			<div className="enemies">
 				{gameState.arena.enemies.map((enemy, index) => {
-					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} size={enemyCardSize} />;
+					return <EnemyCard key={enemy.id} enemy={enemy} index={index} onClick={onEnemyClick} onDrop={onEnemyDrop} size={enemyCardSize} gs={gameState}/>;
 				})}
 			</div>
 
@@ -153,6 +157,8 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 
 			{gameState.state === GAMESTATES.ARENA_REWARDS && <RewardsScreen gs={gameState} onCompleteArena={completeArena} />}
 			<div id="zoomedContent"></div>
+
+			<PlayerEffectsDisplay />
 
 			<ArenaDevTools gs={gameState} update={setGameState} />
 		</div>

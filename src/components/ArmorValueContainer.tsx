@@ -7,7 +7,7 @@ import "./value-container.css";
 function ArmorValueContainer(props: {hero: Hero}) {
 
     
-
+    console.log("ArmorValueContainer render!", props.hero.getBaseArmor(), props.hero.getEffectedArmor());
     return (
         <div className="value-container armor-container">
             <div className="value-icon">
@@ -16,7 +16,7 @@ function ArmorValueContainer(props: {hero: Hero}) {
             
             <div className="title">Armor</div>
 
-            <div className="value">{props.hero.getArmor()}</div>
+            <div className="value">{props.hero.getBaseArmor()}</div>
 
             <div className="base-value">{props.hero.getEffectedArmor()}</div>
 
