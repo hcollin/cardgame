@@ -1,12 +1,12 @@
 import { arnd, arnds } from "rndlib";
-import { Buckler } from "../data/items/Buckler";
+import { BronzeBuckler } from "../data/items/BronzeBuckler";
 import { HandAxe } from "../data/items/HandAxe";
 
 import { LongSword } from "../data/items/LongSword";
-import { Mace } from "../data/items/CrudeMace";
+import { IronMace } from "../data/items/IronMace";
 import { RingOfHealing } from "../data/items/RingOfHealing";
 import { RingOfRegeneration } from "../data/items/RingOfRegeneration";
-import { Shield } from "../data/items/Shield";
+import { RoundShield } from "../data/items/RoundShield";
 import { Item } from "../models/Items";
 import { Enemy } from "./Enemy";
 import { ShortSword } from "../data/items/ShortSword";
@@ -46,12 +46,12 @@ export class Arena extends Cloneable {
 		LongSword,
 		Katana,
 
-		Mace,
+		IronMace,
 
 		HandAxe,
 
-		Buckler,
-		Shield,
+		BronzeBuckler,
+		RoundShield,
 
 		Gambeson,
 		LeatherArmor,

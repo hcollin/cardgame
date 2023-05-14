@@ -1,5 +1,5 @@
 import { CharacterClass, ITEMSLOT } from "../models/HeroStats";
-import { Buckler } from "./items/Buckler";
+import { BronzeBuckler } from "./items/BronzeBuckler";
 import { Dagger } from "./items/Dagger";
 import { ScaleMail } from "./items/MediumArmor";
 import { ShortSword } from "./items/ShortSword";
@@ -11,7 +11,7 @@ export const ClassWarrior: CharacterClass = {
 	},
 	startingItems: [
 		[ShortSword, ITEMSLOT.RIGHT_HAND],
-		[Buckler, ITEMSLOT.LEFT_HAND],
+		[BronzeBuckler, ITEMSLOT.LEFT_HAND],
 	],
 	levelStats: [
 		{ health: 0, block: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false },

@@ -5,14 +5,14 @@ import { Dragon } from "./Enemies";
 
 import { LeatherBoots } from "./items/LeatherBoots";
 import { LongSword } from "./items/LongSword";
-import { Mace } from "./items/CrudeMace";
+import { IronMace } from "./items/IronMace";
 import { RingOfHealing } from "./items/RingOfHealing";
-import { Shield } from "./items/Shield";
+import { RoundShield } from "./items/RoundShield";
 
 
-import { Buckler } from "./items/Buckler";
+import { BronzeBuckler } from "./items/BronzeBuckler";
 import { ShortSword } from "./items/ShortSword";
-import { LeatherArmor, StuddedLeatherArmor } from "./items/LightArmor";
+import { Gambeson, LeatherArmor, StuddedLeatherArmor } from "./items/LightArmor";
 
 
 import forestBg from "./pics/forestbg.jpg";
@@ -20,6 +20,10 @@ import mountainBg from  "./pics/mountainbg.jpg";
 import { ScaleMail } from "./items/MediumArmor";
 import { RingOfRegeneration } from "./items/RingOfRegeneration";
 import { LeatherCap } from "./items/LeatherCap";
+import { MinorEnergyPotion, MinorHealingPotion } from "./items/Potions";
+import { Dagger } from "./items/Dagger";
+import { HandAxe } from "./items/HandAxe";
+import { basicArmors, basicWeapons, defaultPotions, defaultWeapons, minorMagicItems, minorPotions, standardArmors } from "./items/itemLists";
 
 export interface ArenaTheme {
 	id: string;
@@ -45,7 +49,7 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 		enemies: ["Orc Shaman", "Orc Berserker", "Orc Warlord", "Goblin Warrior", "Goblin Sorcerer", "Goblin Lord"],
 		bgImage: [forestBg],
 		rewardCount: 3,
-		rewardItems: [Mace, LongSword, Shield, Buckler, ShortSword, LeatherBoots, LeatherArmor, RingOfHealing],
+		rewardItems: [...basicWeapons, ...basicArmors, ...minorPotions],
 		bosses: ["Dragon"],
 	},
 	MOUNTAIN: {
@@ -60,7 +64,7 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 		enemies: ["Orc Berserker", "Frost Troll", "Wolf", "Hill Hare"],
 		bgImage: [mountainBg],
 		rewardCount: 3,
-		rewardItems: [Mace, LongSword, Shield, Buckler, ShortSword, LeatherBoots, LeatherArmor, StuddedLeatherArmor, ScaleMail, RingOfHealing, RingOfRegeneration, LeatherCap],
+		rewardItems: [...basicWeapons, ...basicArmors, ...minorPotions, ...defaultWeapons, ...minorMagicItems, ...defaultPotions],
 		bosses: ["Dragon"],
 	}
 };

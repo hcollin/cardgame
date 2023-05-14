@@ -10,6 +10,12 @@ export enum DAMAGETYPE {
 	LIGHTNING = "LIGHTNING",
 	POISON = "POISON",
 	HOLY = "HOLY",
+	MAGIC = "MAGIC",
+}
+
+export enum DAMAGEFLAGS {
+	ARMORPIERCING = "ARMORPIERCING",
+	VAMPIRIC = "VAMPIRIC",
 }
 
 export enum TARGETS {
@@ -25,10 +31,13 @@ export interface Card extends CardData {
 	hand: "RIGHT" | "LEFT";
 }
 
+
 export interface Damage {
 	amount: number;
 	type: DAMAGETYPE;
 	variation: number;
+	flags?: DAMAGEFLAGS[];
+	
 }
 
 export enum CARDRARITY {

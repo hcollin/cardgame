@@ -1,15 +1,15 @@
 import { arnd } from "rndlib";
 import { Arena } from "../game/Arena";
 import { Dragon, Goblin, Kobold, Ogre, Orc, Skeleton } from "./Enemies";
-import { Buckler } from "./items/Buckler";
+import { BronzeBuckler } from "./items/BronzeBuckler";
 import { Dagger } from "./items/Dagger";
 import { HandAxe } from "./items/HandAxe";
 import { LeatherBoots } from "./items/LeatherBoots";
 import { LongSword } from "./items/LongSword";
-import { Mace } from "./items/CrudeMace";
+import { IronMace } from "./items/IronMace";
 import { RingOfHealing } from "./items/RingOfHealing";
 import { RingOfRegeneration } from "./items/RingOfRegeneration";
-import { Shield } from "./items/Shield";
+import { RoundShield } from "./items/RoundShield";
 
 import bgImg from "./pics/forestbg.jpg";
 import { MinorWandOfFire } from "./items/MinorWandOfFire";
@@ -32,7 +32,7 @@ const availableEnemies: { enemy: string; difficulty: number }[] = [
 ];
 
 export class ArenaForestEncounter extends Arena {
-	protected rewardItems = [LongSword, HandAxe, Mace, Dagger, Buckler, LeatherBoots, Shield, RingOfHealing, MinorWandOfFire, Katana];
+	protected rewardItems = [LongSword, HandAxe, IronMace, Dagger, BronzeBuckler, LeatherBoots, RoundShield, RingOfHealing, MinorWandOfFire, Katana];
 
 	constructor(difficulty: ARENADIFFICULTY) {
 		super(`${difficulty} Forest Encounter`, [], "#559944", bgImg);

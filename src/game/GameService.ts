@@ -112,7 +112,7 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 				enemy.beforeDamage();
 
 				card.damage.forEach((dmg) => {
-					enemy.takeDamage(dmg);
+					enemy.takeDamage(dmg, gameState);
 				});
 
 				card.effectsOnHit.forEach((effect) => {
@@ -159,7 +159,7 @@ export function killTargetEnemy(gs: GameState, enemyId: string): GameState {
 		amount: enemy.getHealth() * 2,
 		type: DAMAGETYPE.SLASH,
 		variation: 0
-	});
+	}, gs);
 
 	gs.hero.gainExperience(enemy.getExperienceValue());
 

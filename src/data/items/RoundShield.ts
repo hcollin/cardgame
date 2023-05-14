@@ -3,7 +3,7 @@ import { EFFECTS } from "../../models/Effects";
 import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
 
-export const Shield: Item = {
+export const RoundShield: Item = {
 	id: "round-shield",
 	name: "Round Shield",
 	groups: ["Shield"],
@@ -13,6 +13,7 @@ export const Shield: Item = {
 	cards: [
 		{
 			name: "Quick Block",
+			rulesText: "BLOCK 2",
 			description: "Increase your Armor by 2 until end of next enemy turn",
 			rarity: CARDRARITY.COMMON,
 			count: 4,
@@ -32,6 +33,7 @@ export const Shield: Item = {
 		},
 		{
 			name: "Defend",
+			rulesText: "BLOCK 5",
 			description: "Increase your Armor by 5 until end of next enemy turn",
 			rarity: CARDRARITY.COMMON,
 			count: 2,
@@ -51,6 +53,7 @@ export const Shield: Item = {
 		},
 		{
 			name: "Bash",
+			rulesText: "STUN Enemy",
 			description: "Bash enemy with your shield",
 			rarity: CARDRARITY.RARE,
 			count: 1,

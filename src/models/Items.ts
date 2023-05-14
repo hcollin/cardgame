@@ -25,6 +25,7 @@ export interface Item {
     onEquip?: (hero: Hero) => void;
     onUnequip?: (hero: Hero) => void;
     onEndOfTurn?: (gs: GameState) => GameState;
+    onUse?: (gs: GameState) => GameState;
 }
 
 

@@ -1,10 +1,11 @@
 import { rnd } from "rndlib";
-import { DAMAGETYPE, Damage } from "../models/Card";
+import { DAMAGEFLAGS, DAMAGETYPE, Damage } from "../models/Card";
 import { GameState } from "../models/GameState";
 import { getDamageRange } from "./ItemTools";
 import { EFFECTS } from "../models/Effects";
 import { v4 } from "uuid";
 import { Cloneable } from "../utils/Clonable";
+import {effStore} from "../utils/usePlayerEffect";
 
 export enum ENEMYSTATUS {
 	ALIVE = "alive",
@@ -117,20 +118,30 @@ export class Enemy extends Cloneable {
 		this.damageTaken = [];
 	}
 
-	public takeDamage(damage: Damage): void {
+	public takeDamage(damage: Damage, gs: GameState): void {
 		const damageRange = this.getDamagePotential(damage);
+
+		const flags = damage.flags || [];
 
 		let damageTaken = rnd(damageRange[0], damageRange[1]);
 
-		if (damageTaken < this.block) {
-			this.block -= damageTaken;
-			damageTaken = 0;
-		} else {
-			damageTaken -= this.block;
-			this.block = 0;
+		if (!flags.includes(DAMAGEFLAGS.ARMORPIERCING)) {
+			if (damageTaken < this.block) {
+				this.block -= damageTaken;
+				damageTaken = 0;
+			} else {
+				damageTaken -= this.block;
+				this.block = 0;
+			}
 		}
 
 		this.health -= damageTaken;
+		if(flags.includes(DAMAGEFLAGS.VAMPIRIC)){
+			const healAmount = Math.round(damageTaken / 2);
+			gs.hero.healHero(healAmount);
+			effStore.addEffect("heal", `Drained ${healAmount} health,`);
+		}
+
 
 		this.damageTaken.push({ type: damage.type, amount: damageTaken });
 
@@ -357,11 +368,11 @@ export class Enemy extends Cloneable {
 
 	public cleanUpEndOfEnemyTurn(gs: GameState): GameState {
 		if (this.effects.has(EFFECTS.POISONED)) {
-			this.takeDamage({ amount: 1, type: DAMAGETYPE.POISON, variation: 0 });
+			this.takeDamage({ amount: 1, type: DAMAGETYPE.POISON, variation: 0 }, gs);
 		}
 
 		if (this.effects.has(EFFECTS.BURNING)) {
-			this.takeDamage({ amount: 2, type: DAMAGETYPE.FIRE, variation: 1 });
+			this.takeDamage({ amount: 2, type: DAMAGETYPE.FIRE, variation: 1 }, gs);
 		}
 
 		// Remove 1 from each effect

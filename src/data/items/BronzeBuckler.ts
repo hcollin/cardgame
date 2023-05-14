@@ -1,8 +1,9 @@
-import { CARDRARITY, DAMAGETYPE, TARGETS } from "../../models/Card";
+import { CARDRARITY, TARGETS } from "../../models/Card";
 import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
+import { ITEMFUNCTIONS } from "./itemFunctions";
 
-export const Buckler: Item = {
+export const BronzeBuckler: Item = {
 	id: "bronze-buckler",
 	name: "Bronze Buckler",
 	groups: ["Shield"],
@@ -12,7 +13,8 @@ export const Buckler: Item = {
 	cards: [
 		{
 			name: "Quick Block",
-			description: "Increase your Armor by 1 until end of next enemy turn",
+			rulesText: "BLOCK 1, Draw a card",
+			description: "With a swift rotation of wrist, the incoming strike is deflected by the buckler shield, ensuring a balanced stance remains.",
 			rarity: CARDRARITY.COMMON,
 			count: 3,
 			damage: [],
@@ -24,9 +26,9 @@ export const Buckler: Item = {
 				return { ...gs };
 			},
 
-			onUse: (gs) => {
+			onUse: (gs, card) => {
 				gs.hero.modifyArmor(1);
-				return { ...gs };
+				return ITEMFUNCTIONS.drawACard(gs, card);
 			},
 		},
 		{
@@ -45,30 +47,6 @@ export const Buckler: Item = {
 
 			onUse: (gs) => {
 				gs.hero.modifyArmor(3);
-				return { ...gs };
-			},
-		},
-		{
-			name: "Edge hit",
-			description: "Bash enemy with your bucklers sharpened edge",
-			rarity: CARDRARITY.RARE,
-			count: 1,
-			damage: [
-				{
-					amount: 3,
-					type: DAMAGETYPE.SLASH,
-					variation: 0,
-				},
-			],
-			apCost: 3,
-			reach: 1,
-			allowedTargets: [TARGETS.ENEMY],
-			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
-			},
-
-			onUse: (gs) => {
 				return { ...gs };
 			},
 		},
