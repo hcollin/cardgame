@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - prod
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'prod'
 
 jobs:
   build_and_deploy:
