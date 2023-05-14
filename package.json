@@ -27,9 +27,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "testbuild": "react-scripts build",
     "build": "node genbuildno.js && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "node genbuildno.js && react-scripts build && firebase deploy --only hosting"
   },
   "eslintConfig": {
     "extends": [

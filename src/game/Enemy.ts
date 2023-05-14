@@ -46,7 +46,7 @@ export interface EnemyAction {
 	target: ENEMYACTIONTARGETS;
 	damageType?: DAMAGETYPE;
 	effect?: EFFECTS;
-	value?: number|((gs: GameState) => number);
+	value?: number | ((gs: GameState) => number);
 	description?: string;
 }
 
@@ -241,7 +241,7 @@ export class Enemy extends Cloneable {
 		}
 		let damage = parseActValue(act, gs);
 
-		if(this.effectIsActive(EFFECTS.BOOSTED)){
+		if (this.effectIsActive(EFFECTS.BOOSTED)) {
 			damage = Math.round(damage * 1.5);
 		}
 
@@ -255,7 +255,6 @@ export class Enemy extends Cloneable {
 		}
 
 		if (act.target === ENEMYACTIONTARGETS.SELF) {
-			
 			this.healMe(parseActValue(act, gs));
 		}
 		if (act.target === ENEMYACTIONTARGETS.OTHERS) {
@@ -406,23 +405,21 @@ export class Enemy extends Cloneable {
 		if (!this.actions[this.nextAction]) return "";
 		const act = this.actions[this.nextAction];
 
-		if(act.description) return act.description;
+		if (act.description) return act.description;
 
 		const strs: string[] = [];
 		strs.push(act.action);
-		// strs.push(act.target.toLowerCase());
-		strs.push(parseActValue(act, gs).toString());
-		// if (act.value) {
-		// 	// strs.push("for")
-		// 	strs.push(act.value.toString());
-		// }
+
+		if (act.value) {
+			strs.push(parseActValue(act, gs).toString());
+		}
 		return strs.join(" ");
 	}
 }
 
 export function parseActValue(act: EnemyAction, gs: GameState): number {
-	if(!act.value) return 0;
-	if(typeof act.value === 'number') return act.value;
-	if(typeof act.value === 'function') return act.value(gs);
+	if (!act.value) return 0;
+	if (typeof act.value === "number") return act.value;
+	if (typeof act.value === "function") return act.value(gs);
 	return 0;
 }

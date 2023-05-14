@@ -1,7 +1,7 @@
 import { useState, useEffect, CSSProperties } from "react";
 
 import { endEnemyTurn, playItemCard } from "../game/GameService";
-import { Card } from "../models/Card";
+import { Card, TARGETS } from "../models/Card";
 import { GameState, GAMESTATES } from "../models/GameState";
 
 import "./arena.css";
@@ -16,6 +16,7 @@ import { Item } from "../models/Items";
 import ItemCard from "../components/ItemCard";
 import ArenaDevTools from "../components/ArenaDevTools";
 import PlayerEffectsDisplay from "../components/PlayerEffectDIsplay";
+import e from "express";
 
 function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
@@ -96,7 +97,6 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 
 	function onEnemyDrop(e: Enemy) {
 		const eIndex = gameState.arena.enemies.findIndex((enemy) => enemy.id === e.id);
-		// console.log(`Dropped ${selectedCard?.name} on ${e.getName()} at index ${eIndex}.`);
 		if (eIndex > -1) {
 			setTarget(eIndex);
 		}
@@ -106,6 +106,22 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 		setGameState({ ...gameState, state: GAMESTATES.ARENA_COMPLETED });
 	}
 
+	function selectAndPlayCard(card: Card) {
+		
+		if(card.allowedTargets.includes(TARGETS.SELF)) {
+			setSelectedCard(card);
+			setTarget(-2);
+		} else {
+			const enemiesAlive = gameState.arena.enemies.filter((e) => !e.isDead());
+			if(enemiesAlive.length === 1) {
+				const eIndex = gameState.arena.enemies.findIndex((enemy) => enemy.id === enemiesAlive[0].id);
+				setSelectedCard(card);
+				setTarget(eIndex);
+			}
+		}
+
+		
+	}
 	
 
 	if (!gameState) return null;
@@ -135,9 +151,9 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 				})}
 			</div>
 
-			<CardHand gs={gameState} side="LEFT" onDrag={setIsDragging} onSelect={setSelectedCard} />
+			<CardHand gs={gameState} side="LEFT" onDrag={setIsDragging} onSelect={setSelectedCard} onPlay={selectAndPlayCard}/>
 
-			<CardHand gs={gameState} side="RIGHT" onDrag={setIsDragging} onSelect={setSelectedCard} />
+			<CardHand gs={gameState} side="RIGHT" onDrag={setIsDragging} onSelect={setSelectedCard} onPlay={selectAndPlayCard}/>
 
 			<HeroInfo gameState={gameState} />
 

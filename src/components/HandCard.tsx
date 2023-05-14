@@ -1,6 +1,6 @@
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { getDamageRange } from "../game/ItemTools";
-import { Card } from "../models/Card";
+import { Card, TARGETS } from "../models/Card";
 import { EffectIconImage } from "./EffectIcon";
 
 import "./handCard.css";
@@ -8,18 +8,32 @@ import "./handCard.css";
 import cardBackImage from "./pics/cardback.png";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import useSingleAndDoubleClick from "../utils/useSingleAndDoubleClick";
 
 interface HandCardProps {
 	card: Card;
 	onClick?: (card: Card) => void;
 	onDragStart?: (card: Card) => void;
 	onDragEnd?: (card: Card) => void;
+	onPlay?: (card: Card) => void;
 	selected?: boolean;
 	style?: React.CSSProperties;
 }
 
 export default function HandCard(props: HandCardProps) {
 	const [zoom, setZoomValue] = useState<boolean>(false);
+
+	function openZoom() {
+		setZoomValue(true);
+	}
+
+	function handleDoubleClick() {
+		if (props.onPlay) {
+			props.onPlay(props.card);
+		}
+	}
+
+	const clickHandler = useSingleAndDoubleClick(openZoom, handleDoubleClick, 200);
 
 	const [collected, drag, dragPreview] = useDrag(
 		() => ({
@@ -43,13 +57,9 @@ export default function HandCard(props: HandCardProps) {
 	);
 
 	function handleClick() {
-		if (props.onClick) {
-			props.onClick(props.card);
-		}
-	}
-
-	function openZoom() {
-		setZoomValue(true);
+		// if (props.onClick) {
+		// 	props.onClick(props.card);
+		// }
 	}
 
 	function closeZoom() {
@@ -64,9 +74,9 @@ export default function HandCard(props: HandCardProps) {
 	if (props.card.name.length > 14) nameSize = "xsmall";
 
 	const cn = `card ${zoom ? "zoomed" : ""} ${props.card.rarity.toLowerCase()} ${props.selected ? "selected" : ""} ${collected.isDragging ? "dragging" : ""}`;
-	
+
 	return (
-		<div className={cn} ref={drag} style={props.style || {}} onClick={openZoom}>
+		<div className={cn} ref={drag} style={props.style || {}} onClick={clickHandler}>
 			<header>
 				<div className={`name ${nameSize}`}>{props.card.name}</div>
 				<div className="aps">{props.card.apCost}</div>
@@ -114,7 +124,6 @@ export default function HandCard(props: HandCardProps) {
 }
 
 function ZoomedCard(props: { card: Card; onClick: () => void }) {
-
 	function closeZoom(e: React.MouseEvent<any, MouseEvent>) {
 		e.stopPropagation();
 		props.onClick();

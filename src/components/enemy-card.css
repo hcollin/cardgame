@@ -2,28 +2,17 @@ div.enemy-container {
     --fullWidth: 822px;
     --fullHeight: 1122px;
     position: relative;
-    
+
     z-index: 1;
 
-    
-
     &>div.enemy-card {
-
-       
 
         position: relative;
         border: groove 4px #0008;
         color: white;
-
-        background: #435235;
         border-radius: 3%;
-
         box-shadow: 3px 3px 3px 2px #0008;
-        /* overflow: hidden; */
-
         transition: all 0.1s ease-in-out;
-
-
 
         &>div.img-container {
             position: absolute;
@@ -50,38 +39,34 @@ div.enemy-container {
             }
         }
 
-        &>div.layout {
+        >.layout {
+            /* position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; */
+            background: url('./pics/enemycardlayout.png');
+            background-size: cover;
+            /* z-index: 10; */
+            box-shadow: inset 0 0 2rem 2rem #0008;
+            overflow: hidden;
+        }
 
+        
+
+        >.content {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 100;
 
             background: url('./pics/enemycardlayout.png');
             background-size: cover;
-
-            z-index: 10;
-
             box-shadow: inset 0 0 2rem 2rem #0008;
 
-            overflow: hidden;
-
-
-        }
-
-        &>div.content {
-
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-
-
-            z-index: 100;
-
-            &>div.name {
+            >.name {
                 position: absolute;
                 top: 2%;
                 left: 0;
@@ -101,7 +86,7 @@ div.enemy-container {
             }
 
 
-            &>div.health {
+            >.health {
                 position: absolute;
                 top: 70%;
                 left: 50%;
@@ -124,7 +109,7 @@ div.enemy-container {
                 padding-bottom: 5%;
             }
 
-            & > div.block {
+            >.block {
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -144,11 +129,11 @@ div.enemy-container {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                
+
                 padding-bottom: 0%;
             }
 
-            &>div.groups {
+            >.groups {
                 position: absolute;
                 bottom: 0;
                 left: 0;
@@ -166,7 +151,7 @@ div.enemy-container {
                 text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
 
             }
-         
+
 
         }
 
@@ -266,7 +251,7 @@ div.enemy-container {
             transform: perspective(400px) rotateX(25deg);
             filter: grayscale(75%) blur(1px);
         }
-        
+
 
     }
 
@@ -320,20 +305,24 @@ div.enemy-container {
 
         z-index: 200;
 
-        &>div.hit {
+        >.hit {
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
             position: relative;
             background: url("./icons/damage.png");
             background-size: contain;
             height: var(--hit-size);
             width: var(--hit-size);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
+            
             font-size: calc(var(--hit-size) *0.66);
             font-weight: bold;
             color: #FFF;
             text-shadow: var(--text-stroke-small);
+            text-align: center;
 
             &.small {
                 height: calc(var(--hit-size) * 0.66);
@@ -375,7 +364,7 @@ div.enemy-container {
         }
     }
 
-    & > div.tombstone {
+    &>div.tombstone {
         position: absolute;
         bottom: 20%;
         left: 0;
@@ -388,23 +377,24 @@ div.enemy-container {
 
         transform: perspective(400px) rotateX(25deg) rotateZ(15deg);
 
-        & > img {
+        &>img {
             height: 70%;
             opacity: 0.5;
-            
-            
+
+
         }
 
-        
-        
+
+
         z-index: 200;
     }
 
     &.mini {
-        & > .damage-taken {
+        &>.damage-taken {
             --hit-size: 4rem;
         }
-        & > .next-action {
+
+        &>.next-action {
             --action-size: 6rem;
             --action-font-size: 0.7rem;
             padding: 0 0 2.0rem 0.75rem;
@@ -412,10 +402,11 @@ div.enemy-container {
     }
 
     &.small {
-        & > .damage-taken {
+        &>.damage-taken {
             --hit-size: 6rem;
         }
-        & > .next-action {
+
+        &>.next-action {
             --action-size: 8rem;
             --action-font-size: 0.9rem;
             padding: 0 0 2.5rem 0.75rem;
@@ -423,11 +414,11 @@ div.enemy-container {
     }
 
     &.medium {
-        & > .damage-taken {
+        &>.damage-taken {
             --hit-size: 10rem;
         }
 
-        & > .next-action {
+        &>.next-action {
             --action-size: 10rem;
             --action-font-size: 1.2rem;
             padding: 0 0 3.5rem 0.75rem;
@@ -435,10 +426,11 @@ div.enemy-container {
     }
 
     &.big {
-        & > .damage-taken {
+        &>.damage-taken {
             --hit-size: 14rem;
         }
-        & > .next-action {
+
+        &>.next-action {
             --action-size: 12rem;
             --action-font-size: 1.4rem;
             padding: 0 0 3.5rem 0.75rem;
@@ -446,14 +438,14 @@ div.enemy-container {
     }
 
     &.full {
-        & > .damage-taken {
+        &>.damage-taken {
             --hit-size: 20rem;
         }
     }
 
     &.no-action {
 
-        & > .next-action {
+        &>.next-action {
             opacity: 0.5;
 
             text-decoration: line-through;

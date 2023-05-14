@@ -5,7 +5,7 @@ import HandCard from "./HandCard";
 
 import "./card-hand.css";
 
-function CardHand(props: { gs: GameState; side: "LEFT" | "RIGHT"; onDrag: (on: boolean) => void; onSelect: (card: Card) => void }) {
+function CardHand(props: { gs: GameState; side: "LEFT" | "RIGHT"; onDrag: (on: boolean) => void; onSelect: (card: Card) => void; onPlay: (c: Card) => void }) {
 
 	
 	const hand = props.side === "LEFT" ? props.gs.leftHand : props.gs.rightHand;
@@ -42,6 +42,7 @@ function CardHand(props: { gs: GameState; side: "LEFT" | "RIGHT"; onDrag: (on: b
 							props.onSelect(c);
 							props.onDrag(false);
 						}}
+						onPlay={props.onPlay}
 						// onClick={onHandCardClick}
 
 						// selected={selectedCard && selectedCard.id === card.id ? true : false}

@@ -221,8 +221,7 @@ export default class Hero {
 	}
 
 	public getEffectedArmor(): number {
-		console.log("Get Effected Armor:", this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK"));
-
+	
 		return this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK");
 	}
 

@@ -2,6 +2,7 @@ import { killTargetEnemy } from "../game/GameService";
 import { Campaign } from "../models/Campaign";
 import { DAMAGETYPE } from "../models/Card";
 import { GAMESTATES, GameState } from "../models/GameState";
+import isDev from "../utils/isDevelopment";
 
 const styles: React.CSSProperties = {
 	position: "absolute",
@@ -38,6 +39,10 @@ function ArenaDevTools(props: { gs: GameState; update: (gs: GameState) => void }
 
 		// gameState.state = GAMESTATES.ARENA_VICTORY;
 		props.update({ ...gameState });
+	}
+
+	if(!isDev()) {
+		return null;
 	}
 
 	return (
