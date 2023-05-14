@@ -12,7 +12,6 @@ export const ClassWarrior: CharacterClass = {
 	startingItems: [
 		[ShortSword, ITEMSLOT.RIGHT_HAND],
 		[Buckler, ITEMSLOT.LEFT_HAND],
-		[ScaleMail, ITEMSLOT.BODY],
 	],
 	levelStats: [
 		{ health: 0, block: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false },
