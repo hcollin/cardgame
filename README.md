@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+# Frost Troll Quest
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A deck building rpg adveture game inspired by 'Slay the Spire'.
 
-## Available Scripts
+## Known issues
 
-In the project directory, you can run:
+* Does not work on Firefox as it does not yet support native css nesting.
+  - This can be fixed by changing to sass on nesting parts.
+* Lack of content
+  - This is a work in progress
+* Does not work on Mobile, yet
+* There is only one area
 
-### `npm start`
+## Balancing
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+At the current state (14.5.2023) the game has no balance. The items are way too powerful. To sort this issue some ground rules needs to be set. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Damage 
 
-### `npm test`
+By playing an attack card, how much damage it should inflict? Maybe we should take the Short Sword Slash attack as the base level. That means 4 damage with 2 energy. Some weapons will deal less, but can have other effects and so on. Rarer cards can cause more damage.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Other approach to calculating damage is to calculate how much damage each weapon can inflict if player spends all of his energy playing attack cards. For Example: Long Swords Slash attack can cause 8 damage with 3 energy, which is a significant boost to default damage per energy ratio, but when player starts with 4 energy per turn they cannot play more than one of these cards per turn.
 
-### `npm run build`
+### Armor/Block & Damage Reduction
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+At the moment player can gain quite a lot of automatic armor per turn and as most enemies hit fairly weakly this can become highly unbalanced fairly quickly. Most body armors should provide maybe more damage reduction instead of block at least when they are heavier. Also each enemy should hit for more. Currently they are too easy.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
