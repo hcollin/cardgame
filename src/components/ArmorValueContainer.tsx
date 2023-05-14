@@ -15,10 +15,10 @@ function ArmorValueContainer(props: {hero: Hero}) {
             </div>
             
             <div className="title">Armor</div>
+            
+            <div className="value">{props.hero.getEffectedArmor()}</div>
 
-            <div className="value">{props.hero.getBaseArmor()}</div>
-
-            <div className="base-value">{props.hero.getEffectedArmor()}</div>
+            <div className="base-value">{props.hero.getBaseArmor()}</div>
 
             
         </div>

@@ -1,6 +1,7 @@
 import { CharacterClass, ITEMSLOT } from "../models/HeroStats";
 import { Buckler } from "./items/Buckler";
 import { Dagger } from "./items/Dagger";
+import { ScaleMail } from "./items/MediumArmor";
 import { ShortSword } from "./items/ShortSword";
 
 export const ClassWarrior: CharacterClass = {

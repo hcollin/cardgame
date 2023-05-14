@@ -11,7 +11,7 @@ export const BreastPlate: Item = {
 	cards: [],
 	rarity: ITEMRARITY.RARE,
 	bonus: {
-		ARMOR: 6,
+		BLOCK: 6,
 		LEFT_HAND_SIZE: -1,
 	},
 	onEquip: (hero) => {},
@@ -29,7 +29,7 @@ export const ChainMail: Item = {
     cards: [],
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {
-        ARMOR: 5,
+        BLOCK: 5,
     },
     onEquip: (hero) => {},
     onUnequip: (hero) => {},
@@ -46,7 +46,7 @@ export const ScaleMail: Item = {
     cards: [],
     rarity: ITEMRARITY.RARE,
     bonus: {
-        ARMOR: 4,
+        BLOCK: 4,
         DAMAGEREDUCTION: 1,
     },
     onEquip: (hero) => {},

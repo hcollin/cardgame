@@ -84,7 +84,6 @@ export default class Hero {
 			return;
 		}
 
-		
 		let damage = dmg;
 		if (damage < 0) damage = 0;
 
@@ -223,7 +222,6 @@ export default class Hero {
 
 	public getEffectedArmor(): number {
 		console.log("Get Effected Armor:", this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK"));
-		console.log("Armor?", this.itemSlots.get(ITEMSLOT.BODY)?.name);
 
 		return this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK");
 	}
@@ -250,7 +248,7 @@ export default class Hero {
 			// console.log("Right hand size:", this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize);
 			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize + this.getEquippedItemBonus("RIGHT_HAND_SIZE");
 		} else {
-			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].lHandSize + this.getEquippedItemBonus("LEFT_HAND_SIZE");;
+			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].lHandSize + this.getEquippedItemBonus("LEFT_HAND_SIZE");
 		}
 	}
 
