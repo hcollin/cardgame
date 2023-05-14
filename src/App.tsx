@@ -22,6 +22,9 @@ import { generateRandomWorld } from "./utils/RandomWorldGenerator";
 import WorldNodeMap from "./views/WorldNodeMap";
 import { effStore } from "./utils/usePlayerEffect";
 
+
+import metaData from "./metadata.json";
+
 const isMobile = false;
 
 function App() {
@@ -156,6 +159,7 @@ function App() {
 				</div>
 			)}
 			{gameState !== null && <Arena gs={gameState} onArenaFinished={arenaDone} />}
+			<div className="version">{metaData.buildMajor}.{metaData.buildMinor}.{metaData.buildRevision} {metaData.buildTag}</div>
 		</DndProvider>
 	);
 }

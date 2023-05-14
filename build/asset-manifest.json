@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.0c10828b.css",
-    "main.js": "/static/js/main.7313499b.js",
-    "static/js/787.814b161e.chunk.js": "/static/js/787.814b161e.chunk.js",
+    "main.css": "/static/css/main.2a77d5b1.css",
+    "main.js": "/static/js/main.a7635772.js",
+    "static/js/787.9c804d05.chunk.js": "/static/js/787.9c804d05.chunk.js",
     "static/media/enemycardlayout.png": "/static/media/enemycardlayout.4ed6558090d558ed1cc0.png",
     "static/media/tribal.png": "/static/media/tribal.daa10e4b05e622bc29e0.png",
     "static/media/hillhare.png": "/static/media/hillhare.f526e6ed650e69cf53b3.png",
@@ -58,12 +58,12 @@
     "static/media/cards.png": "/static/media/cards.41ad9923479a625b0e14.png",
     "static/media/frozen.png": "/static/media/frozen.b6ba0424a12b68c17bd4.png",
     "index.html": "/index.html",
-    "main.0c10828b.css.map": "/static/css/main.0c10828b.css.map",
-    "main.7313499b.js.map": "/static/js/main.7313499b.js.map",
-    "787.814b161e.chunk.js.map": "/static/js/787.814b161e.chunk.js.map"
+    "main.2a77d5b1.css.map": "/static/css/main.2a77d5b1.css.map",
+    "main.a7635772.js.map": "/static/js/main.a7635772.js.map",
+    "787.9c804d05.chunk.js.map": "/static/js/787.9c804d05.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0c10828b.css",
-    "static/js/main.7313499b.js"
+    "static/css/main.2a77d5b1.css",
+    "static/js/main.a7635772.js"
   ]
 }

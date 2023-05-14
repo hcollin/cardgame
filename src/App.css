@@ -136,6 +136,15 @@ div.main-screen {
 
 }
 
+#root > div.version {
+  position: fixed;
+  color: #FFF8;
+  bottom: 0;
+  text-align: center;
+  padding: 0.25rem;
+  font-size: 0.75rem;
+}
+
 
 nav {
   position: fixed;
