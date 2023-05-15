@@ -15,7 +15,7 @@ div.arena-consumables {
     align-items: center;
 
     &>button {
-
+        position: relative;
         padding: 0.25rem;
         /* background: #862A; */
         background: linear-gradient(0deg, #862A 0%, #631A 50%, #862A 100%);
@@ -32,6 +32,28 @@ div.arena-consumables {
         &>img {
             height: 100%;
         }
+
+        & > span {
+            position: absolute;
+            bottom: 0.25rem;
+            left: 2rem;
+            width: 2rem;
+            height: 2rem;
+            background: #FFF;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+            border: solid 2px #000;
+            opacity: 0.5;
+
+            &.small {
+                font-size: 1.2rem;
+            }
+        }
     }
     & > div.scroll {
         height: 3rem;
@@ -41,31 +63,7 @@ div.arena-consumables {
         align-items: center;
         width: 100%;
 
-        & > button {
-            font-family: "Lobster Two";
-            background: #A62A;
-            color: #FFFC;
-            padding: 0.5rem;
-            width: 80%;
-            border: groove 3px #0008;
-            box-shadow: inset 0 0 0.5rem 0.25rem #F846;
-            border-radius: 0.75rem;
-
-            &:hover {
-                cursor: pointer;
-            }
-
-            &:disabled {
-                /* opacity: 0.5; */
-                box-shadow: inset 0 0 0.5rem 0.25rem #F842;
-                border: groove 2px #0004;
-                filter: grayscale(75%);
-                opacity: 0.75;
-                cursor: default;
-            }
-
-           
-        }
+        
     }
 
     &>div.arena-consumable {

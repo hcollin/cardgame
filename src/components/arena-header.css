@@ -1,162 +1,194 @@
-
 .arena-header {
-    height: 6rem;
-    background: linear-gradient(0deg, #444 0, #888 1.25rem, #EEE 3rem, #888 6rem);
-    filter: sepia(25%);
-    /* background-image: url("./pics/rustymetal.jpg"); */
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: soft-light;
-    border-bottom: groove 3px #00000080;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  
-    border-bottom-left-radius: 50% 3rem;
-    border-bottom-right-radius: 50% 3rem;
-    overflow: hidden;
+  position: relative;
+  height: 6rem;
+  /* background: linear-gradient(0deg, #444 0, #888 1.25rem, #EEE 3rem, #888 6rem); */
+  /* background: linear-gradient(0deg, #444 0, #888 1.25rem, #EEE 3rem, #888 6rem); */
+  /* filter: sepia(25%); */
+  /* background-image: url("./pics/rustymetal.jpg"); */
+  /* background-size: cover; */
+  /* background-position: center; */
+  /* background-blend-mode: soft-light; */
+  /* border-bottom: groove 3px #00000080; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
 
-    box-shadow: 0.5rem 0 1rem 0.5rem #0008;
+  /* border-bottom-left-radius: 50% 3rem; */
+  /* border-bottom-right-radius: 50% 3rem; */
+  overflow: visible;
+
+  /* box-shadow: 0.5rem 0 1rem 0.5rem #0008; */
+
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5rem;
+    background: linear-gradient(180deg, #000 0, #877 0.5rem, #410 1rem, #520 4rem, #988 4.5rem, #000 100%);
+    z-index: 1;
+    filter: sepia(50%);
   }
-  
-  .arena-header>.title {
+
+  &>.title {
     position: relative;
-    font-size: 2rem;
-    color: #0008;
-    
-    padding: 0.5rem 5rem 0.5rem 1rem;
-    text-shadow: 0 1px 1px #08F8, 0 -2px 4px #FFFC;
+    font-size: 2.5rem;
+
+
+
+
+    background: linear-gradient(180deg, #000 0, #877 0.5rem, #410 1rem, #520 4rem, #988 4.5rem, #000 5rem, #420 5rem, #000 100%);
+    filter: sepia(25%);
+
+
+
+    /* background: #520; */
+
+    color: #ACFA;
+
+    text-shadow: 0 0 4px 2px #0008;
+    ;
     text-transform: uppercase;
     font-weight: bold;
-  
-    /* background: linear-gradient(0deg, transparent 30%, #4AF4 ); */
-    background: #4464;    
-    
-  
-    border-right: solid 2px #0008;
-    border-top: solid 2px #0008;
-    border-top-right-radius: 1rem 30%;
-    border-bottom-right-radius: 8rem 70%;
-    height: 100%;
+    height: 6rem;
 
-    
+    z-index: 2;
 
-    & > span {
-        position: absolute;
-        font-family: "Lobster Two";
-        transform: rotate(-10deg);
-        font-size: 1.5rem;
-        color: #8BFD;
-        font-weight: normal;
-        letter-spacing: 1.5px;
-        text-shadow: var(--text-stroke-small);
-        left: 11rem;
-        bottom: 1.6rem;
+    padding: 0 1rem 1rem 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    border-bottom-right-radius: 75% 1rem;
+
+    &>span {
+
+      position: absolute;
+      font-family: "Lobster Two";
+      transform: rotate(-10deg);
+      font-size: 1.5rem;
+      color: #ACF8;
+      font-weight: normal;
+      letter-spacing: 1.5px;
+      text-shadow: var(--text-stroke-small);
+      /* left: 11rem; */
+      bottom: 0.75rem;
     }
   }
-  .arena-header>.data {
+
+  &>.data {
     text-align: center;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    
-  }
-  
-  .arena-header>.data > span {
-    font-family: "Lobster Two";
-    color: #0008;
-    /* font-weight: bold; */
-    font-size: 1.4rem;
-    /* text-shadow: 0 0 2px #000000, 0 0 1rem #ADD8E6; */
-    text-shadow: 0 0 4px #0008, 0 0 1rem #0258;
-    text-align: center;
-    
-    &.turn-info {
-      display: flex;
+    z-index: 2;
 
+    color: #FFFC;
+    font-family: "Lobster Two";
+    font-size: 1.4rem;
+
+    height: 5rem;
+
+    text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
+
+    &>span.turn-info {
+      display: flex;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
-  
-      margin-right: 1rem;
-      & > big {
-        font-size: 3rem;
-        width: 6rem;
-        height: 4rem;
-        margin: 0 1rem;
-        border: solid 2px #0008;
-        border-top-left-radius: 2rem;
-        border-top-right-radius: 2rem;
-        border-bottom-left-radius: 3rem;
-        border-bottom-right-radius: 3rem;
-        
-        background: #EDF5;
-        box-shadow: inset 0 0 1rem 3px #0003;
-        
+
+      &>big {
+        margin: 0 0.75rem;
+        font-size: 2.5rem;
+        color: #ACFA;
+
 
       }
     }
   }
-  
-  .arena-header>.data>span.header-enemy {
-    font-family: "Lobster Two";
-    color: #F008;
-    font-size: 2rem;
-    text-shadow: 0 0 1rem #FFFFFF55, 0 0 2px #000000;
-    font-weight: bold;
-  }
-  
-  .arena-header>.end-turn {
-    
-    height: 100%;
-    /* display: flex;
-    align-items: top;
-    justify-content: center; */
-  }
-  
-  .arena-header>.end-turn>button {
-    /* background: #ADD8E6; */
-    color: #00000088;
-    filter: brightness(0.9) sepia(45%) hue-rotate(180deg);
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    padding-bottom: 1rem;
-    font-weight: bold;
-    text-shadow: 0 0 3px #FFFFFF88;
-    cursor: pointer;
-    height: 100%;
-    width: 15rem;
-    border: none;
-    border-top-left-radius: 1rem 30%;
-    border-bottom-left-radius: 8rem 70%;
-    border-left: solid 2px #00000088;
-  
-    box-shadow: inset 0 0 2rem 5px #00000044;
 
-    transition: all 0.1s ease;
+  & > .end-turn {
+    position: relative;
+    
+    right: -2rem;
+    top: -2rem;
 
-    &:hover {
-      filter: brightness(1.1) sepia(45%) hue-rotate(60deg);
-    }
+    z-index: 2;
+    height: 12rem;
+    width: 12rem;
+
+    background: radial-gradient(#410 0, #410 5rem, #877 8rem, #000 100%);
+
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     
-    &:active {
-      filter: brightness(1.1) sepia(45%);
-      box-shadow: inset 0 0 2.5rem 8px #00000088;
-    }
   }
+
+}
+
+.arena-header>.data>span.header-enemy {
+  font-family: "Lobster Two";
+  color: #F008;
+  font-size: 2rem;
+  text-shadow: 0 0 1rem #FFFFFF55, 0 0 2px #000000;
+  font-weight: bold;
+}
+
+/* .arena-header>.end-turn {
+
+  height: 100%;
   
-  .arena-header>.end-turn>button:hover {
-    background: #D7E6AD;
-    /* color: #000000AA; */
-    /* box-shadow: inset 0 0 2rem 5px #44444444; */
-   
+}
+
+.arena-header>.end-turn>button {
+  
+  color: #00000088;
+  filter: brightness(0.9) sepia(45%) hue-rotate(180deg);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  padding-bottom: 1rem;
+  font-weight: bold;
+  text-shadow: 0 0 3px #FFFFFF88;
+  cursor: pointer;
+  height: 100%;
+  width: 15rem;
+  border: none;
+  border-top-left-radius: 1rem 30%;
+  border-bottom-left-radius: 8rem 70%;
+  border-left: solid 2px #00000088;
+
+  box-shadow: inset 0 0 2rem 5px #00000044;
+
+  transition: all 0.1s ease;
+
+  &:hover {
+    filter: brightness(1.1) sepia(45%) hue-rotate(60deg);
   }
-  
-  .arena-header>.end-turn>button:disabled {
-    
-    cursor: default;
-    background: #888888;
-    box-shadow: inset 0 0 1rem 3px #00000022;
+
+  &:active {
+    filter: brightness(1.1) sepia(45%);
+    box-shadow: inset 0 0 2.5rem 8px #00000088;
   }
-  
+}
+
+.arena-header>.end-turn>button:hover {
+  background: #D7E6AD;
+  }
+
+.arena-header>.end-turn>button:disabled {
+
+  cursor: default;
+  background: #888888;
+  box-shadow: inset 0 0 1rem 3px #00000022;
+} */

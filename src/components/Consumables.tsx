@@ -13,6 +13,7 @@ import useSingleAndDoubleClick, { useSingleAndDoubleClickParams } from "../utils
 import { createPortal } from "react-dom";
 
 import "./arena-consumables.css";
+import Button from "./common/Button/Button";
 
 
 export default function ArenaConsumables(props: { gs: GameState, update: (gs: GameState) => void }) {
@@ -49,11 +50,13 @@ export default function ArenaConsumables(props: { gs: GameState, update: (gs: Ga
         
     const showDown = index > 0;
     const showUp = index + 3 < consumableItemsInInventory.length;
+
+    const itemCount = consumableItemsInInventory.length;
     return (
         <div className={`arena-consumables ${isOpen ? "open" : "closed"}`}>
 
 
-            {isOpen && <div className="scroll"><button onClick={() => setIndex(index - 1)} disabled={!showDown}>Up</button></div>}
+            {isOpen && <div className="scroll"><Button onClick={() => setIndex(index - 1)} disabled={!showDown}>Up</Button></div>}
 
             {isOpen && items.map(item => {
 
@@ -65,10 +68,12 @@ export default function ArenaConsumables(props: { gs: GameState, update: (gs: Ga
             })}
 
 
-            {isOpen && <div className="scroll"><button onClick={() => setIndex(index + 1)} disabled={!showUp}>Down</button></div>}
+            
+            {isOpen && <div className="scroll"><Button onClick={() => setIndex(index + 1)} disabled={!showUp}>Down</Button></div>}
 
-            {isOpen && <button onClick={() => setOpenState(false)}><img src={imgInventoryClose} alt="Close inventory" /></button>}
-            {!isOpen && <button onClick={() => setOpenState(true)}><img src={imgInventoryOpen} alt="Close inventory" /></button>}
+
+            {isOpen && <button onClick={() => setOpenState(false)}><img src={imgInventoryClose} alt="Close inventory" /><span className={itemCount > 9 ? "small": ""}>{itemCount}</span></button>}
+            {!isOpen && <button onClick={() => setOpenState(true)}><img src={imgInventoryOpen} alt="Open inventory" /><span className={itemCount > 9 ? "small": ""}>{itemCount }</span></button>}
 
             {zoomedItem && createPortal(
                 <div className="arena-consumable-zoomed" onClick={() => setZoomedItem(null)}>

@@ -1,0 +1,38 @@
+
+button.arena-button {
+    font-family: "Lobster Two";
+    background: #852;
+    color: #FFFC;
+    padding: 0.5rem;
+    width: 80%;
+    border: groove 3px #0008;
+    box-shadow: inset 0 0 0.5rem 0.25rem #F846, 2px 2px 2px 1px #0004;
+    border-radius: 0.75rem;
+    margin: 0;
+    &:hover {
+        cursor: pointer;
+        background: #C83A;
+        box-shadow: inset 0 0 0.5rem 0.25rem #FA68, 2px 2px 2px 1px #0004;
+        color: #FF8E;
+    }
+
+    &:active {
+        cursor: pointer;
+        /* border: groove 3px #0008; */
+        background: #C83A;
+        box-shadow: inset 0 0 0.5rem 0.25rem #FA68, 0 0 2px 1px #0004;
+        color: #FF8E;
+        margin-top: 2px;
+        
+    }
+
+    &:disabled {
+        /* opacity: 0.5; */
+        box-shadow: inset 0 0 0.5rem 0.25rem #F842;
+        border: groove 2px #0004;
+        filter: grayscale(75%);
+        opacity: 0.75;
+        cursor: default;
+        margin: 0;
+    }
+}
