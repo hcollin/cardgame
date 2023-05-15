@@ -1,7 +1,9 @@
+import { createItemId } from "../game/ItemTools";
 import { CharacterClass, ITEMSLOT } from "../models/HeroStats";
 import { BronzeBuckler } from "./items/BronzeBuckler";
 import { Dagger } from "./items/Dagger";
 import { ScaleMail } from "./items/MediumArmor";
+import { GreaterEnergyPotion, GreaterHealingPotion, HealingPotion, MinorEnergyPotion, MinorHealingPotion, PotionOfInsight } from "./items/Potions";
 import { ShortSword } from "./items/ShortSword";
 
 export const ClassWarrior: CharacterClass = {
@@ -12,6 +14,11 @@ export const ClassWarrior: CharacterClass = {
 	startingItems: [
 		[ShortSword, ITEMSLOT.RIGHT_HAND],
 		[BronzeBuckler, ITEMSLOT.LEFT_HAND],
+		[createItemId(MinorHealingPotion), null],
+		[createItemId(MinorHealingPotion), null],
+		[createItemId(MinorHealingPotion), null],
+		[createItemId(PotionOfInsight), null],
+		[createItemId(GreaterEnergyPotion), null],
 	],
 	levelStats: [
 		{ health: 0, block: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false },

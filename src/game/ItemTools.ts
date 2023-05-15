@@ -28,3 +28,7 @@ export function getTotalCardCount(item: Item): number {
 		return acc + (card.count || 1);
 	}, 0);
 }
+
+export function createItemId(item: Item): Item {
+	return {...item, id: v4()};
+}

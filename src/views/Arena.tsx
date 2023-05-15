@@ -17,6 +17,7 @@ import ItemCard from "../components/ItemCard";
 import ArenaDevTools from "../components/ArenaDevTools";
 import PlayerEffectsDisplay from "../components/PlayerEffectDIsplay";
 import e from "express";
+import ArenaConsumables from "../components/Consumables";
 
 function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) => void }) {
 	const [gameState, setGameState] = useState<GameState>(props.gs);
@@ -102,6 +103,10 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 		}
 	}
 
+	function updateGameState(gs: GameState) {
+		setGameState(gs);
+	}
+
 	function completeArena() {
 		setGameState({ ...gameState, state: GAMESTATES.ARENA_COMPLETED });
 	}
@@ -118,9 +123,7 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 				setSelectedCard(card);
 				setTarget(eIndex);
 			}
-		}
-
-		
+		}		
 	}
 	
 
@@ -175,6 +178,8 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 			<div id="zoomedContent"></div>
 
 			<PlayerEffectsDisplay />
+
+			<ArenaConsumables gs={gameState} update={updateGameState}/>
 
 			<ArenaDevTools gs={gameState} update={setGameState} />
 		</div>

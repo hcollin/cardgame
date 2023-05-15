@@ -15,7 +15,7 @@ import { BreastPlate, ChainMail, ScaleMail } from "./MediumArmor";
 import { RoundShield } from "./RoundShield";
 import { TowerShield } from "./TowerShield";
 import { Barbute, Cervelliere, GreatHelm } from "./Helmets";
-import { EnergyPotion, GreaterEnergyPotion, GreaterHealingPotion, HealingPotion, MinorEnergyPotion, MinorHealingPotion } from "./Potions";
+import { EnergyPotion, GreaterEnergyPotion, GreaterHealingPotion, GreaterPotionOfInsight, HealingPotion, MinorEnergyPotion, MinorHealingPotion, MinorPotionOfInsight, PotionOfInsight } from "./Potions";
 import { BronzeSpear } from "./BronzeSpear";
 import { RingOfHealing } from "./RingOfHealing";
 import { MinorWandOfFire } from "./MinorWandOfFire";
@@ -73,16 +73,19 @@ export const heavyArmors: Item[] = [
 export const minorPotions: Item[] = [
     MinorHealingPotion,
     MinorEnergyPotion,
+    MinorPotionOfInsight
 ];
 
 export const defaultPotions: Item[] = [
     HealingPotion,
     EnergyPotion,
+    PotionOfInsight
 ];
 
 export const greaterPotions: Item[] = [
     GreaterEnergyPotion,
     GreaterHealingPotion,
+    GreaterPotionOfInsight
 ];
 
 

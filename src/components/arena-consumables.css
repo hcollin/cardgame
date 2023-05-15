@@ -1,0 +1,220 @@
+div.arena-consumables {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+
+    color: white;
+    font-size: 1rem;
+
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+    &>button {
+
+        padding: 0.25rem;
+        /* background: #862A; */
+        background: linear-gradient(0deg, #862A 0%, #631A 50%, #862A 100%);
+        border: groove 3px #0008;
+        width: 9rem;
+        height: 5rem;
+        box-shadow: inset 0 0 2rem 0.5rem #4448, inset 0 0 1rem 0.25rem #0008;
+
+        border-bottom-left-radius: 2rem;
+        border-top-left-radius: 1.5rem;
+
+        cursor: pointer;
+
+        &>img {
+            height: 100%;
+        }
+    }
+    & > div.scroll {
+        height: 3rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        & > button {
+            font-family: "Lobster Two";
+            background: #A62A;
+            color: #FFFC;
+            padding: 0.5rem;
+            width: 80%;
+            border: groove 3px #0008;
+            box-shadow: inset 0 0 0.5rem 0.25rem #F846;
+            border-radius: 0.75rem;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &:disabled {
+                /* opacity: 0.5; */
+                box-shadow: inset 0 0 0.5rem 0.25rem #F842;
+                border: groove 2px #0004;
+                filter: grayscale(75%);
+                opacity: 0.75;
+                cursor: default;
+            }
+
+           
+        }
+    }
+
+    &>div.arena-consumable {
+
+        /* width: 8rem; */
+        /* height: 8rem; */
+        /* border-top: solid 2px #FFF1; */
+        padding: 1rem 0.5rem;
+        margin: 0.5rem 0;
+        box-shadow: inset 0 0 1rem 0.5rem #0008;
+        border: groove 2px #0008;
+        border-radius: 1rem;
+        cursor: pointer;
+
+        &:hover {
+            box-shadow: inset 0 0 1rem 0.5rem #AA08;
+            border: groove 2px #FF08;
+        }
+
+        &:active {
+            box-shadow: inset 0 0 1rem 0.5rem #AA08;
+            border: groove 2px #FF08;
+            background: #FF02;
+        }
+    }
+
+    &.open {
+        background: linear-gradient(0deg, transparent 5rem, #381800 5rem, #630C 100%);
+        border-top-left-radius: 2rem;
+
+        border-top: ridge 5px #C708;
+        padding-top: 0.5rem;
+
+
+
+
+        &>button {
+            /* border: groove 3px #0009; */
+            /* box-shadow: inset 0 0 15rem 0.5rem #4208; */
+            box-shadow: inset 0 0 2rem 0.5rem #6668, inset 0 0 1rem 0.25rem #0006;
+            margin-top: 0.5rem;
+            border-top-left-radius: 0;
+        }
+    }
+}
+
+div.arena-consumable-zoomed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    &>div.item-info {
+        height: 50%;
+        width: 350px;
+
+        background: #888;
+
+        border-radius: 2rem;
+        border: ridge 3px #0008;
+
+        box-shadow: 0.5rem 0.5rem 2rem 1rem #0008, inset 0 0 2rem 1rem #0004;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+
+        &>h1 {
+            width: 100%;
+            font-family: "Lobster Two";
+            padding: 1rem;
+            font-size: 2rem;
+            text-align: center;
+            margin: 0;
+
+            border-bottom: solid 3px #0006;
+
+            flex: 0 0 auto;
+            max-height: 5rem;
+        }
+
+        &>div.image {
+            flex: 0 0 auto;
+            width: 100%;
+            height: 14rem;
+            box-shadow: inset 0 0 2rem 1.0rem #0004;
+            background: #0002;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: solid 2px #0009;
+            border-bottom-left-radius: 25%;
+            border-bottom-right-radius: 25%;
+
+        }
+
+        &>p {
+
+            padding: 1rem;
+            flex: 1 1 auto;
+
+            &.rules {
+                font-weight: bold;
+                font-size: 1.7rem;
+            }
+
+            &.description {
+                font-size: 1.4rem;
+                font-style: italic;
+            }
+        }
+
+        & > footer {
+            flex: 0 0 auto;
+            height: 15%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: solid 2px #0009;
+
+            background: #FFF2;
+
+            border-top-left-radius: 25%;
+            border-top-right-radius: 25%;
+
+            & > button {
+                padding: 1rem 3rem;
+                font-size: 2rem;
+                font-family: "Lobster Two";
+                font-weight: bold;
+                color: #000C;
+                background: #6C6A;
+                border: ridge 3px #0005;
+                border-radius: 1rem;
+                box-shadow: inset 0 0 0.75rem 0.5rem #0808;
+                cursor: pointer;
+            }
+
+        }
+
+
+    }
+}
