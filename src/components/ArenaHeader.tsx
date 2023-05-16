@@ -12,6 +12,8 @@ function ArenaHeader(props: { gameState: GameState; updateGameState: (gs: GameSt
 		}
 	}
 
+	const endTurnActive = gameState.hero.getEnergy() === 0;
+
 	return (
 		<header className="arena-header">
 			<div className="title">Frost Troll <span>Quest</span></div>
@@ -24,7 +26,7 @@ function ArenaHeader(props: { gameState: GameState; updateGameState: (gs: GameSt
 				)}
 				{gameState.state === GAMESTATES.ENEMYTURN && <span className="header-enemy">Enemy turn</span>}
 			</div>
-			<div className="end-turn">
+			<div className={`end-turn ${endTurnActive ? "clickme": ""}`}>
 				<button onClick={handleEndTurn} disabled={gameState.state !== GAMESTATES.MYTURN}>
 					End Turn
 				</button>
