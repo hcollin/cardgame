@@ -15,10 +15,11 @@ export interface VillageParams {
     maxRarity: ITEMRARITY;
 }
 
-export class Village {
+export default class Village {
+
+    public name: string = "";
 
     protected itemsOnSale: ItemOnSale[] = [];
-
 
     protected gold: number = 0;
 

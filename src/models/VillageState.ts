@@ -1,4 +1,5 @@
 import Hero from "../game/Hero";
+import Village from "../game/Village";
 import { Item } from "./Items";
 
 
@@ -11,11 +12,10 @@ export interface ItemOnSale {
 
 
 export interface VillageState {
-    id: string;
     
+    id: string;   
+
     hero: Hero;
 
-    itemsOnSale: ItemOnSale[];
-    potionsOnSale: ItemOnSale[];
-
+    village: Village;
 }
