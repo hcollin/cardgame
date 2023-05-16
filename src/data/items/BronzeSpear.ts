@@ -11,6 +11,7 @@ export const BronzeSpear: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "The bronze spear, with its gleaming, sharp point, promises both reach and deadly precision in battle.",
 	rarity: ITEMRARITY.COMMON,
+	price: 15,
 	cards: [
 		{
 			name: "Quick Jab",

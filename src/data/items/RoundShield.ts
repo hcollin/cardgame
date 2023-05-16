@@ -10,6 +10,7 @@ export const RoundShield: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple shield",
 	rarity: ITEMRARITY.COMMON,
+	price: 30,
 	cards: [
 		{
 			name: "Quick Block",

@@ -9,6 +9,7 @@ export const LeatherBoots: Item = {
     rulesText: "DODGE +25%",
 	description: "A nice pair of good quality boots makes you feel like you can dodge anything.",
 	cards: [],
+	price: 55,
 	rarity: ITEMRARITY.COMMON,
 	onEquip: (hero) => {
         hero.modifyDodge(25);

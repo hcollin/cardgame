@@ -9,6 +9,7 @@ export const LeatherCap: Item = {
     rulesText: "Immunity to Stun",
 	description: "A comfortable padded leather cap for those less worreid about style.",
 	cards: [],
+	price: 15,
 	rarity: ITEMRARITY.COMMON,
 	onEquip: (hero) => {
         // hero.modifyDodge(25);

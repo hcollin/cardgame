@@ -21,6 +21,7 @@ export interface Item {
     itemSlots: ITEMSLOT[];
     cards: CardData[];
     rarity: ITEMRARITY;
+    price: number;
     bonus?: { [key: string]: number };
     onEquip?: (hero: Hero) => void;
     onUnequip?: (hero: Hero) => void;

@@ -9,6 +9,7 @@ export const Dagger: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A short blade with guard",
 	rarity: ITEMRARITY.COMMON,
+	price: 30,
 	cards: [
 		{
 			name: "Quick Slash",

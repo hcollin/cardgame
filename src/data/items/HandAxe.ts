@@ -11,6 +11,7 @@ export const HandAxe: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Small utilitarian Axe used to chopping wood and heads.",
 	rarity: ITEMRARITY.COMMON,
+	price: 35,
 	cards: [
 		{
 			name: "Swing",

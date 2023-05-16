@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
 import { Card, Damage } from "../models/Card";
 
-import { Item } from "../models/Items";
+import { ITEMRARITY, Item } from "../models/Items";
 
 export function createCardsFromItem(item: Item, hand: "RIGHT" | "LEFT"): Card[] {
 	const cards: Card[] = [];
@@ -31,4 +31,18 @@ export function getTotalCardCount(item: Item): number {
 
 export function createItemId(item: Item): Item {
 	return {...item, id: v4()};
+}
+
+export function getRarityLevel(r: ITEMRARITY): number {
+	switch(r) {
+		case ITEMRARITY.COMMON:
+			return 1;
+		case ITEMRARITY.UNCOMMON:
+			return 2;
+		case ITEMRARITY.RARE:
+			return 3;
+		case ITEMRARITY.EPIC:
+			return 4;
+	}
+	return -1;
 }

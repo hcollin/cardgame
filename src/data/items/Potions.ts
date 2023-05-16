@@ -10,6 +10,7 @@ export const MinorHealingPotion: Item = {
     cards: [],
     rarity: ITEMRARITY.COMMON,
     bonus: {},
+    price: 15,
     onUse: (gs) => {
         gs.hero.healHero(10);
         return { ...gs };
@@ -27,6 +28,7 @@ export const HealingPotion: Item = {
     cards: [],
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {},
+    price: 40,
     onUse: (gs) => {
         gs.hero.healHero(25);
         return { ...gs };
@@ -43,6 +45,7 @@ export const GreaterHealingPotion: Item = {
     cards: [],
     rarity: ITEMRARITY.RARE,
     bonus: {},
+    price: 70,
     onUse: (gs) => {
         gs.hero.healHero(60);
         return { ...gs };
@@ -60,6 +63,7 @@ export const MinorEnergyPotion: Item = {
     cards: [],
     rarity: ITEMRARITY.COMMON,
     bonus: {},
+    price: 20,
     onUse: (gs) => {
         // gs.hero.modifyEffectEnergy(1);
         gs.hero.useEnergy(-1);
@@ -77,6 +81,7 @@ export const EnergyPotion: Item = {
     cards: [],
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {},
+    price: 50,
     onUse: (gs) => {
         gs.hero.useEnergy(-2);
         return { ...gs };
@@ -93,6 +98,7 @@ export const GreaterEnergyPotion: Item = {
     cards: [],
     rarity: ITEMRARITY.RARE,
     bonus: {},
+    price: 95,
     onUse: (gs) => {
         gs.hero.useEnergy(-4);
         return { ...gs };
@@ -109,6 +115,7 @@ export const MinorPotionOfInsight: Item = {
     cards: [],
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {},
+    price: 20,
     onUse: (gs) => {
         gs.rightHand.drawCards(gs, 1);
         gs.leftHand.drawCards(gs, 1);
@@ -126,6 +133,7 @@ export const PotionOfInsight: Item = {
     cards: [],
     rarity: ITEMRARITY.RARE,
     bonus: {},
+    price: 50,
     onUse: (gs) => {
         gs.rightHand.drawCards(gs, 2);
         gs.leftHand.drawCards(gs, 2);
@@ -143,6 +151,7 @@ export const GreaterPotionOfInsight: Item = {
     cards: [],
     rarity: ITEMRARITY.EPIC,
     bonus: {},
+    price: 95,
     onUse: (gs) => {
         gs.rightHand.drawCards(gs, 3);
         gs.leftHand.drawCards(gs, 3);

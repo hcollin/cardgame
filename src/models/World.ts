@@ -6,7 +6,7 @@ export enum WORLDLOCATIONTYPE {
     START = "START",
     END = "END",
     ARENA = "ARENA",
-    SHOP = "SHOP",
+    VILLAGE = "VILLAGE",
 }
 
 export type LocationId = string;

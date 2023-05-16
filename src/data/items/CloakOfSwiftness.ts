@@ -8,6 +8,7 @@ export const CloakOfSwiftness: Item = {
     itemSlots: [ITEMSLOT.CAPE],
     description: "+1 Energy per turn",
     cards: [],
+    price: 350,
     rarity: ITEMRARITY.RARE,
     onEquip: (hero) => {
         hero.modifyEffectEnergy(1);

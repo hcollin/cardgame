@@ -11,6 +11,7 @@ export const IronMace: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Heavy club with a metal head, designed for delivering powerful blows.",
 	rarity: ITEMRARITY.COMMON,
+	price: 110,
 	cards: [
 		{
 			name: "Swing",

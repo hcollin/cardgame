@@ -9,6 +9,7 @@ export const Cervelliere: Item = {
 	rulesText: "BLOCK 1",
 	description: "The Cervelliere, a rounded steel cap, offers unassuming but crucial protection, cradling the warrior's skull securely.",
 	cards: [],
+	price: 40,
 	rarity: ITEMRARITY.COMMON,
 	bonus: {
 		BLOCK: 1,
@@ -25,6 +26,7 @@ export const Barbute: Item = {
 	rulesText: "BLOCK 2",
 	description: "The Barbute is a simple, open-faced helmet, offering good protection while allowing the wearer to see and hear clearly.",
 	cards: [],
+	price: 85,
 	rarity: ITEMRARITY.UNCOMMON,
 	bonus: {
 		BLOCK: 2,
@@ -41,6 +43,7 @@ export const GreatHelm: Item = {
 	rulesText: "BLOCK 4, ENERGY -1",
 	description: "A large, heavy helmet, the Great Helm offers excellent protection, but limits vision and hearing.",
 	cards: [],
+	price: 140,
 	rarity: ITEMRARITY.EPIC,
 	bonus: {
 		BLOCK: 4,

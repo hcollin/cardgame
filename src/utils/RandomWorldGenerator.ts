@@ -15,6 +15,7 @@ interface worldGeneratorOptions {
 	curve: number;
 	spread: number;
 	starts: number;
+	villages: number;
 }
 
 export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Location[] {
@@ -26,6 +27,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 			curve: 2,
 			spread: 3,
 			starts: 1,
+			villages: 4,
 		},
 		opts,
 	);
@@ -104,10 +106,22 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		},
 	};
 
-	// Then create connections to these locations from the previous depth
 
-	// console.log(locsMap);
+	console.log("\nVillages!");
+	// Set Village locations at random
+	for(let i = 0; i < options.villages; i++) {
+		const l = randomVillage(locsMap);
+		
+	}
+
+
+
+	// Then create connections to these locations from the previous depth
 	calculateEdgeConnections(locsMap);
+
+
+	
+
 
 	// Populate the locations with arenas
 
@@ -174,6 +188,58 @@ export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Loc
 	}
 
 	return loc;
+}
+
+export function randomVillage(locsMap: (Location | null)[][] ): Location {
+
+	const vloc: Location = {
+		id: v4(),
+		status: LOCATIONSTATUS.LOCKED,
+		type: WORLDLOCATIONTYPE.VILLAGE,
+		arena: [new EmptyArena()],
+		nextLocations: [],
+		flags: [],
+		icon: "tent",
+		init: function (campaign) {
+			this.arena = [new EmptyArena()];
+		}
+	};
+
+	let isValidLocation = false;
+
+	while(isValidLocation === false) {
+		const rDept = rnd(2, locsMap.length - 2);
+		const rCol = rnd(0, locsMap[rDept].length - 1);
+
+		if(locsMap[rDept][rCol] === null) continue;
+
+		// If current depth already has a village, skip
+		if(locsMap[rDept].some(l => l !== null && l.type === WORLDLOCATIONTYPE.VILLAGE)) continue;
+		
+		// If target location is already a village, skip
+		if(locsMap[rDept][rCol]!.type === WORLDLOCATIONTYPE.VILLAGE) continue;
+
+
+		if(locsMap[rDept][rCol] !== null) {
+			isValidLocation = true;
+			console.log(rDept, rCol, vloc);
+
+			vloc.loc = {
+				x: rCol,
+				y: rDept,
+				dx: rnd(0, 100) / 100,
+				dy: rnd(0, 100) / 100,
+			};
+
+			locsMap[rDept][rCol] = vloc;
+		}
+	}
+	
+	
+	
+	
+
+	return vloc;
 }
 
 function randomArena(diff: ARENADIFFICULTY, theme: string): Arena {

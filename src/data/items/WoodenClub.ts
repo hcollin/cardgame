@@ -11,6 +11,7 @@ export const WoodenClub: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple wooden club, ready for pain.",
 	rarity: ITEMRARITY.COMMON,
+	price: 10,
 	cards: [
 		{
 			name: "Swing",

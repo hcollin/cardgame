@@ -10,6 +10,7 @@ export const BronzeBuckler: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple bronze Buckler",
 	rarity: ITEMRARITY.COMMON,
+	price: 20,
 	cards: [
 		{
 			name: "Quick Block",

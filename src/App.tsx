@@ -8,7 +8,7 @@ import { GAMESTATES, GameState } from "./models/GameState";
 import { Campaign } from "./models/Campaign";
 import { createCampaign, createEmptyCampaign, createGameForArena, markCurrentLocationCompleted, setActiveLocationForCampaign } from "./game/CampaignTools";
 
-import { LOCATIONSTATUS, Location } from "./models/World";
+import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "./models/World";
 import WorldMap from "./views/WorldMap";
 
 import iconMap from "./components/icons/map.png";
@@ -31,13 +31,14 @@ function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createEmptyCampaign());
 
 	const [gameState, setGameState] = useState<GameState | null>(null);
+	
 
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
 
 	const [vm, setVm] = useState<string>("MAP"); // MAP || CHARACTER
 
 	useEffect(() => {
-		if(campaign.id === "EMPTY") {
+		if (campaign.id === "EMPTY") {
 			const camp = createCampaign();
 			// console.log(Array.from(camp.world.values()).map((l) => l.name).join(", "));
 			setCampaign(camp);
@@ -58,9 +59,9 @@ function App() {
 		setGameState(null);
 
 		setTimeout(() => {
-			setCampaign({...createCampaign()});
+			setCampaign({ ...createCampaign() });
 		}, 500)
-		
+
 	}
 
 	function arenaDone(gs: GameState) {
@@ -79,11 +80,20 @@ function App() {
 
 	function startArena() {
 		if (currentLocation) {
-			const ar = currentLocation.arena[0];
-			if (ar) {
-				effStore.clear();
-				// console.log(`Start Arena ${ar.name}`, campaign);
-				setGameState(createGameForArena(ar, campaign));
+
+			// Start Arena
+			if (currentLocation.type === WORLDLOCATIONTYPE.ARENA) {
+				const ar = currentLocation.arena[0];
+				if (ar) {
+					effStore.clear();
+					// console.log(`Start Arena ${ar.name}`, campaign);
+					setGameState(createGameForArena(ar, campaign));
+				}
+			}
+
+			// Start Village
+			if(currentLocation.type === WORLDLOCATIONTYPE.VILLAGE) {
+				console.log("START VILLAGE!");
 			}
 		}
 	}
@@ -110,8 +120,8 @@ function App() {
 	if (gameState !== null) {
 		viewMode = "ARENA";
 	}
-	
-	
+
+
 
 	// console.log(campaign.id, currentLocation);
 

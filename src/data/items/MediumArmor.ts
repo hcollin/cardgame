@@ -9,6 +9,7 @@ export const BreastPlate: Item = {
 	rulesText: "AROMOR 6. -1 Left hand size",
 	description: " A solid piece of metal armor, it covers the wearer's chest and back, offering robust defense.",
 	cards: [],
+    price: 155,
 	rarity: ITEMRARITY.RARE,
 	bonus: {
 		BLOCK: 6,
@@ -27,6 +28,7 @@ export const ChainMail: Item = {
     rulesText: "ARMOR 5.",
     description: "Made from thousands of interlinked metal rings, this armor offers flexible, effective protection against cuts.",
     cards: [],
+    price: 195,
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {
         BLOCK: 5,
@@ -44,6 +46,7 @@ export const ScaleMail: Item = {
     rulesText: "ARMOR 4. Damage reduction 1.",  
     description: "Consisting of small, overlapping metal plates, this armor provides comprehensive coverage and formidable defense.",
     cards: [],
+    price: 245,
     rarity: ITEMRARITY.RARE,
     bonus: {
         BLOCK: 4,

@@ -10,6 +10,7 @@ export const Katana: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "The katana features a gently curved, slender blade with a razor-sharp single edge, a circular or squared tsuba adorned with intricate designs.",
 	rarity: ITEMRARITY.EPIC,
+	price: 295,
 	cards: [
 		{
 			name: "Rising Dragon",

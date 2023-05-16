@@ -11,6 +11,7 @@ export const TowerShield: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A large and heavy iron shield",
 	rarity: ITEMRARITY.COMMON,
+	price: 40,
 	cards: [
 		{
 			name: "Defend",

@@ -24,13 +24,15 @@ import { CloakOfSwiftness } from "./CloakOfSwiftness";
 import { MinorRingOfPower } from "./RingOfPower";
 
 
+
+
 export const basicWeapons: Item[] = [
     Dagger,
     ShortSword,
     WoodenClub,
     BronzeSpear,
 ];
-    
+
 
 export const defaultWeapons: Item[] = [
     LongSword,
@@ -100,3 +102,23 @@ export const MediumMagicItems: Item[] = [
     MinorRingOfPower,
 
 ];
+
+export const allItems: Item[] = [
+    ...basicWeapons,
+    ...defaultWeapons,
+    ...advancedWeapons,
+    ...exoticWeapons,
+    ...basicArmors,
+    ...standardArmors,
+    ...heavyArmors,
+    ...minorPotions,
+    ...defaultPotions,
+    ...greaterPotions,
+    ...minorMagicItems,
+    ...MediumMagicItems,
+].reduce((items, item) => {
+    if (items.find(i => i.id === item.id) === undefined) {
+        items.push(item);
+    }
+    return items;
+}, [] as Item[]);

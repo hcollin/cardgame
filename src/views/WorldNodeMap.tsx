@@ -1,6 +1,6 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { LOCATIONSTATUS, Location } from "../models/World";
+import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "../models/World";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 import Banner from "../components/Banner";
@@ -113,41 +113,16 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 									return <div className="node empty" key={`node-${y}-${x}`} style={nodeStyle}></div>;
 								}
 
-								// const routesTo: RouteCoords[] = loc.nextLocations.map((nl) => {
-								// 	const nloc = locations.get(nl);
-								// 	if (!nloc) throw new Error(`Location ${nl} not found`);
-								// 	if (!nloc.loc) {
-								// 		console.log(nloc);
-								// 		throw new Error(`Location ${nl} has no location`);
-								// 	}
-								// 	return {
-								// 		x: nloc.loc?.x,
-								// 		y: nloc.loc?.y,
-								// 		dx: nloc.loc?.dx,
-								// 		dy: nloc.loc?.dy,
-								// 	};
-								// });
-
-								// const routeFrom: RouteCoords = {
-								// 	x: loc.loc?.x || 0,
-								// 	y: loc.loc?.y || 0,
-								// 	dx: loc.loc?.dx || 0,
-								// 	dy: loc.loc?.dy || 0,
-								// };
-
 								const cns: string[] = ["node"];
-								if (hoverNode && hoverNode.nextLocations.includes(loc.id)) {
-									cns.push("next");
-								}
+								// if (hoverNode && hoverNode.nextLocations.includes(loc.id)) {
+								// 	cns.push("next");
+								// }
 
 								return (
 									<div className={cns.join(" ")} key={`node-${y}-${x}`} style={nodeStyle}>
 										{/* {routesTo.map((to, ind) => { */}
 										{/* return <RouteLine key={`${loc.id}-route-${ind}`} from={routeFrom} to={to} size={nodeSize} tilt={width > height} />; */}
 										{/* })} */}
-										<p>
-											{loc.loc?.x}, {loc.loc?.y}
-										</p>
 
 										<LocationNode
 											location={loc}

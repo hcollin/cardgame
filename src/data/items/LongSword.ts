@@ -10,6 +10,7 @@ export const LongSword: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A long sword",
 	rarity: ITEMRARITY.UNCOMMON,
+	price: 65,
 	cards: [
 		{
 			name: "Slash",

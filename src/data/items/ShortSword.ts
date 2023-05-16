@@ -9,6 +9,7 @@ export const ShortSword: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Despite its rudimentary craftsmanship, it offers close-quarter menace with its sharp, compact blade.",
 	rarity: ITEMRARITY.COMMON,
+	price: 25,
 	cards: [
 		{
 			name: "Slash",

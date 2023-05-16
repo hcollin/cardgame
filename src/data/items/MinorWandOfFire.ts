@@ -10,6 +10,7 @@ export const MinorWandOfFire: Item = {
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "This wand is a slender, reddish-brown wooden wand, adorned with delicate carvings of dancing flames and inlaid with small, fiery gemstones.",
 	rarity: ITEMRARITY.RARE,
+	price: 175,
 	cards: [
 		{
 			name: "Ember touch",

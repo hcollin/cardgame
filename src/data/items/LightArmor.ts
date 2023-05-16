@@ -9,6 +9,7 @@ export const Gambeson: Item = {
 	rulesText: "ARMOR 1. Damage Reduction 1 against Slash damage.",
 	description: "A thick, padded fabric armor providing both protection and flexibility, often used beneath other armors.",
 	cards: [],
+	price: 45,
 	rarity: ITEMRARITY.RARE,
 	bonus: {
 		BLOCK: 1,
@@ -25,6 +26,7 @@ export const LeatherArmor: Item = {
 	itemSlots: [ITEMSLOT.BODY],
 	description: "ARMOR 2. A simple leather ammor",
 	cards: [],
+	price: 60,
 	rarity: ITEMRARITY.COMMON,
 	bonus: {
 		BLOCK: 2,
@@ -47,6 +49,7 @@ export const StuddedLeatherArmor: Item = {
 	rulesText: "ARMOR 3",
 	description: "An upgrade to leather armor, metal studs are added for additional strength and puncture resistance.",
 	cards: [],
+	price: 90,
 	rarity: ITEMRARITY.UNCOMMON,
 	bonus: {
 		BLOCK: 3,
