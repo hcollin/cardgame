@@ -87,6 +87,10 @@ export class Arena extends Cloneable {
 		return arnds(this.rewardItems, this.rewardCount, true);
 	}
 
+	public getGoldReward(): number {
+		return this.getDifficultyValue() * 10;
+	}
+
 	public getDifficulty(): ARENADIFFICULTY {
 		if (this.difficultyValue > -1) {
 			return this.difficulty;

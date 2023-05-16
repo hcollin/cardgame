@@ -6,6 +6,7 @@ import energyIcon from "./icons/energy.png";
 import experienceIcon from "./icons/experience.png";
 import dodgeIcon from "./icons/dodge.png";
 import drIcon from "./icons/damagereduction.png";
+import goldIcon from "./icons/gold.png";
 
 import "./hero-info.css";
 
@@ -14,6 +15,13 @@ function HeroInfo(props: { gameState: GameState }) {
 
 	return (
 		<div className="hero-info">
+			<div className="small-value experience">
+				<div className="icon">
+					<img src={goldIcon} alt="Gold" />
+				</div>
+				<div className="value">{gameState.hero.gold}</div>
+			</div>
+
 			<div className="small-value experience">
 				<div className="icon">
 					<img src={experienceIcon} alt="Experience" />

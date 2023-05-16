@@ -108,6 +108,7 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 	}
 
 	function completeArena() {
+		gameState.hero.gold += gameState.arena.getGoldReward();
 		setGameState({ ...gameState, state: GAMESTATES.ARENA_COMPLETED });
 	}
 
@@ -115,7 +116,7 @@ function Arena(props: { gs: GameState; onArenaFinished: (gameState: GameState) =
 		
 		if(card.allowedTargets.includes(TARGETS.SELF)) {
 			setSelectedCard(card);
-			setTarget(-2);
+			setTarget(-2); 
 		} else {
 			const enemiesAlive = gameState.arena.enemies.filter((e) => !e.isDead());
 			if(enemiesAlive.length === 1) {
@@ -207,6 +208,8 @@ function RewardsScreen(props: { gs: GameState, onCompleteArena: () => void }) {
 		props.gs.hero.gainExperience(props.gs.hero.getLevel() * 50);
 		props.onCompleteArena();
 	}
+
+	
 
 	return (
 		<div className="rewards-container">

@@ -46,6 +46,8 @@ export default class Hero {
 	protected inventory: Item[] = [];
 	protected itemSlots: Map<ITEMSLOT, Item> = new Map<ITEMSLOT, Item>();
 
+	public gold: number = 0;
+
 	constructor(chrRace: CharacterRace, chrClass: CharacterClass, name?: string) {
 		this.name = name || nameGenerator();
 
