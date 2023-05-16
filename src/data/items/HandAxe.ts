@@ -68,7 +68,8 @@ export const HandAxe: Item = {
 		},
 		{
 			name: "Spinning Slash",
-			description: "ARMOR -2 A swift, circular maneuver that leverages the momentum of a full-body rotation to deliver a powerful strike.",
+			rulesText: "BLOCK -2",
+			description: "A swift, circular maneuver that leverages the momentum of a full-body rotation to deliver a powerful strike.",
 			rarity: CARDRARITY.EPIC,
 			count: 1,
 			damage: [

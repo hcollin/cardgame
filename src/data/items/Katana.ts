@@ -38,6 +38,7 @@ export const Katana: Item = {
 		},
 		{
 			name: "Whirlwind Slash",
+			rulesText: "HITS ALLA ENEMIES",
 			description: "A spinning horizontal slash that utilizes the full reach and speed of the katana to strike multiple opponents in a wide arc, maintaining momentum for continuous strikes.",
 			rarity: CARDRARITY.EPIC,
 			count: 1,
@@ -124,7 +125,7 @@ export const Katana: Item = {
 		},
 		{
 			name: "Moonlit Reflections",
-            rulesText: "ARMOR 2",
+            rulesText: "BLOCK 2",
 			description: "A defensive counter-attack that uses the katana to parry an incoming strike,",
 			rarity: CARDRARITY.RARE,
 			count: 2,

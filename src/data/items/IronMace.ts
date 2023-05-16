@@ -63,7 +63,8 @@ export const IronMace: Item = {
 		},
 		{
 			name: "Leg Sweep",
-			description: "DRAW 1 CARD. This technique can potentially knock an opponent off balance or even trip them, creating an opening for a follow-up attack.",
+			rulesText: "DRAW 1 CARD",
+			description: "This technique can potentially knock an opponent off balance or even trip them, creating an opening for a follow-up attack.",
 			rarity: CARDRARITY.UNCOMMON,
 			count: 2,
 			damage: [

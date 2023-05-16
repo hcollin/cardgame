@@ -34,7 +34,8 @@ export const BronzeBuckler: Item = {
 		},
 		{
 			name: "Defend",
-			description: "Increase your Armor by 3 until end of next enemy turn",
+			rulesText: "BLOCK 3",
+			description: "The buckler is held in front of the hero, ready to block any incoming attacks.",
 			rarity: CARDRARITY.COMMON,
 			count: 2,
 			damage: [],

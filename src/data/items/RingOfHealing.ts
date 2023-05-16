@@ -14,7 +14,8 @@ export const RingOfHealing: Item = {
     cards: [
         {
             name: "Heal",
-            description: "HEAL 5",
+            rulesText: "Heal 5",
+            description: "The healing feels like a warm hug from a loved one.",
             rarity: CARDRARITY.COMMON,
             count: 2,
             damage: [],

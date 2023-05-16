@@ -62,7 +62,8 @@ export const Dagger: Item = {
 		
 		{
 			name: "Parry",
-			description: "ARMOR 2. Using the guard to block.",
+			rulesText: "BLOCK 2",
+			description: "Using the guard to catch enemy attacks.",
 			rarity: CARDRARITY.COMMON,
 			count: 2,
 			damage: [

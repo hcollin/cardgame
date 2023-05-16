@@ -9,6 +9,9 @@ import ArmorValueContainer from "../components/ArmorValueContainer";
 import EnergyValueContainer from "../components/EnergyValueContainer";
 import ExperienceValueContainer from "../components/ExperienceValueContainer";
 import Hero from "../game/Hero";
+import ItemCard from "../components/ItemCard";
+import { Damage } from "../models/Card";
+import { getDamageRange } from "../game/ItemTools";
 
 /**
  * Functional React Component called HeroView that takes HeroStats as a prop and renders the hero's stats
@@ -45,6 +48,8 @@ export default HeroView;
 
 function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 	const [targetSlot, setTargetSlot] = useState<ITEMSLOT | null>(null);
+
+	const [itemInfo, setItemInfo] = useState<Item | null>(null);
 
 	function handleSlotClick(slot: ITEMSLOT) {
 		setTargetSlot((prev) => {
@@ -155,7 +160,7 @@ function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 						}
 					}
 					return (
-						<div className={cns.join(" ")} key={`inventory-${item.id}`} onClick={() => itemClick(item)}>
+						<div className={cns.join(" ")} key={`inventory-${item.id}`} onClick={() => itemClick(item)} onMouseEnter={() => setItemInfo(item)} onMouseLeave={() => setItemInfo(null)}>
 							{item.name}
 						</div>
 					);
@@ -166,6 +171,41 @@ function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 					</div>
 				)}
 			</div>
+			{itemInfo && <div className="item-data">
+					<ItemCard item={itemInfo} />
+
+					{itemInfo.cards.length > 0 && <div className="item-cards-container">
+						<h3>Cards</h3>
+						<table>
+							<tr>
+								<th className="small">Count</th>
+								<th className="medium">Name</th>
+								<th className="small">Energy</th>
+								<th className="text">Rules Text</th>
+								<th className="text">Description</th>
+								<th>Effects</th>
+								<th>Damage</th>
+							</tr>
+						{itemInfo.cards.map((card, index) => {
+
+							return <tr key={`card-${index}`}>
+								<td className="small">{card.count} x</td>
+								<td className="medium">{card.name}</td>
+								<td className="small">{card.apCost}</td>
+								<td className="text">{card.rulesText}</td>
+								<td className="text">{card.description}</td>
+								<td>{card.effectsOnHit.join(", ")}</td>
+								<td>{card.damage.map((d: Damage, ind: number) => {
+									const damrng = getDamageRange(d);
+									return <div id={`${itemInfo.id}-${index}-${ind}`}>{d.type} {damrng[0]} - {damrng[1]}</div>
+								})}</td>
+							</tr>
+
+						})}
+						</table>
+					</div>}
+
+			</div>}
 		</div>
 	);
 }
