@@ -11,7 +11,6 @@ import healthImg from "./icons/health.png";
 
 import deadImg from "./icons/skull.png";
 
-import "./enemycard.css";
 import "./enemy-card.css";
 import { GameState } from "../models/GameState";
 
@@ -31,6 +30,8 @@ export default function EnemyCard(props: EnemyCardProps) {
 	const enemy = props.enemy;
 
 	const [currentDamage, setCurrentDamage] = useState<{ type: DAMAGETYPE; amount: number; ts: number }[]>([]);
+
+	const [hideDead, setHideDead] = useState<number>(2);
 
 	const [{ isOver, canDrop, isDragging }, drop] = useDrop({
 		accept: "Card",
@@ -68,6 +69,17 @@ export default function EnemyCard(props: EnemyCardProps) {
 		}, DAMAGECLEANTIMEOUT);
 	}, [props.enemy.damageTaken]);
 
+	useEffect(() => {
+		if (props.enemy.isDead() && hideDead === 2) {
+			setHideDead(1);
+
+			setTimeout(() => {
+				console.log("Hide the bodies!");
+				setHideDead(0);
+			}, DAMAGECLEANTIMEOUT);
+		}
+	}, [props.enemy, hideDead, props.gs]);
+
 	function handleClick() {
 		if (props.onClick) {
 			props.onClick(props.index);
@@ -87,6 +99,8 @@ export default function EnemyCard(props: EnemyCardProps) {
 	// 	return null;
 	// }
 
+	if (hideDead === 0) return null;
+
 	const stats = enemy.getStats(props.gs);
 	const cns: string[] = ["enemy-card"];
 	const contCns: string[] = ["enemy-container", props.size || "medium"];
@@ -96,17 +110,22 @@ export default function EnemyCard(props: EnemyCardProps) {
 		if (isDragging && canDrop && isOver) cns.push("isOverTrue");
 		if (isDragging && !canDrop) cns.push("invalid-target");
 
-		if (enemy.effectIsActive(EFFECTS.STUNNED)) { cns.push("is-stunned no-action"); contCns.push("no-action")}
+		if (enemy.effectIsActive(EFFECTS.STUNNED)) {
+			cns.push("is-stunned no-action");
+			contCns.push("no-action");
+		}
 		if (enemy.effectIsActive(EFFECTS.BURNING)) cns.push("is-burning");
 		if (enemy.effectIsActive(EFFECTS.POISONED)) cns.push("is-poisoned");
-		if (enemy.effectIsActive(EFFECTS.FROZEN)) {cns.push("is-frozen no-action"); contCns.push("no-action")}
+		if (enemy.effectIsActive(EFFECTS.FROZEN)) {
+			cns.push("is-frozen no-action");
+			contCns.push("no-action");
+		}
 	} else {
 		cns.push("is-dead");
+		contCns.push("is-dead");
 	}
 
 	cns.push(props.size || "medium");
-
-	
 
 	// cns.push(stats.size.toLowerCase());
 	// const cn = `enemy ${isDragging ? (canDrop ? (isOver ? "isOverTrue" : "valid-target") : "invalid-target"): ""}`;
@@ -114,7 +133,7 @@ export default function EnemyCard(props: EnemyCardProps) {
 
 	return (
 		<div className={contCns.join(" ")} ref={drop}>
-			<div className={cn} onClick={handleClick} >
+			<div className={cn} onClick={handleClick}>
 				{props.enemy.image.length > 10 && (
 					<div className="img-container">
 						<img src={props.enemy.image} alt={props.enemy.getName()} />
@@ -153,9 +172,11 @@ export default function EnemyCard(props: EnemyCardProps) {
 				</div>
 			)}
 			<EffectRow effects={stats.effects} />
-			{enemy.isDead() && <div className="tombstone">
-				<img src={deadImg} alt="Dead" />
-			</div>	}
+			{enemy.isDead() && (
+				<div className="tombstone">
+					<img src={deadImg} alt="Dead" />
+				</div>
+			)}
 		</div>
 	);
 }

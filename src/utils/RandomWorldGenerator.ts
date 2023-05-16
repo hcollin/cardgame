@@ -107,12 +107,12 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 	};
 
 
-	console.log("\nVillages!");
-	// Set Village locations at random
-	for(let i = 0; i < options.villages; i++) {
-		const l = randomVillage(locsMap);
+	// console.log("\nVillages!");
+	// // Set Village locations at random
+	// for(let i = 0; i < options.villages; i++) {
+	// 	const l = randomVillage(locsMap);
 		
-	}
+	// }
 
 
 

@@ -5,6 +5,8 @@ div.enemy-container {
 
     z-index: 1;
 
+    
+
     &>div.enemy-card {
 
         position: relative;
@@ -244,6 +246,11 @@ div.enemy-container {
             /* transform: scale(0.6); */
             filter: grayscale(100%);
             opacity: 0.5;
+
+            &.hidden {
+                display: none;
+            }
+            
         }
 
         &.is-stunned {
@@ -255,6 +262,7 @@ div.enemy-container {
 
     }
 
+  
     &>.next-action {
 
         --action-size: 8rem;
