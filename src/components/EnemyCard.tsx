@@ -75,7 +75,7 @@ export default function EnemyCard(props: EnemyCardProps) {
 			setHideDead(1);
 
 			setTimeout(() => {
-				console.log("Hide the bodies!");
+				// console.log("Hide the bodies!");
 				setHideDead(0);
 			}, DAMAGECLEANTIMEOUT);
 		}

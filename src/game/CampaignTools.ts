@@ -25,10 +25,10 @@ export function createEmptyCampaign(): Campaign {
 		id: "EMPTY",
 		hero: new Hero(RaceHuman, ClassWarrior),
 		worlds: [],
-		world: new Map<LocationId, Location>(),
-		worldName: "",
+		// world: new Map<LocationId, Location>(),
+		// worldName: "",
 		currentLocationId: "",
-		
+
 		options: {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
@@ -41,31 +41,29 @@ export function createEmptyCampaign(): Campaign {
 }
 
 export function createCampaign(): Campaign {
-
 	const opts: CampaignOptions = {
 		healAfterArena: 0,
 		fullHealOnLevelUp: false,
 		endlessLoop: false,
 		mapDepth: 12,
 		mapWidth: 7,
-		worldThemes: ["FOREST", "MOUNTAIN"]
+		worldThemes: ["FOREST", "MOUNTAIN"],
 	};
 
 	const campaign: Campaign = {
 		id: v4(),
 		hero: new Hero(RaceHuman, ClassWarrior, opts),
 		worlds: [],
-		worldName: "",
-		world: new Map<LocationId, Location>(),
+		// worldName: "",
+		// world: new Map<LocationId, Location>(),
 		currentLocationId: "",
-		
+
 		options: opts,
 	};
 
 	// campaign.world = createWorld([...LOCATIONS], campaign);
 
-	for(let i = 0; i < campaign.options.worldThemes.length; i++) {
-
+	for (let i = 0; i < campaign.options.worldThemes.length; i++) {
 		const w = new World({
 			depth: campaign.options.mapDepth,
 			width: campaign.options.mapWidth,
@@ -74,76 +72,29 @@ export function createCampaign(): Campaign {
 
 		w.createRandomLocations();
 
-		// const wTheme = campaign.options.worldThemes[i];
-
-
-		// const myWorld = generateRandomWorld({
-		// 	depth: campaign.options.mapDepth,
-		// 	width: campaign.options.mapWidth,
-		// 	theme: [wTheme]
-		// });
-		// campaign.worldName = ARENATHEMES[wTheme].worldName();
 		campaign.worlds.push(w);
-		
 	}
-	// const myWorld = generateRandomWorld({
-	// 	depth: campaign.options.mapDepth,
-	// 	width: campaign.options.mapWidth,
-	// });
-	
-	campaign.world = campaign.worlds[0].activateWorld();
-	campaign.worldName = campaign.worlds[0].name;
 
-	// campaign.world = createWorld(campaign.worlds[0], campaign);
-
-	// buildNodeLocations(campaign);
-    
+	campaign.worlds[0].activateWorld();
+	console.log("created campaign:", campaign);
 	return campaign;
 }
 
-// export function selectActiveLocationFromCampaign(campaign: Campaign): Location {
-//     if (campaign.world.size === 0) { throw new Error("World not initialized"); }
-//     if (campaign.currentLocationId === "") {
-//         const locs = Array.from(campaign.world.values());
-//         const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
-//         if (!loc) { throw new Error("No active location found"); }
-//         return loc;
-//     }
-
-//     const cloc = campaign.world.get(campaign.currentLocationId);
-//     if (!cloc) { throw new Error("Current location not found"); }
-//     const nloc = campaign.world.get(cloc.nextLocations[0]);
-//     if (!nloc) { throw new Error("Next location not found"); }
-//     return nloc;
-// }
-
-// export function activateNextLocationForCampaign(campaign: Campaign): Campaign {
-//     if (campaign.world.size === 0) { throw new Error("World not initialized"); }
-
-//     const locs = Array.from(campaign.world.values());
-//     const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
-
-//     if(!loc) { throw new Error("No active location found"); }
-//     if(loc.nextLocations.length === 0) { throw new Error("No next locations found"); }
-
-//     const nextLocId = campaign.world.get(loc.nextLocations[0]);
-//     if(!nextLocId) { throw new Error("Next location not found"); }
-
-//     return {...campaign, currentLocationId: nextLocId.id};
-// }
-
 export function markCurrentLocationCompleted(campaign: Campaign, endOfWorld: boolean): Campaign {
-	if (campaign.world.size === 0) {
-		throw new Error("World not initialized");
+	const world = getActiveWorld(campaign);
+	if (!world) {
+		throw new Error("Active world not found");
 	}
 
-	const loc = campaign.world.get(campaign.currentLocationId);
+	const loc = world.getLocation(campaign.currentLocationId);
+
 	if (!loc) {
 		throw new Error(`Current location ${campaign.currentLocationId} not found`);
 	}
 	loc.status = LOCATIONSTATUS.COMPLETED;
 	loc.flags.push("completed");
-	campaign.world.set(loc.id, loc);
+
+	world.updateLocation(loc);
 
 	if (campaign.options.healAfterArena > 0) {
 		const healAmount = Math.round(campaign.hero.getMaxHealth() * campaign.options.healAfterArena);
@@ -151,56 +102,63 @@ export function markCurrentLocationCompleted(campaign: Campaign, endOfWorld: boo
 	}
 
 	campaign.currentLocationId = "";
-	if(endOfWorld) {
+	if (endOfWorld) {
 		return moveToNextWorld(campaign);
 	}
+	
 	return { ...campaign };
 }
 
 export function moveToNextWorld(campaign: Campaign): Campaign {
-	if (campaign.world.size === 0) {
-		throw new Error("World not initialized");
-	}
+	// if (campaign.world.size === 0) {
+	// 	throw new Error("World not initialized");
+	// }
 
-	const activeWorldIndex = campaign.worlds.findIndex(w => w.status === "ACTIVE");
-	if(activeWorldIndex === -1) {
+	const activeWorldIndex = campaign.worlds.findIndex((w) => w.status === "ACTIVE");
+	if (activeWorldIndex === -1) {
 		throw new Error("No active world found");
-	}; 
+	}
 
 	const currentWorld = campaign.worlds[activeWorldIndex];
 	currentWorld.completeWorld();
 
 	const nextWorld = campaign.worlds[activeWorldIndex + 1];
-	if(!nextWorld) {
+	if (!nextWorld) {
 		console.log(campaign);
 		console.log("All worlds completed!");
-		return {...campaign};
+		return { ...campaign };
 		// throw new Error("Next world not found!");
 	}
 
 	// campaign.world = createLocationsMap(nextWorld, campaign);
-	campaign.world = nextWorld.activateWorld();
-	campaign.worldName = nextWorld.name;
+	nextWorld.activateWorld();
+	// campaign.worldName = nextWorld.name;
 	// campaign.worldName = ARENATHEMES[campaign.options.worldThemes[campaign.currentWorldIndex]].worldName();
 
-	return {...campaign};
-
+	return { ...campaign };
 }
 
 export function setActiveLocationForCampaign(campaign: Campaign, locationId: LocationId): Campaign {
 	const nc = { ...campaign };
-	const loc = nc.world.get(locationId);
+	const actWorld = getActiveWorld(nc);
+	if (!actWorld) {
+		throw new Error("Active world not found");
+	}
+	const loc = actWorld.getLocation(locationId);
 	if (!loc) {
 		throw new Error("Location not found");
 	}
 	loc.status = LOCATIONSTATUS.ACTIVE;
-	nc.world.set(loc.id, loc);
+	actWorld.updateLocation(loc);
+	// nc.world.set(loc.id, loc);
 	nc.currentLocationId = loc.id;
 	return { ...nc };
 }
 
 export function createGameFromCampaign(campaign: Campaign): ArenaState {
-	const location = campaign.world.get(campaign.currentLocationId);
+	// const location = campaign.world.get(campaign.currentLocationId);
+	const location = getActiveLocation(campaign);
+
 	if (!location) {
 		throw new Error(`Location ${campaign.id} not found from campaign world.`);
 	}
@@ -214,8 +172,6 @@ export function createGameFromCampaign(campaign: Campaign): ArenaState {
 		rightHand: new Hand("RIGHT"),
 		state: ARENASTATES.MYTURN,
 		arena: location.arena[0],
-		// world: campaign.world,
-		// currentLocationId: campaign.currentLocationId,
 		hero: campaign.hero,
 		playedCardsThisTurn: [],
 	};
@@ -231,7 +187,7 @@ export function createGameFromCampaign(campaign: Campaign): ArenaState {
 
 	arenaState.rightHand.drawNewHand(arenaState);
 	arenaState.leftHand.drawNewHand(arenaState);
-	
+
 	arenaState.arena.resetArena();
 	arenaState.hero.arenaReset(campaign.options);
 	arenaState.turn = 1;
@@ -274,3 +230,34 @@ export function createGameForArena(arena: Arena, campaign: Campaign): ArenaState
 	return arenaState;
 }
 
+export function getActiveWorld(campaign: Campaign): World | null {
+	const activeWorld = campaign.worlds.find((w) => w.status === "ACTIVE");
+	if (!activeWorld) {
+		return null;
+	}
+	return activeWorld;
+}
+
+export function getActiveLocation(campaign: Campaign): Location | null {
+	const actWorld = getActiveWorld(campaign);
+	if (!actWorld || campaign.currentLocationId === "") {
+		return null;
+	}
+
+	const loc = actWorld.getLocation(campaign.currentLocationId);
+	if (!loc) {
+		return null;
+	}
+
+	return loc;
+}
+
+export function activateLocation(campaign: Campaign, locId: LocationId): Campaign {
+	campaign.currentLocationId = locId;
+	const world = getActiveWorld(campaign);
+	if (!world) {
+		throw new Error("Active world not found");
+	}
+	world.activeLocationId = locId;
+	return { ...campaign };
+}

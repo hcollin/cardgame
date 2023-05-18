@@ -33,6 +33,20 @@ export class World {
     }
 
 
+    public getLocation(locId: LocationId): Location {
+        const loc = this.locations.get(locId);
+        if (!loc) { throw new Error(`World.ts:getLocation(): Location ID ${locId} not found`); }
+        return loc;
+    }
+
+    public getLocationsArray(): Location[] {
+        return Array.from(this.locations.values());
+    }       
+
+    public updateLocation(loc: Location) {
+        this.locations.set(loc.id, loc);
+    }
+
     /**
      * Create random Locations and arenas for this world based on the themes and difficulty
      * 
@@ -122,7 +136,7 @@ export class World {
 
     public completeWorld() {
         this.status = "COMPLETED";
-        
+
     }
 
     /**

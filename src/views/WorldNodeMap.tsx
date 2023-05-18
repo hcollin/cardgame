@@ -1,9 +1,8 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "../models/World";
+import { LOCATIONSTATUS, Location } from "../models/World";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
-import Banner from "../components/Banner";
 
 import iconCamp from "./icons/camp.png";
 import iconDungeon from "./icons/dungeon.png";
@@ -13,13 +12,10 @@ import iconCastle from "./icons/castle.png";
 import iconHut from "./icons/hut.png";
 import iconTent from "./icons/tent.png";
 import iconGraveyard from "./icons/graveyard.png";
-import iconLocked from "./icons/locked.png";
-import iconCompleted from "./icons/completed.png";
 
 import "./world-map.css";
-import DifficultyMeter from "../components/DifficultyMeter";
-import { createCampaign } from "../game/CampaignTools";
-import { updateLocations } from "../game/WorldTools";
+
+import { activateLocation, createCampaign, getActiveWorld } from "../game/CampaignTools";
 
 interface RouteCoords {
 	x: number;
@@ -31,7 +27,7 @@ interface RouteCoords {
 function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => void; startArena: () => void }) {
 	const { height, width } = useWindowDimensions();
 
-	const locations = props.campaign.world;
+	// const locations = world.getLocationsArray();
 
 	const [nodes, setNodes] = useState<(Location | null)[][]>(buildNodes(props.campaign));
 
@@ -47,6 +43,13 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 		setNodes(newMapLocs);
 	}, [props.campaign]);
+
+
+	const world = getActiveWorld(props.campaign);
+	if(!world) { return null; }
+	world.activeLocationId = props.campaign.currentLocationId;
+	
+	
 
 	function selectLocation(mloc: Location) {
 		// console.log("SELECT LOCATION", mloc);
@@ -65,7 +68,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 		// 	return;
 		// }
 		
-		props.updateCampaign({ ...props.campaign, currentLocationId: mloc.id });
+		props.updateCampaign(activateLocation(props.campaign, mloc.id));
 	}
 
 	function restartCampaign() {
@@ -86,8 +89,9 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 		width: `${nodeSize}px`,
 		height: `${nodeSize}px`,
 	};
-
-	const curLoc = locations.get(props.campaign.currentLocationId);
+	
+	
+	const curLoc = world.locations.get(props.campaign.currentLocationId);
 
 	return (
 		<div className={`world-map`}>
@@ -100,7 +104,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 							}
 
 							return loc.nextLocations.map((to, ind) => {
-								const target = locations.get(to);
+								const target = world.locations.get(to);
 								if (!target) return null;
 								return <RouteLine key={`${loc.id}-route-${ind}`} from={loc} to={target} size={nodeSize} tilt={width > height} isMobile={isMobile} />;
 							});
@@ -143,7 +147,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 			 
 			{curLoc && <LocationInfo loc={curLoc} />}
-			<div className="map-title">{props.campaign.worldName}</div>
+			<div className="map-title">{world.name}</div>
 			{props.campaign.hero.isDead() && (
 				<div className="death">
 					<h2>
@@ -163,7 +167,11 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 }
 
 function buildNodes(campaign: Campaign): (Location | null)[][] {
-	const locArr = Array.from(updateLocations(campaign.world, campaign.currentLocationId).values());
+	const world = getActiveWorld(campaign);
+	if(!world) { return []; }
+	world.updateLocationStatuses();
+	const locArr = world.getLocationsArray();
+	// const locArr = Array.from(updateLocations(campaign.world, campaign.currentLocationId).values());
 
 	const depth = campaign.options.mapDepth + 1;
 

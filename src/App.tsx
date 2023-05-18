@@ -5,7 +5,15 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useEffect, useState } from "react";
 
 import { Campaign } from "./models/Campaign";
-import { createCampaign, createEmptyCampaign, createGameForArena, markCurrentLocationCompleted, setActiveLocationForCampaign } from "./game/CampaignTools";
+import {
+	createCampaign,
+	createEmptyCampaign,
+	createGameForArena,
+	getActiveLocation,
+	getActiveWorld,
+	markCurrentLocationCompleted,
+	setActiveLocationForCampaign,
+} from "./game/CampaignTools";
 
 import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "./models/World";
 
@@ -29,7 +37,7 @@ const isMobile = false;
 function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createEmptyCampaign());
 
-	const [arenaState, setarenaState] = useState<ArenaState | null>(null);
+	const [arenaState, setArenaState] = useState<ArenaState | null>(null);
 
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
 
@@ -44,7 +52,11 @@ function App() {
 	}, [campaign.id]);
 
 	useEffect(() => {
-		const loc = campaign.world.get(campaign.currentLocationId);
+		const actWorld = getActiveWorld(campaign);
+
+		const loc = getActiveLocation(campaign);
+		// const loc = campaign.world.get(campaign.currentLocationId);
+
 		if (loc) {
 			// console.log(`Current Location ${loc.arena[0].name}`);
 			setCurrentLocation(loc);
@@ -52,9 +64,8 @@ function App() {
 	}, [campaign.currentLocationId]);
 
 	function newCampaign() {
-		console.log("CREATE NEW CAMPAIGN");
 		setCurrentLocation(null);
-		setarenaState(null);
+		setArenaState(null);
 
 		setTimeout(() => {
 			setCampaign({ ...createCampaign() });
@@ -62,15 +73,16 @@ function App() {
 	}
 
 	function arenaDone(as: ArenaState) {
-		// console.log("ARENA COMPLETED: ", as.state, " : ", campaign);
-
 		const ngs = { ...as };
 
 		if (ngs.state === ARENASTATES.ARENA_COMPLETED) {
 			ngs.hero.arenaReset(campaign.options);
-			const loc = campaign.world.get(campaign.currentLocationId);
+
+			const loc = getActiveLocation(campaign);
+
+			// const loc = campaign.world.get(campaign.currentLocationId);
 			if (!loc) {
-				throw new Error("Location not found");
+				throw new Error("App.tsx:arenaDone: Location not found");
 			}
 
 			const isFinal = loc.nextLocations.length === 0;
@@ -78,7 +90,7 @@ function App() {
 		} else {
 			setCampaign({ ...campaign, hero: as.hero });
 		}
-		setarenaState(null);
+		setArenaState(null);
 	}
 
 	function startArena() {
@@ -88,8 +100,8 @@ function App() {
 				const ar = currentLocation.arena[0];
 				if (ar) {
 					effStore.clear();
-					// console.log(`Start Arena ${ar.name}`, campaign);
-					setarenaState(createGameForArena(ar, campaign));
+					console.log(`Start Arena ${ar.name}`, campaign);
+					setArenaState(createGameForArena(ar, campaign));
 				}
 			}
 
@@ -123,7 +135,7 @@ function App() {
 		viewMode = "ARENA";
 	}
 
-	// console.log(campaign.id, currentLocation);
+	// console.log("APP.tsx: Render!:");
 
 	return (
 		<DndProvider backend={backend}>
