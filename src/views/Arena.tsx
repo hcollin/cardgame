@@ -20,6 +20,9 @@ import ArenaConsumables from "../components/Consumables";
 
 import "./arena.css";
 function Arena(props: { as: ArenaState; onArenaFinished: (arenaState: ArenaState) => void }) {
+	
+	
+	
 	const [arenaState, setarenaState] = useState<ArenaState>(props.as);
 
 	const [targetIndex, setTarget] = useState<number | null>(null);
@@ -63,7 +66,7 @@ function Arena(props: { as: ArenaState; onArenaFinished: (arenaState: ArenaState
 	useEffect(() => {
 		if (targetIndex !== null && selectedCard !== null) {
 			const card = selectedCard;
-			const target = targetIndex;
+			// const target = targetIndex;
 			setTarget(null);
 			setSelectedCard(null);
 			// console.log(`Card ${card.name} attacks enemy ${target}`);
@@ -71,14 +74,14 @@ function Arena(props: { as: ArenaState; onArenaFinished: (arenaState: ArenaState
 		}
 	}, [targetIndex, selectedCard]);
 
-	function onHandCardClick(c: Card) {
-		setSelectedCard((prev) => {
-			if (prev && prev.id === c.id) {
-				return null;
-			}
-			return c;
-		});
-	}
+	// function onHandCardClick(c: Card) {
+	// 	setSelectedCard((prev) => {
+	// 		if (prev && prev.id === c.id) {
+	// 			return null;
+	// 		}
+	// 		return c;
+	// 	});
+	// }
 
 	function onEnemyClick(index: number) {
 		setTarget((prev) => {
@@ -195,9 +198,9 @@ function Arena(props: { as: ArenaState; onArenaFinished: (arenaState: ArenaState
 export default Arena;
 
 function RewardsScreen(props: { as: ArenaState; onCompleteArena: () => void }) {
-	const [itemRewards, setItemRewards] = useState<Item[]>(() => {
+	const itemRewards = useState<Item[]>(() => {
 		return props.as.arena.getRewardOptions();
-	});
+	})[0];
 
 	function pickItem(item: Item) {
 		props.as.hero.addItem(item);

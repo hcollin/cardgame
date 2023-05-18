@@ -10,12 +10,10 @@ import {
 	createEmptyCampaign,
 	createGameForArena,
 	getActiveLocation,
-	getActiveWorld,
 	markCurrentLocationCompleted,
-	setActiveLocationForCampaign,
 } from "./game/CampaignTools";
 
-import { LOCATIONSTATUS, LocationData, WORLDLOCATIONTYPE } from "./models/World";
+import { LocationData, WORLDLOCATIONTYPE } from "./models/LocationModels";
 
 import iconMap from "./components/icons/map.png";
 import iconCharacter from "./components/icons/character.png";
@@ -52,7 +50,7 @@ function App() {
 	}, [campaign.id]);
 
 	useEffect(() => {
-		const actWorld = getActiveWorld(campaign);
+		// const actWorld = getActiveWorld(campaign);
 
 		const loc = getActiveLocation(campaign);
 		// const loc = campaign.world.get(campaign.currentLocationId);
@@ -61,7 +59,7 @@ function App() {
 			// console.log(`Current Location ${loc.arena[0].name}`);
 			setCurrentLocation(loc);
 		}
-	}, [campaign.currentLocationId]);
+	}, [campaign]);
 
 	function newCampaign() {
 		setCurrentLocation(null);
@@ -112,12 +110,6 @@ function App() {
 		}
 	}
 
-	function selectNextLocation(lid: string) {
-		if (currentLocation?.status === LOCATIONSTATUS.COMPLETED) {
-			setCampaign(setActiveLocationForCampaign(campaign, lid));
-		}
-	}
-
 	function updateHero(hero: Hero) {
 		setCampaign({ ...campaign, hero: hero });
 	}
@@ -128,12 +120,6 @@ function App() {
 	}
 
 	const backend = isMobile ? TouchBackend : HTML5Backend;
-
-	let viewMode = "MENU";
-
-	if (arenaState !== null) {
-		viewMode = "ARENA";
-	}
 
 	// console.log("APP.tsx: Render!:");
 

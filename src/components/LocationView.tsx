@@ -1,4 +1,4 @@
-import { LOCATIONSTATUS, LocationData, WORLDLOCATIONTYPE } from "../models/World";
+import { LOCATIONSTATUS, LocationData, WORLDLOCATIONTYPE } from "../models/LocationModels";
 
 import "./location-view.css";
 

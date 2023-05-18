@@ -3,7 +3,6 @@ import { ITEMSLOT } from "../models/HeroStats";
 import { Item } from "../models/Items";
 
 import "./hero-view.css";
-import { equipItem, getLevelMods, unequipItem } from "../game/HeroTools";
 import HealthValueContainer from "../components/HealthValueContainer";
 import ArmorValueContainer from "../components/ArmorValueContainer";
 import EnergyValueContainer from "../components/EnergyValueContainer";

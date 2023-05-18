@@ -42,14 +42,3 @@ export interface LocationData {
     init: (campaign: Campaign) => void;
 }
 
-
-export interface MapLocation extends LocationData { 
-    depth: number;
-    trak: number;
-}
-
-export interface NodeLocation extends LocationData {
-    x: number;
-    y: number;
-    
-}

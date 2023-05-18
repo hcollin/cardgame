@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
 import { Arena } from "../game/Arena";
-import { LocationData, LocationId, LOCATIONSTATUS, WORLDLOCATIONTYPE } from "../models/World";
-import { ArenaForestEncounter } from "../data/ArenaForestEncounter";
+import { LocationData, LocationId, LOCATIONSTATUS, WORLDLOCATIONTYPE } from "../models/LocationModels";
+
 import { arnd, rnd } from "rndlib";
 import { EmptyArena } from "../data/EmptyArena";
 import { Campaign } from "../models/Campaign";
@@ -34,7 +34,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		opts,
 	);
 
-	const locs: LocationData[] = [];
+	// const locs: LocationData[] = [];
 
 	const diffs: ARENADIFFICULTY[] = [
 		ARENADIFFICULTY.VERYEASY,
@@ -135,7 +135,7 @@ function calculateEdgeConnections(locs: (LocationData | null)[][]): void {
 	const rows = locs.length;
 	const cols = locs[0].length;
 
-	const edges: Array<[number, number, number, number]> = [];
+	// const edges: Array<[number, number, number, number]> = [];
 
 	for (let i = 0; i < rows - 1; i++) {
 		for (let j = 0; j < cols; j++) {

@@ -1,19 +1,18 @@
 import { v4 } from "uuid";
-import { LocationId, LocationData, LOCATIONSTATUS } from "../models/World";
+import { LocationId, LocationData, LOCATIONSTATUS } from "../models/LocationModels";
 import { Campaign, CampaignOptions } from "../models/Campaign";
 
 import { Deck } from "./Deck";
 import { createDecks } from "./ArenaService";
-// import { createLocationsMap } from "./WorldTools";
 
 import { Arena } from "./Arena";
 import Hero from "./Hero";
 import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
-import { generateRandomWorld } from "../utils/RandomWorldGenerator";
+
 import { Hand } from "./Hand";
 import { ArenaState, ARENASTATES } from "../models/ArenaState";
-import { ARENATHEMES } from "../data/arenaThemes";
+
 import { World } from "./World";
 
 /**
@@ -105,7 +104,7 @@ export function markCurrentLocationCompleted(campaign: Campaign, endOfWorld: boo
 	if (endOfWorld) {
 		return moveToNextWorld(campaign);
 	}
-	
+
 	return { ...campaign };
 }
 

@@ -1,5 +1,5 @@
 
-import { WORLDLOCATIONTYPE, LocationData, LOCATIONSTATUS } from "../models/World";
+import { WORLDLOCATIONTYPE, LocationData, LOCATIONSTATUS } from "../models/LocationModels";
 import { ArenaDragonsLair } from "./ArenaDragonsLair";
 import { ArenaForestEncounter } from "./ArenaForestEncounter";
 import { ArenaGoblinAmbush } from "./ArenaGoblinAmbush";

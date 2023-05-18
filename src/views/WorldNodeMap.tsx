@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { LOCATIONSTATUS, LocationData } from "../models/World";
+import { LOCATIONSTATUS, LocationData } from "../models/LocationModels";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 
@@ -17,13 +17,6 @@ import "./world-map.css";
 
 import { activateLocation, createCampaign, getActiveWorld } from "../game/CampaignTools";
 
-interface RouteCoords {
-	x: number;
-	y: number;
-	dx: number;
-	dy: number;
-}
-
 function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => void; startArena: () => void }) {
 	const { height, width } = useWindowDimensions();
 
@@ -31,7 +24,8 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 	const [nodes, setNodes] = useState<(LocationData | null)[][]>(buildNodes(props.campaign));
 
-	const [hoverNode, setHoverNode] = useState<LocationData | null>(null);
+	const hovers = useState<LocationData | null>(null);
+	const setHoverNode = hovers[1];
 
 	useEffect(() => {
 		const newMapLocs = buildNodes(props.campaign);

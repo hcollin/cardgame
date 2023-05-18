@@ -1,7 +1,7 @@
 import { arnd } from "rndlib";
-import { LocationId, LocationData, LOCATIONSTATUS } from "../models/World";
+import { LocationId, LocationData, LOCATIONSTATUS } from "../models/LocationModels";
 import { generateRandomWorld } from "../utils/RandomWorldGenerator";
-import { Arena } from "./Arena";
+
 
 export interface worldOptions {
 	depth: number;
@@ -35,7 +35,7 @@ export class World {
 
     public getLocation(locId: LocationId): LocationData {
         const loc = this.locations.get(locId);
-        if (!loc) { throw new Error(`World.ts:getLocation(): Location ID ${locId} not found`); }
+        if (!loc) { throw new Error(`World.ts:getLocation(): LocationData ID ${locId} not found`); }
         return loc;
     }
 
@@ -69,12 +69,12 @@ export class World {
     }
 
 	/**
-	 * Reset all location statuses
+	 * Reset all LocationData statuses
 	 *
-	 * This method allowes the game to calculate the current status of all locations in the world. Every location
+	 * This method allowes the game to calculate the current status of all locations in the world. Every LocationData
 	 * is set to LOCKED at the first unless they are marked COMPLETD. Then all locations that are connected to
 	 * completed locations are set to SELECTABLE unless they are deeper than or at the current depth or they are also
-	 * marked COMPLETED. Finally the current location is set to ACTIVE.
+	 * marked COMPLETED. Finally the current LocationData is set to ACTIVE.
 	 */
 	public updateLocationStatuses() {
 		const tlocs = new Map<LocationId, LocationData>();
@@ -140,9 +140,9 @@ export class World {
     }
 
     /**
-     * Return next valid locations for the current location
+     * Return next valid locations for the current LocationData
      * 
-     * @returns Location[]
+     * @returns LocationData[]
      */
 	public getNextValidLocationsForCurrentLocation(): LocationData[] {
 		const currentLocation = this.getActiveLocation();

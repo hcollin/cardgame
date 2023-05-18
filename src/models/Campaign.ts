@@ -1,7 +1,7 @@
 import Hero from "../game/Hero";
 import { World } from "../game/World";
 
-import { LocationId, LocationData } from "./World";
+import { LocationId, LocationData } from "./LocationModels";
 
 
 export interface CampaignOptions {
