@@ -1,20 +1,20 @@
 import Hero from "../game/Hero";
 
-import armorLogo from "./icons/armor.png";
+import valueLogo from "./icons/gold.png";
 
 import "./value-container.css";
 
-function ArmorValueContainer(props: {hero: Hero}) {
+function GoldValueContainer(props: {hero: Hero}) {
 
     return (
         <div className="value-container armor-container">
             <div className="value-icon">
-                <img src={armorLogo} alt="armor" className="value-icon" />
+                <img src={valueLogo} alt="Gold" className="value-icon" />
             </div>
             
-            <div className="title">Block</div>
+            <div className="title">Gold</div>
             
-            <div className="value">{props.hero.getEffectedArmor()}</div>
+            <div className="value">{props.hero.gold}</div>
 
             {/* <div className="base-value">{props.hero.getBaseArmor()}</div> */}
 
@@ -23,4 +23,4 @@ function ArmorValueContainer(props: {hero: Hero}) {
     )
 }
 
-export default ArmorValueContainer;
+export default GoldValueContainer;

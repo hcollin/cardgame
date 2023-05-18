@@ -132,7 +132,7 @@ function App() {
 					<nav>
 						<button onClick={() => setVm("MAP")} className={`left ${vm === "MAP" ? "selected" : ""}`}>
 							<img src={iconMap} alt="Map" />
-							Map
+							<span>Map</span>
 						</button>
 						<div className="logo">
 							<img src={frostTrollLogo} alt="Frost Troll" />
@@ -143,7 +143,7 @@ function App() {
 						</div>
 						<button onClick={() => setVm("CHARACTER")} className={`right ${vm === "CHARACTER" ? "selected" : ""}`}>
 							<img src={iconCharacter} alt="Character" />
-							Character
+							<span>	Character</span>
 						</button>
 					</nav>
 					{/* <MainMenu campaign={campaign} update={setCampaign} /> */}

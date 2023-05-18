@@ -12,6 +12,9 @@ import Hero from "../game/Hero";
 import ItemCard from "../components/ItemCard";
 import { Damage } from "../models/Card";
 import { getDamageRange } from "../game/ItemTools";
+import GoldValueContainer from "../components/GoldValueContainer";
+import DodgeValueContainer from "../components/DodgeValueContainer";
+import DamageReductionValueContainer from "../components/DamageReductionValueContainer";
 
 /**
  * Functional React Component called HeroView that takes HeroStats as a prop and renders the hero's stats
@@ -31,9 +34,15 @@ function HeroView(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 
 				<ArmorValueContainer hero={props.hero} />
 
+				<DodgeValueContainer hero={props.hero} />
+				
+				<DamageReductionValueContainer hero={props.hero} /> 
+
 				<EnergyValueContainer hero={props.hero} />
 
 				<ExperienceValueContainer hero={props.hero} />
+
+				<GoldValueContainer hero={props.hero} />
 			</div>
 
 			<div className="container">

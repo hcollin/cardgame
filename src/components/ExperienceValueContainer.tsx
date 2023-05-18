@@ -17,7 +17,10 @@ function ExperienceValueContainer(props: {hero: Hero}) {
 
             <div className="value">{props.hero.getExperience()}</div>
 
-            <div className="base-value">{expForNextLevel(props.hero)}</div>
+            <div className="base-value">
+                <span className="subtitle">Next Level</span>
+                {expForNextLevel(props.hero)
+                }</div>
 
             
         </div>

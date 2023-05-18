@@ -16,7 +16,10 @@ function HealthValueContainer(props: {hero: Hero}) {
 
             <div className="value">{props.hero.getHealth()}</div>
 
-            <div className="base-value">{props.hero.getMaxHealth()}</div>
+            <div className="base-value">
+             <span className="subtitle">Max</span>
+                {props.hero.getMaxHealth()}
+                </div>
 
             
         </div>
