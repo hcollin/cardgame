@@ -17,7 +17,6 @@ export interface Campaign {
 	id: string;
 	hero: Hero;
 	worlds: World[];
-	currentWorldIndex: number;
 	world: Map<LocationId, Location>;
 	worldName: string;
 	currentLocationId: LocationId;

@@ -110,9 +110,19 @@ export class World {
 	}
 
 
-    public activatWorld(): Map<LocationId, Location> {
-        
+    /**
+     * Activate this world and return a shallow copy of locations
+     * 
+     * @returns 
+     */
+    public activateWorld(): Map<LocationId, Location> {
+        this.status = "ACTIVE";
         return new Map(this.locations);
+    }
+
+    public completeWorld() {
+        this.status = "COMPLETED";
+        
     }
 
     /**

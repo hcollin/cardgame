@@ -28,7 +28,7 @@ export function createEmptyCampaign(): Campaign {
 		world: new Map<LocationId, Location>(),
 		worldName: "",
 		currentLocationId: "",
-		currentWorldIndex: 0,
+		
 		options: {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
@@ -58,7 +58,7 @@ export function createCampaign(): Campaign {
 		worldName: "",
 		world: new Map<LocationId, Location>(),
 		currentLocationId: "",
-		currentWorldIndex: 0,
+		
 		options: opts,
 	};
 
@@ -91,7 +91,7 @@ export function createCampaign(): Campaign {
 	// 	width: campaign.options.mapWidth,
 	// });
 	
-	campaign.world = campaign.worlds[0].activatWorld();
+	campaign.world = campaign.worlds[0].activateWorld();
 	campaign.worldName = campaign.worlds[0].name;
 
 	// campaign.world = createWorld(campaign.worlds[0], campaign);
@@ -162,22 +162,24 @@ export function moveToNextWorld(campaign: Campaign): Campaign {
 		throw new Error("World not initialized");
 	}
 
-	if(campaign.currentWorldIndex >= campaign.worlds.length - 1) {
-		console.log("No more worlds to go to");
-		return {...campaign};
-	}
+	const activeWorldIndex = campaign.worlds.findIndex(w => w.status === "ACTIVE");
+	if(activeWorldIndex === -1) {
+		throw new Error("No active world found");
+	}; 
 
-	campaign.currentWorldIndex++;
+	const currentWorld = campaign.worlds[activeWorldIndex];
+	currentWorld.completeWorld();
 
-	const nextWorld = campaign.worlds[campaign.currentWorldIndex];
-
+	const nextWorld = campaign.worlds[activeWorldIndex + 1];
 	if(!nextWorld) {
 		console.log(campaign);
-		throw new Error("Next world not found!");
+		console.log("All worlds completed!");
+		return {...campaign};
+		// throw new Error("Next world not found!");
 	}
 
 	// campaign.world = createLocationsMap(nextWorld, campaign);
-	campaign.world = nextWorld.activatWorld();
+	campaign.world = nextWorld.activateWorld();
 	campaign.worldName = nextWorld.name;
 	// campaign.worldName = ARENATHEMES[campaign.options.worldThemes[campaign.currentWorldIndex]].worldName();
 
