@@ -31,6 +31,9 @@ div.value-container {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        flex: 0 0 auto;
+
         & > img {
             height: 80%;
         }
@@ -44,6 +47,8 @@ div.value-container {
         left: 1rem;
         width: 8rem;
         height: 1.75rem;
+
+        
 
         /* margin-left: -4rem; */
 
@@ -83,6 +88,9 @@ div.value-container {
         text-shadow: var(--text-stroke-small);
         padding: 0 1rem 0 2rem;
         height: 100%;
+
+        flex: 0 0 auto;
+
         /* width: 8rem; */
 
         /* background: #2224; */
@@ -113,6 +121,21 @@ div.value-container {
             background: #0008;
             z-index: -1;
             transform: rotate(20deg);
+        }
+
+    }
+}
+
+@media screen and (max-width: 600px) {
+    
+    div.value-container {
+        
+        border-radius: 1rem;
+        width: 100%;
+
+        & > div.value {
+            flex: 1 1 auto;
+            justify-content: flex-start;
         }
 
     }

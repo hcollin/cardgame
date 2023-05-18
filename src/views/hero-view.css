@@ -1,11 +1,9 @@
-
-
 div.hero-view {
     display: flex;
     flex-direction: column;
     /* align-items: center; */
     justify-content: space-between;
-    
+
     /* background: url("./pics/papyrus.jpg");
     background-size: cover; */
     /* background-color: var(--hero-blue); */
@@ -15,10 +13,10 @@ div.hero-view {
     margin-top: 6rem;
 
     width: 100%;
-    
 
 
-    & > h1 {
+
+    &>h1 {
         font-family: "Tangerine", "Times New Roman", Serif;
         font-size: 6rem;
         font-weight: normal;
@@ -38,13 +36,13 @@ div.hero-view {
         border-top-right-radius: 8rem 4rem;
 
         box-shadow: -1rem 0 1rem 0.5rem #0008;
-        
+
         display: flex;
         align-items: center;
         justify-content: space-between;
 
-        
-        & > small {
+
+        &>small {
             font-size: 1.5rem;
             font-family: "Lobster Two";
             font-weight: normal;
@@ -53,10 +51,10 @@ div.hero-view {
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            
 
-            & > span {
-                
+
+            &>span {
+
                 margin-left: 0.5rem;
                 border: solid 2px #0008;
                 font-size: 2.5rem;
@@ -72,14 +70,14 @@ div.hero-view {
                 box-shadow: inset 0 0 6px 3px #0004;
                 text-shadow: 0 0 2px #000;
             }
-            
+
 
 
         }
-        
+
     }
 
-    & > div.container {
+    &>div.container {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -94,35 +92,39 @@ div.hero-view {
 
         background: linear-gradient(0deg, #000A, transparent 10%, transparent 90%, #000A);
 
-        & > div {
+        &>div {
             margin-right: 2rem;
+
             &:last-child {
                 margin-right: 0;
             }
         }
 
     }
-    
-    
+
+
+
+
 }
 
-div.hero-view > h4 {
+div.hero-view>h4 {
     font-size: 1.2rem;
     border-top: groove 3px #FFFA;
     margin: 1rem 0 0.5rem 0;
 }
 
-div.hero-view > div.items {
+div.hero-view>div.items {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
-    & > div {
+    &>div {
         font-weight: bold;
         padding: 0.5rem;
     }
 }
+
 /* 
 div.hero-view > div.inventory {
     display: flex;
@@ -148,19 +150,17 @@ div.hero-view div.equipped-items {
     align-items: center;
     justify-content: space-between;
     flex-wrap: nowrap;
-    
 
-    & > div {
+
+    &>div {
         display: flex;
         /* justify-content: center; */
         /* align-items: center; */
         flex: 1 1 auto;
-        
-        padding: 0.5rem;
-        
-        &.slots {
 
-        }
+        padding: 0.5rem;
+
+        &.slots {}
 
         &.inventory {
             display: flex;
@@ -168,7 +168,7 @@ div.hero-view div.equipped-items {
             align-items: center;
             justify-content: center;
 
-            & > div.inventory-item {
+            &>div.inventory-item {
                 flex: 0 0 auto;
 
                 border: groove 3px #0008;
@@ -201,11 +201,12 @@ div.hero-view div.equipped-items {
                     cursor: pointer;
                 }
 
-                
+
             }
         }
-        & > table {
-            
+
+        &>table {
+
             /* word-break: break-all; */
             table-layout: fixed;
         }
@@ -213,7 +214,7 @@ div.hero-view div.equipped-items {
         &.item-data {
             padding: 1rem;
 
-            & > div.item-cards-container {
+            &>div.item-cards-container {
                 padding: 0 1rem;
 
                 display: flex;
@@ -221,19 +222,20 @@ div.hero-view div.equipped-items {
                 align-items: flex-start;
                 justify-content: flex-start;
 
-                & > table {
-                    
+                &>table {
+
                     border-spacing: 0;
 
-                    & > tr {
+                    &>tr {
                         background: #0002;
-                        
-                        
+
+
                         &:nth-child(odd) {
                             background: #0004;
-                        
+
                         }
-                        & > td {
+
+                        &>td {
                             padding: 0.25rem;
                             color: white;
                             text-shadow: 0 0 2px #000;
@@ -252,14 +254,14 @@ div.hero-view div.equipped-items {
                             }
                         }
 
-                        & > th {
+                        &>th {
                             padding: 0.5rem 0.25rem;
                             font-size: 0.8rem;
                             color: #FFFA;
                             background: #420A;
 
                             &.small {
-                                width: 4rem;   
+                                width: 4rem;
                             }
 
                             &.text {
@@ -271,7 +273,7 @@ div.hero-view div.equipped-items {
 
             }
         }
-        
+
     }
 }
 
@@ -311,7 +313,7 @@ div.hero-view div.item-slot {
         cursor: default;
     }
 
-   
+
 
     &::before {
         content: "";
@@ -363,5 +365,66 @@ div.hero-view div.item-slot {
         background-image: url("./icons/cape.png");
     }
 
-    
+
+}
+
+
+@media screen and (max-width: 600px) {
+
+
+    div.hero-view {
+
+        
+        padding: 1rem 0;
+
+
+        &>h1 {
+            width: 100%;
+            border-radius: 0;
+            font-size: 3rem;
+            margin: 1rem 0 0 0;
+        }
+
+        & >div.container {
+            padding: 1rem;
+            justify-content: center;
+            background: none;
+            border-bottom: groove 5px #0008;
+            border-radius: 1rem;
+
+            & > div.equipped-items {
+                flex-direction: column;
+
+
+                & > div.inventory {
+
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: flex-start;
+                    & > div.inventory-item {
+                        width: 48%;
+                        margin: 1%;
+                        height: 3.5rem;
+                        text-align: center;
+                        font-size: 1rem;
+                        padding: 0.5rem;
+                    }
+
+                }
+
+                & > div.item-data {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    & > div.item-card {
+                        
+                    };
+                }
+            }
+        }
+
+        
+    }
+
 }

@@ -1,6 +1,8 @@
 div.world-map {
     --scale-value: 0.9;
 
+    --node-size: 4rem;
+
     position: relative;
 
     /* background-image: url("./pics/papyrus.jpg"); */
@@ -281,8 +283,8 @@ div.world-map {
 
                 &>div.location-node-two {
                     position: relative;
-                    height: 4rem;
-                    width: 4rem;
+                    height: var(--node-size);
+                    width: var(--node-size);
 
                     border: solid 2px #0008;
                     border-radius: 50%;
@@ -386,6 +388,43 @@ div.world-map {
     }
 
 
+}
+
+@media screen and (max-width: 600px) {
+    div.world-map {
+        --node-size: 30px;
+        
+        
+        &>div.map-title {
+            font-size: 4rem;
+            bottom: 0.5rem;
+        }
+
+        & > div.map-nodes {
+            margin-top: 6rem;
+            margin-bottom: 6rem;
+         
+        }
+
+        
+        /* margin-top: 6rem; */
+        /* padding-bottom: 6rem; */
+        /* &>div.map-nodes {
+            &>div.depth {
+                &>div.node { 
+                    &>div.location-node-two {
+                        width: 2rem;
+                        height: 2rem;
+                    }
+
+                }
+
+            }
+
+        }
+        */
+
+    }
 }
 
 

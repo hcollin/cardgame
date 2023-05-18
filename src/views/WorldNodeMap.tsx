@@ -77,7 +77,9 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 	const tilt = width > height ? "tilt" : "";
 
-	const nodeSize = 6 * 12;
+	const isMobile = width <= 600;
+
+	const nodeSize = isMobile ? 50 : 6 * 12;
 
 	const nodeStyle: React.CSSProperties = {
 		width: `${nodeSize}px`,
@@ -99,7 +101,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 							return loc.nextLocations.map((to, ind) => {
 								const target = locations.get(to);
 								if (!target) return null;
-								return <RouteLine key={`${loc.id}-route-${ind}`} from={loc} to={target} size={nodeSize} tilt={width > height} />;
+								return <RouteLine key={`${loc.id}-route-${ind}`} from={loc} to={target} size={nodeSize} tilt={width > height} isMobile />;
 							});
 						});
 					})}
@@ -239,7 +241,7 @@ function LocationNode(props: { location: Location; selectLocation: (mloc: Locati
 	);
 }
 
-function RouteLine(props: { from: Location; to: Location; size: number; tilt: boolean }) {
+function RouteLine(props: { from: Location; to: Location; size: number; tilt: boolean, isMobile: boolean }) {
 	const { from, to, size, tilt } = props;
 
 	if (!from.loc || !to.loc) return null;
@@ -299,10 +301,12 @@ function RouteLine(props: { from: Location; to: Location; size: number; tilt: bo
 		positioning.bottom = `${cy}px`;
 	}
 
+	const swidth = props.isMobile ? 3 : 6;
+
 	return (
 		<svg width={width} height={height} style={positioning}>
 			{/* <rect x={0} y={0} width={width} height={height} fill="transparent" stroke="red" strokeWidth={3} /> */}
-			<line x1={sx} y1={sy} x2={ex} y2={ey} stroke="#0006" strokeWidth="6" strokeDasharray={10} />
+			<line x1={sx} y1={sy} x2={ex} y2={ey} stroke="#0006" strokeWidth={swidth} strokeDasharray={10} />
 		</svg>
 	);
 }

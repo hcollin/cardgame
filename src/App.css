@@ -12,6 +12,7 @@
 
   --hero-blue: #ADD8E6;
 
+  --mobile-width: 600px;
 
   --rarity-common: #888888;
   --rarity-uncommon: #0066AA;
@@ -25,7 +26,7 @@
 
 div.main-screen {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   height: 100vh;
@@ -35,7 +36,7 @@ div.main-screen {
   box-shadow: inset 0 0 5rem 2rem #0008;
 
 
-  &>div.death {
+    &>div.death {
     position: absolute;
     top: 0;
     left: 0;
@@ -338,6 +339,14 @@ nav {
 
 @media screen and (max-width: 600px) {
 
+  div.main-screen {
+    padding: 0;
+    margin: 0;
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+  }
+
   nav {
     display: flex;
     flex-direction: row;
@@ -401,7 +410,7 @@ nav {
 
     &>div.logo {
       display: none;
-      width: 0;
+      /* width: 5rem; */
     }
 
   }

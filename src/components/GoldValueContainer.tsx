@@ -7,7 +7,7 @@ import "./value-container.css";
 function GoldValueContainer(props: {hero: Hero}) {
 
     return (
-        <div className="value-container armor-container">
+        <div className="value-container gold-container">
             <div className="value-icon">
                 <img src={valueLogo} alt="Gold" className="value-icon" />
             </div>
