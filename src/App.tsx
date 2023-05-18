@@ -30,6 +30,7 @@ import { ArenaState, ARENASTATES } from "./models/ArenaState";
 
 import metaData from "./metadata.json";
 
+
 const isMobile = false;
 
 function App() {
@@ -141,7 +142,7 @@ function App() {
 						</div>
 						<button onClick={() => setVm("CHARACTER")} className={`right ${vm === "CHARACTER" ? "selected" : ""}`}>
 							<img src={iconCharacter} alt="Character" />
-							<span> Character</span>
+							<span> Character </span>
 						</button>
 					</nav>
 

@@ -236,10 +236,6 @@ export function randomVillage(locsMap: (LocationData | null)[][] ): LocationData
 			locsMap[rDept][rCol] = vloc;
 		}
 	}
-	
-	
-	
-	
 
 	return vloc;
 }
