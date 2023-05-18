@@ -3,9 +3,9 @@ import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
 import { Campaign, CampaignOptions } from "../models/Campaign";
 
 import { Deck } from "./Deck";
-import { createDecks } from "./GameService";
-import { buildNodeLocations, createWorld } from "./WorldTools";
-import { LOCATIONS } from "../data/Locations";
+import { createDecks } from "./ArenaService";
+// import { createLocationsMap } from "./WorldTools";
+
 import { Arena } from "./Arena";
 import Hero from "./Hero";
 import { RaceHuman } from "../data/Races";
@@ -14,6 +14,7 @@ import { generateRandomWorld } from "../utils/RandomWorldGenerator";
 import { Hand } from "./Hand";
 import { ArenaState, ARENASTATES } from "../models/ArenaState";
 import { ARENATHEMES } from "../data/arenaThemes";
+import { World } from "./World";
 
 /**
  * This is used to initialize the state
@@ -64,14 +65,25 @@ export function createCampaign(): Campaign {
 	// campaign.world = createWorld([...LOCATIONS], campaign);
 
 	for(let i = 0; i < campaign.options.worldThemes.length; i++) {
-		const wTheme = campaign.options.worldThemes[i];
-		const myWorld = generateRandomWorld({
+
+		const w = new World({
 			depth: campaign.options.mapDepth,
 			width: campaign.options.mapWidth,
-			theme: [wTheme]
+			themes: [campaign.options.worldThemes[i]],
 		});
-		campaign.worldName = ARENATHEMES[wTheme].worldName();
-		campaign.worlds.push(myWorld);
+
+		w.createRandomLocations();
+
+		// const wTheme = campaign.options.worldThemes[i];
+
+
+		// const myWorld = generateRandomWorld({
+		// 	depth: campaign.options.mapDepth,
+		// 	width: campaign.options.mapWidth,
+		// 	theme: [wTheme]
+		// });
+		// campaign.worldName = ARENATHEMES[wTheme].worldName();
+		campaign.worlds.push(w);
 		
 	}
 	// const myWorld = generateRandomWorld({
@@ -79,7 +91,10 @@ export function createCampaign(): Campaign {
 	// 	width: campaign.options.mapWidth,
 	// });
 	
-	campaign.world = createWorld(campaign.worlds[0], campaign);
+	campaign.world = campaign.worlds[0].activatWorld();
+	campaign.worldName = campaign.worlds[0].name;
+
+	// campaign.world = createWorld(campaign.worlds[0], campaign);
 
 	// buildNodeLocations(campaign);
     
@@ -156,13 +171,15 @@ export function moveToNextWorld(campaign: Campaign): Campaign {
 
 	const nextWorld = campaign.worlds[campaign.currentWorldIndex];
 
-	if(!nextWorld || nextWorld.length === 0) {
+	if(!nextWorld) {
 		console.log(campaign);
 		throw new Error("Next world not found!");
 	}
 
-	campaign.world = createWorld(nextWorld, campaign);
-	campaign.worldName = ARENATHEMES[campaign.options.worldThemes[campaign.currentWorldIndex]].worldName();
+	// campaign.world = createLocationsMap(nextWorld, campaign);
+	campaign.world = nextWorld.activatWorld();
+	campaign.worldName = nextWorld.name;
+	// campaign.worldName = ARENATHEMES[campaign.options.worldThemes[campaign.currentWorldIndex]].worldName();
 
 	return {...campaign};
 

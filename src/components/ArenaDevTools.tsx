@@ -1,4 +1,4 @@
-import { killTargetEnemy } from "../game/GameService";
+import { killTargetEnemy } from "../game/ArenaService";
 import { Campaign } from "../models/Campaign";
 import { DAMAGETYPE } from "../models/Card";
 import { ARENASTATES, ArenaState } from "../models/ArenaState";

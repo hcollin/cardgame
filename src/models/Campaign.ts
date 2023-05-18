@@ -1,4 +1,5 @@
 import Hero from "../game/Hero";
+import { World } from "../game/World";
 
 import { LocationId, Location } from "./World";
 
@@ -15,7 +16,7 @@ export interface CampaignOptions {
 export interface Campaign {
 	id: string;
 	hero: Hero;
-	worlds: Location[][];
+	worlds: World[];
 	currentWorldIndex: number;
 	world: Map<LocationId, Location>;
 	worldName: string;

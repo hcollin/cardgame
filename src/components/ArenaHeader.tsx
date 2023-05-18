@@ -1,4 +1,4 @@
-import { endTurn } from "../game/GameService";
+import { endTurn } from "../game/ArenaService";
 import { ARENASTATES, ArenaState } from "../models/ArenaState";
 
 

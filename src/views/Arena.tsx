@@ -1,6 +1,6 @@
 import { useState, useEffect, CSSProperties } from "react";
 
-import { endEnemyTurn, playItemCard } from "../game/GameService";
+import { endEnemyTurn, playItemCard } from "../game/ArenaService";
 import { Card, TARGETS } from "../models/Card";
 import { ARENASTATES, ArenaState } from "../models/ArenaState";
 

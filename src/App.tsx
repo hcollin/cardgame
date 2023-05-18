@@ -4,12 +4,10 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useEffect, useState } from "react";
 
-
 import { Campaign } from "./models/Campaign";
 import { createCampaign, createEmptyCampaign, createGameForArena, markCurrentLocationCompleted, setActiveLocationForCampaign } from "./game/CampaignTools";
 
 import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "./models/World";
-import WorldMap from "./views/WorldMap";
 
 import iconMap from "./components/icons/map.png";
 import iconCharacter from "./components/icons/character.png";
@@ -18,7 +16,7 @@ import HeroView from "./views/HeroView";
 import frostTrollLogo from "./views/pics/frosttrolllogo.png";
 import Arena from "./views/Arena";
 import Hero from "./game/Hero";
-import { generateRandomWorld } from "./utils/RandomWorldGenerator";
+
 import WorldNodeMap from "./views/WorldNodeMap";
 import { effStore } from "./utils/usePlayerEffect";
 
@@ -26,15 +24,12 @@ import { ArenaState, ARENASTATES } from "./models/ArenaState";
 
 import metaData from "./metadata.json";
 
-
-
 const isMobile = false;
 
 function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createEmptyCampaign());
 
 	const [arenaState, setarenaState] = useState<ArenaState | null>(null);
-	
 
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
 
@@ -63,8 +58,7 @@ function App() {
 
 		setTimeout(() => {
 			setCampaign({ ...createCampaign() });
-		}, 500)
-
+		}, 500);
 	}
 
 	function arenaDone(as: ArenaState) {
@@ -75,7 +69,7 @@ function App() {
 		if (ngs.state === ARENASTATES.ARENA_COMPLETED) {
 			ngs.hero.arenaReset(campaign.options);
 			const loc = campaign.world.get(campaign.currentLocationId);
-			if(!loc) {
+			if (!loc) {
 				throw new Error("Location not found");
 			}
 
@@ -89,7 +83,6 @@ function App() {
 
 	function startArena() {
 		if (currentLocation) {
-
 			// Start Arena
 			if (currentLocation.type === WORLDLOCATIONTYPE.ARENA) {
 				const ar = currentLocation.arena[0];
@@ -101,7 +94,7 @@ function App() {
 			}
 
 			// Start Village
-			if(currentLocation.type === WORLDLOCATIONTYPE.VILLAGE) {
+			if (currentLocation.type === WORLDLOCATIONTYPE.VILLAGE) {
 				console.log("START VILLAGE!");
 			}
 		}
@@ -130,8 +123,6 @@ function App() {
 		viewMode = "ARENA";
 	}
 
-
-
 	// console.log(campaign.id, currentLocation);
 
 	return (
@@ -152,13 +143,11 @@ function App() {
 						</div>
 						<button onClick={() => setVm("CHARACTER")} className={`right ${vm === "CHARACTER" ? "selected" : ""}`}>
 							<img src={iconCharacter} alt="Character" />
-							<span>	Character</span>
+							<span> Character</span>
 						</button>
 					</nav>
-					{/* <MainMenu campaign={campaign} update={setCampaign} /> */}
-					{/* {vm === "MAP" && <WorldMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />} */}
+
 					{vm === "MAP" && <WorldNodeMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />}
-					{/* {currentLocation && <LocationView loc={currentLocation} onArenaSelect={startArena} onSelectLocation={selectNextLocation}/>} */}
 					{vm === "CHARACTER" && <HeroView hero={campaign.hero} updateHero={updateHero} />}
 
 					{campaign.hero.isDead() && (
@@ -178,7 +167,9 @@ function App() {
 				</div>
 			)}
 			{arenaState !== null && <Arena as={arenaState} onArenaFinished={arenaDone} />}
-			<div className="version">{metaData.buildMajor}.{metaData.buildMinor}.{metaData.buildRevision} {metaData.buildTag}</div>
+			<div className="version">
+				{metaData.buildMajor}.{metaData.buildMinor}.{metaData.buildRevision} {metaData.buildTag}
+			</div>
 		</DndProvider>
 	);
 }

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.38e951de.css",
-    "main.js": "/static/js/main.8792894c.js",
+    "main.css": "/static/css/main.8480c6d1.css",
+    "main.js": "/static/js/main.8eb8bc59.js",
     "static/js/787.9c804d05.chunk.js": "/static/js/787.9c804d05.chunk.js",
     "static/media/enemycardlayout.png": "/static/media/enemycardlayout.4ed6558090d558ed1cc0.png",
     "static/media/tribal.png": "/static/media/tribal.daa10e4b05e622bc29e0.png",
@@ -63,12 +63,12 @@
     "static/media/cards.png": "/static/media/cards.41ad9923479a625b0e14.png",
     "static/media/frozen.png": "/static/media/frozen.b6ba0424a12b68c17bd4.png",
     "index.html": "/index.html",
-    "main.38e951de.css.map": "/static/css/main.38e951de.css.map",
-    "main.8792894c.js.map": "/static/js/main.8792894c.js.map",
+    "main.8480c6d1.css.map": "/static/css/main.8480c6d1.css.map",
+    "main.8eb8bc59.js.map": "/static/js/main.8eb8bc59.js.map",
     "787.9c804d05.chunk.js.map": "/static/js/787.9c804d05.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.38e951de.css",
-    "static/js/main.8792894c.js"
+    "static/css/main.8480c6d1.css",
+    "static/js/main.8eb8bc59.js"
   ]
 }

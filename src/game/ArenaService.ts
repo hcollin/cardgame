@@ -13,7 +13,14 @@ import { Hand } from "./Hand";
 import { effStore } from "../utils/usePlayerEffect";
 import { ARENASTATES, ArenaState } from "../models/ArenaState";
 
-export function createGame(hero?: Hero): ArenaState {
+
+/**
+ * Creates an empty Arena State
+ * 
+ * @param hero 
+ * @returns 
+ */
+export function createArenaState(hero?: Hero): ArenaState {
 	return {
 		id: v4(),
 		turn: 0,
@@ -23,8 +30,6 @@ export function createGame(hero?: Hero): ArenaState {
 		rightHand: new Hand("RIGHT"),
 		state: ARENASTATES.INIT,
 		arena: new EmptyArena(),
-		// world: createWorld(LOCATIONS),
-		// currentLocationId: "",
 		hero: hero || new Hero(RaceHuman, ClassWarrior),
 		playedCardsThisTurn: [],
 	};
@@ -54,31 +59,6 @@ export function createDecks(as: ArenaState): ArenaState {
 
 	return { ...as };
 }
-
-// export function startGame(arenaState: arenaState): arenaState {
-
-// 	const nextLoc = selectNextLocation(arenaState);
-// 	arenaState.currentLocationId = nextLoc.id;
-// 	arenaState.arena = nextLoc.arena[0];
-
-// 	console.log("NEXT ARENA", nextLoc.arena[0].name)
-
-// 	arenaState.state = ARENASTATES.MYTURN;
-
-// 	arenaState = selectItems(arenaState, Shield, arnd([LongSword, Mace]));
-// 	// arenaState = selectItems(arenaState, Shield, Mace);
-
-// 	arenaState.rightHandDeck.shuffleDeck();
-// 	arenaState.leftHandDeck.shuffleDeck();
-
-// 	arenaState.rightHand = arenaState.rightHandDeck.drawCards(3);
-// 	arenaState.leftHand = arenaState.leftHandDeck.drawCards(3);
-
-// 	arenaState.arena.resetArena();
-// 	arenaState.turn = 1;
-
-// 	return { ...arenaState };
-// }
 
 export function playItemCard(arenaState: ArenaState, card: Card, targetIndex?: number): ArenaState {
 	if (arenaState.hero.getEnergy() < card.apCost) {
