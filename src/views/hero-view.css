@@ -226,46 +226,49 @@ div.hero-view div.equipped-items {
 
                     border-spacing: 0;
 
-                    &>tr {
-                        background: #0002;
+                    &>thead,
+                    tbody {
+                        &>tr {
+                            background: #0002;
 
 
-                        &:nth-child(odd) {
-                            background: #0004;
+                            &:nth-child(odd) {
+                                background: #0004;
 
-                        }
-
-                        &>td {
-                            padding: 0.25rem;
-                            color: white;
-                            text-shadow: 0 0 2px #000;
-
-                            &.small {
-                                text-align: center;
                             }
 
-                            &.text {
-                                font-size: 0.9rem;
+                            &>td {
+                                padding: 0.25rem;
+                                color: white;
+                                text-shadow: 0 0 2px #000;
+
+                                &.small {
+                                    text-align: center;
+                                }
+
+                                &.text {
+                                    font-size: 0.9rem;
+                                }
+
+                                &.medium {
+                                    font-size: 1rem;
+                                    padding: 0.25rem 1rem;
+                                }
                             }
 
-                            &.medium {
-                                font-size: 1rem;
-                                padding: 0.25rem 1rem;
-                            }
-                        }
+                            &>th {
+                                padding: 0.5rem 0.25rem;
+                                font-size: 0.8rem;
+                                color: #FFFA;
+                                background: #420A;
 
-                        &>th {
-                            padding: 0.5rem 0.25rem;
-                            font-size: 0.8rem;
-                            color: #FFFA;
-                            background: #420A;
+                                &.small {
+                                    width: 4rem;
+                                }
 
-                            &.small {
-                                width: 4rem;
-                            }
-
-                            &.text {
-                                width: 20rem;
+                                &.text {
+                                    width: 20rem;
+                                }
                             }
                         }
                     }
@@ -374,7 +377,7 @@ div.hero-view div.item-slot {
 
     div.hero-view {
 
-        
+
         padding: 1rem 0;
 
 
@@ -385,23 +388,24 @@ div.hero-view div.item-slot {
             margin: 1rem 0 0 0;
         }
 
-        & >div.container {
+        &>div.container {
             padding: 1rem;
             justify-content: center;
             background: none;
             border-bottom: groove 5px #0008;
             border-radius: 1rem;
 
-            & > div.equipped-items {
+            &>div.equipped-items {
                 flex-direction: column;
 
 
-                & > div.inventory {
+                &>div.inventory {
 
                     flex-direction: row;
                     flex-wrap: wrap;
                     justify-content: flex-start;
-                    & > div.inventory-item {
+
+                    &>div.inventory-item {
                         width: 48%;
                         margin: 1%;
                         height: 3.5rem;
@@ -412,19 +416,20 @@ div.hero-view div.item-slot {
 
                 }
 
-                & > div.item-data {
+                &>div.item-data {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    & > div.item-card {
-                        
-                    };
+
+                    &>div.item-card {}
+
+                    ;
                 }
             }
         }
 
-        
+
     }
 
 }

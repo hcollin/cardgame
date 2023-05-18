@@ -35,8 +35,8 @@ function HeroView(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 				<ArmorValueContainer hero={props.hero} />
 
 				<DodgeValueContainer hero={props.hero} />
-				
-				<DamageReductionValueContainer hero={props.hero} /> 
+
+				<DamageReductionValueContainer hero={props.hero} />
 
 				<EnergyValueContainer hero={props.hero} />
 
@@ -48,7 +48,6 @@ function HeroView(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 			<div className="container">
 				<HeroItems hero={props.hero} updateHero={props.updateHero} />
 			</div>
-
 		</div>
 	);
 }
@@ -86,7 +85,7 @@ function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 			// props.updateHero(hero);
 		}
 	}
-	
+
 	const equippableSlots = props.hero.getEquippableSlots();
 	return (
 		<div className="equipped-items">
@@ -169,7 +168,13 @@ function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 						}
 					}
 					return (
-						<div className={cns.join(" ")} key={`inventory-${item.id}`} onClick={() => itemClick(item)} onMouseEnter={() => setItemInfo(item)} onMouseLeave={() => setItemInfo(null)}>
+						<div
+							className={cns.join(" ")}
+							key={`inventory-${item.id}`}
+							onClick={() => itemClick(item)}
+							onMouseEnter={() => setItemInfo(item)}
+							onMouseLeave={() => setItemInfo(null)}
+						>
 							{item.name}
 						</div>
 					);
@@ -180,41 +185,56 @@ function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 					</div>
 				)}
 			</div>
-			{itemInfo && <div className="item-data">
+			{itemInfo && (
+				<div className="item-data">
 					<ItemCard item={itemInfo} />
 
-					{itemInfo.cards.length > 0 && <div className="item-cards-container">
-						<h3>Cards</h3>
-						<table>
-							<tr>
-								<th className="small">Count</th>
-								<th className="medium">Name</th>
-								<th className="small">Energy</th>
-								<th className="text">Rules Text</th>
-								<th className="text">Description</th>
-								<th>Effects</th>
-								<th>Damage</th>
-							</tr>
-						{itemInfo.cards.map((card, index) => {
+					{itemInfo.cards.length > 0 && (
+						<div className="item-cards-container">
+							<h3>Cards</h3>
+							<table>
+								<thead>
+									<tr>
+										<th className="small">Count</th>
+										<th className="medium">Name</th>
+										<th className="small">Energy</th>
+										<th className="text">Rules Text</th>
+										<th className="text">Description</th>
+										<th>Effects</th>
+										<th>Damage</th>
+									</tr>
+								</thead>
+								<tbody>
+									{itemInfo.cards.map((card, index) => {
+										return (
+											<tr key={`card-${card.name}-${index}`}>
+												<td className="small">{card.count} x</td>
+												<td className="medium">{card.name}</td>
+												<td className="small">{card.apCost}</td>
+												<td className="text">{card.rulesText}</td>
+												<td className="text">{card.description}</td>
+												<td>{card.effectsOnHit.join(", ")}</td>
+												<td>
+													{card.damage.map((d: Damage, ind: number) => {
+														const damrng = getDamageRange(d);
+														const id = `${itemInfo.id}-${index}-${ind}`;
 
-							return <tr key={`card-${index}`}>
-								<td className="small">{card.count} x</td>
-								<td className="medium">{card.name}</td>
-								<td className="small">{card.apCost}</td>
-								<td className="text">{card.rulesText}</td>
-								<td className="text">{card.description}</td>
-								<td>{card.effectsOnHit.join(", ")}</td>
-								<td>{card.damage.map((d: Damage, ind: number) => {
-									const damrng = getDamageRange(d);
-									return <div id={`${itemInfo.id}-${index}-${ind}`}>{d.type} {damrng[0]} - {damrng[1]}</div>
-								})}</td>
-							</tr>
-
-						})}
-						</table>
-					</div>}
-
-			</div>}
+														return (
+															<div id={id}>
+																{d.type} {damrng[0]} - {damrng[1]}
+															</div>
+														);
+													})}
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						</div>
+					)}
+				</div>
+			)}
 		</div>
 	);
 }
