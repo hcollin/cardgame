@@ -1,5 +1,5 @@
 import { arnd } from "rndlib";
-import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
+import { LocationId, LocationData, LOCATIONSTATUS } from "../models/World";
 import { generateRandomWorld } from "../utils/RandomWorldGenerator";
 import { Arena } from "./Arena";
 
@@ -15,7 +15,7 @@ export class World {
 	public depth: number = 12;
 	public width: number = 7;
 
-	public locations: Map<LocationId, Location> = new Map<LocationId, Location>();
+	public locations: Map<LocationId, LocationData> = new Map<LocationId, LocationData>();
 	public name: string = "";
 
 	public activeLocationId: LocationId = "";
@@ -33,17 +33,17 @@ export class World {
     }
 
 
-    public getLocation(locId: LocationId): Location {
+    public getLocation(locId: LocationId): LocationData {
         const loc = this.locations.get(locId);
         if (!loc) { throw new Error(`World.ts:getLocation(): Location ID ${locId} not found`); }
         return loc;
     }
 
-    public getLocationsArray(): Location[] {
+    public getLocationsArray(): LocationData[] {
         return Array.from(this.locations.values());
     }       
 
-    public updateLocation(loc: Location) {
+    public updateLocation(loc: LocationData) {
         this.locations.set(loc.id, loc);
     }
 
@@ -77,8 +77,8 @@ export class World {
 	 * marked COMPLETED. Finally the current location is set to ACTIVE.
 	 */
 	public updateLocationStatuses() {
-		const tlocs = new Map<LocationId, Location>();
-		const nlocs = new Map<LocationId, Location>();
+		const tlocs = new Map<LocationId, LocationData>();
+		const nlocs = new Map<LocationId, LocationData>();
 
 		let completedCount: number = 0;
 
@@ -129,7 +129,7 @@ export class World {
      * 
      * @returns 
      */
-    public activateWorld(): Map<LocationId, Location> {
+    public activateWorld(): Map<LocationId, LocationData> {
         this.status = "ACTIVE";
         return new Map(this.locations);
     }
@@ -144,13 +144,13 @@ export class World {
      * 
      * @returns Location[]
      */
-	public getNextValidLocationsForCurrentLocation(): Location[] {
+	public getNextValidLocationsForCurrentLocation(): LocationData[] {
 		const currentLocation = this.getActiveLocation();
 		if (!currentLocation) {
 			return [];
 		}
 
-		return currentLocation.nextLocations.reduce((acc: Location[], nextLocationId) => {
+		return currentLocation.nextLocations.reduce((acc: LocationData[], nextLocationId) => {
 			const nextLocation = this.locations.get(nextLocationId);
 
 			if (nextLocation && nextLocation.status === LOCATIONSTATUS.SELECTABLE) {
@@ -160,7 +160,7 @@ export class World {
 		}, []);
 	}
 
-	public getActiveLocation(): Location | null {
+	public getActiveLocation(): LocationData | null {
 		if (this.activeLocationId === null) {
 			return null;
 		}

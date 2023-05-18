@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { Arena } from "../game/Arena";
-import { Location, LocationId, LOCATIONSTATUS, WORLDLOCATIONTYPE } from "../models/World";
+import { LocationData, LocationId, LOCATIONSTATUS, WORLDLOCATIONTYPE } from "../models/World";
 import { ArenaForestEncounter } from "../data/ArenaForestEncounter";
 import { arnd, rnd } from "rndlib";
 import { EmptyArena } from "../data/EmptyArena";
@@ -19,7 +19,7 @@ interface worldGeneratorOptions {
 	theme: string[];
 }
 
-export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Location[] {
+export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): LocationData[] {
 	const options: worldGeneratorOptions = Object.assign(
 		{
 			depth: 10,
@@ -34,7 +34,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		opts,
 	);
 
-	const locs: Location[] = [];
+	const locs: LocationData[] = [];
 
 	const diffs: ARENADIFFICULTY[] = [
 		ARENADIFFICULTY.VERYEASY,
@@ -48,7 +48,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 
 	// For each depth, generate a random amount of locations where the distance between each location is between 2 and spread
 
-	const locsMap: (Location | null)[][] = [];
+	const locsMap: (LocationData | null)[][] = [];
 
 
 	// A function regexp that checks a email validity
@@ -59,7 +59,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 	for (let d = 0; d < options.depth; d++) {
 		let pos = rnd(0, 2);
 
-		const dLocs: (Location | null)[] = new Array(options.width).fill(null);
+		const dLocs: (LocationData | null)[] = new Array(options.width).fill(null);
 
 		const difInd = sDiffIndex + Math.round(d / (options.depth / options.curve));
 
@@ -127,11 +127,11 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 
 	// Populate the locations with arenas
 
-	return locsMap.flatMap((l) => l.filter((l) => l !== null)) as Location[];
+	return locsMap.flatMap((l) => l.filter((l) => l !== null)) as LocationData[];
 
 }
 
-function calculateEdgeConnections(locs: (Location | null)[][]): void {
+function calculateEdgeConnections(locs: (LocationData | null)[][]): void {
 	const rows = locs.length;
 	const cols = locs[0].length;
 
@@ -166,13 +166,13 @@ function calculateEdgeConnections(locs: (Location | null)[][]): void {
 	}
 }
 
-export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean, themes: string[]): Location {
+export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean, themes: string[]): LocationData {
 	
 	const theme = arnd(themes);
 	
 	const arena = randomArena(difficulty, theme);
 
-	const loc: Location = {
+	const loc: LocationData = {
 		id: v4(),
 		status: LOCATIONSTATUS.LOCKED,
 		type: WORLDLOCATIONTYPE.ARENA,
@@ -192,9 +192,9 @@ export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean, them
 	return loc;
 }
 
-export function randomVillage(locsMap: (Location | null)[][] ): Location {
+export function randomVillage(locsMap: (LocationData | null)[][] ): LocationData {
 
-	const vloc: Location = {
+	const vloc: LocationData = {
 		id: v4(),
 		status: LOCATIONSTATUS.LOCKED,
 		type: WORLDLOCATIONTYPE.VILLAGE,

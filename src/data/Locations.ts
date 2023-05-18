@@ -1,5 +1,5 @@
 
-import { WORLDLOCATIONTYPE, Location, LOCATIONSTATUS } from "../models/World";
+import { WORLDLOCATIONTYPE, LocationData, LOCATIONSTATUS } from "../models/World";
 import { ArenaDragonsLair } from "./ArenaDragonsLair";
 import { ArenaForestEncounter } from "./ArenaForestEncounter";
 import { ArenaGoblinAmbush } from "./ArenaGoblinAmbush";
@@ -11,7 +11,7 @@ import { ARENADIFFICULTY } from "./Difficulties";
 import { EmptyArena } from "./EmptyArena";
 
 
-export const LOCATIONS: Location[] = [
+export const LOCATIONS: LocationData[] = [
     {
         id: "EasyForest",
         status: LOCATIONSTATUS.LOCKED,

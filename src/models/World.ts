@@ -23,7 +23,7 @@ export enum LOCATIONSTATUS {
 
 export type LOCATIONFLAG = "first"|"final"|"completed";
 
-export interface Location {
+export interface LocationData {
 
     id: LocationId;
     name?: string;
@@ -43,12 +43,12 @@ export interface Location {
 }
 
 
-export interface MapLocation extends Location { 
+export interface MapLocation extends LocationData { 
     depth: number;
     trak: number;
 }
 
-export interface NodeLocation extends Location {
+export interface NodeLocation extends LocationData {
     x: number;
     y: number;
     

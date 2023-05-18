@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
+import { LocationId, LocationData, LOCATIONSTATUS } from "../models/World";
 import { Campaign, CampaignOptions } from "../models/Campaign";
 
 import { Deck } from "./Deck";
@@ -238,7 +238,7 @@ export function getActiveWorld(campaign: Campaign): World | null {
 	return activeWorld;
 }
 
-export function getActiveLocation(campaign: Campaign): Location | null {
+export function getActiveLocation(campaign: Campaign): LocationData | null {
 	const actWorld = getActiveWorld(campaign);
 	if (!actWorld || campaign.currentLocationId === "") {
 		return null;

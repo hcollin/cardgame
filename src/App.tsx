@@ -15,7 +15,7 @@ import {
 	setActiveLocationForCampaign,
 } from "./game/CampaignTools";
 
-import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "./models/World";
+import { LOCATIONSTATUS, LocationData, WORLDLOCATIONTYPE } from "./models/World";
 
 import iconMap from "./components/icons/map.png";
 import iconCharacter from "./components/icons/character.png";
@@ -39,7 +39,7 @@ function App() {
 
 	const [arenaState, setArenaState] = useState<ArenaState | null>(null);
 
-	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
+	const [currentLocation, setCurrentLocation] = useState<LocationData | null>(null);
 
 	const [vm, setVm] = useState<string>("MAP"); // MAP || CHARACTER
 

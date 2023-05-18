@@ -1,6 +1,6 @@
 import { Campaign } from "../models/Campaign";
 
-import { LOCATIONSTATUS, Location, LocationId} from "../models/World";
+import { LOCATIONSTATUS, LocationData, LocationId} from "../models/World";
 import { World } from "./World";
 
 
@@ -34,9 +34,9 @@ import { World } from "./World";
 // 	return nloc;
 // }
 
-export function updateLocations(mlocs: Map<LocationId, Location>, currentId: LocationId): Map<LocationId, Location> {
-	const tlocs = new Map<LocationId, Location>();
-	const nlocs = new Map<LocationId, Location>();
+export function updateLocations(mlocs: Map<LocationId, LocationData>, currentId: LocationId): Map<LocationId, LocationData> {
+	const tlocs = new Map<LocationId, LocationData>();
+	const nlocs = new Map<LocationId, LocationData>();
 
 	let completedCount: number = 0;
 

@@ -1,8 +1,8 @@
-import { LOCATIONSTATUS, Location, WORLDLOCATIONTYPE } from "../models/World";
+import { LOCATIONSTATUS, LocationData, WORLDLOCATIONTYPE } from "../models/World";
 
 import "./location-view.css";
 
-function LocationView(props: { loc: Location; onArenaSelect: (i: number) => void; onSelectLocation: (lid: string) => void }) {
+function LocationView(props: { loc: LocationData; onArenaSelect: (i: number) => void; onSelectLocation: (lid: string) => void }) {
 
 
 

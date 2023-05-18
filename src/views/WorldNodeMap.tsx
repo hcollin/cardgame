@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { LOCATIONSTATUS, Location } from "../models/World";
+import { LOCATIONSTATUS, LocationData } from "../models/World";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 
@@ -29,9 +29,9 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 	// const locations = world.getLocationsArray();
 
-	const [nodes, setNodes] = useState<(Location | null)[][]>(buildNodes(props.campaign));
+	const [nodes, setNodes] = useState<(LocationData | null)[][]>(buildNodes(props.campaign));
 
-	const [hoverNode, setHoverNode] = useState<Location | null>(null);
+	const [hoverNode, setHoverNode] = useState<LocationData | null>(null);
 
 	useEffect(() => {
 		const newMapLocs = buildNodes(props.campaign);
@@ -51,7 +51,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 	
 	
 
-	function selectLocation(mloc: Location) {
+	function selectLocation(mloc: LocationData) {
 		// console.log("SELECT LOCATION", mloc);
 
 		if (mloc.status === LOCATIONSTATUS.ACTIVE) {
@@ -166,7 +166,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 	);
 }
 
-function buildNodes(campaign: Campaign): (Location | null)[][] {
+function buildNodes(campaign: Campaign): (LocationData | null)[][] {
 	const world = getActiveWorld(campaign);
 	if(!world) { return []; }
 	world.updateLocationStatuses();
@@ -175,10 +175,10 @@ function buildNodes(campaign: Campaign): (Location | null)[][] {
 
 	const depth = campaign.options.mapDepth + 1;
 
-	const nnmap: (Location | null)[][] = [];
+	const nnmap: (LocationData | null)[][] = [];
 
 	for (let d = 0; d < depth; d++) {
-		const darr: (Location | null)[] = [];
+		const darr: (LocationData | null)[] = [];
 
 		for (let w = 0; w < campaign.options.mapWidth; w++) {
 			const loc = locArr.find((l) => {
@@ -201,7 +201,7 @@ function buildNodes(campaign: Campaign): (Location | null)[][] {
 	return nnmap.reverse();
 }
 
-function LocationNode(props: { location: Location; selectLocation: (mloc: Location) => void; isActive: boolean; onHover?: (loc: Location | null) => void }) {
+function LocationNode(props: { location: LocationData; selectLocation: (mloc: LocationData) => void; isActive: boolean; onHover?: (loc: LocationData | null) => void }) {
 	function handleClick() {
 		props.selectLocation(props.location);
 	}
@@ -250,7 +250,7 @@ function LocationNode(props: { location: Location; selectLocation: (mloc: Locati
 	);
 }
 
-function RouteLine(props: { from: Location; to: Location; size: number; tilt: boolean, isMobile: boolean }) {
+function RouteLine(props: { from: LocationData; to: LocationData; size: number; tilt: boolean, isMobile: boolean }) {
 	const { from, to, size, tilt } = props;
 
 	if (!from.loc || !to.loc) return null;
@@ -322,7 +322,7 @@ function RouteLine(props: { from: Location; to: Location; size: number; tilt: bo
 
 
 
-function LocationInfo(props: { loc: Location }) {
+function LocationInfo(props: { loc: LocationData }) {
 
 	const { loc } = props;
 
