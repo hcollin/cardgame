@@ -75,9 +75,10 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 		props.updateCampaign(nCampaign);
 	}
 
-	const tilt = width > height ? "tilt" : "";
+	const isMobile = width <= 600 || height <= 600;
+	
+	const tilt = width > height && !isMobile ? "tilt" : "";
 
-	const isMobile = width <= 600;
 
 	const nodeSize = isMobile ? 50 : 6 * 12;
 
@@ -101,7 +102,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 							return loc.nextLocations.map((to, ind) => {
 								const target = locations.get(to);
 								if (!target) return null;
-								return <RouteLine key={`${loc.id}-route-${ind}`} from={loc} to={target} size={nodeSize} tilt={width > height} isMobile />;
+								return <RouteLine key={`${loc.id}-route-${ind}`} from={loc} to={target} size={nodeSize} tilt={width > height} isMobile={isMobile} />;
 							});
 						});
 					})}
