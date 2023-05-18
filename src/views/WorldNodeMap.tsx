@@ -143,7 +143,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 			 
 			{curLoc && <LocationInfo loc={curLoc} />}
-			<div className="map-title">World Map</div>
+			<div className="map-title">{props.campaign.worldName}</div>
 			{props.campaign.hero.isDead() && (
 				<div className="death">
 					<h2>

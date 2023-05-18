@@ -74,7 +74,13 @@ function App() {
 
 		if (ngs.state === ARENASTATES.ARENA_COMPLETED) {
 			ngs.hero.arenaReset(campaign.options);
-			setCampaign({ ...markCurrentLocationCompleted({ ...campaign, hero: ngs.hero }) });
+			const loc = campaign.world.get(campaign.currentLocationId);
+			if(!loc) {
+				throw new Error("Location not found");
+			}
+
+			const isFinal = loc.nextLocations.length === 0;
+			setCampaign({ ...markCurrentLocationCompleted({ ...campaign, hero: ngs.hero }, isFinal) });
 		} else {
 			setCampaign({ ...campaign, hero: as.hero });
 		}

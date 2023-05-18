@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
-import { Campaign } from "../models/Campaign";
+import { Campaign, CampaignOptions } from "../models/Campaign";
 
 import { Deck } from "./Deck";
 import { createDecks } from "./GameService";
@@ -13,6 +13,7 @@ import { ClassWarrior } from "../data/Classes";
 import { generateRandomWorld } from "../utils/RandomWorldGenerator";
 import { Hand } from "./Hand";
 import { ArenaState, ARENASTATES } from "../models/ArenaState";
+import { ARENATHEMES } from "../data/arenaThemes";
 
 /**
  * This is used to initialize the state
@@ -22,40 +23,63 @@ export function createEmptyCampaign(): Campaign {
 	return {
 		id: "EMPTY",
 		hero: new Hero(RaceHuman, ClassWarrior),
+		worlds: [],
 		world: new Map<LocationId, Location>(),
+		worldName: "",
 		currentLocationId: "",
+		currentWorldIndex: 0,
 		options: {
 			healAfterArena: 0,
 			fullHealOnLevelUp: false,
 			endlessLoop: false,
 			mapDepth: 15,
 			mapWidth: 7,
+			worldThemes: ["FOREST", "MOUNTAIN"],
 		},
 	};
 }
 
 export function createCampaign(): Campaign {
+
+	const opts: CampaignOptions = {
+		healAfterArena: 0,
+		fullHealOnLevelUp: false,
+		endlessLoop: false,
+		mapDepth: 12,
+		mapWidth: 7,
+		worldThemes: ["FOREST", "MOUNTAIN"]
+	};
+
 	const campaign: Campaign = {
 		id: v4(),
-		hero: new Hero(RaceHuman, ClassWarrior),
+		hero: new Hero(RaceHuman, ClassWarrior, opts),
+		worlds: [],
+		worldName: "",
 		world: new Map<LocationId, Location>(),
 		currentLocationId: "",
-		options: {
-			healAfterArena: 0,
-			fullHealOnLevelUp: false,
-			endlessLoop: false,
-			mapDepth: 12,
-			mapWidth: 7,
-		},
+		currentWorldIndex: 0,
+		options: opts,
 	};
 
 	// campaign.world = createWorld([...LOCATIONS], campaign);
-	const myWorld = generateRandomWorld({
-		depth: campaign.options.mapDepth,
-		width: campaign.options.mapWidth,
-	});
+
+	for(let i = 0; i < campaign.options.worldThemes.length; i++) {
+		const wTheme = campaign.options.worldThemes[i];
+		const myWorld = generateRandomWorld({
+			depth: campaign.options.mapDepth,
+			width: campaign.options.mapWidth,
+			theme: [wTheme]
+		});
+		campaign.worldName = ARENATHEMES[wTheme].worldName();
+		campaign.worlds.push(myWorld);
+		
+	}
+	// const myWorld = generateRandomWorld({
+	// 	depth: campaign.options.mapDepth,
+	// 	width: campaign.options.mapWidth,
+	// });
 	
-	campaign.world = createWorld(myWorld, campaign);
+	campaign.world = createWorld(campaign.worlds[0], campaign);
 
 	// buildNodeLocations(campaign);
     
@@ -93,7 +117,7 @@ export function createCampaign(): Campaign {
 //     return {...campaign, currentLocationId: nextLocId.id};
 // }
 
-export function markCurrentLocationCompleted(campaign: Campaign): Campaign {
+export function markCurrentLocationCompleted(campaign: Campaign, endOfWorld: boolean): Campaign {
 	if (campaign.world.size === 0) {
 		throw new Error("World not initialized");
 	}
@@ -112,7 +136,36 @@ export function markCurrentLocationCompleted(campaign: Campaign): Campaign {
 	}
 
 	campaign.currentLocationId = "";
+	if(endOfWorld) {
+		return moveToNextWorld(campaign);
+	}
 	return { ...campaign };
+}
+
+export function moveToNextWorld(campaign: Campaign): Campaign {
+	if (campaign.world.size === 0) {
+		throw new Error("World not initialized");
+	}
+
+	if(campaign.currentWorldIndex >= campaign.worlds.length - 1) {
+		console.log("No more worlds to go to");
+		return {...campaign};
+	}
+
+	campaign.currentWorldIndex++;
+
+	const nextWorld = campaign.worlds[campaign.currentWorldIndex];
+
+	if(!nextWorld || nextWorld.length === 0) {
+		console.log(campaign);
+		throw new Error("Next world not found!");
+	}
+
+	campaign.world = createWorld(nextWorld, campaign);
+	campaign.worldName = ARENATHEMES[campaign.options.worldThemes[campaign.currentWorldIndex]].worldName();
+
+	return {...campaign};
+
 }
 
 export function setActiveLocationForCampaign(campaign: Campaign, locationId: LocationId): Campaign {

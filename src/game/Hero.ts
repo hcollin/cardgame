@@ -10,7 +10,6 @@ import { CampaignOptions } from "../models/Campaign";
 import { effStore } from "../utils/usePlayerEffect";
 import { ArenaState } from "../models/ArenaState";
 
-
 const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
 export default class Hero {
@@ -49,19 +48,22 @@ export default class Hero {
 
 	public gold: number = 0;
 
-	constructor(chrRace: CharacterRace, chrClass: CharacterClass, name?: string) {
+	constructor(chrRace: CharacterRace, chrClass: CharacterClass, options?: CampaignOptions, name?: string) {
 		this.name = name || nameGenerator();
 
 		this.heroClass = chrClass;
 		this.heroRace = chrRace;
 
-		this.fullReset({
-			healAfterArena: 0,
-			fullHealOnLevelUp: false,
-			endlessLoop: false,
-			mapDepth: 15,
-			mapWidth: 7,
-		});
+		this.fullReset(
+			options || {
+				healAfterArena: 0,
+				fullHealOnLevelUp: false,
+				endlessLoop: false,
+				mapDepth: 15,
+				mapWidth: 7,
+				worldThemes: ["FOREST", "MOUNTAIN"],
+			},
+		);
 	}
 
 	// EVENTS TO HERO
@@ -129,14 +131,12 @@ export default class Hero {
 	public consumeItem(itemId: string, as: ArenaState) {
 		const item = this.inventory.find((i) => i.id === itemId);
 		if (item) {
-			
-			if(item.onUse) {
+			if (item.onUse) {
 				item.onUse(as);
 			}
 
 			this.removeItem(item);
 		}
-
 	}
 
 	// INVENTORY MANAGEMENT
@@ -238,7 +238,6 @@ export default class Hero {
 	}
 
 	public getEffectedArmor(): number {
-	
 		return this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK");
 	}
 

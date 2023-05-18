@@ -9,12 +9,16 @@ export interface CampaignOptions {
 	endlessLoop: boolean;	// default is false.
 	mapDepth: number;
 	mapWidth: number;
+	worldThemes: string[];
 }
 
 export interface Campaign {
 	id: string;
 	hero: Hero;
+	worlds: Location[][];
+	currentWorldIndex: number;
 	world: Map<LocationId, Location>;
+	worldName: string;
 	currentLocationId: LocationId;
 	options: CampaignOptions;
 }

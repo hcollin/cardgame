@@ -16,6 +16,7 @@ interface worldGeneratorOptions {
 	spread: number;
 	starts: number;
 	villages: number;
+	theme: string[];
 }
 
 export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Location[] {
@@ -28,6 +29,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 			spread: 3,
 			starts: 1,
 			villages: 4,
+			theme: ["FOREST", "MOUNTAIN"],
 		},
 		opts,
 	);
@@ -64,7 +66,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		const dif = difInd < diffs.length - 1 ? diffs[difInd] : diffs[diffs.length - 1];
 
 		while (pos < options.width) {
-			const nloc = randomLocation(dif, d === 0);
+			const nloc = randomLocation(dif, d === 0, options.theme);
 			nloc.name = `Loc ${d}-${pos}`;
 			nloc.loc = {
 				x: pos,
@@ -102,7 +104,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 			dy: rnd(0, 100) / 100,
 		},
 		init: function (c: Campaign) {
-			this.arena = [new EmptyArena()];
+			this.arena = [new ArenaDragonsLair()];
 		},
 	};
 
@@ -164,9 +166,9 @@ function calculateEdgeConnections(locs: (Location | null)[][]): void {
 	}
 }
 
-export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean): Location {
+export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean, themes: string[]): Location {
 	
-	const theme = arnd(["FOREST", "MOUNTAIN"]);
+	const theme = arnd(themes);
 	
 	const arena = randomArena(difficulty, theme);
 

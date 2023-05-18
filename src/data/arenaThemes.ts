@@ -29,6 +29,7 @@ export interface ArenaTheme {
 	id: string;
 	types: string[];
 	name: () => string;
+	worldName: () => string;
 	enemies: string[];
 	bgImage: string[];
 	rewardCount: number;
@@ -46,6 +47,9 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 
 			return `${arnd(adjectives)} ${arnd(nouns)}`;
 		},
+		worldName: () => {
+			return arnd(["The dark forest", "Mystical woods", "The enchanted forest", "The old forest", "The ancient forest", "The misty forest", "The thick forest", "The dark woods", "The mystical woods", "The enchanted woods", "The old woods", "The ancient woods", "The misty woods", "The thick woods"]);
+		},
 		enemies: ["Orc Shaman", "Orc Berserker", "Orc Warlord", "Goblin Warrior", "Goblin Sorcerer", "Goblin Lord"],
 		bgImage: [forestBg],
 		rewardCount: 3,
@@ -60,6 +64,9 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 			const nouns = ["Mountain", "Hill", "Peak", "Cliff", "Ridge", "Slope", "Trail"];
 
 			return `${arnd(adjectives)} ${arnd(nouns)}`;
+		},
+		worldName: () => {
+			return arnd(["The high mountains", "The steep mountains", "The snowy mountains", "The rocky mountains", "The misty mountains", "The enchanted mountains", "The wild mountains", "The frosty mountains", "The high hills", "The steep hills", "The snowy hills", "The rocky hills", "The misty hills", "The enchanted hills", "The wild hills", "The frosty hills"]);
 		},
 		enemies: ["Orc Berserker", "Frost Troll", "Wolf", "Hill Hare"],
 		bgImage: [mountainBg],
