@@ -27,12 +27,12 @@ export const ShortSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -51,12 +51,12 @@ export const ShortSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 
@@ -70,13 +70,13 @@ export const ShortSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
-			onUse: (gs) => {
-				gs.hero.modifyArmor(2);
+			onUse: (as) => {
+				as.hero.modifyArmor(2);
 
-				return { ...gs };
+				return { ...as };
 			},
 		},
 	],

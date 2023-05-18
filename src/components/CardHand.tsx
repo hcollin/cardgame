@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Card } from "../models/Card";
-import { GameState } from "../models/GameState";
+import { ArenaState } from "../models/ArenaState";
 import HandCard from "./HandCard";
 
 import "./card-hand.css";
 
-function CardHand(props: { gs: GameState; side: "LEFT" | "RIGHT"; onDrag: (on: boolean) => void; onSelect: (card: Card) => void; onPlay: (c: Card) => void }) {
+
+function CardHand(props: { as: ArenaState; side: "LEFT" | "RIGHT"; onDrag: (on: boolean) => void; onSelect: (card: Card) => void; onPlay: (c: Card) => void }) {
 
 	
-	const hand = props.side === "LEFT" ? props.gs.leftHand : props.gs.rightHand;
+	const hand = props.side === "LEFT" ? props.as.leftHand : props.as.rightHand;
 
 	
 

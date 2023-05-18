@@ -23,13 +23,13 @@ export const BronzeBuckler: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs, card) => {
-				gs.hero.modifyArmor(1);
-				return ITEMFUNCTIONS.drawACard(gs, card);
+			onUse: (as, card) => {
+				as.hero.modifyArmor(1);
+				return ITEMFUNCTIONS.drawACard(as, card);
 			},
 		},
 		{
@@ -43,13 +43,13 @@ export const BronzeBuckler: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				gs.hero.modifyArmor(3);
-				return { ...gs };
+			onUse: (as) => {
+				as.hero.modifyArmor(3);
+				return { ...as };
 			},
 		},
 	],

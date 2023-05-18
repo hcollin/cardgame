@@ -1,6 +1,6 @@
 import { CARDRARITY, Card, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
-import { GameState } from "../../models/GameState";
+import { ArenaState } from "../../models/ArenaState";
 import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
 
@@ -29,12 +29,12 @@ export const IronMace: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -53,12 +53,12 @@ export const IronMace: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [EFFECTS.STUNNED, EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -78,20 +78,20 @@ export const IronMace: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs: GameState, card: Card) => {
+			onUse: (as: ArenaState, card: Card) => {
 
 				if (card.hand === "RIGHT") {
-					gs.rightHand.drawCards(gs, 1);
+					as.rightHand.drawCards(as, 1);
 				} else {
-					gs.leftHand.drawCards(gs, 1);
+					as.leftHand.drawCards(as, 1);
 
 				}
 
-				return { ...gs };
+				return { ...as };
 			},
 		},
 

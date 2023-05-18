@@ -3,7 +3,7 @@ import { TouchBackend } from "react-dnd-touch-backend";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useEffect, useState } from "react";
-import { GAMESTATES, GameState } from "./models/GameState";
+
 
 import { Campaign } from "./models/Campaign";
 import { createCampaign, createEmptyCampaign, createGameForArena, markCurrentLocationCompleted, setActiveLocationForCampaign } from "./game/CampaignTools";
@@ -22,15 +22,18 @@ import { generateRandomWorld } from "./utils/RandomWorldGenerator";
 import WorldNodeMap from "./views/WorldNodeMap";
 import { effStore } from "./utils/usePlayerEffect";
 
+import { ArenaState, ARENASTATES } from "./models/ArenaState";
 
 import metaData from "./metadata.json";
+
+
 
 const isMobile = false;
 
 function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createEmptyCampaign());
 
-	const [gameState, setGameState] = useState<GameState | null>(null);
+	const [arenaState, setarenaState] = useState<ArenaState | null>(null);
 	
 
 	const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
@@ -56,7 +59,7 @@ function App() {
 	function newCampaign() {
 		console.log("CREATE NEW CAMPAIGN");
 		setCurrentLocation(null);
-		setGameState(null);
+		setarenaState(null);
 
 		setTimeout(() => {
 			setCampaign({ ...createCampaign() });
@@ -64,18 +67,18 @@ function App() {
 
 	}
 
-	function arenaDone(gs: GameState) {
-		// console.log("ARENA COMPLETED: ", gs.state, " : ", campaign);
+	function arenaDone(as: ArenaState) {
+		// console.log("ARENA COMPLETED: ", as.state, " : ", campaign);
 
-		const ngs = { ...gs };
+		const ngs = { ...as };
 
-		if (ngs.state === GAMESTATES.ARENA_COMPLETED) {
+		if (ngs.state === ARENASTATES.ARENA_COMPLETED) {
 			ngs.hero.arenaReset(campaign.options);
 			setCampaign({ ...markCurrentLocationCompleted({ ...campaign, hero: ngs.hero }) });
 		} else {
-			setCampaign({ ...campaign, hero: gs.hero });
+			setCampaign({ ...campaign, hero: as.hero });
 		}
-		setGameState(null);
+		setarenaState(null);
 	}
 
 	function startArena() {
@@ -87,7 +90,7 @@ function App() {
 				if (ar) {
 					effStore.clear();
 					// console.log(`Start Arena ${ar.name}`, campaign);
-					setGameState(createGameForArena(ar, campaign));
+					setarenaState(createGameForArena(ar, campaign));
 				}
 			}
 
@@ -117,7 +120,7 @@ function App() {
 
 	let viewMode = "MENU";
 
-	if (gameState !== null) {
+	if (arenaState !== null) {
 		viewMode = "ARENA";
 	}
 
@@ -127,7 +130,7 @@ function App() {
 
 	return (
 		<DndProvider backend={backend}>
-			{gameState === null && (
+			{arenaState === null && (
 				<div className="main-screen">
 					<nav>
 						<button onClick={() => setVm("MAP")} className={`left ${vm === "MAP" ? "selected" : ""}`}>
@@ -168,7 +171,7 @@ function App() {
 					)}
 				</div>
 			)}
-			{gameState !== null && <Arena gs={gameState} onArenaFinished={arenaDone} />}
+			{arenaState !== null && <Arena as={arenaState} onArenaFinished={arenaDone} />}
 			<div className="version">{metaData.buildMajor}.{metaData.buildMinor}.{metaData.buildRevision} {metaData.buildTag}</div>
 		</DndProvider>
 	);

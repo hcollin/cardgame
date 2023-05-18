@@ -12,13 +12,14 @@ import healthImg from "./icons/health.png";
 import deadImg from "./icons/skull.png";
 
 import "./enemy-card.css";
-import { GameState } from "../models/GameState";
+import { ArenaState } from "../models/ArenaState";
+
 
 interface EnemyCardProps {
 	enemy: Enemy;
 	index: number;
 	size?: "mini" | "small" | "medium" | "big";
-	gs: GameState;
+	as: ArenaState;
 	onClick?: (index: number) => void;
 	onSelect?: (enemy: Enemy) => void;
 	onDrop?: (enemy: Enemy) => void;
@@ -78,7 +79,7 @@ export default function EnemyCard(props: EnemyCardProps) {
 				setHideDead(0);
 			}, DAMAGECLEANTIMEOUT);
 		}
-	}, [props.enemy, hideDead, props.gs]);
+	}, [props.enemy, hideDead, props.as]);
 
 	function handleClick() {
 		if (props.onClick) {
@@ -101,7 +102,7 @@ export default function EnemyCard(props: EnemyCardProps) {
 
 	if (hideDead === 0) return null;
 
-	const stats = enemy.getStats(props.gs);
+	const stats = enemy.getStats(props.as);
 	const cns: string[] = ["enemy-card"];
 	const contCns: string[] = ["enemy-container", props.size || "medium"];
 

@@ -1,33 +1,34 @@
 import { endTurn } from "../game/GameService";
-import { GAMESTATES, GameState } from "../models/GameState";
+import { ARENASTATES, ArenaState } from "../models/ArenaState";
+
 
 import "./arena-header.css";
 
-function ArenaHeader(props: { gameState: GameState; updateGameState: (gs: GameState) => void }) {
-	const { gameState } = props;
+function ArenaHeader(props: { arenaState: ArenaState; updatearenaState: (as: ArenaState) => void }) {
+	const { arenaState } = props;
 
 	function handleEndTurn() {
-		if (gameState && gameState.state === GAMESTATES.MYTURN) {
-			props.updateGameState(endTurn(gameState));
+		if (arenaState && arenaState.state === ARENASTATES.MYTURN) {
+			props.updatearenaState(endTurn(arenaState));
 		}
 	}
 
-	const endTurnActive = gameState.hero.getEnergy() === 0;
+	const endTurnActive = arenaState.hero.getEnergy() === 0;
 
 	return (
 		<header className="arena-header">
 			<div className="title">Frost Troll <span>Quest</span></div>
 			<div className="data">
-				{gameState.state === GAMESTATES.MYTURN && (
+				{arenaState.state === ARENASTATES.MYTURN && (
 					<>
-						<span className="turn-info">Turn <big>{gameState.turn}</big></span>
-						<span className="state-info"><small>in</small> {gameState.arena.name}</span>
+						<span className="turn-info">Turn <big>{arenaState.turn}</big></span>
+						<span className="state-info"><small>in</small> {arenaState.arena.name}</span>
 					</>
 				)}
-				{gameState.state === GAMESTATES.ENEMYTURN && <span className="header-enemy">Enemy turn</span>}
+				{arenaState.state === ARENASTATES.ENEMYTURN && <span className="header-enemy">Enemy turn</span>}
 			</div>
 			<div className={`end-turn ${endTurnActive ? "clickme": ""}`}>
-				<button onClick={handleEndTurn} disabled={gameState.state !== GAMESTATES.MYTURN}>
+				<button onClick={handleEndTurn} disabled={arenaState.state !== ARENASTATES.MYTURN}>
 					End Turn
 				</button>
 			</div>

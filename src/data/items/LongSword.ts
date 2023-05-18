@@ -28,12 +28,12 @@ export const LongSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -52,12 +52,12 @@ export const LongSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -76,12 +76,12 @@ export const LongSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -100,11 +100,11 @@ export const LongSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -119,12 +119,12 @@ export const LongSword: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
-			onUse: (gs) => {
-				gs.hero.modifyArmor(3);
-				return { ...gs };
+			onUse: (as) => {
+				as.hero.modifyArmor(3);
+				return { ...as };
 			},
 		},
 	],

@@ -1,7 +1,7 @@
 import { rnd } from "rndlib";
 import { ArenaOrcVillage } from "../data/ArenaOrcVillage";
 import { Campaign } from "../models/Campaign";
-import { GAMESTATES, GameState } from "../models/GameState";
+
 import { LOCATIONSTATUS, Location, LocationId, MapLocation, NodeLocation, WORLDLOCATIONTYPE } from "../models/World";
 import { LocNode, LocNodeLink, calculateForces } from "../utils/forceCalc";
 
@@ -82,18 +82,18 @@ export function updateLocations(mlocs: Map<LocationId, Location>, currentId: Loc
 	return nlocs;
 }
 
-// export function selectNextLocation(gs: GameState): Location {
-//     if(gs.world.size === 0) { throw new Error("World not initialized"); }
-//     if(gs.currentLocationId === "") {
-//         const locs = Array.from(gs.world.values());
+// export function selectNextLocation(as: arenaState): Location {
+//     if(as.world.size === 0) { throw new Error("World not initialized"); }
+//     if(as.currentLocationId === "") {
+//         const locs = Array.from(as.world.values());
 //         const loc = locs.find(l => l.status === LOCATIONSTATUS.ACTIVE);
 //         if(!loc) { throw new Error("No start location found"); }
 //         return loc;
 //     }
 
-//     const cloc = gs.world.get(gs.currentLocationId);
+//     const cloc = as.world.get(as.currentLocationId);
 //     if(!cloc) { throw new Error("Current location not found"); }
-//     const nloc = gs.world.get(cloc.nextLocations[0]);
+//     const nloc = as.world.get(cloc.nextLocations[0]);
 //     if(!nloc) { throw new Error("Next location not found"); }
 //     return nloc;
 // }

@@ -8,7 +8,8 @@ import { nameGenerator } from "./HeroTools";
 import { chance } from "rndlib";
 import { CampaignOptions } from "../models/Campaign";
 import { effStore } from "../utils/usePlayerEffect";
-import { GameState } from "../models/GameState";
+import { ArenaState } from "../models/ArenaState";
+
 
 const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
@@ -125,12 +126,12 @@ export default class Hero {
 		return true;
 	}
 
-	public consumeItem(itemId: string, gs: GameState) {
+	public consumeItem(itemId: string, as: ArenaState) {
 		const item = this.inventory.find((i) => i.id === itemId);
 		if (item) {
 			
 			if(item.onUse) {
-				item.onUse(gs);
+				item.onUse(as);
 			}
 
 			this.removeItem(item);

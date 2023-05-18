@@ -1,5 +1,6 @@
 import { EFFECTS } from "./Effects";
-import { GameState } from "./GameState";
+import { ArenaState } from "./ArenaState";
+
 
 export enum DAMAGETYPE {
 	SLASH = "SLASH",
@@ -64,6 +65,6 @@ export interface CardData {
 
     effectsOnHit: EFFECTS[];
 
-	onHit: (gs: GameState) => GameState;
-	onUse: (gs: GameState, card: Card) => GameState;
+	onHit: (as: ArenaState) => ArenaState;
+	onUse: (as: ArenaState, card: Card) => ArenaState;
 }

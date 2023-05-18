@@ -22,13 +22,13 @@ export const MinorRingOfPower: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				gs.hero.healHero(5);
-				return { ...gs };
+			onUse: (as) => {
+				as.hero.healHero(5);
+				return { ...as };
 			},
 		},
 		{
@@ -47,12 +47,12 @@ export const MinorRingOfPower: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -67,13 +67,13 @@ export const MinorRingOfPower: Item = {
             
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-                gs.hero.modifyEffectArmor(3);
-				return { ...gs };
+			onUse: (as) => {
+                as.hero.modifyEffectArmor(3);
+				return { ...as };
 			},
 		},
 	],

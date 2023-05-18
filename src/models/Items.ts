@@ -1,6 +1,6 @@
 import Hero from "../game/Hero";
 import { CardData } from "./Card";
-import { GameState } from "./GameState";
+import { ArenaState } from "./ArenaState";
 import { ITEMSLOT } from "./HeroStats";
 
 
@@ -25,8 +25,8 @@ export interface Item {
     bonus?: { [key: string]: number };
     onEquip?: (hero: Hero) => void;
     onUnequip?: (hero: Hero) => void;
-    onEndOfTurn?: (gs: GameState) => GameState;
-    onUse?: (gs: GameState) => GameState;
+    onEndOfTurn?: (as: ArenaState) => ArenaState;
+    onUse?: (as: ArenaState) => ArenaState;
 }
 
 

@@ -5,7 +5,7 @@ import Hero from "../game/Hero";
 import { Card } from "./Card";
 
 
-export enum GAMESTATES {
+export enum ARENASTATES {
     WAITING = "WAITING",
 
     INIT = "INIT",
@@ -30,7 +30,7 @@ export enum GAMESTATES {
 }
 
 
-export interface GameState {
+export interface ArenaState {
     id: string;
     turn: number;
     
@@ -42,7 +42,7 @@ export interface GameState {
     leftHand: Hand;
     rightHand: Hand;
     
-    state: GAMESTATES;
+    state: ARENASTATES;
     arena: Arena;
 
     playedCardsThisTurn: Card[];

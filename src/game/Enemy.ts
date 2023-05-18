@@ -1,11 +1,12 @@
 import { rnd } from "rndlib";
 import { DAMAGEFLAGS, DAMAGETYPE, Damage } from "../models/Card";
-import { GameState } from "../models/GameState";
+
 import { getDamageRange } from "./ItemTools";
 import { EFFECTS } from "../models/Effects";
 import { v4 } from "uuid";
 import { Cloneable } from "../utils/Clonable";
 import {effStore} from "../utils/usePlayerEffect";
+import { ArenaState } from "../models/ArenaState";
 
 export enum ENEMYSTATUS {
 	ALIVE = "alive",
@@ -47,7 +48,7 @@ export interface EnemyAction {
 	target: ENEMYACTIONTARGETS;
 	damageType?: DAMAGETYPE;
 	effect?: EFFECTS;
-	value?: number | ((gs: GameState) => number);
+	value?: number | ((as: ArenaState) => number);
 	description?: string;
 }
 
@@ -118,7 +119,7 @@ export class Enemy extends Cloneable {
 		this.damageTaken = [];
 	}
 
-	public takeDamage(damage: Damage, gs: GameState): void {
+	public takeDamage(damage: Damage, as: ArenaState): void {
 		const damageRange = this.getDamagePotential(damage);
 
 		const flags = damage.flags || [];
@@ -138,7 +139,7 @@ export class Enemy extends Cloneable {
 		this.health -= damageTaken;
 		if(flags.includes(DAMAGEFLAGS.VAMPIRIC)){
 			const healAmount = Math.round(damageTaken / 2);
-			gs.hero.healHero(healAmount);
+			as.hero.healHero(healAmount);
 			effStore.addEffect("heal", `Drained ${healAmount} health,`);
 		}
 
@@ -215,86 +216,86 @@ export class Enemy extends Cloneable {
 		}
 	}
 
-	public resolveAction(gs: GameState): GameState {
+	public resolveAction(as: ArenaState): ArenaState {
 		if (this.isDead()) {
-			return gs;
+			return as;
 		}
 
 		const act = this.actions[this.nextAction];
 
 		switch (act.action) {
 			case ENEMYACTIONS.ATTACK:
-				return this.actionAttack(gs, act);
+				return this.actionAttack(as, act);
 			case ENEMYACTIONS.BLOCK:
-				return this.actionBlock(gs, act);
+				return this.actionBlock(as, act);
 			case ENEMYACTIONS.HEAL:
-				return this.actionHeal(gs, act);
+				return this.actionHeal(as, act);
 			case ENEMYACTIONS.ESCAPE:
 				break;
 			case ENEMYACTIONS.WAIT:
-				return { ...gs };
+				return { ...as };
 			case ENEMYACTIONS.SPECIAL1:
-				return this.actionSpecial1(gs, act);
+				return this.actionSpecial1(as, act);
 			case ENEMYACTIONS.SPECIAL2:
-				return this.actionSpecial2(gs, act);
+				return this.actionSpecial2(as, act);
 			case ENEMYACTIONS.SPECIAL3:
-				return this.actionSpecial3(gs, act);
+				return this.actionSpecial3(as, act);
 			default:
 				break;
 		}
 
-		return { ...gs };
+		return { ...as };
 	}
 
-	protected actionAttack(gs: GameState, act: EnemyAction): GameState {
+	protected actionAttack(as: ArenaState, act: EnemyAction): ArenaState {
 		if (!this.isAbletoAct()) {
-			return gs;
+			return as;
 		}
-		let damage = parseActValue(act, gs);
+		let damage = parseActValue(act, as);
 
 		if (this.effectIsActive(EFFECTS.BOOSTED)) {
 			damage = Math.round(damage * 1.5);
 		}
 
-		gs.hero.takeDamage(damage);
-		return { ...gs };
+		as.hero.takeDamage(damage);
+		return { ...as };
 	}
 
-	protected actionHeal(gs: GameState, act: EnemyAction): GameState {
+	protected actionHeal(as: ArenaState, act: EnemyAction): ArenaState {
 		if (!this.isAbletoAct()) {
-			return gs;
+			return as;
 		}
 
 		if (act.target === ENEMYACTIONTARGETS.SELF) {
-			this.healMe(parseActValue(act, gs));
+			this.healMe(parseActValue(act, as));
 		}
 		if (act.target === ENEMYACTIONTARGETS.OTHERS) {
-			gs.arena.enemies.forEach((enemy) => {
-				enemy.healMe(parseActValue(act, gs));
+			as.arena.enemies.forEach((enemy) => {
+				enemy.healMe(parseActValue(act, as));
 			});
 		}
 
-		return { ...gs };
+		return { ...as };
 	}
 
-	protected actionBlock(gs: GameState, act: EnemyAction): GameState {
+	protected actionBlock(as: ArenaState, act: EnemyAction): ArenaState {
 		if (!this.isAbletoAct()) {
-			return gs;
+			return as;
 		}
-		this.block += parseActValue(act, gs);
-		return { ...gs };
+		this.block += parseActValue(act, as);
+		return { ...as };
 	}
 
-	protected actionSpecial1(gs: GameState, act: EnemyAction): GameState {
-		return { ...gs };
+	protected actionSpecial1(as: ArenaState, act: EnemyAction): ArenaState {
+		return { ...as };
 	}
 
-	protected actionSpecial2(gs: GameState, act: EnemyAction): GameState {
-		return { ...gs };
+	protected actionSpecial2(as: ArenaState, act: EnemyAction): ArenaState {
+		return { ...as };
 	}
 
-	protected actionSpecial3(gs: GameState, act: EnemyAction): GameState {
-		return { ...gs };
+	protected actionSpecial3(as: ArenaState, act: EnemyAction): ArenaState {
+		return { ...as };
 	}
 
 	public resetEnemy(): void {
@@ -316,63 +317,63 @@ export class Enemy extends Cloneable {
 
 	/**
 	 * Event hook that is triggered when the enemy dies
-	 * @param gs GameState
+	 * @param as arenaState
 	 * @returns
 	 */
-	public atDeath(gs: GameState): GameState {
-		return gs;
+	public atDeath(as: ArenaState): ArenaState {
+		return as;
 	}
 
 	/**
 	 * Event hook that is triggeered at the end of enemy turn
-	 * @param gs GameState
-	 * @returns GameState
+	 * @param as arenaState
+	 * @returns arenaState
 	 */
-	public atEndOfEnemyTurn(gs: GameState): GameState {
-		return gs;
+	public atEndOfEnemyTurn(as: ArenaState): ArenaState {
+		return as;
 	}
 
 	/**
 	 * Event hook that is triggered at the start of enemy turn
-	 * @param gs GameState
-	 * @returns GameState
+	 * @param as arenaState
+	 * @returns arenaState
 	 */
-	public atStartOfEnemyTurn(gs: GameState): GameState {
-		return gs;
+	public atStartOfEnemyTurn(as: ArenaState): ArenaState {
+		return as;
 	}
 
 	/**
 	 * Event hook that is triggeed at the start player turn
-	 * @param gs GameState
-	 * @returns GameState
+	 * @param as arenaState
+	 * @returns arenaState
 	 */
-	public atStartOfPlayerTurn(gs: GameState): GameState {
-		return gs;
+	public atStartOfPlayerTurn(as: ArenaState): ArenaState {
+		return as;
 	}
 
 	/**
 	 * Event hook that is triggered at the end of player turn
-	 * @param gs GameState
-	 * @returns GameState
+	 * @param as arenaState
+	 * @returns arenaState
 	 */
-	public atEndOfPlayerTurn(gs: GameState): GameState {
+	public atEndOfPlayerTurn(as: ArenaState): ArenaState {
 		this.block = 0;
-		return gs;
+		return as;
 	}
 
-	public cleanUpEndOfPlayerTurn(gs: GameState): GameState {
+	public cleanUpEndOfPlayerTurn(as: ArenaState): ArenaState {
 		this.damageTaken = [];
 
-		return gs;
+		return as;
 	}
 
-	public cleanUpEndOfEnemyTurn(gs: GameState): GameState {
+	public cleanUpEndOfEnemyTurn(as: ArenaState): ArenaState {
 		if (this.effects.has(EFFECTS.POISONED)) {
-			this.takeDamage({ amount: 1, type: DAMAGETYPE.POISON, variation: 0 }, gs);
+			this.takeDamage({ amount: 1, type: DAMAGETYPE.POISON, variation: 0 }, as);
 		}
 
 		if (this.effects.has(EFFECTS.BURNING)) {
-			this.takeDamage({ amount: 2, type: DAMAGETYPE.FIRE, variation: 1 }, gs);
+			this.takeDamage({ amount: 2, type: DAMAGETYPE.FIRE, variation: 1 }, as);
 		}
 
 		// Remove 1 from each effect
@@ -387,10 +388,10 @@ export class Enemy extends Cloneable {
 		this.nextAction++;
 		if (this.nextAction >= this.actions.length) this.nextAction = 0;
 
-		return { ...gs };
+		return { ...as };
 	}
 
-	public getStats(gs: GameState): EnemyStats {
+	public getStats(as: ArenaState): EnemyStats {
 		const act = this.actions[this.nextAction];
 
 		return {
@@ -399,7 +400,7 @@ export class Enemy extends Cloneable {
 			health: this.health,
 			block: this.block,
 			status: this.status,
-			action: this.nextActionString(gs),
+			action: this.nextActionString(as),
 			effects: this.effects,
 			groups: this.groups,
 		};
@@ -412,7 +413,7 @@ export class Enemy extends Cloneable {
 		return true;
 	}
 
-	protected nextActionString(gs: GameState): string {
+	protected nextActionString(as: ArenaState): string {
 		if (!this.actions[this.nextAction]) return "";
 		const act = this.actions[this.nextAction];
 
@@ -422,15 +423,15 @@ export class Enemy extends Cloneable {
 		strs.push(act.action);
 
 		if (act.value) {
-			strs.push(parseActValue(act, gs).toString());
+			strs.push(parseActValue(act, as).toString());
 		}
 		return strs.join(" ");
 	}
 }
 
-export function parseActValue(act: EnemyAction, gs: GameState): number {
+export function parseActValue(act: EnemyAction, as: ArenaState): number {
 	if (!act.value) return 0;
 	if (typeof act.value === "number") return act.value;
-	if (typeof act.value === "function") return act.value(gs);
+	if (typeof act.value === "function") return act.value(as);
 	return 0;
 }

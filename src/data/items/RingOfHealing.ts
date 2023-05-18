@@ -23,13 +23,13 @@ export const RingOfHealing: Item = {
             reach: 1,
             allowedTargets: [TARGETS.SELF],
             effectsOnHit: [],
-            onHit: (gs) => {
-                return { ...gs };
+            onHit: (as) => {
+                return { ...as };
             },
 
-            onUse: (gs) => {
-                gs.hero.healHero(5);
-                return { ...gs };
+            onUse: (as) => {
+                as.hero.healHero(5);
+                return { ...as };
             },
         },
 

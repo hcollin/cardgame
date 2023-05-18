@@ -11,9 +11,9 @@ export const MinorHealingPotion: Item = {
     rarity: ITEMRARITY.COMMON,
     bonus: {},
     price: 15,
-    onUse: (gs) => {
-        gs.hero.healHero(10);
-        return { ...gs };
+    onUse: (as) => {
+        as.hero.healHero(10);
+        return { ...as };
     }
 
 };
@@ -29,9 +29,9 @@ export const HealingPotion: Item = {
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {},
     price: 40,
-    onUse: (gs) => {
-        gs.hero.healHero(25);
-        return { ...gs };
+    onUse: (as) => {
+        as.hero.healHero(25);
+        return { ...as };
     }
 }
 
@@ -46,9 +46,9 @@ export const GreaterHealingPotion: Item = {
     rarity: ITEMRARITY.RARE,
     bonus: {},
     price: 70,
-    onUse: (gs) => {
-        gs.hero.healHero(60);
-        return { ...gs };
+    onUse: (as) => {
+        as.hero.healHero(60);
+        return { ...as };
     }
 };
 
@@ -64,10 +64,10 @@ export const MinorEnergyPotion: Item = {
     rarity: ITEMRARITY.COMMON,
     bonus: {},
     price: 20,
-    onUse: (gs) => {
-        // gs.hero.modifyEffectEnergy(1);
-        gs.hero.useEnergy(-1);
-        return { ...gs };
+    onUse: (as) => {
+        // as.hero.modifyEffectEnergy(1);
+        as.hero.useEnergy(-1);
+        return { ...as };
     }
 };
 
@@ -82,9 +82,9 @@ export const EnergyPotion: Item = {
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {},
     price: 50,
-    onUse: (gs) => {
-        gs.hero.useEnergy(-2);
-        return { ...gs };
+    onUse: (as) => {
+        as.hero.useEnergy(-2);
+        return { ...as };
     }
 };
 
@@ -99,9 +99,9 @@ export const GreaterEnergyPotion: Item = {
     rarity: ITEMRARITY.RARE,
     bonus: {},
     price: 95,
-    onUse: (gs) => {
-        gs.hero.useEnergy(-4);
-        return { ...gs };
+    onUse: (as) => {
+        as.hero.useEnergy(-4);
+        return { ...as };
     }
 };
 
@@ -116,10 +116,10 @@ export const MinorPotionOfInsight: Item = {
     rarity: ITEMRARITY.UNCOMMON,
     bonus: {},
     price: 20,
-    onUse: (gs) => {
-        gs.rightHand.drawCards(gs, 1);
-        gs.leftHand.drawCards(gs, 1);
-        return { ...gs };
+    onUse: (as) => {
+        as.rightHand.drawCards(as, 1);
+        as.leftHand.drawCards(as, 1);
+        return { ...as };
     }
 }
 
@@ -134,10 +134,10 @@ export const PotionOfInsight: Item = {
     rarity: ITEMRARITY.RARE,
     bonus: {},
     price: 50,
-    onUse: (gs) => {
-        gs.rightHand.drawCards(gs, 2);
-        gs.leftHand.drawCards(gs, 2);
-        return { ...gs };
+    onUse: (as) => {
+        as.rightHand.drawCards(as, 2);
+        as.leftHand.drawCards(as, 2);
+        return { ...as };
     }
 };
 
@@ -152,9 +152,9 @@ export const GreaterPotionOfInsight: Item = {
     rarity: ITEMRARITY.EPIC,
     bonus: {},
     price: 95,
-    onUse: (gs) => {
-        gs.rightHand.drawCards(gs, 3);
-        gs.leftHand.drawCards(gs, 3);
-        return { ...gs };
+    onUse: (as) => {
+        as.rightHand.drawCards(as, 3);
+        as.leftHand.drawCards(as, 3);
+        return { ...as };
     }
 }

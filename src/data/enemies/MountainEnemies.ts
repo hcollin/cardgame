@@ -1,5 +1,5 @@
 import { Enemy, EnemyAction, ENEMYACTIONS, ENEMYACTIONTARGETS } from "../../game/Enemy";
-import { GameState } from "../../models/GameState";
+import { ArenaState } from "../../models/ArenaState";
 import { ENEMYDATA } from "../EnemyData";
 
 import imgFrostTroll from "./pics/frosttroll.png";
@@ -20,9 +20,9 @@ export class Wolf extends Enemy {
 		{
 			action: ENEMYACTIONS.ATTACK,
 			target: ENEMYACTIONTARGETS.HERO,
-			value: (gs: GameState) => {
+			value: (as: ArenaState) => {
 				// How many living wolves are in the arena?
-				let livingWolves = gs.arena.enemies.filter((enemy) => enemy.getName() === "Wolf" && !enemy.isDead()).length;
+				let livingWolves = as.arena.enemies.filter((enemy) => enemy.getName() === "Wolf" && !enemy.isDead()).length;
 				return 5 * livingWolves;
 			},
 		},
@@ -67,15 +67,15 @@ export class HillHare extends Enemy {
     /**
      * Hillhare will multiple! Like Rabbits! :facepalm:
      * 
-     * @param gs 
+     * @param as 
      * @param act 
      * @returns 
      */
-	protected actionSpecial1(gs: GameState, act: EnemyAction) {
+	protected actionSpecial1(as: ArenaState, act: EnemyAction) {
 		const clonedRabbit = new HillHare();
 		clonedRabbit.resetEnemy();
-		gs.arena.enemies.push(clonedRabbit);
-		return { ...gs };
+		as.arena.enemies.push(clonedRabbit);
+		return { ...as };
 	}
 
 	constructor() {

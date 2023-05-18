@@ -1,4 +1,4 @@
-import { GameState } from "../models/GameState";
+import { ArenaState } from "../models/ArenaState";
 
 import healthIcon from "./icons/health.png";
 import armorIcon from "./icons/armor.png";
@@ -10,8 +10,9 @@ import goldIcon from "./icons/gold.png";
 
 import "./hero-info.css";
 
-function HeroInfo(props: { gameState: GameState }) {
-	const { gameState } = props;
+
+function HeroInfo(props: { arenaState: ArenaState }) {
+	const { arenaState } = props;
 
 	return (
 		<div className="hero-info">
@@ -19,20 +20,20 @@ function HeroInfo(props: { gameState: GameState }) {
 				<div className="icon">
 					<img src={goldIcon} alt="Gold" />
 				</div>
-				<div className="value">{gameState.hero.gold}</div>
+				<div className="value">{arenaState.hero.gold}</div>
 			</div>
 
 			<div className="small-value experience">
 				<div className="icon">
 					<img src={experienceIcon} alt="Experience" />
 				</div>
-				<div className="value">{gameState.hero.getExperience()}</div>
+				<div className="value">{arenaState.hero.getExperience()}</div>
 			</div>
 
 			<div className="name-info">
-				<h1>{gameState.hero.getName()}</h1>
+				<h1>{arenaState.hero.getName()}</h1>
 				<h2>
-					level {gameState.hero.getLevel()} {gameState.hero.getClassName()}
+					level {arenaState.hero.getLevel()} {arenaState.hero.getClassName()}
 				</h2>
 			</div>
 
@@ -41,8 +42,8 @@ function HeroInfo(props: { gameState: GameState }) {
 					<img src={energyIcon} alt="Energy" />
 				</div>
 				<div className="values">
-					<span className="main">{gameState.hero.getEnergy()}</span>
-					<span className="base"> / {gameState.hero.getEffectedEnergy()}</span>
+					<span className="main">{arenaState.hero.getEnergy()}</span>
+					<span className="base"> / {arenaState.hero.getEffectedEnergy()}</span>
 				</div>
 			</div>
 
@@ -51,8 +52,8 @@ function HeroInfo(props: { gameState: GameState }) {
 					<img src={healthIcon} alt="Health" />
 				</div>
 				<div className="values">
-					<span className="main">{gameState.hero.getHealth()}</span>
-					<span className="base"> / {gameState.hero.getMaxHealth()}</span>
+					<span className="main">{arenaState.hero.getHealth()}</span>
+					<span className="base"> / {arenaState.hero.getMaxHealth()}</span>
 				</div>
 			</div>
 
@@ -61,8 +62,8 @@ function HeroInfo(props: { gameState: GameState }) {
 					<img src={armorIcon} alt="Armor" />
 				</div>
 				<div className="values">
-					<span className="main">{gameState.hero.getArmor()}</span>
-					<span className="base"> / {gameState.hero.getEffectedArmor()}</span>
+					<span className="main">{arenaState.hero.getArmor()}</span>
+					<span className="base"> / {arenaState.hero.getEffectedArmor()}</span>
 				</div>
 			</div>
 
@@ -70,14 +71,14 @@ function HeroInfo(props: { gameState: GameState }) {
 				<div className="icon">
 					<img src={dodgeIcon} alt="Dodge" />
 				</div>
-				<div className="value">{gameState.hero.getDodge()}%</div>
+				<div className="value">{arenaState.hero.getDodge()}%</div>
 			</div>
 
 			<div className="small-value damage-reduction">
 				<div className="icon">
 					<img src={drIcon} alt="Damage Reduction" />
 				</div>
-				<div className="value">{gameState.hero.getDamageReduction()}</div>
+				<div className="value">{arenaState.hero.getDamageReduction()}</div>
 			</div>
 		</div>
 	);

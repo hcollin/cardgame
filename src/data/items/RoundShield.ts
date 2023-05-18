@@ -23,13 +23,13 @@ export const RoundShield: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				gs.hero.modifyArmor(2);
-				return { ...gs };
+			onUse: (as) => {
+				as.hero.modifyArmor(2);
+				return { ...as };
 			},
 		},
 		{
@@ -43,13 +43,13 @@ export const RoundShield: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				gs.hero.modifyArmor(5);
-				return { ...gs };
+			onUse: (as) => {
+				as.hero.modifyArmor(5);
+				return { ...as };
 			},
 		},
 		{
@@ -69,12 +69,12 @@ export const RoundShield: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [EFFECTS.STUNNED],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 	],

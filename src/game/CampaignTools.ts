@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
 import { LocationId, Location, LOCATIONSTATUS } from "../models/World";
 import { Campaign } from "../models/Campaign";
-import { GAMESTATES, GameState } from "../models/GameState";
+
 import { Deck } from "./Deck";
 import { createDecks } from "./GameService";
 import { buildNodeLocations, createWorld } from "./WorldTools";
@@ -12,6 +12,7 @@ import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
 import { generateRandomWorld } from "../utils/RandomWorldGenerator";
 import { Hand } from "./Hand";
+import { ArenaState, ARENASTATES } from "../models/ArenaState";
 
 /**
  * This is used to initialize the state
@@ -126,20 +127,20 @@ export function setActiveLocationForCampaign(campaign: Campaign, locationId: Loc
 	return { ...nc };
 }
 
-export function createGameFromCampaign(campaign: Campaign): GameState {
+export function createGameFromCampaign(campaign: Campaign): ArenaState {
 	const location = campaign.world.get(campaign.currentLocationId);
 	if (!location) {
 		throw new Error(`Location ${campaign.id} not found from campaign world.`);
 	}
 
-	let gameState: GameState = {
+	let arenaState: ArenaState = {
 		id: v4(),
 		turn: 0,
 		leftHandDeck: new Deck([]),
 		rightHandDeck: new Deck([]),
 		leftHand: new Hand("LEFT"),
 		rightHand: new Hand("RIGHT"),
-		state: GAMESTATES.MYTURN,
+		state: ARENASTATES.MYTURN,
 		arena: location.arena[0],
 		// world: campaign.world,
 		// currentLocationId: campaign.currentLocationId,
@@ -149,35 +150,35 @@ export function createGameFromCampaign(campaign: Campaign): GameState {
 
 	// if (campaign.hero.activeItemLeft === null || campaign.hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
 
-	gameState = createDecks(gameState);
+	arenaState = createDecks(arenaState);
 
-	gameState.rightHandDeck.shuffleDeck();
-	gameState.leftHandDeck.shuffleDeck();
+	arenaState.rightHandDeck.shuffleDeck();
+	arenaState.leftHandDeck.shuffleDeck();
 
-	gameState.rightHand.drawNewHand(gameState);
+	arenaState.rightHand.drawNewHand(arenaState);
 
-	gameState.rightHand.drawNewHand(gameState);
-	gameState.leftHand.drawNewHand(gameState);
+	arenaState.rightHand.drawNewHand(arenaState);
+	arenaState.leftHand.drawNewHand(arenaState);
 	
-	gameState.arena.resetArena();
-	gameState.hero.arenaReset(campaign.options);
-	gameState.turn = 1;
+	arenaState.arena.resetArena();
+	arenaState.hero.arenaReset(campaign.options);
+	arenaState.turn = 1;
 
-	// gameState.hero.aps = gameState.hero.maxAps;
+	// arenaState.hero.aps = arenaState.hero.maxAps;
 
-	return gameState;
+	return arenaState;
 }
 
-export function createGameForArena(arena: Arena, campaign: Campaign): GameState {
+export function createGameForArena(arena: Arena, campaign: Campaign): ArenaState {
 	const hero = campaign.hero;
-	let gameState: GameState = {
+	let arenaState: ArenaState = {
 		id: v4(),
 		turn: 0,
 		leftHandDeck: new Deck([]),
 		rightHandDeck: new Deck([]),
 		leftHand: new Hand("LEFT"),
 		rightHand: new Hand("RIGHT"),
-		state: GAMESTATES.MYTURN,
+		state: ARENASTATES.MYTURN,
 		arena: arena,
 		hero: hero,
 		playedCardsThisTurn: [],
@@ -185,19 +186,19 @@ export function createGameForArena(arena: Arena, campaign: Campaign): GameState 
 
 	// if (hero.activeItemLeft === null || hero.activeItemRight === null) { throw new Error("Hero has no active items"); }
 
-	gameState = createDecks(gameState);
-	gameState.rightHandDeck.shuffleDeck();
-	gameState.leftHandDeck.shuffleDeck();
+	arenaState = createDecks(arenaState);
+	arenaState.rightHandDeck.shuffleDeck();
+	arenaState.leftHandDeck.shuffleDeck();
 
-	gameState.rightHand.drawNewHand(gameState);
-	gameState.leftHand.drawNewHand(gameState);
+	arenaState.rightHand.drawNewHand(arenaState);
+	arenaState.leftHand.drawNewHand(arenaState);
 
-	gameState.arena.resetArena();
-	gameState.turn = 1;
+	arenaState.arena.resetArena();
+	arenaState.turn = 1;
 
-	gameState.hero.arenaReset(campaign.options);
-	// gameState.hero = resetHero(gameState.hero, false);
+	arenaState.hero.arenaReset(campaign.options);
+	// arenaState.hero = resetHero(arenaState.hero, false);
 
-	return gameState;
+	return arenaState;
 }
 

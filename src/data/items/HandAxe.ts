@@ -1,6 +1,6 @@
 import { CARDRARITY, Card, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
-import { GameState } from "../../models/GameState";
+import { ArenaState } from "../../models/ArenaState";
 import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
 
@@ -29,12 +29,12 @@ export const HandAxe: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -58,12 +58,12 @@ export const HandAxe: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				return { ...gs };
+			onUse: (as) => {
+				return { ...as };
 			},
 		},
 		{
@@ -88,13 +88,13 @@ export const HandAxe: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs: GameState, card: Card) => {
-				gs.hero.modifyArmor(-2, true);
-				return { ...gs };
+			onUse: (as: ArenaState, card: Card) => {
+				as.hero.modifyArmor(-2, true);
+				return { ...as };
 			},
 		},
 		

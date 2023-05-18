@@ -1,7 +1,8 @@
 import { arnd, rnd } from "rndlib";
 import { Card } from "../models/Card";
-import { GameState } from "../models/GameState";
+
 import { Deck } from "./Deck";
+import { ArenaState } from "../models/ArenaState";
 
 
 export class Hand {
@@ -23,50 +24,50 @@ export class Hand {
         return this.handSize;
     }
 
-    public drawNewHand(gs: GameState): GameState {
-        this.discardAll(gs);
-        const deck = this.getDeck(gs);
-        this.calculateHandSize(gs);
+    public drawNewHand(as: ArenaState): ArenaState {
+        this.discardAll(as);
+        const deck = this.getDeck(as);
+        this.calculateHandSize(as);
         this.cards = deck.drawCards(this.handSize);
-        return { ...gs };
+        return { ...as };
     }
 
-    public drawCards(gs: GameState, amount = 1): GameState {
-        const deck = this.getDeck(gs);
+    public drawCards(as: ArenaState, amount = 1): ArenaState {
+        const deck = this.getDeck(as);
         const cards = deck.drawCards(amount);
         this.cards = this.cards.concat(cards);
-        return { ...gs };
+        return { ...as };
     }
 
     public hasCard(card: Card): boolean {
         return this.cards.includes(card);
     }
 
-    public discardAll(gs: GameState): GameState {
-        const deck = this.getDeck(gs);
+    public discardAll(as: ArenaState): ArenaState {
+        const deck = this.getDeck(as);
         deck.discardCards([...this.cards]);
         this.cards = [];
-        return { ...gs };
+        return { ...as };
     }
 
-    public discardCard(card: Card, gs: GameState): GameState {
-        const deck = this.getDeck(gs);
+    public discardCard(card: Card, as: ArenaState): ArenaState {
+        const deck = this.getDeck(as);
         deck.discardCards([card])
         this.cards = this.cards.filter(c => c.id !== card.id);
-        return { ...gs };
+        return { ...as };
     }
 
-    public discardRandomCard(gs: GameState): GameState {
+    public discardRandomCard(as: ArenaState): ArenaState {
         const card = arnd(this.cards);
-        return this.discardCard(card, gs);
+        return this.discardCard(card, as);
     }
 
-    private getDeck(gs: GameState) {
-        return this.hand === "RIGHT" ? gs.rightHandDeck : gs.leftHandDeck;
+    private getDeck(as: ArenaState) {
+        return this.hand === "RIGHT" ? as.rightHandDeck : as.leftHandDeck;
     }
 
-    private calculateHandSize(gs: GameState) {
-        this.handSize = gs.hero.getHandSize(this.hand);
+    private calculateHandSize(as: ArenaState) {
+        this.handSize = as.hero.getHandSize(this.hand);
     }
 
 }

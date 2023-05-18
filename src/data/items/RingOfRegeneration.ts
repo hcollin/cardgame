@@ -2,7 +2,7 @@ import { CARDRARITY, DAMAGETYPE, TARGETS } from "../../models/Card";
 import { EFFECTS } from "../../models/Effects";
 import { ITEMSLOT } from "../../models/HeroStats";
 import { ITEMRARITY, Item } from "../../models/Items";
-import { GameState } from "../../models/GameState";
+import { ArenaState } from "../../models/ArenaState";
 
 export const RingOfRegeneration: Item = {
     id: "ring-of-regeneration",
@@ -14,9 +14,9 @@ export const RingOfRegeneration: Item = {
     price: 250,
     cards: [],
     rarity: ITEMRARITY.EPIC,
-    onEndOfTurn: (gs: GameState) => {
-        gs.hero.healHero(1);
-        return { ...gs };
+    onEndOfTurn: (as: ArenaState) => {
+        as.hero.healHero(1);
+        return { ...as };
     }
 
 

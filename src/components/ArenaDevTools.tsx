@@ -1,7 +1,8 @@
 import { killTargetEnemy } from "../game/GameService";
 import { Campaign } from "../models/Campaign";
 import { DAMAGETYPE } from "../models/Card";
-import { GAMESTATES, GameState } from "../models/GameState";
+import { ARENASTATES, ArenaState } from "../models/ArenaState";
+
 import isDev from "../utils/isDevelopment";
 
 const styles: React.CSSProperties = {
@@ -20,25 +21,25 @@ const styles: React.CSSProperties = {
 	color: "white",
 };
 
-function ArenaDevTools(props: { gs: GameState; update: (gs: GameState) => void }) {
+function ArenaDevTools(props: { as: ArenaState; update: (as: ArenaState) => void }) {
 	function killHero() {
-		props.gs.hero.takeDamage(100000);
-		props.gs.state = GAMESTATES.DEAD;
-		props.update({ ...props.gs });
+		props.as.hero.takeDamage(100000);
+		props.as.state = ARENASTATES.DEAD;
+		props.update({ ...props.as });
 	}
 
 	function winArena() {
 
 
-		const gameState = props.gs.arena.enemies.reduce((gs, curr) => {
+		const arenaState = props.as.arena.enemies.reduce((as, curr) => {
 
-			gs = killTargetEnemy(gs, curr.id);
+			as = killTargetEnemy(as, curr.id);
 
-			return { ...gs };
-		}, props.gs);
+			return { ...as };
+		}, props.as);
 
-		// gameState.state = GAMESTATES.ARENA_VICTORY;
-		props.update({ ...gameState });
+		// arenaState.state = arenaState.ARENA_VICTORY;
+		props.update({ ...arenaState });
 	}
 
 	if(!isDev()) {

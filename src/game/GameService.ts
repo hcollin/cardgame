@@ -1,6 +1,6 @@
 import { Card, DAMAGETYPE, TARGETS } from "../models/Card";
 import { Deck } from "./Deck";
-import { GAMESTATES, GameState } from "../models/GameState";
+
 import { createCardsFromItem } from "./ItemTools";
 import { v4 } from "uuid";
 import { EmptyArena } from "../data/EmptyArena";
@@ -11,8 +11,9 @@ import { ClassWarrior } from "../data/Classes";
 import { Enemy } from "./Enemy";
 import { Hand } from "./Hand";
 import { effStore } from "../utils/usePlayerEffect";
+import { ARENASTATES, ArenaState } from "../models/ArenaState";
 
-export function createGame(hero?: Hero): GameState {
+export function createGame(hero?: Hero): ArenaState {
 	return {
 		id: v4(),
 		turn: 0,
@@ -20,7 +21,7 @@ export function createGame(hero?: Hero): GameState {
 		rightHandDeck: new Deck([]),
 		leftHand: new Hand("LEFT"),
 		rightHand: new Hand("RIGHT"),
-		state: GAMESTATES.INIT,
+		state: ARENASTATES.INIT,
 		arena: new EmptyArena(),
 		// world: createWorld(LOCATIONS),
 		// currentLocationId: "",
@@ -29,76 +30,76 @@ export function createGame(hero?: Hero): GameState {
 	};
 }
 
-export function createDecks(gs: GameState): GameState {
-	const rightHandItem = gs.hero.getEquippedItem(ITEMSLOT.RIGHT_HAND);
-	const leftHandItem = gs.hero.getEquippedItem(ITEMSLOT.LEFT_HAND);
+export function createDecks(as: ArenaState): ArenaState {
+	const rightHandItem = as.hero.getEquippedItem(ITEMSLOT.RIGHT_HAND);
+	const leftHandItem = as.hero.getEquippedItem(ITEMSLOT.LEFT_HAND);
 
 	if (rightHandItem) {
-		gs.rightHandDeck = new Deck(createCardsFromItem(rightHandItem, "RIGHT"));
-		const ring = gs.hero.getEquippedItem(ITEMSLOT.RIGHT_FINGER);
+		as.rightHandDeck = new Deck(createCardsFromItem(rightHandItem, "RIGHT"));
+		const ring = as.hero.getEquippedItem(ITEMSLOT.RIGHT_FINGER);
 		if (ring) {
-			gs.rightHandDeck.addCards(createCardsFromItem(ring, "RIGHT"));
+			as.rightHandDeck.addCards(createCardsFromItem(ring, "RIGHT"));
 		}
 	}
 	if (leftHandItem) {
-		gs.leftHandDeck = new Deck(createCardsFromItem(leftHandItem, "LEFT"));
-		const ring = gs.hero.getEquippedItem(ITEMSLOT.LEFT_FINGER);
+		as.leftHandDeck = new Deck(createCardsFromItem(leftHandItem, "LEFT"));
+		const ring = as.hero.getEquippedItem(ITEMSLOT.LEFT_FINGER);
 		if (ring) {
 			console.log("Ring on left hand", ring);
-			gs.leftHandDeck.addCards(createCardsFromItem(ring, "LEFT"));
+			as.leftHandDeck.addCards(createCardsFromItem(ring, "LEFT"));
 		}
 	}
-	// gs.leftHandDeck = new Deck(createCardsFromItem(left, "LEFT"));
-	// gs.rightHandDeck = new Deck(createCardsFromItem(right, "RIGHT"));
+	// as.leftHandDeck = new Deck(createCardsFromItem(left, "LEFT"));
+	// as.rightHandDeck = new Deck(createCardsFromItem(right, "RIGHT"));
 
-	return { ...gs };
+	return { ...as };
 }
 
-// export function startGame(gameState: GameState): GameState {
+// export function startGame(arenaState: arenaState): arenaState {
 
-// 	const nextLoc = selectNextLocation(gameState);
-// 	gameState.currentLocationId = nextLoc.id;
-// 	gameState.arena = nextLoc.arena[0];
+// 	const nextLoc = selectNextLocation(arenaState);
+// 	arenaState.currentLocationId = nextLoc.id;
+// 	arenaState.arena = nextLoc.arena[0];
 
 // 	console.log("NEXT ARENA", nextLoc.arena[0].name)
 
-// 	gameState.state = GAMESTATES.MYTURN;
+// 	arenaState.state = ARENASTATES.MYTURN;
 
-// 	gameState = selectItems(gameState, Shield, arnd([LongSword, Mace]));
-// 	// gameState = selectItems(gameState, Shield, Mace);
+// 	arenaState = selectItems(arenaState, Shield, arnd([LongSword, Mace]));
+// 	// arenaState = selectItems(arenaState, Shield, Mace);
 
-// 	gameState.rightHandDeck.shuffleDeck();
-// 	gameState.leftHandDeck.shuffleDeck();
+// 	arenaState.rightHandDeck.shuffleDeck();
+// 	arenaState.leftHandDeck.shuffleDeck();
 
-// 	gameState.rightHand = gameState.rightHandDeck.drawCards(3);
-// 	gameState.leftHand = gameState.leftHandDeck.drawCards(3);
+// 	arenaState.rightHand = arenaState.rightHandDeck.drawCards(3);
+// 	arenaState.leftHand = arenaState.leftHandDeck.drawCards(3);
 
-// 	gameState.arena.resetArena();
-// 	gameState.turn = 1;
+// 	arenaState.arena.resetArena();
+// 	arenaState.turn = 1;
 
-// 	return { ...gameState };
+// 	return { ...arenaState };
 // }
 
-export function playItemCard(gameState: GameState, card: Card, targetIndex?: number): GameState {
-	if (gameState.hero.getEnergy() < card.apCost) {
+export function playItemCard(arenaState: ArenaState, card: Card, targetIndex?: number): ArenaState {
+	if (arenaState.hero.getEnergy() < card.apCost) {
 		console.log("Not enough Action Points");
-		return { ...gameState };
+		return { ...arenaState };
 	}
 
 	// If the card has an onUse effect, use it
-	gameState = card.onUse(gameState, card);
+	arenaState = card.onUse(arenaState, card);
 
 	// If target is specified, use the card on the target
 	if (targetIndex !== undefined && targetIndex > -1) {
 		let allTargets: number[] = [targetIndex];
 
 		if (card.allowedTargets.includes(TARGETS.ALLENEMIES)) {
-			allTargets = gameState.arena.enemies.map((e, i) => i);
+			allTargets = arenaState.arena.enemies.map((e, i) => i);
 		} else if (card.allowedTargets.includes(TARGETS.ADJACENT)) {
 			if (targetIndex > 0) {
 				allTargets.push(targetIndex - 1);
 			}
-			if (targetIndex < gameState.arena.enemies.length - 1) {
+			if (targetIndex < arenaState.arena.enemies.length - 1) {
 				allTargets.push(targetIndex + 1);
 			}
 		}
@@ -106,13 +107,13 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 		
 
 		allTargets.forEach((ind) => {
-			const enemy = gameState.arena.enemies[ind];
+			const enemy = arenaState.arena.enemies[ind];
 
 			if (!enemy.isDead()) {
 				enemy.beforeDamage();
 
 				card.damage.forEach((dmg) => {
-					enemy.takeDamage(dmg, gameState);
+					enemy.takeDamage(dmg, arenaState);
 				});
 
 				card.effectsOnHit.forEach((effect) => {
@@ -120,8 +121,8 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 				});
 
 				if (enemy.isDead()) {
-					gameState.hero.gainExperience(enemy.getExperienceValue());
-					gameState = enemy.atDeath(gameState);
+					arenaState.hero.gainExperience(enemy.getExperienceValue());
+					arenaState = enemy.atDeath(arenaState);
 				}
 			}
 		});
@@ -129,129 +130,129 @@ export function playItemCard(gameState: GameState, card: Card, targetIndex?: num
 
 	effStore.addEffect("CARD", `Played card ${card.name}`);
 
-	gameState.hero.useEnergy(card.apCost);
-	// gameState.hero.aps -= card.apCost;
+	arenaState.hero.useEnergy(card.apCost);
+	// arenaState.hero.aps -= card.apCost;
 
-	gameState.playedCardsThisTurn.push(card);
+	arenaState.playedCardsThisTurn.push(card);
 
 	// Discard used card
 	if (card.hand === "RIGHT") {
-		gameState.rightHand.discardCard(card, gameState);
+		arenaState.rightHand.discardCard(card, arenaState);
 	} else {
-		gameState.leftHand.discardCard(card, gameState);
+		arenaState.leftHand.discardCard(card, arenaState);
 	}
 
-	if (checkForWin(gameState)) {
-		return { ...gameState, state: GAMESTATES.ARENA_VICTORY };
+	if (checkForWin(arenaState)) {
+		return { ...arenaState, state: ARENASTATES.ARENA_VICTORY };
 	}
 
 
-	return { ...gameState };
+	return { ...arenaState };
 }
 
-export function killTargetEnemy(gs: GameState, enemyId: string): GameState {
+export function killTargetEnemy(as: ArenaState, enemyId: string): ArenaState {
 
-	const enemy = gs.arena.enemies.find((e) => e.id === enemyId);
+	const enemy = as.arena.enemies.find((e) => e.id === enemyId);
 
-	if (!enemy) { return gs; }
+	if (!enemy) { return as; }
 
 	enemy.takeDamage({
 		amount: enemy.getHealth() * 2,
 		type: DAMAGETYPE.SLASH,
 		variation: 0
-	}, gs);
+	}, as);
 
-	gs.hero.gainExperience(enemy.getExperienceValue());
+	as.hero.gainExperience(enemy.getExperienceValue());
 
 
-	return { ...gs };
+	return { ...as };
 }
 
-export function endTurn(gameState: GameState): GameState {
+export function endTurn(arenaState: ArenaState): ArenaState {
 	// Item onEndOfTurn effects
-	gameState.hero.getItemSlots().forEach((item) => {
+	arenaState.hero.getItemSlots().forEach((item) => {
 		if (item.onEndOfTurn) {
-			gameState = item.onEndOfTurn(gameState);
+			arenaState = item.onEndOfTurn(arenaState);
 		}
 	});
 
 	// Events at the end of the player turn
-	gameState.arena.enemies.forEach((enemy) => {
-		gameState = enemy.atEndOfPlayerTurn(gameState);
-		gameState = enemy.cleanUpEndOfPlayerTurn(gameState);
+	arenaState.arena.enemies.forEach((enemy) => {
+		arenaState = enemy.atEndOfPlayerTurn(arenaState);
+		arenaState = enemy.cleanUpEndOfPlayerTurn(arenaState);
 	});
 
-	gameState.state = GAMESTATES.ENEMYTURN;
+	arenaState.state = ARENASTATES.ENEMYTURN;
 
 	// Move cards from hand to discard
-	gameState.leftHand.discardAll(gameState);
-	gameState.rightHand.discardAll(gameState);
+	arenaState.leftHand.discardAll(arenaState);
+	arenaState.rightHand.discardAll(arenaState);
 	
-	gameState.playedCardsThisTurn = [];
+	arenaState.playedCardsThisTurn = [];
 
-	if (checkForDeath(gameState)) {
-		return { ...gameState, state: GAMESTATES.DEAD };
+	if (checkForDeath(arenaState)) {
+		return { ...arenaState, state: ARENASTATES.DEAD };
 	}
 
-	if (checkForWin(gameState)) {
-		return { ...gameState, state: GAMESTATES.ARENA_VICTORY };
+	if (checkForWin(arenaState)) {
+		return { ...arenaState, state: ARENASTATES.ARENA_VICTORY };
 	}
 
 	// Events at the start of the enemy turn
-	gameState.arena.enemies.forEach((enemy) => {
-		gameState = enemy.atStartOfEnemyTurn(gameState);
+	arenaState.arena.enemies.forEach((enemy) => {
+		arenaState = enemy.atStartOfEnemyTurn(arenaState);
 	});
 
-	return { ...gameState };
+	return { ...arenaState };
 }
 
-export function endEnemyTurn(gameState: GameState): GameState {
+export function endEnemyTurn(arenaState: ArenaState): ArenaState {
 	// Resolve enemy actions
-	gameState = gameState.arena.enemies.reduce(
-		(gs, enemy) => {
-			return enemy.resolveAction(gs);
+	arenaState = arenaState.arena.enemies.reduce(
+		(as, enemy) => {
+			return enemy.resolveAction(as);
 		},
-		{ ...gameState },
+		{ ...arenaState },
 	);
 
-	gameState.arena.enemies.forEach((enemy) => {
-		gameState = enemy.atEndOfEnemyTurn(gameState);
-		gameState = enemy.cleanUpEndOfEnemyTurn(gameState);
+	arenaState.arena.enemies.forEach((enemy) => {
+		arenaState = enemy.atEndOfEnemyTurn(arenaState);
+		arenaState = enemy.cleanUpEndOfEnemyTurn(arenaState);
 	});
 
-	// gameState.hero.armor = getBaseArmorValue(gameState.hero);
+	// arenaState.hero.armor = getBaseArmorValue(arenaState.hero);
 
-	if (checkForDeath(gameState)) {
-		return { ...gameState, state: GAMESTATES.DEAD };
+	if (checkForDeath(arenaState)) {
+		return { ...arenaState, state: ARENASTATES.DEAD };
 	}
 
-	if (checkForWin(gameState)) {
-		return { ...gameState, state: GAMESTATES.ARENA_VICTORY };
+	if (checkForWin(arenaState)) {
+		return { ...arenaState, state: ARENASTATES.ARENA_VICTORY };
 	}
 
-	gameState.state = GAMESTATES.MYTURN;
-	gameState.hero.turnReset();
-	gameState.turn++;
-	// gameState.hero.aps = gameState.hero.maxAps;
+	arenaState.state = ARENASTATES.MYTURN;
+	arenaState.hero.turnReset();
+	arenaState.turn++;
+	// arenaState.hero.aps = arenaState.hero.maxAps;
 
 	// Draw X cards to both hands
-	gameState.leftHand.drawNewHand(gameState);
-	gameState.rightHand.drawNewHand(gameState);
+	arenaState.leftHand.drawNewHand(arenaState);
+	arenaState.rightHand.drawNewHand(arenaState);
 	
-	gameState.arena.enemies.forEach((enemy) => {
-		gameState = enemy.atStartOfPlayerTurn(gameState);
+	arenaState.arena.enemies.forEach((enemy) => {
+		arenaState = enemy.atStartOfPlayerTurn(arenaState);
 	});
 
-	return { ...gameState };
+	return { ...arenaState };
 }
 
-export function checkForWin(gs: GameState): boolean {
+export function checkForWin(as: ArenaState): boolean {
 	// Count all dead enemies in the arena
-	const deadEnemies = gs.arena.enemies.filter((enemy) => enemy.isDead()).length;
+	const deadEnemies = as.arena.enemies.filter((enemy) => enemy.isDead()).length;
 
-	return deadEnemies === gs.arena.enemies.length;
+	return deadEnemies === as.arena.enemies.length;
 }
 
-export function checkForDeath(gs: GameState): boolean {
-	return gs.hero.getHealth() <= 0;
+export function checkForDeath(as: ArenaState): boolean {
+	return as.hero.getHealth() <= 0;
 }

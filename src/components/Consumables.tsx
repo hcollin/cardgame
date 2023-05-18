@@ -1,6 +1,6 @@
 
 
-import { GameState } from "../models/GameState";
+import { ArenaState } from "../models/ArenaState";
 
 import PotionIcon from "./PotionIcon";
 
@@ -16,7 +16,7 @@ import "./arena-consumables.css";
 import Button from "./common/Button/Button";
 
 
-export default function ArenaConsumables(props: { gs: GameState, update: (gs: GameState) => void }) {
+export default function ArenaConsumables(props: { as: ArenaState, update: (as: ArenaState) => void }) {
 
     const [isOpen, setOpenState] = useState<boolean>(false);
 
@@ -25,14 +25,14 @@ export default function ArenaConsumables(props: { gs: GameState, update: (gs: Ga
     const [index, setIndex] = useState<number>(0);
 
     useEffect(() => {
-        const allConsumableItems = props.gs.hero.getInventory().filter(item => item.groups.includes("Consumable"));    
+        const allConsumableItems = props.as.hero.getInventory().filter(item => item.groups.includes("Consumable"));    
         if(index > allConsumableItems.length -3) setIndex(allConsumableItems.length -3);
-    },[props.gs]);
+    },[props.as]);
 
 
     function consumeItem(item: Item | null) {
         if (item === null) return;
-        const ngs = { ...props.gs };
+        const ngs = { ...props.as };
         ngs.hero.consumeItem(item.id, ngs);
         setOpenState(false);
         props.update({ ...ngs });
@@ -44,7 +44,7 @@ export default function ArenaConsumables(props: { gs: GameState, update: (gs: Ga
 
     const clickHandler = useSingleAndDoubleClickParams<Item>(viewItem, consumeItem, 200);
 
-    const consumableItemsInInventory = props.gs.hero.getInventory().filter(item => item.groups.includes("Consumable"));
+    const consumableItemsInInventory = props.as.hero.getInventory().filter(item => item.groups.includes("Consumable"));
 
     const items = isOpen ? consumableItemsInInventory.slice(index, index + 3) : [];
         

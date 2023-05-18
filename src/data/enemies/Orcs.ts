@@ -6,7 +6,7 @@ import { EFFECTS } from "../../models/Effects";
 import orcBerserker from "./pics/orcBerserker.jpeg";
 import orcShaman from "./pics/orcShaman.jpeg";
 import orcWarlord from "./pics/orcWarlord.jpeg";
-import { GameState } from "../../models/GameState";
+import { ArenaState } from "../../models/ArenaState";
 import { ENEMYDATA } from "../EnemyData";
 
 abstract class OrcRace extends Enemy {
@@ -133,17 +133,17 @@ export class OrcWarlord extends OrcRace {
 
 	/**
 	 * Orc Warlord's special ability gives all allies a BOOSTED Effect, that increases their damage output by 25%
-	 * @param gs
+	 * @param as
 	 * @param act
 	 * @returns
 	 */
-	protected special1(gs: GameState, act: EnemyAction): GameState {
+	protected special1(as: ArenaState, act: EnemyAction): ArenaState {
 		// Get all allies
-		const allies = gs.arena.enemies.filter((e) => e instanceof OrcRace && e.id !== this.id);
+		const allies = as.arena.enemies.filter((e) => e instanceof OrcRace && e.id !== this.id);
 
 		// Add the BOOSTED effect to all allies
 		allies.forEach((e) => e.causeEffect(EFFECTS.BOOSTED, 2));
 
-		return { ...gs };
+		return { ...as };
 	}
 }

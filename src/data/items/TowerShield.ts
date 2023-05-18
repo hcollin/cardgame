@@ -24,13 +24,13 @@ export const TowerShield: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-				gs.hero.modifyArmor(5);
-				return { ...gs };
+			onUse: (as) => {
+				as.hero.modifyArmor(5);
+				return { ...as };
 			},
 		},
         {
@@ -44,12 +44,12 @@ export const TowerShield: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs, card) => {
-				return ITEMFUNCTIONS.drawACard(gs, card);
+			onUse: (as, card) => {
+				return ITEMFUNCTIONS.drawACard(as, card);
 			},
 		},
 		{
@@ -63,13 +63,13 @@ export const TowerShield: Item = {
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
 			effectsOnHit: [],
-			onHit: (gs) => {
-				return { ...gs };
+			onHit: (as) => {
+				return { ...as };
 			},
 
-			onUse: (gs) => {
-                gs.hero.modifyArmor(25);
-				return { ...gs };
+			onUse: (as) => {
+                as.hero.modifyArmor(25);
+				return { ...as };
 			},
 		},
 	],
