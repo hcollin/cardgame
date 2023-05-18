@@ -5,13 +5,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useEffect, useState } from "react";
 
 import { Campaign } from "./models/Campaign";
-import {
-	createCampaign,
-	createEmptyCampaign,
-	createGameForArena,
-	getActiveLocation,
-	markCurrentLocationCompleted,
-} from "./game/CampaignTools";
+import { createCampaign, createEmptyCampaign, createGameForArena, getActiveLocation, markCurrentLocationCompleted } from "./game/CampaignTools";
 
 import { LocationData, WORLDLOCATIONTYPE } from "./models/LocationModels";
 
@@ -29,7 +23,6 @@ import { effStore } from "./utils/usePlayerEffect";
 import { ArenaState, ARENASTATES } from "./models/ArenaState";
 
 import metaData from "./metadata.json";
-
 
 const isMobile = false;
 
