@@ -71,6 +71,7 @@ export class ArenaWorldLocation extends WorldLocation {
         const t = ARENATHEMES[themeId];
         if(t) {
             this.theme = t;
+            this.icon = this.theme.icon;
         }            
     }
 
@@ -81,7 +82,18 @@ export class ArenaWorldLocation extends WorldLocation {
         const arena = Arena.generate(this.difficulty, this.theme.id);
         if(arena) {
             this.arena = arena;
+            this.name = this.arena.name;
         }
+        
+    }
+
+    public createBossArena() {
+        const arena = Arena.generateBoss(this.difficulty, this.theme.id);
+        if(arena) {
+            this.arena = arena;
+            this.name = this.arena.name;
+        }
+        
     }
 }
 

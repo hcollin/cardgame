@@ -1,6 +1,7 @@
 import { arnd } from "rndlib";
 import { LocationId, LocationData, LOCATIONSTATUS } from "../models/LocationModels";
 import { generateRandomWorld } from "../utils/RandomWorldGenerator";
+import WorldLocation from "./WorldLocation";
 
 
 export interface worldOptions {
@@ -15,7 +16,7 @@ export class World {
 	public depth: number = 12;
 	public width: number = 7;
 
-	public locations: Map<LocationId, LocationData> = new Map<LocationId, LocationData>();
+	public locations: Map<LocationId, WorldLocation> = new Map<LocationId, WorldLocation>();
 	public name: string = "";
 
 	public activeLocationId: LocationId = "";
@@ -33,17 +34,17 @@ export class World {
     }
 
 
-    public getLocation(locId: LocationId): LocationData {
+    public getLocation(locId: LocationId): WorldLocation {
         const loc = this.locations.get(locId);
-        if (!loc) { throw new Error(`World.ts:getLocation(): LocationData ID ${locId} not found`); }
+        if (!loc) { throw new Error(`World.ts:getLocation(): WorldLocation ID ${locId} not found`); }
         return loc;
     }
 
-    public getLocationsArray(): LocationData[] {
+    public getLocationsArray(): WorldLocation[] {
         return Array.from(this.locations.values());
     }       
 
-    public updateLocation(loc: LocationData) {
+    public updateLocation(loc: WorldLocation) {
         this.locations.set(loc.id, loc);
     }
 
@@ -77,8 +78,8 @@ export class World {
 	 * marked COMPLETED. Finally the current LocationData is set to ACTIVE.
 	 */
 	public updateLocationStatuses() {
-		const tlocs = new Map<LocationId, LocationData>();
-		const nlocs = new Map<LocationId, LocationData>();
+		const tlocs = new Map<LocationId, WorldLocation>();
+		const nlocs = new Map<LocationId, WorldLocation>();
 
 		let completedCount: number = 0;
 
@@ -88,8 +89,8 @@ export class World {
 			if (l.flags.includes("completed")) {
 				l.status = LOCATIONSTATUS.COMPLETED;
 				completedCount++;
-				if (l.loc && l.loc.y > currentDepth) {
-					currentDepth = l.loc.y;
+				if (l.worldPos.y > currentDepth) {
+					currentDepth = l.worldPos.y;
 				}
 			} else {
 				l.status = LOCATIONSTATUS.LOCKED;
@@ -99,9 +100,9 @@ export class World {
 
 		tlocs.forEach((l) => {
 			if (l.status === LOCATIONSTATUS.COMPLETED) {
-				l.nextLocations.forEach((nl) => {
+				l.nextLocationIds.forEach((nl) => {
 					const nloc = tlocs.get(nl);
-					const nlocy = nloc?.loc?.y || 0;
+					const nlocy = nloc?.worldPos?.y || 0;
 					if (nloc && nlocy > currentDepth && nloc.status !== LOCATIONSTATUS.COMPLETED) {
 						nloc.status = LOCATIONSTATUS.SELECTABLE;
 						nlocs.set(nloc.id, nloc);
@@ -129,7 +130,7 @@ export class World {
      * 
      * @returns 
      */
-    public activateWorld(): Map<LocationId, LocationData> {
+    public activateWorld(): Map<LocationId, WorldLocation> {
         this.status = "ACTIVE";
         return new Map(this.locations);
     }
@@ -144,13 +145,13 @@ export class World {
      * 
      * @returns LocationData[]
      */
-	public getNextValidLocationsForCurrentLocation(): LocationData[] {
+	public getNextValidLocationsForCurrentLocation(): WorldLocation[] {
 		const currentLocation = this.getActiveLocation();
 		if (!currentLocation) {
 			return [];
 		}
 
-		return currentLocation.nextLocations.reduce((acc: LocationData[], nextLocationId) => {
+		return currentLocation.nextLocationIds.reduce((acc: WorldLocation[], nextLocationId) => {
 			const nextLocation = this.locations.get(nextLocationId);
 
 			if (nextLocation && nextLocation.status === LOCATIONSTATUS.SELECTABLE) {
@@ -160,7 +161,7 @@ export class World {
 		}, []);
 	}
 
-	public getActiveLocation(): LocationData | null {
+	public getActiveLocation(): WorldLocation | null {
 		if (this.activeLocationId === null) {
 			return null;
 		}

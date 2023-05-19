@@ -154,6 +154,45 @@ export class Arena extends Cloneable {
 		arena.setRewards(theme.rewardItems, theme.rewardCount);
 		return arena;
 	}
+
+	/**
+	 * Generate boss arena for the world
+	 * @param difficulty 
+	 * @param themeName 
+	 * @returns 
+	 */
+	public static generateBoss(difficulty: ARENADIFFICULTY, themeName: string): Arena {
+		const theme = ARENATHEMES[themeName];
+
+		// const eLevels = getEnemyLevelsInDifficulty(difficulty);
+		// const getMaxLevel = getDifficultyLevel(difficulty);
+
+		const validEnemiesData = enemyDataArray().filter((ed: EnemyData) => {
+			return theme.bosses.includes(ed.name);
+		});
+
+		const enemies: Enemy[] = [];
+		// let totalDifficulty = 0;
+		// while (totalDifficulty < getMaxLevel) {
+		// 	const e = arnd(validEnemiesData);
+		// 	if (e.difficultyNumber + totalDifficulty > getMaxLevel) continue;
+		// 	enemies.push(new e.enemyClass());
+		// 	totalDifficulty += e.difficultyNumber;
+		// }
+
+
+		theme.bosses.forEach((b) => {
+			const e = validEnemiesData.find((ed) => ed.name === b);
+			if (!e) throw new Error("Invalid boss name");
+			enemies.push(new e.enemyClass());
+		});
+
+
+		const arena = new Arena(theme.name(), enemies, "", arnd(theme.bgImage));
+
+		arena.setRewards(theme.rewardItems, theme.rewardCount);
+		return arena;
+	}
 }
 
 function getEnemyByName(ename: string): Enemy {

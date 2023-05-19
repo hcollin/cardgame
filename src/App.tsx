@@ -23,6 +23,7 @@ import { effStore } from "./utils/usePlayerEffect";
 import { ArenaState, ARENASTATES } from "./models/ArenaState";
 
 import metaData from "./metadata.json";
+import WorldLocation, { ArenaWorldLocation } from "./game/WorldLocation";
 
 const isMobile = false;
 
@@ -31,7 +32,7 @@ function App() {
 
 	const [arenaState, setArenaState] = useState<ArenaState | null>(null);
 
-	const [currentLocation, setCurrentLocation] = useState<LocationData | null>(null);
+	const [currentLocation, setCurrentLocation] = useState<WorldLocation | null>(null);
 
 	const [vm, setVm] = useState<string>("MAP"); // MAP || CHARACTER
 
@@ -77,7 +78,7 @@ function App() {
 				throw new Error("App.tsx:arenaDone: Location not found");
 			}
 
-			const isFinal = loc.nextLocations.length === 0;
+			const isFinal = loc.nextLocationIds.length === 0;
 			setCampaign({ ...markCurrentLocationCompleted({ ...campaign, hero: ngs.hero }, isFinal) });
 		} else {
 			setCampaign({ ...campaign, hero: as.hero });
@@ -89,7 +90,8 @@ function App() {
 		if (currentLocation) {
 			// Start Arena
 			if (currentLocation.type === WORLDLOCATIONTYPE.ARENA) {
-				const ar = currentLocation.arena[0];
+				const arLoc = currentLocation as ArenaWorldLocation;
+				const ar = arLoc.arena;
 				if (ar) {
 					effStore.clear();
 					console.log(`Start Arena ${ar.name}`, campaign);

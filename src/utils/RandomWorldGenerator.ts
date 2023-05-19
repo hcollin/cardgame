@@ -7,6 +7,7 @@ import { EmptyArena } from "../data/EmptyArena";
 import { Campaign } from "../models/Campaign";
 import { ArenaDragonsLair } from "../data/ArenaDragonsLair";
 import { ARENADIFFICULTY } from "../data/Difficulties";
+import WorldLocation, { ArenaWorldLocation } from "../game/WorldLocation";
 
 interface worldGeneratorOptions {
 	depth: number;
@@ -19,7 +20,7 @@ interface worldGeneratorOptions {
 	theme: string[];
 }
 
-export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): LocationData[] {
+export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): WorldLocation[] {
 	const options: worldGeneratorOptions = Object.assign(
 		{
 			depth: 10,
@@ -34,8 +35,6 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 		opts,
 	);
 
-	// const locs: LocationData[] = [];
-
 	const diffs: ARENADIFFICULTY[] = [
 		ARENADIFFICULTY.VERYEASY,
 		ARENADIFFICULTY.EASY,
@@ -48,32 +47,31 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 
 	// For each depth, generate a random amount of locations where the distance between each location is between 2 and spread
 
-	const locsMap: (LocationData | null)[][] = [];
-
+	const locsMap: (WorldLocation | null)[][] = [];
 
 	// A function regexp that checks a email validity
-
 
 	const sDiffIndex = diffs.findIndex((d) => d === options.startingDifficulty);
 
 	for (let d = 0; d < options.depth; d++) {
 		let pos = rnd(0, 2);
 
-		const dLocs: (LocationData | null)[] = new Array(options.width).fill(null);
+		const dLocs: (WorldLocation | null)[] = new Array(options.width).fill(null);
 
 		const difInd = sDiffIndex + Math.round(d / (options.depth / options.curve));
 
 		const dif = difInd < diffs.length - 1 ? diffs[difInd] : diffs[diffs.length - 1];
 
 		while (pos < options.width) {
-			const nloc = randomLocation(dif, d === 0, options.theme);
-			nloc.name = `Loc ${d}-${pos}`;
-			nloc.loc = {
+			const nloc = randomArenaLocation(dif, d === 0, options.theme, false);
+			// nloc.name = `Loc ${d}-${pos}`;
+			nloc.worldPos = {
 				x: pos,
 				y: d,
 				dx: rnd(0, 100) / 100,
 				dy: rnd(0, 100) / 100,
 			};
+			
 
 			dLocs[pos] = nloc;
 
@@ -88,50 +86,55 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): Locat
 	// console.log(locsMap.length, locsMap[options.depth]);
 
 	locsMap[options.depth] = new Array(options.width).fill(null);
-	locsMap[options.depth][Math.floor(options.width / 2)] = {
-		id: v4(),
-		name: `BOSS`,
-		status: LOCATIONSTATUS.LOCKED,
-		type: WORLDLOCATIONTYPE.ARENA,
-		arena: [new ArenaDragonsLair()],
-		nextLocations: [],
-		flags: [],
-		icon: "forest",
-		loc: {
-			x: Math.floor(options.width / 2),
-			y: options.depth,
-			dx: rnd(0, 100) / 100,
-			dy: rnd(0, 100) / 100,
-		},
-		init: function (c: Campaign) {
-			this.arena = [new ArenaDragonsLair()];
-		},
-	};
 
+	const bossLoc = new ArenaWorldLocation(arnd(options.theme), ARENADIFFICULTY.MEDIUM);
+
+	bossLoc.worldPos.x = Math.floor(options.width / 2);
+	bossLoc.worldPos.y = options.depth;
+	bossLoc.worldPos.dx = rnd(0, 100) / 100;
+	bossLoc.worldPos.dy = rnd(0, 100) / 100;
+	bossLoc.flags.push("final");
+
+	bossLoc.createBossArena();
+
+	locsMap[options.depth][Math.floor(options.width / 2)] = bossLoc;
+
+	// locsMap[options.depth][Math.floor(options.width / 2)] = {
+	// 	id: v4(),
+	// 	name: `BOSS`,
+	// 	status: LOCATIONSTATUS.LOCKED,
+	// 	type: WORLDLOCATIONTYPE.ARENA,
+	// 	arena: [new ArenaDragonsLair()],
+	// 	nextLocations: [],
+	// 	flags: [],
+	// 	icon: "forest",
+	// 	loc: {
+	// 		x: Math.floor(options.width / 2),
+	// 		y: options.depth,
+	// 		dx: rnd(0, 100) / 100,
+	// 		dy: rnd(0, 100) / 100,
+	// 	},
+	// 	init: function (c: Campaign) {
+	// 		this.arena = [new ArenaDragonsLair()];
+	// 	},
+	// };
 
 	// console.log("\nVillages!");
 	// // Set Village locations at random
 	// for(let i = 0; i < options.villages; i++) {
 	// 	const l = randomVillage(locsMap);
-		
+
 	// }
-
-
 
 	// Then create connections to these locations from the previous depth
 	calculateEdgeConnections(locsMap);
 
-
-	
-
-
 	// Populate the locations with arenas
 
-	return locsMap.flatMap((l) => l.filter((l) => l !== null)) as LocationData[];
-
+	return locsMap.flatMap((l) => l.filter((l) => l !== null)) as WorldLocation[];
 }
 
-function calculateEdgeConnections(locs: (LocationData | null)[][]): void {
+function calculateEdgeConnections(locs: (WorldLocation | null)[][]): void {
 	const rows = locs.length;
 	const cols = locs[0].length;
 
@@ -161,39 +164,41 @@ function calculateEdgeConnections(locs: (LocationData | null)[][]): void {
 				}
 			}
 
-			currentNode.nextLocations = nextRowNodes;
+			currentNode.nextLocationIds = nextRowNodes;
 		}
 	}
 }
 
-export function randomLocation(difficulty: ARENADIFFICULTY, first: boolean, themes: string[]): LocationData {
-	
+export function randomArenaLocation(difficulty: ARENADIFFICULTY, first: boolean, themes: string[], boss: boolean): WorldLocation {
 	const theme = arnd(themes);
-	
-	const arena = randomArena(difficulty, theme);
 
-	const loc: LocationData = {
-		id: v4(),
-		status: LOCATIONSTATUS.LOCKED,
-		type: WORLDLOCATIONTYPE.ARENA,
-		arena: [Arena.clone(arena)],
-		nextLocations: [],
-		flags: [],
-		icon: theme.toLowerCase(),
-		init: function (campaign) {
-			this.arena = [Arena.clone(arena)];
-		},
-	};
+	const worldLoc = new ArenaWorldLocation(theme, difficulty);
+
+	boss ? worldLoc.createBossArena() : worldLoc.createArena();
+
+	// const arena = randomArena(difficulty, theme);
+
+	// const loc: LocationData = {
+	// 	id: v4(),
+	// 	status: LOCATIONSTATUS.LOCKED,
+	// 	type: WORLDLOCATIONTYPE.ARENA,
+	// 	arena: [Arena.clone(arena)],
+	// 	nextLocations: [],
+	// 	flags: [],
+	// 	icon: theme.toLowerCase(),
+	// 	init: function (campaign) {
+	// 		this.arena = [Arena.clone(arena)];
+	// 	},
+	// };
 
 	if (first) {
-		loc.flags.push("first");
+		worldLoc.flags.push("first");
 	}
 
-	return loc;
+	return worldLoc;
 }
 
-export function randomVillage(locsMap: (LocationData | null)[][] ): LocationData {
-
+export function randomVillage(locsMap: (LocationData | null)[][]): LocationData {
 	const vloc: LocationData = {
 		id: v4(),
 		status: LOCATIONSTATUS.LOCKED,
@@ -204,25 +209,24 @@ export function randomVillage(locsMap: (LocationData | null)[][] ): LocationData
 		icon: "tent",
 		init: function (campaign) {
 			this.arena = [new EmptyArena()];
-		}
+		},
 	};
 
 	let isValidLocation = false;
 
-	while(isValidLocation === false) {
+	while (isValidLocation === false) {
 		const rDept = rnd(2, locsMap.length - 2);
 		const rCol = rnd(0, locsMap[rDept].length - 1);
 
-		if(locsMap[rDept][rCol] === null) continue;
+		if (locsMap[rDept][rCol] === null) continue;
 
 		// If current depth already has a village, skip
-		if(locsMap[rDept].some(l => l !== null && l.type === WORLDLOCATIONTYPE.VILLAGE)) continue;
-		
+		if (locsMap[rDept].some((l) => l !== null && l.type === WORLDLOCATIONTYPE.VILLAGE)) continue;
+
 		// If target location is already a village, skip
-		if(locsMap[rDept][rCol]!.type === WORLDLOCATIONTYPE.VILLAGE) continue;
+		if (locsMap[rDept][rCol]!.type === WORLDLOCATIONTYPE.VILLAGE) continue;
 
-
-		if(locsMap[rDept][rCol] !== null) {
+		if (locsMap[rDept][rCol] !== null) {
 			isValidLocation = true;
 			console.log(rDept, rCol, vloc);
 
@@ -241,8 +245,7 @@ export function randomVillage(locsMap: (LocationData | null)[][] ): LocationData
 }
 
 function randomArena(diff: ARENADIFFICULTY, theme: string): Arena {
-	return Arena.generate(diff, theme);	
+	return Arena.generate(diff, theme);
 
 	// return new ArenaForestEncounter(diff);
 }
-

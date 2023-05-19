@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Campaign } from "../models/Campaign";
-import { LOCATIONSTATUS, LocationData } from "../models/LocationModels";
+import { LOCATIONSTATUS, LocationData, WORLDLOCATIONTYPE } from "../models/LocationModels";
 import { useWindowDimensions } from "../utils/useWindowDimensions";
 
 
@@ -16,15 +16,17 @@ import iconGraveyard from "./icons/graveyard.png";
 import "./world-map.css";
 
 import { activateLocation, createCampaign, getActiveWorld } from "../game/CampaignTools";
+import WorldLocation, { ArenaWorldLocation } from "../game/WorldLocation";
 
 function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign) => void; startArena: () => void }) {
 	const { height, width } = useWindowDimensions();
 
 	// const locations = world.getLocationsArray();
 
-	const [nodes, setNodes] = useState<(LocationData | null)[][]>(buildNodes(props.campaign));
+	const [nodes, setNodes] = useState<(WorldLocation | null)[][]>(buildNodes(props.campaign));
+	
 
-	const hovers = useState<LocationData | null>(null);
+	const hovers = useState<WorldLocation | null>(null);
 	const setHoverNode = hovers[1];
 
 	useEffect(() => {
@@ -45,7 +47,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 	
 	
 
-	function selectLocation(mloc: LocationData) {
+	function selectLocation(mloc: WorldLocation) {
 		// console.log("SELECT LOCATION", mloc);
 
 		if (mloc.status === LOCATIONSTATUS.ACTIVE) {
@@ -97,7 +99,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 								return null;
 							}
 
-							return loc.nextLocations.map((to, ind) => {
+							return loc.nextLocationIds.map((to, ind) => {
 								const target = world.locations.get(to);
 								if (!target) return null;
 								return <RouteLine key={`${loc.id}-route-${ind}`} from={loc} to={target} size={nodeSize} tilt={width > height} isMobile={isMobile} />;
@@ -160,7 +162,7 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 	);
 }
 
-function buildNodes(campaign: Campaign): (LocationData | null)[][] {
+function buildNodes(campaign: Campaign): (WorldLocation | null)[][] {
 	const world = getActiveWorld(campaign);
 	if(!world) { return []; }
 	world.updateLocationStatuses();
@@ -169,15 +171,15 @@ function buildNodes(campaign: Campaign): (LocationData | null)[][] {
 
 	const depth = campaign.options.mapDepth + 1;
 
-	const nnmap: (LocationData | null)[][] = [];
+	const nnmap: (WorldLocation | null)[][] = [];
 
 	for (let d = 0; d < depth; d++) {
-		const darr: (LocationData | null)[] = [];
+		const darr: (WorldLocation | null)[] = [];
 
 		for (let w = 0; w < campaign.options.mapWidth; w++) {
 			const loc = locArr.find((l) => {
-				if (!l.loc) return false;
-				return l.loc.x === w && l.loc.y === d;
+				
+				return l.worldPos.x === w && l.worldPos.y === d;
 			});
 			if (loc) {
 				darr.push(loc);
@@ -195,7 +197,7 @@ function buildNodes(campaign: Campaign): (LocationData | null)[][] {
 	return nnmap.reverse();
 }
 
-function LocationNode(props: { location: LocationData; selectLocation: (mloc: LocationData) => void; isActive: boolean; onHover?: (loc: LocationData | null) => void }) {
+function LocationNode(props: { location: WorldLocation; selectLocation: (mloc: WorldLocation) => void; isActive: boolean; onHover?: (loc: WorldLocation | null) => void }) {
 	function handleClick() {
 		props.selectLocation(props.location);
 	}
@@ -212,8 +214,8 @@ function LocationNode(props: { location: LocationData; selectLocation: (mloc: Lo
 		}
 	}
 
-	const dx = props.location.loc !== undefined && props.location.loc.x >= 0 ? props.location.loc.dx * 33 : 0;
-	const dy = props.location.loc !== undefined && props.location.loc.y >= 0 ? props.location.loc.dy * 33 : 0;
+	const dx = props.location.worldPos !== undefined && props.location.worldPos.x >= 0 ? props.location.worldPos.dx * 33 : 0;
+	const dy = props.location.worldPos !== undefined && props.location.worldPos.y >= 0 ? props.location.worldPos.dy * 33 : 0;
 
 	const style: React.CSSProperties = {
 		left: `${dx}%`,
@@ -244,16 +246,16 @@ function LocationNode(props: { location: LocationData; selectLocation: (mloc: Lo
 	);
 }
 
-function RouteLine(props: { from: LocationData; to: LocationData; size: number; tilt: boolean, isMobile: boolean }) {
+function RouteLine(props: { from: WorldLocation; to: WorldLocation; size: number; tilt: boolean, isMobile: boolean }) {
 	const { from, to, size, tilt } = props;
 
-	if (!from.loc || !to.loc) return null;
+	// if (!from.loc || !to.loc) return null;
 
-	// if (from.loc.x !== 2) return null;
-	// if (from.loc.y !== 3) return null;
+	// if (from.worldPos.x !== 2) return null;
+	// if (from.worldPos.y !== 3) return null;
 
-	// if(from.loc.x > 0) return null;
-	// if(from.loc.y > 0) return null;
+	// if(from.worldPos.x > 0) return null;
+	// if(from.worldPos.y > 0) return null;
 
 	// Three drawing options: one from top-left to bottom-right, one from bottom-left to top-right, and one from center-left to center-right.
 	// The first and third can be drawn using the same calculations
@@ -268,14 +270,14 @@ function RouteLine(props: { from: LocationData; to: LocationData; size: number; 
 		ex,
 		ey = 0;
 
-	width = tilt ? size * 2 : size * Math.abs(Math.max(to.loc.x, from.loc.x) - Math.min(from.loc.x, to.loc.x) + 1);
-	height = tilt ? size * Math.abs(Math.max(to.loc.x, from.loc.x) - Math.min(from.loc.x, to.loc.x) + 1) : size * 2;
+	width = tilt ? size * 2 : size * Math.abs(Math.max(to.worldPos.x, from.worldPos.x) - Math.min(from.worldPos.x, to.worldPos.x) + 1);
+	height = tilt ? size * Math.abs(Math.max(to.worldPos.x, from.worldPos.x) - Math.min(from.worldPos.x, to.worldPos.x) + 1) : size * 2;
 
-	if (to.loc.x >= from.loc.x) {
+	if (to.worldPos.x >= from.worldPos.x) {
 		// This calculcation handles the first and third options
 
-		cx = tilt ? from.loc.y * size : from.loc.x * size;
-		cy = tilt ? from.loc.x * size : from.loc.y * size;
+		cx = tilt ? from.worldPos.y * size : from.worldPos.x * size;
+		cy = tilt ? from.worldPos.x * size : from.worldPos.y * size;
 
 		sx = tilt ? size / 2 : size / 2;
 		sy = tilt ? size / 2 : size * 1.5;
@@ -283,8 +285,8 @@ function RouteLine(props: { from: LocationData; to: LocationData; size: number; 
 		ex = tilt ? width - size / 2 : width - size / 2;
 		ey = tilt ? height - size / 2 : size / 2;
 	} else {
-		cx = tilt ? from.loc.y * size : to.loc.x * size;
-		cy = tilt ? to.loc.x * size : from.loc.y * size;
+		cx = tilt ? from.worldPos.y * size : to.worldPos.x * size;
+		cy = tilt ? to.worldPos.x * size : from.worldPos.y * size;
 
 		sx = tilt ? size / 2 : width - size / 2;
 		sy = tilt ? height - size / 2 : size * 1.5;
@@ -316,17 +318,22 @@ function RouteLine(props: { from: LocationData; to: LocationData; size: number; 
 
 
 
-function LocationInfo(props: { loc: LocationData }) {
+function LocationInfo(props: { loc: WorldLocation }) {
 
 	const { loc } = props;
 
-	const arena = loc.arena[0];
+	if(loc.type=== WORLDLOCATIONTYPE.ARENA) {
+		const aloc = loc as ArenaWorldLocation;
+		const arena = aloc.arena;
+		return (
+			<div className="location-info">
+				{loc.name}, {loc.status}. {arena.getDifficulty()}, {arena.enemies.map((e) => e.getName()).join(", ")}
+			</div>
+		)
+	}
 
-	return (
-		<div className="location-info">
-			{loc.name}, {loc.status}. {arena.getDifficulty()}, {arena.enemies.map((e) => e.getName()).join(", ")}
-		</div>
-	)
+
+	return null;
 }
 
 export default WorldNodeMap;

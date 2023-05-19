@@ -1,4 +1,5 @@
 import { Enemy } from "../game/Enemy";
+import { Dragon } from "./Enemies";
 
 import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "./enemies/Goblins";
 import { FrostTroll, HillHare, Wolf } from "./enemies/MountainEnemies";
@@ -54,6 +55,12 @@ export const ENEMYDATA: { [key: string]: EnemyData } = {
         experienceValue: 25,
         enemyClass: GoblinLord,
     },
+    "Dragon": {
+        name: "Dragon",
+        difficultyNumber: 20,
+        experienceValue: 1000,
+        enemyClass: Dragon,
+    },
 
     // Mountain Enemies
     "Hill Hare": {
@@ -74,6 +81,9 @@ export const ENEMYDATA: { [key: string]: EnemyData } = {
         experienceValue: 20,
         enemyClass: Wolf,
     },
+
+
+    
 
 };
 

@@ -34,6 +34,7 @@ export interface ArenaTheme {
 	bgImage: string[];
 	rewardCount: number;
 	rewardItems: Item[];
+	icon: string;
 	bosses: string[];
 }
 
@@ -52,6 +53,7 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 		},
 		enemies: ["Orc Shaman", "Orc Berserker", "Orc Warlord", "Goblin Warrior", "Goblin Sorcerer", "Goblin Lord"],
 		bgImage: [forestBg],
+		icon: "forest",
 		rewardCount: 3,
 		rewardItems: [...basicWeapons, ...basicArmors, ...minorPotions],
 		bosses: ["Dragon"],
@@ -70,6 +72,7 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 		},
 		enemies: ["Orc Berserker", "Frost Troll", "Wolf", "Hill Hare"],
 		bgImage: [mountainBg],
+		icon: "mountain",
 		rewardCount: 3,
 		rewardItems: [...basicWeapons, ...basicArmors, ...minorPotions, ...defaultWeapons, ...minorMagicItems, ...defaultPotions],
 		bosses: ["Dragon"],

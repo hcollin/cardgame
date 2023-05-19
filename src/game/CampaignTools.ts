@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { LocationId, LocationData, LOCATIONSTATUS } from "../models/LocationModels";
+import { LocationId, LocationData, LOCATIONSTATUS, WORLDLOCATIONTYPE } from "../models/LocationModels";
 import { Campaign, CampaignOptions } from "../models/Campaign";
 
 import { Deck } from "./Deck";
@@ -14,6 +14,7 @@ import { Hand } from "./Hand";
 import { ArenaState, ARENASTATES } from "../models/ArenaState";
 
 import { World } from "./World";
+import WorldLocation, { ArenaWorldLocation } from "./WorldLocation";
 
 /**
  * This is used to initialize the state
@@ -162,6 +163,12 @@ export function createGameFromCampaign(campaign: Campaign): ArenaState {
 		throw new Error(`Location ${campaign.id} not found from campaign world.`);
 	}
 
+	if(location.type !== WORLDLOCATIONTYPE.ARENA) {
+		throw new Error(`Location ${location.id} is not an arena. It is a ${location.type}`);
+	}
+
+	const arenaLocation = location as ArenaWorldLocation;
+
 	let arenaState: ArenaState = {
 		id: v4(),
 		turn: 0,
@@ -170,7 +177,7 @@ export function createGameFromCampaign(campaign: Campaign): ArenaState {
 		leftHand: new Hand("LEFT"),
 		rightHand: new Hand("RIGHT"),
 		state: ARENASTATES.MYTURN,
-		arena: location.arena[0],
+		arena: arenaLocation.arena,
 		hero: campaign.hero,
 		playedCardsThisTurn: [],
 	};
@@ -237,7 +244,7 @@ export function getActiveWorld(campaign: Campaign): World | null {
 	return activeWorld;
 }
 
-export function getActiveLocation(campaign: Campaign): LocationData | null {
+export function getActiveLocation(campaign: Campaign): WorldLocation | null {
 	const actWorld = getActiveWorld(campaign);
 	if (!actWorld || campaign.currentLocationId === "") {
 		return null;
