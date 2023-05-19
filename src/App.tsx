@@ -23,7 +23,9 @@ import { effStore } from "./utils/usePlayerEffect";
 import { ArenaState, ARENASTATES } from "./models/ArenaState";
 
 import metaData from "./metadata.json";
-import WorldLocation, { ArenaWorldLocation } from "./game/WorldLocation";
+import WorldLocation, { ArenaWorldLocation, VillageWorldLocation } from "./game/WorldLocation";
+import useClassData from "./utils/observable/useClassData";
+import VillageView from "./views/VillageView";
 
 const isMobile = false;
 
@@ -31,6 +33,8 @@ function App() {
 	const [campaign, setCampaign] = useState<Campaign>(createEmptyCampaign());
 
 	const [arenaState, setArenaState] = useState<ArenaState | null>(null);
+
+	const village = useClassData<VillageWorldLocation>(null);
 
 	const [currentLocation, setCurrentLocation] = useState<WorldLocation | null>(null);
 
@@ -86,6 +90,12 @@ function App() {
 		setArenaState(null);
 	}
 
+	function leaveVillage() {
+		
+		village.set(null);
+		setCampaign({ ...markCurrentLocationCompleted({ ...campaign }, false) });
+	}
+
 	function startArena() {
 		if (currentLocation) {
 			// Start Arena
@@ -102,6 +112,7 @@ function App() {
 			// Start Village
 			if (currentLocation.type === WORLDLOCATIONTYPE.VILLAGE) {
 				console.log("START VILLAGE!");
+				village.set(currentLocation as VillageWorldLocation);
 			}
 		}
 	}
@@ -117,11 +128,15 @@ function App() {
 
 	const backend = isMobile ? TouchBackend : HTML5Backend;
 
-	// console.log("APP.tsx: Render!:");
+	console.log("APP.tsx: Render!:", village);
+
+	let viewMode = "MAP";
+	if(arenaState !== null) { viewMode = "ARENA"; }
+	if(village.instance !== null) { viewMode = "VILLAGE"; }
 
 	return (
 		<DndProvider backend={backend}>
-			{arenaState === null && (
+			{viewMode === "MAP" && (
 				<div className="main-screen">
 					<nav>
 						<button onClick={() => setVm("MAP")} className={`left ${vm === "MAP" ? "selected" : ""}`}>
@@ -160,7 +175,8 @@ function App() {
 					)}
 				</div>
 			)}
-			{arenaState !== null && <Arena as={arenaState} onArenaFinished={arenaDone} />}
+			{viewMode === "ARENA" && arenaState !== null && <Arena as={arenaState} onArenaFinished={arenaDone} />}
+			{viewMode === "VILLAGE" && village.instance !== null && village !== null && <VillageView villageLoc={village.instance} campaign={campaign} onLeaveVillage={leaveVillage}/>}
 			<div className="version">
 				{metaData.buildMajor}.{metaData.buildMinor}.{metaData.buildRevision} {metaData.buildTag}
 			</div>

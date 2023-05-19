@@ -9,6 +9,7 @@ export default function ObservableTest() {
 	const wloc = useClassData<WorldLocation>(loc).instance;
 
 	function changeStatus() {
+		if(!wloc) return;
 		switch (wloc.status) {
 			case LOCATIONSTATUS.LOCKED:
 				wloc.setSelectable();
@@ -22,6 +23,7 @@ export default function ObservableTest() {
 		}
 	}
 
+	if(!wloc) return <span>no wloc</span>;
 	return (
 		<span>
 			S: {wloc.status} <button onClick={changeStatus}>S</button>

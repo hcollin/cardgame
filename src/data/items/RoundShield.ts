@@ -6,7 +6,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const RoundShield: Item = {
 	id: "round-shield",
 	name: "Round Shield",
-	groups: ["Shield"],
+	groups: ["Shield", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple shield",
 	rarity: ITEMRARITY.COMMON,

@@ -4,7 +4,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const Gambeson: Item = {
 	id: "gambeson",
 	name: "Gambeson",
-	groups: ["Armor", "Light Armor", "Fabric"],
+	groups: ["Armor", "Light Armor", "Fabric", "General Store"],
 	itemSlots: [ITEMSLOT.BODY],
 	rulesText: "BLOCK 1. Damage Reduction 1 against Slash damage.",
 	description: "A thick, padded fabric armor providing both protection and flexibility, often used beneath other armors.",
@@ -22,7 +22,7 @@ export const Gambeson: Item = {
 export const LeatherArmor: Item = {
 	id: "leather-armor",
 	name: "Leather Armor",
-	groups: ["Armor", "Light Armor", "Leather"],
+	groups: ["Armor", "Light Armor", "Leather", "General Store"],
 	itemSlots: [ITEMSLOT.BODY],
 	rulesText: "BLOCK 2",
 	description: "A simple leather ammor",
@@ -45,7 +45,7 @@ export const LeatherArmor: Item = {
 export const StuddedLeatherArmor: Item = {
 	id: "studded-leather-armor",
 	name: "Studded Leather",
-	groups: ["Armor", "Light Armor", "Leather" , "Studded"],
+	groups: ["Armor", "Light Armor", "Leather" , "Studded", "General Store"],
 	itemSlots: [ITEMSLOT.BODY],
 	rulesText: "BLOCK 3",
 	description: "An upgrade to leather armor, metal studs are added for additional strength and puncture resistance.",

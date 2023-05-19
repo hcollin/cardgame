@@ -6,7 +6,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const Katana: Item = {
 	id: "katana",
 	name: "Katana",
-	groups: ["Sword"],
+	groups: ["Sword", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "The katana features a gently curved, slender blade with a razor-sharp single edge, a circular or squared tsuba adorned with intricate designs.",
 	rarity: ITEMRARITY.EPIC,

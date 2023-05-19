@@ -9,10 +9,11 @@ import { chance } from "rndlib";
 import { CampaignOptions } from "../models/Campaign";
 import { effStore } from "../utils/usePlayerEffect";
 import { ArenaState } from "../models/ArenaState";
+import Observable from "../utils/observable/Observable";
 
 const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
-export default class Hero {
+export default class Hero extends Observable {
 	// Basic information
 	protected name: string = "";
 	protected heroClass: CharacterClass = ClassWarrior;
@@ -49,6 +50,7 @@ export default class Hero {
 	public gold: number = 0;
 
 	constructor(chrRace: CharacterRace, chrClass: CharacterClass, options?: CampaignOptions, name?: string) {
+		super();
 		this.name = name || nameGenerator();
 
 		this.heroClass = chrClass;

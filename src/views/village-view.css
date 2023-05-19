@@ -1,0 +1,414 @@
+div.village-container {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+
+    background-image: url('./pics/villagebg.png');
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    flex-direction: column;
+
+
+
+    &>header {
+        flex: 0 0 auto;
+        width: 100%;
+
+        padding: 1rem;
+        background: repeating-linear-gradient(0deg,
+                #000 0,
+                #222 4px,
+                #630 7px,
+                #210 9px);
+
+        border-bottom: solid 3px #000;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+
+
+        &>h1 {
+            font-family: "Tangerine", cursive;
+            font-size: 5rem;
+            color: #FECC;
+            font-weight: normal;
+            text-shadow: var(--ttext-stroke-large);
+            margin: 0;
+            padding: 0;
+        }
+
+        &>div.hero-gold {
+            margin-right: 1rem;
+            padding: 0.25rem 1rem;
+
+            background: #0008;
+            border: ridge 3px #A508;
+            border-radius: 1rem;
+            width: 15rem;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow: inset 0 0 1rem 0.5rem #0008;
+
+            &>img {
+                height: 3rem;
+
+            }
+
+            &>span {
+
+                color: #FFF;
+                font-size: 3rem;
+            }
+        }
+    }
+
+    &>div.content {
+        flex: 1 1 auto;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        &>div.store {
+
+            flex: 1 1 auto;
+            background: #2228;
+            padding: 1rem;
+            margin: 1rem;
+
+            border-radius: 2rem;
+            border: ridge 3px #0008;
+            box-shadow: inset 0 0 3rem 2rem #0008;
+
+            &>h2 {
+                font-family: "Tangerine", cursive;
+                font-size: 3rem;
+                color: #FFFD;
+                font-weight: normal;
+                margin: 0;
+                padding: 0;
+
+                border-bottom: solid 3px #0008;
+            }
+
+            &>div.store-content {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+                &>div {
+                    margin: 0.5rem;
+
+                    &.service {
+                        background: #CCC8;
+
+                        width: 15rem;
+                        background-image: url('./pics/castlewall.png');
+                        background-size: cover;
+                        background-position: center center;
+                        background-blend-mode: overlay;
+
+                        border-radius: 1rem;
+
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+
+                        box-shadow: inset 0 0 2rem 0.5rem #0004;
+                        border: groove 3px #0008;
+
+                        &>h3 {
+                            flex: 0 0 auto;
+                            padding: 0;
+                            margin: 0;
+                            font-family: "Lobster Two";
+                            font-size: 1.5rem;
+                            color: black;
+                            font-weight: normal;
+                            text-shadow: 2px 2px 2px #FFF, -2px -2px 2px #FFF, 2px -2px 2px #FFF, -2px 2px 2px #FFF;
+                            border-bottom: groove 2px #0008;
+                            width: 100%;
+                            text-align: center;
+                            padding: 0.5rem;
+                            background: #FFF5;
+                        }
+
+                        &>p {
+                            flex: 1 1 auto;
+                            padding: 0.5rem 1rem;
+    
+                            margin: 1rem 0;
+                            color: black;
+                            font-size: 1.2rem;
+                            font-weight: bold;
+                            text-shadow: 1px 1px 1px #FFF, -1px -1px 1px #FFF, 1px -1px 1px #FFF, -1px 1px 1px #FFF;
+                            text-align: center;
+                            &> big {
+                                font-size: 1.4rem;
+                                color: #FFF;
+                                text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
+                            }
+                        }
+    
+                        &>button {
+                            flex: 0 0 auto;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                            margin: 1rem;
+    
+                        }
+
+                    }
+                }
+            }
+
+            &.alchemist {
+                background: #8088;
+
+                background-image: url('./pics/alchemistbg.png');
+                background-size: cover;
+                background-position: center center;
+                background-blend-mode: multiply;
+                box-shadow: inset 0 0 1rem 1rem #8084, inset 0 0 3rem 2rem #0008;
+
+                &>h2 {
+                    color: #F6FD;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 2px #A4A8, -2px -2px 2px #44A8, 2px -2px 2px #4448, -2px 2px 2px #4448;
+                }
+            }
+
+            &.forge {
+                background: #8008;
+
+                background-image: url('./pics/forgebg.png');
+                background-size: cover;
+                background-position: center center;
+                background-blend-mode: multiply;
+                box-shadow: inset 0 0 1rem 1rem #8004, inset 0 0 3rem 2rem #0008;
+
+                &>h2 {
+                    color: #800D;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 2px #F888, -2px -2px 2px #FF88, 2px -2px 2px #FFF8, -2px 2px 2px #FFF8;
+                }
+            }
+
+            &.general {
+                background: #0808;
+
+                background-image: url('./pics/generalstorebg.png');
+                background-size: cover;
+                background-position: center center;
+                background-blend-mode: multiply;
+                box-shadow: inset 0 0 1rem 1rem #0804, inset 0 0 3rem 2rem #0008;
+
+                &>h2 {
+                    color: #080D;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 2px #FD48, -2px -2px 2px #8FF8, 2px -2px 2px #FFF8, -2px 2px 2px #FFF8;
+                }
+            }
+
+            &.magic {
+                background: #0488;
+
+                background-image: url('./pics/magicitemsbg.png');
+                background-size: cover;
+                background-position: center center;
+                background-blend-mode: multiply;
+                box-shadow: inset 0 0 1rem 1rem #0384, inset 0 0 3rem 2rem #0008;
+
+                &>h2 {
+                    color: #08CD;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 2px #A8F8, -2px -2px 2px #FF48, 2px -2px 2px #FFF8, -2px 2px 2px #FFF8;
+                }
+            }
+
+            &.healer {
+                background: #8888;
+
+                background-image: url('./pics/healerbg.png');
+                background-size: cover;
+                background-position: center center;
+                background-blend-mode: multiply;
+                box-shadow: inset 0 0 1rem 1rem #0384, inset 0 0 3rem 2rem #0008;
+
+                &>h2 {
+                    color: #CCCD;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 2px #8008, -2px -2px 2px #0808, 2px -2px 2px #0008, -2px 2px 2px #0008;
+                }
+
+                &>div.store-content>.healing {
+                    background: #FFFA;
+                    /* padding: 1rem; */
+
+                    background-image: url("../components/icons/healthbg.png");
+                    background-size: cover;
+                    background-position: center center;
+                    background-blend-mode: overlay;
+
+                    box-shadow: inset 0 0 2rem 0.5rem #F004;
+
+
+                    &>h3 {
+                        padding: 0;
+                        margin: 0;
+                        font-family: "Lobster Two";
+                        font-size: 1.5rem;
+                        color: white;
+                        font-weight: normal;
+                        text-shadow: 2px 2px 2px #4008, -2px -2px 2px #0008, 2px -2px 2px #0008, -2px 2px 2px #0008;
+                        border-bottom: groove 2px #0008;
+                        width: 100%;
+                        text-align: center;
+                        padding: 0.5rem;
+                        background: #FFF5;
+                    }
+
+                    &>p {
+                        padding: 0.5rem 1rem;
+
+                        margin: 1rem 0;
+                        color: black;
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                        text-shadow: 1px 1px 1px #FFF, -1px -1px 1px #FFF, 1px -1px 1px #FFF, -1px 1px 1px #FFF;
+                        text-align: center;
+                    }
+
+                    &>button {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 1rem;
+
+                    }
+
+
+                }
+            }
+
+            &.inn {
+                background: #FD08;
+
+                background-image: url('./pics/tavernbg.png');
+                background-size: cover;
+                background-position: center center;
+                background-blend-mode: multiply;
+                box-shadow: inset 0 0 1rem 1rem #FD04, inset 0 0 3rem 2rem #0008;
+
+                &>h2 {
+                    color: #FD0D;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 2px #FFF8, -2px -2px 2px #0008, 2px -2px 2px #0008, -2px 2px 2px #0008;
+                }
+
+                &>div.store-content>.gambling {
+                    background: #FD08;
+                    /* padding: 1rem; */
+
+                    background-image: url("../components/icons/gambling.png");
+                    background-size: cover;
+                    background-position: center center;
+                    background-blend-mode: overlay;
+
+                    box-shadow: inset 0 0 2rem 0.5rem #F004;
+
+
+                    &>h3 {
+                        padding: 0;
+                        margin: 0;
+                        font-family: "Lobster Two";
+                        font-size: 1.5rem;
+                        color: black;
+                        font-weight: normal;
+                        text-shadow: 2px 2px 2px #FFF, -2px -2px 2px #FFF, 2px -2px 2px #FFF, -2px 2px 2px #FFF;
+                        border-bottom: groove 2px #0008;
+                        width: 100%;
+                        text-align: center;
+                        padding: 0.5rem;
+                        background: #FFF5;
+                    }
+
+                    &>p {
+                        padding: 0.5rem 1rem;
+                        margin: 1rem 0;
+                        color: black;
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                        text-shadow: 1px 1px 1px #FFF, -1px -1px 1px #FFF, 1px -1px 1px #FFF, -1px 1px 1px #FFF;
+                        text-align: center;
+
+
+                        &>img {
+                            height: 1.5rem;
+                        }
+                    }
+
+                    &>button {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 1rem;
+
+                    }
+
+
+                }
+
+                & > div.store-content > .quest {
+
+                    background: #4848;
+
+                    background-image: url("../components/icons/quest.png");
+                    background-size: cover;
+                    background-position: center center;
+                    background-blend-mode: overlay;
+
+                }
+            }
+        }
+    }
+
+    &>footer {
+        flex: 0 0 auto;
+        width: 100%;
+        height: 5rem;
+        border-top: solid 3px #0008;
+        background: repeating-linear-gradient(0deg,
+                #000 0,
+                #222 4px,
+                #630 7px,
+                #210 9px);
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        &>button {
+            width: 12rem;
+        }
+
+    }
+}

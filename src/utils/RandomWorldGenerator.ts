@@ -7,7 +7,7 @@ import { EmptyArena } from "../data/EmptyArena";
 import { Campaign } from "../models/Campaign";
 import { ArenaDragonsLair } from "../data/ArenaDragonsLair";
 import { ARENADIFFICULTY } from "../data/Difficulties";
-import WorldLocation, { ArenaWorldLocation } from "../game/WorldLocation";
+import WorldLocation, { ArenaWorldLocation, VillageWorldLocation } from "../game/WorldLocation";
 
 interface worldGeneratorOptions {
 	depth: number;
@@ -29,7 +29,7 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): World
 			curve: 2,
 			spread: 3,
 			starts: 1,
-			villages: 4,
+			villages: 5,
 			theme: ["FOREST", "MOUNTAIN"],
 		},
 		opts,
@@ -99,32 +99,18 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): World
 
 	locsMap[options.depth][Math.floor(options.width / 2)] = bossLoc;
 
-	// locsMap[options.depth][Math.floor(options.width / 2)] = {
-	// 	id: v4(),
-	// 	name: `BOSS`,
-	// 	status: LOCATIONSTATUS.LOCKED,
-	// 	type: WORLDLOCATIONTYPE.ARENA,
-	// 	arena: [new ArenaDragonsLair()],
-	// 	nextLocations: [],
-	// 	flags: [],
-	// 	icon: "forest",
-	// 	loc: {
-	// 		x: Math.floor(options.width / 2),
-	// 		y: options.depth,
-	// 		dx: rnd(0, 100) / 100,
-	// 		dy: rnd(0, 100) / 100,
-	// 	},
-	// 	init: function (c: Campaign) {
-	// 		this.arena = [new ArenaDragonsLair()];
-	// 	},
-	// };
-
 	// console.log("\nVillages!");
 	// // Set Village locations at random
-	// for(let i = 0; i < options.villages; i++) {
-	// 	const l = randomVillage(locsMap);
 
-	// }
+	const minVillages = Math.max(Math.round((options.depth * options.width) / 30), 1);
+	const maxVillages = Math.max(Math.round((options.depth * options.width) / 15), options.villages);
+	const villageCount = rnd(minVillages, maxVillages);
+	console.log("Village count:", minVillages, maxVillages, villageCount);
+
+	for(let i = 0; i < villageCount; i++) {
+		const l = randomVillage(locsMap);
+
+	}
 
 	// Then create connections to these locations from the previous depth
 	calculateEdgeConnections(locsMap);
@@ -198,19 +184,21 @@ export function randomArenaLocation(difficulty: ARENADIFFICULTY, first: boolean,
 	return worldLoc;
 }
 
-export function randomVillage(locsMap: (LocationData | null)[][]): LocationData {
-	const vloc: LocationData = {
-		id: v4(),
-		status: LOCATIONSTATUS.LOCKED,
-		type: WORLDLOCATIONTYPE.VILLAGE,
-		arena: [new EmptyArena()],
-		nextLocations: [],
-		flags: [],
-		icon: "tent",
-		init: function (campaign) {
-			this.arena = [new EmptyArena()];
-		},
-	};
+export function randomVillage(locsMap: (WorldLocation | null)[][]): VillageWorldLocation {
+	// const vloc: LocationData = {
+	// 	id: v4(),
+	// 	status: LOCATIONSTATUS.LOCKED,
+	// 	type: WORLDLOCATIONTYPE.VILLAGE,
+	// 	arena: [new EmptyArena()],
+	// 	nextLocations: [],
+	// 	flags: [],
+	// 	icon: "tent",
+	// 	init: function (campaign) {
+	// 		this.arena = [new EmptyArena()];
+	// 	},
+	// };
+
+	const vloc = new VillageWorldLocation();
 
 	let isValidLocation = false;
 
@@ -226,11 +214,13 @@ export function randomVillage(locsMap: (LocationData | null)[][]): LocationData 
 		// If target location is already a village, skip
 		if (locsMap[rDept][rCol]!.type === WORLDLOCATIONTYPE.VILLAGE) continue;
 
+		
+
 		if (locsMap[rDept][rCol] !== null) {
 			isValidLocation = true;
-			console.log(rDept, rCol, vloc);
+			// console.log(rDept, rCol, vloc);
 
-			vloc.loc = {
+			vloc.worldPos = {
 				x: rCol,
 				y: rDept,
 				dx: rnd(0, 100) / 100,

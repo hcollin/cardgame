@@ -43,9 +43,8 @@ function WorldNodeMap(props: { campaign: Campaign; updateCampaign: (c: Campaign)
 
 	const world = getActiveWorld(props.campaign);
 	if(!world) { return null; }
+
 	world.activeLocationId = props.campaign.currentLocationId;
-	
-	
 
 	function selectLocation(mloc: WorldLocation) {
 		// console.log("SELECT LOCATION", mloc);

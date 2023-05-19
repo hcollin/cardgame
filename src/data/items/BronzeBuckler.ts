@@ -6,7 +6,7 @@ import { ITEMFUNCTIONS } from "./itemFunctions";
 export const BronzeBuckler: Item = {
 	id: "bronze-buckler",
 	name: "Bronze Buckler",
-	groups: ["Shield"],
+	groups: ["Shield", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple bronze Buckler",
 	rarity: ITEMRARITY.COMMON,

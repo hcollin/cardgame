@@ -7,7 +7,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const HandAxe: Item = {
 	id: "hand-axe",
 	name: "Hand Axe",
-	groups: ["Axe"],
+	groups: ["Axe", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Small utilitarian Axe used to chopping wood and heads.",
 	rarity: ITEMRARITY.COMMON,

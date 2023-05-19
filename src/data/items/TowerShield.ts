@@ -7,7 +7,7 @@ import { ITEMFUNCTIONS } from "./itemFunctions";
 export const TowerShield: Item = {
 	id: "tower-shield",
 	name: "Tower Shield",
-	groups: ["Shield"],
+	groups: ["Shield", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A large and heavy iron shield",
 	rarity: ITEMRARITY.COMMON,

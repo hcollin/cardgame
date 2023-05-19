@@ -4,7 +4,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const LeatherCap: Item = {
 	id: "leather-cap",
 	name: "Leather Cap",
-	groups: ["Helmet", "Leather"],
+	groups: ["Helmet", "Leather", "General Store"],
 	itemSlots: [ITEMSLOT.HEAD],
     rulesText: "Immunity to Stun",
 	description: "A comfortable padded leather cap for those less worreid about style.",

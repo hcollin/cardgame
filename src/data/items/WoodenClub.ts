@@ -7,7 +7,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const WoodenClub: Item = {
 	id: "wooden-club",
 	name: "Wooden Club",
-	groups: ["Club"],
+	groups: ["Club", "General Store" ],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A simple wooden club, ready for pain.",
 	rarity: ITEMRARITY.COMMON,

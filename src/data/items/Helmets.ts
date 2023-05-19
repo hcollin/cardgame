@@ -4,7 +4,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const Cervelliere: Item = {
 	id: "cervelliere",
 	name: "Cervelliere",
-	groups: ["Helmet", "Iron"],
+	groups: ["Helmet", "Iron", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.HEAD],
 	rulesText: "BLOCK 1",
 	description: "The Cervelliere, a rounded steel cap, offers unassuming but crucial protection, cradling the warrior's skull securely.",
@@ -21,7 +21,7 @@ export const Cervelliere: Item = {
 export const Barbute: Item = {
 	id: "barbute",
 	name: "Barbute",
-	groups: ["Helmet", "Iron"],
+	groups: ["Helmet", "Iron", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.HEAD],
 	rulesText: "BLOCK 2",
 	description: "The Barbute is a simple, open-faced helmet, offering good protection while allowing the wearer to see and hear clearly.",
@@ -38,7 +38,7 @@ export const Barbute: Item = {
 export const GreatHelm: Item = {
 	id: "great-helm",
 	name: "Great Helm",
-	groups: ["Helmet", "Iron"],
+	groups: ["Helmet", "Iron", "BlackSmiths Forge"],
 	itemSlots: [ITEMSLOT.HEAD],
 	rulesText: "BLOCK 4, ENERGY -1",
 	description: "A large, heavy helmet, the Great Helm offers excellent protection, but limits vision and hearing.",
