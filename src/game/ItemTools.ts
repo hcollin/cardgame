@@ -57,11 +57,14 @@ export function getItemIcon(item: Item): string {
 		if(item.groups.includes("Sword")) {
 			return "sword"
 		}
-		if(item.groups.includes("Clud") || item.groups.includes("Mace")) {
+		if(item.groups.includes("Club") || item.groups.includes("Mace")) {
 			return "mace"
 		}
 		if(item.groups.includes("Spear")) {
 			return "spear"
+		}
+		if(item.groups.includes("Dagger")) {
+			return "dagger"
 		}
 		return "weapon";
 	}
