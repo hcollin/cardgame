@@ -1,11 +1,11 @@
 import { v4 } from "uuid";
 import { ITEMRARITY } from "../models/Items";
 import { Item } from "../models/Items";
-import { ItemOnSale } from "../models/VillageState";
+import { ItemOnSale, ServiceOnSale } from "../models/VillageState";
 import Hero from "./Hero";
 import { createItemId, getRarityLevel } from "./ItemTools";
 import { allItems } from "../data/items/itemLists";
-import { arnd } from "rndlib";
+import { arnd, rnd } from "rndlib";
 import Observable from "../utils/observable/Observable";
 
 
@@ -19,6 +19,7 @@ export interface VillageParams {
 export class Village extends Observable {
 
     protected itemsOnSale: ItemOnSale[] = [];
+    protected servicesOnSale: ServiceOnSale[] = [];
 
 
     protected gold: number = 0;
@@ -120,6 +121,65 @@ export class Village extends Observable {
         this.itemsOnSale = [...this.itemsOnSale, ...itemSlots];
 
     }
+
+    // TODO: Continue from here!
+
+    // private createServicesOnSale(provider: "healer" | "tavern", count: number) {
+
+    //     const services: ServiceOnSale[] = [];
+
+    //     function randomHealingService(): ServiceOnSale  {
+            
+    //         const amount = rnd(1, 10) * 5;
+
+    //         const priceVariation = 1 - ((rnd(1,10) - 5) / 10);
+            
+    //         const serv: ServiceOnSale = {
+    //             id: v4(),
+    //             name: "Heal",
+    //             price: amount * priceVariation,
+    //             stock: 1,
+    //             provider: "healer",
+    //             type: "heal",
+    //             options: {
+    //                 heal: amount
+    //             }
+    //         };
+
+    //         return serv;
+    //     }
+
+    //     function randomGamblingService(): ServiceOnSale {
+    //         const bet = rnd(1,100);
+
+    //         const chance = rnd(4,14) * 5
+    //         const payback = 1 + (rnd(1, 30)/10);
+            
+            
+    //         const serv: ServiceOnSale = {
+    //             id: v4(),
+    //             name: "Gambling",
+    //             price: bet,
+    //             stock: 1,
+    //             provider: "tavern",
+    //             type: "gambling",
+    //             options: {
+    //                 payback: amount
+    //             }
+    //         };
+
+    //         return serv;
+    //     }
+
+    //     while(services.length < count) {
+    //         if(provider === "healer") {
+    //             services.push(randomHealingService());
+    //         }
+    //         if(provider === "tavern") {
+
+    //         }
+    //     }
+    // }
 
     private createPotionsOnSale() {
         const allPotions = allItems.filter((item) => item.groups.includes("Potion"));

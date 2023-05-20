@@ -9,6 +9,16 @@ export interface ItemOnSale {
     state: "SOLD" | "AVAILABLE";
 }
 
+export interface ServiceOnSale {
+    id: string;
+    name: string;
+    price: number;    
+    stock: number;
+    provider: "healer"|"tavern";
+    type: "heal"|"gamble"|"quest";
+    options?: Partial<Record<string, number|string>>;
+}
+
 
 export interface VillageState {
     id: string;
