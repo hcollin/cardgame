@@ -7,7 +7,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const IronMace: Item = {
 	id: "iron-mace",
 	name: "Iron Mace",
-	groups: ["Club", "BlackSmiths Forge"],
+	groups: ["Club", "BlackSmiths Forge", "Weapon"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Heavy club with a metal head, designed for delivering powerful blows.",
 	rarity: ITEMRARITY.COMMON,

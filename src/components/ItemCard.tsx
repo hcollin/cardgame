@@ -1,6 +1,7 @@
-import { getTotalCardCount } from "../game/ItemTools";
+import { getItemIcon, getTotalCardCount } from "../game/ItemTools";
 import { ITEMSLOT } from "../models/HeroStats";
 import { Item } from "../models/Items";
+import Icon from "./Icon";
 
 import cardsIcon from "./icons/cards.png";
 
@@ -18,9 +19,13 @@ function ItemCard(props: { item: Item, onClick?: (item: Item) => void }) {
         }
     }
 
+    const icon = getItemIcon(props.item);
+
     return (
 		<div className={cns.join(" ")} onClick={click}>
 			<div className="item-name">{props.item.name}</div>
+
+            
 
             {props.item.rulesText &&  <div className="item-rules">{props.item.rulesText}</div>}
 			<div className="item-description">{props.item.description}</div>
@@ -37,6 +42,9 @@ function ItemCard(props: { item: Item, onClick?: (item: Item) => void }) {
             </div>
 
 			<footer>
+                <div className="type">
+                    {icon !== "" && <Icon type={icon} className="item-icon" />}
+                </div>
 				<div className="cards">
                     <img src={cardsIcon} alt="Cards" /> {getTotalCardCount(props.item)}
                 </div>

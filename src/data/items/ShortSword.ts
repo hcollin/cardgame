@@ -5,7 +5,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const ShortSword: Item = {
 	id: "crude-short-sword",
 	name: "Crude Short Sword",
-	groups: ["Sword", "BlackSmiths Forge"],
+	groups: ["Sword", "BlackSmiths Forge", "Weapon"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "Despite its rudimentary craftsmanship, it offers close-quarter menace with its sharp, compact blade.",
 	rarity: ITEMRARITY.COMMON,

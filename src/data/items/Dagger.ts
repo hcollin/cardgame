@@ -5,7 +5,7 @@ import { ITEMRARITY, Item } from "../../models/Items";
 export const Dagger: Item = {
 	id: "crude-dagger",
 	name: "Crude Dagger",
-	groups: ["Dagger", "General Store"],
+	groups: ["Dagger", "General Store", "Weapon"],
 	itemSlots: [ITEMSLOT.LEFT_HAND, ITEMSLOT.RIGHT_HAND],
 	description: "A short blade with guard",
 	rarity: ITEMRARITY.COMMON,

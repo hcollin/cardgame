@@ -46,3 +46,53 @@ export function getRarityLevel(r: ITEMRARITY): number {
 	}
 	return -1;
 }
+
+export function getItemIcon(item: Item): string {
+	
+	if(item.groups.includes("Weapon")) {
+		
+		if(item.groups.includes("Axe")) {
+			return "axe"
+		}
+		if(item.groups.includes("Sword")) {
+			return "sword"
+		}
+		if(item.groups.includes("Clud") || item.groups.includes("Mace")) {
+			return "mace"
+		}
+		if(item.groups.includes("Spear")) {
+			return "spear"
+		}
+		return "weapon";
+	}
+
+	if(item.groups.includes("Armor")) {
+		return "armor";
+	}
+
+	if(item.groups.includes("Shield")) {
+		return "shield";
+	}	
+
+	if(item.groups.includes("Helmet")) {
+		return "helmet";
+	}	
+
+	if(item.groups.includes("Boots")) {
+		return "boots";
+	}
+
+	if(item.groups.includes("Potion")) {
+		return "potion";
+	}
+
+	if(item.groups.includes("Ring")) {
+		return "ring";
+	}
+
+	if(item.groups.includes("Wand")) {
+		return "wand";
+	}
+
+	return "";
+}
