@@ -93,6 +93,10 @@ export function getItemIcon(item: Item): string {
 		return "ring";
 	}
 
+	if(item.groups.includes("Cape") || item.groups.includes("Cloak")) {
+		return "cape";
+	}
+
 	if(item.groups.includes("Wand")) {
 		return "wand";
 	}

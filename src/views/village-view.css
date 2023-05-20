@@ -45,6 +45,50 @@ div.village-container {
             padding: 0;
         }
 
+        & > div.transactions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+
+            &>div.transaction {
+                margin: 0 0.5rem;
+                padding: 0.25rem 1rem;
+
+                /* background: #0008; */
+                /* border: ridge 3px #A508; */
+                
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+
+                color: white;
+                font-size: 1.5rem;
+
+                &.positive {
+                    color: #8F8;   
+                }
+
+                &.negative {
+                    color: #F88;   
+                }
+
+                &>img {
+                    height: 1.5rem;
+                    margin: 0 0.25rem;
+                }
+
+                &>span {
+                    color: gold;
+                    margin: 0 0.25rem;
+                    font-weight: bold;
+                }
+
+                
+            }
+        }
+
         &>div.hero-gold {
             margin-right: 1rem;
             padding: 0.25rem 1rem;

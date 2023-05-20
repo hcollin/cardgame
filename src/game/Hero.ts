@@ -47,7 +47,7 @@ export default class Hero extends Observable {
 	protected inventory: Item[] = [];
 	protected itemSlots: Map<ITEMSLOT, Item> = new Map<ITEMSLOT, Item>();
 
-	public gold: number = 0;
+	public gold: number = 100;
 
 	constructor(chrRace: CharacterRace, chrClass: CharacterClass, options?: CampaignOptions, name?: string) {
 		super();
