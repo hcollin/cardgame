@@ -159,11 +159,52 @@
 			}
 
 			&.armor {
-				bottom: -6px;
-				left: 65px;
+				// bottom: -6px;
+				// left: 65px;
+				top: 15px;
+				left: 15px;
 				
 				
 			}
+		}
+
+		& > div.effects {
+			position: absolute;
+			bottom: 0;
+			left: 30%;
+			right: 30%;
+			height: 3rem;
+			// border: solid 1px pink;
+
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+
+			& > div {
+
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: flex-end;
+				margin-right: 1rem;
+				
+				&> img {
+					height: 2.4rem;
+				}
+
+				& > span.duration {
+					font-size: 1.25rem;
+					color: white;
+					font-weight: bold;
+					margin-left: -1.5rem;
+
+					text-shadow: var(--text-stroke-small);
+					
+
+				}
+			}
+			
 		}
 	}
 

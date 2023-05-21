@@ -20,6 +20,7 @@ import { ARENATHEMES } from "../data/arenaThemes";
 import { ENEMYDATA, EnemyData, enemyDataArray } from "../data/EnemyData";
 import { ARENADIFFICULTY, getDifficultyLevel, getEnemyLevelsInDifficulty } from "../data/Difficulties";
 import { Gambeson, LeatherArmor, StuddedLeatherArmor } from "../data/items/LightArmor";
+import { allItems } from "../data/items/itemLists";
 
 export class Arena extends Cloneable {
 	public name: string = "Arena";
@@ -41,30 +42,7 @@ export class Arena extends Cloneable {
 	private difficultyValue: number = -1;
 
 	protected rewardItems: Item[] = [
-		Dagger,
-		ShortSword,
-		LongSword,
-		Katana,
-
-		IronMace,
-
-		HandAxe,
-
-		BronzeBuckler,
-		RoundShield,
-
-		Gambeson,
-		LeatherArmor,
-		StuddedLeatherArmor,
-
-		LeatherBoots,
-
-		RingOfHealing,
-		RingOfRegeneration,
-
-		CloakOfSwiftness,
-
-		MinorWandOfFire,
+		...allItems
 	];
 
 	protected rewardCount: number = 3;
@@ -140,13 +118,20 @@ export class Arena extends Cloneable {
 			return true;
 		});
 
+
 		const enemies: Enemy[] = [];
 		let totalDifficulty = 0;
 		while (totalDifficulty < getMaxLevel) {
 			const e = arnd(validEnemiesData);
-			if (e.difficultyNumber + totalDifficulty > getMaxLevel) continue;
-			enemies.push(new e.enemyClass());
-			totalDifficulty += e.difficultyNumber;
+			try {
+				if (e.difficultyNumber + totalDifficulty > getMaxLevel) continue;
+				enemies.push(new e.enemyClass());
+				totalDifficulty += e.difficultyNumber;
+			} catch(err) {
+				console.warn("Could not generate enemy!");
+				console.warn(err);
+				console.log(e);
+			}
 		}
 
 		const arena = new Arena(theme.name(), enemies, "", arnd(theme.bgImage));

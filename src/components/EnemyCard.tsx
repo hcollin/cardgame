@@ -111,12 +111,12 @@ export default function EnemyCard(props: EnemyCardProps) {
 		if (isDragging && canDrop && isOver) cns.push("isOverTrue");
 		if (isDragging && !canDrop) cns.push("invalid-target");
 
-		if (enemy.effectIsActive(EFFECTS.STUNNED)) {
+		if (enemy.effectIsActive(EFFECTS.STUN)) {
 			cns.push("is-stunned no-action");
 			contCns.push("no-action");
 		}
-		if (enemy.effectIsActive(EFFECTS.BURNING)) cns.push("is-burning");
-		if (enemy.effectIsActive(EFFECTS.POISONED)) cns.push("is-poisoned");
+		if (enemy.effectIsActive(EFFECTS.BURN)) cns.push("is-burning");
+		if (enemy.effectIsActive(EFFECTS.POISON)) cns.push("is-poisoned");
 		if (enemy.effectIsActive(EFFECTS.FROZEN)) {
 			cns.push("is-frozen no-action");
 			contCns.push("no-action");

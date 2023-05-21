@@ -71,7 +71,6 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): World
 				dx: rnd(0, 100) / 100,
 				dy: rnd(0, 100) / 100,
 			};
-			
 
 			dLocs[pos] = nloc;
 
@@ -102,14 +101,13 @@ export function generateRandomWorld(opts: Partial<worldGeneratorOptions>): World
 	// console.log("\nVillages!");
 	// // Set Village locations at random
 
-	const minVillages = Math.max(Math.round((options.depth * options.width) / 30), 1);
-	const maxVillages = Math.max(Math.round((options.depth * options.width) / 15), options.villages);
+	const minVillages = Math.round((options.depth - 2) / 3);
+	const maxVillages = Math.round((options.depth - 2) / 2);
 	const villageCount = rnd(minVillages, maxVillages);
-	console.log("Village count:", minVillages, maxVillages, villageCount);
+	// console.log("Village count:", minVillages, maxVillages, villageCount);
 
-	for(let i = 0; i < villageCount; i++) {
-		const l = randomVillage(locsMap);
-
+	for (let i = 0; i < villageCount; i++) {
+		const l = randomVillage(locsMap, i, villageCount);
 	}
 
 	// Then create connections to these locations from the previous depth
@@ -184,37 +182,34 @@ export function randomArenaLocation(difficulty: ARENADIFFICULTY, first: boolean,
 	return worldLoc;
 }
 
-export function randomVillage(locsMap: (WorldLocation | null)[][]): VillageWorldLocation {
-	// const vloc: LocationData = {
-	// 	id: v4(),
-	// 	status: LOCATIONSTATUS.LOCKED,
-	// 	type: WORLDLOCATIONTYPE.VILLAGE,
-	// 	arena: [new EmptyArena()],
-	// 	nextLocations: [],
-	// 	flags: [],
-	// 	icon: "tent",
-	// 	init: function (campaign) {
-	// 		this.arena = [new EmptyArena()];
-	// 	},
-	// };
-
+export function randomVillage(locsMap: (WorldLocation | null)[][], vind: number, vmax: number): VillageWorldLocation {
 	const vloc = new VillageWorldLocation();
 
 	let isValidLocation = false;
 
+	const varea = Math.max(1, Math.round((locsMap.length -2) / vmax));
+
+	const minD = Math.max(1, varea * vind);
+	const maxD = Math.min(varea * vind + varea, locsMap.length - 2);
+
+	// console.log(`${vind}/${vmax} ${minD}-${maxD} ${locsMap.length} ${varea * vind + varea}`);
+
+	let looper = 0;
 	while (isValidLocation === false) {
-		const rDept = rnd(2, locsMap.length - 2);
+		// const rDept = rnd(Math.min(minD, maxD), Math.max(minD, maxD));
+		const rDept = rnd(minD, maxD);
 		const rCol = rnd(0, locsMap[rDept].length - 1);
 
 		if (locsMap[rDept][rCol] === null) continue;
+
+		// if previous depth has a village, skip
+		if (locsMap[rDept - 1].some((l) => l !== null && l.type === WORLDLOCATIONTYPE.VILLAGE)) continue;
 
 		// If current depth already has a village, skip
 		if (locsMap[rDept].some((l) => l !== null && l.type === WORLDLOCATIONTYPE.VILLAGE)) continue;
 
 		// If target location is already a village, skip
 		if (locsMap[rDept][rCol]!.type === WORLDLOCATIONTYPE.VILLAGE) continue;
-
-		
 
 		if (locsMap[rDept][rCol] !== null) {
 			isValidLocation = true;
@@ -229,6 +224,11 @@ export function randomVillage(locsMap: (WorldLocation | null)[][]): VillageWorld
 
 			locsMap[rDept][rCol] = vloc;
 		}
+
+		looper++;
+		if (looper > 10) {
+			throw new Error("Village location generation failed");
+		}
 	}
 
 	return vloc;
@@ -239,3 +239,4 @@ function randomArena(diff: ARENADIFFICULTY, theme: string): Arena {
 
 	// return new ArenaForestEncounter(diff);
 }
+

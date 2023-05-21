@@ -29,6 +29,10 @@ import iconTypeHelmet from "./icons/iconTypeHelmet.png";
 
 import iconTypeCape from "./icons/iconTypeCape.png";
 
+import iconTypePoison from "./icons/poison.png";
+import iconTypeBurn from "./icons/burning.png";
+import iconTypeSlow from "./icons/stunned.png";
+import iconTypeFrozen from "./icons/frozen.png";
 
 // import iconTypeStaff from "./icons/iconTypeStaff.png";
 // import iconTypeWand from "./icons/iconTypeWand.png";
@@ -63,7 +67,11 @@ const icon2Image: {[key: string]: string} = {
     "helmet": iconTypeHelmet,
     "cape": iconTypeCape,
     
-    
+    "poison": iconTypePoison,
+    "burn": iconTypeBurn,
+    "slow": iconTypeSlow,
+    "stun": iconTypeSlow,
+    "frozen": iconTypeFrozen,
     
 }
 

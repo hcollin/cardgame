@@ -269,8 +269,9 @@ div.enemy-container {
         --action-font-size: 0.9rem;
 
         position: absolute;
-        right: calc(-1 * var(--action-size));
+        right: calc(-1 * var(--action-size) * 0.5);
         top: 0;
+        z-index: 200;
         text-align: center;
         width: var(--action-size);
         height: var(--action-size);

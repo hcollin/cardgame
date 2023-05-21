@@ -162,6 +162,8 @@ export function endTurn(arenaState: ArenaState): ArenaState {
 		arenaState = enemy.cleanUpEndOfPlayerTurn(arenaState);
 	});
 
+	arenaState.hero.endOfTurnReset(arenaState);
+
 	arenaState.state = ARENASTATES.ENEMYTURN;
 
 	// Move cards from hand to discard

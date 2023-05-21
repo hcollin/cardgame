@@ -5,7 +5,7 @@ import { getDamageRange } from "./ItemTools";
 import { EFFECTS } from "../models/Effects";
 import { v4 } from "uuid";
 import { Cloneable } from "../utils/Clonable";
-import {effStore} from "../utils/usePlayerEffect";
+import { effStore } from "../utils/usePlayerEffect";
 import { ArenaState } from "../models/ArenaState";
 
 export enum ENEMYSTATUS {
@@ -41,6 +41,7 @@ export enum ENEMYACTIONTARGETS {
 	HERO = "HERO",
 	WORLD = "WORLD",
 	OTHERS = "OTHERS",
+	ENEMIES = "ENEMIES",
 }
 
 export interface EnemyAction {
@@ -73,6 +74,7 @@ export class Enemy extends Cloneable {
 	protected size: ENEMYSIZE = ENEMYSIZE.MEDIUM;
 
 	protected block: number = 0;
+	protected armor: number = 0;
 
 	protected vulnerableTo: DAMAGETYPE[] = [];
 	protected resistantTo: DAMAGETYPE[] = [];
@@ -107,6 +109,10 @@ export class Enemy extends Cloneable {
 		return this.health;
 	}
 
+	public getArmor(): number {
+		return this.armor;
+	}
+
 	public getGroups(): string[] {
 		return this.groups;
 	}
@@ -137,12 +143,11 @@ export class Enemy extends Cloneable {
 		}
 
 		this.health -= damageTaken;
-		if(flags.includes(DAMAGEFLAGS.VAMPIRIC)){
+		if (flags.includes(DAMAGEFLAGS.VAMPIRIC)) {
 			const healAmount = Math.round(damageTaken / 2);
 			as.hero.healHero(healAmount);
 			effStore.addEffect("heal", `Drained ${healAmount} health,`);
 		}
-
 
 		this.damageTaken.push({ type: damage.type, amount: damageTaken });
 
@@ -168,7 +173,7 @@ export class Enemy extends Cloneable {
 			dmg = Math.round(damage.amount * 0.5);
 		}
 
-		if (this.effectIsActive(EFFECTS.STUNNED)) {
+		if (this.effectIsActive(EFFECTS.STUN)) {
 			dmg = Math.round(dmg * 1.25);
 		}
 
@@ -198,18 +203,18 @@ export class Enemy extends Cloneable {
 		}
 
 		// If the enemy has both burning and frozen effects, only leave the one with most turns left and substract the other from it
-		if (this.effects.has(EFFECTS.BURNING) && this.effects.has(EFFECTS.FROZEN)) {
-			const burningTurns = this.effects.get(EFFECTS.BURNING)!;
+		if (this.effects.has(EFFECTS.BURN) && this.effects.has(EFFECTS.FROZEN)) {
+			const burningTurns = this.effects.get(EFFECTS.BURN)!;
 			const frozenTurns = this.effects.get(EFFECTS.FROZEN)!;
 			if (burningTurns > frozenTurns) {
-				this.effects.set(EFFECTS.BURNING, burningTurns - frozenTurns);
+				this.effects.set(EFFECTS.BURN, burningTurns - frozenTurns);
 				this.effects.delete(EFFECTS.FROZEN);
 			} else {
 				if (frozenTurns > burningTurns) {
 					this.effects.set(EFFECTS.FROZEN, frozenTurns - burningTurns);
-					this.effects.delete(EFFECTS.BURNING);
+					this.effects.delete(EFFECTS.BURN);
 				} else {
-					this.effects.delete(EFFECTS.BURNING);
+					this.effects.delete(EFFECTS.BURN);
 					this.effects.delete(EFFECTS.FROZEN);
 				}
 			}
@@ -253,11 +258,11 @@ export class Enemy extends Cloneable {
 		}
 		let damage = parseActValue(act, as);
 
-		if (this.effectIsActive(EFFECTS.BOOSTED)) {
+		if (this.effectIsActive(EFFECTS.BOOST)) {
 			damage = Math.round(damage * 1.5);
 		}
 
-		as.hero.takeDamage(damage);
+		as.hero.takeDamage(damage, act);
 		return { ...as };
 	}
 
@@ -269,9 +274,11 @@ export class Enemy extends Cloneable {
 		if (act.target === ENEMYACTIONTARGETS.SELF) {
 			this.healMe(parseActValue(act, as));
 		}
-		if (act.target === ENEMYACTIONTARGETS.OTHERS) {
+		if (act.target === ENEMYACTIONTARGETS.OTHERS || act.target === ENEMYACTIONTARGETS.ENEMIES) {
 			as.arena.enemies.forEach((enemy) => {
-				enemy.healMe(parseActValue(act, as));
+				if (!(act.target === ENEMYACTIONTARGETS.OTHERS && enemy.id === this.id)) {
+					enemy.healMe(parseActValue(act, as));
+				}
 			});
 		}
 
@@ -368,11 +375,11 @@ export class Enemy extends Cloneable {
 	}
 
 	public cleanUpEndOfEnemyTurn(as: ArenaState): ArenaState {
-		if (this.effects.has(EFFECTS.POISONED)) {
+		if (this.effects.has(EFFECTS.POISON)) {
 			this.takeDamage({ amount: 1, type: DAMAGETYPE.POISON, variation: 0 }, as);
 		}
 
-		if (this.effects.has(EFFECTS.BURNING)) {
+		if (this.effects.has(EFFECTS.BURN)) {
 			this.takeDamage({ amount: 2, type: DAMAGETYPE.FIRE, variation: 1 }, as);
 		}
 
@@ -408,7 +415,7 @@ export class Enemy extends Cloneable {
 
 	protected isAbletoAct(): boolean {
 		if (this.status === ENEMYSTATUS.DEAD) return false;
-		if (this.effects.has(EFFECTS.STUNNED)) return false;
+		if (this.effects.has(EFFECTS.STUN)) return false;
 		if (this.effects.has(EFFECTS.FROZEN)) return false;
 		return true;
 	}
@@ -420,7 +427,13 @@ export class Enemy extends Cloneable {
 		if (act.description) return act.description;
 
 		const strs: string[] = [];
-		strs.push(act.action);
+		if(act.damageType) {
+			strs.push(act.damageType);
+
+		} else {
+			strs.push(act.action);
+		}
+		
 
 		if (act.value) {
 			strs.push(parseActValue(act, as).toString());

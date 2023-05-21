@@ -31,13 +31,14 @@ export const basicWeapons: Item[] = [
     ShortSword,
     WoodenClub,
     BronzeSpear,
+    HandAxe,
 ];
 
 
 export const defaultWeapons: Item[] = [
     LongSword,
     IronMace,
-    HandAxe,
+    
 ];
 
 export const advancedWeapons: Item[] = [

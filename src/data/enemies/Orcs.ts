@@ -107,7 +107,7 @@ export class OrcWarlord extends OrcRace {
 		{
 			action: ENEMYACTIONS.ATTACK,
 			target: ENEMYACTIONTARGETS.HERO,
-			effect: EFFECTS.STUNNED,
+			effect: EFFECTS.STUN,
 			value: 10,
 		},
 		{
@@ -142,7 +142,7 @@ export class OrcWarlord extends OrcRace {
 		const allies = as.arena.enemies.filter((e) => e instanceof OrcRace && e.id !== this.id);
 
 		// Add the BOOSTED effect to all allies
-		allies.forEach((e) => e.causeEffect(EFFECTS.BOOSTED, 2));
+		allies.forEach((e) => e.causeEffect(EFFECTS.BOOST, 2));
 
 		return { ...as };
 	}

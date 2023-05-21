@@ -17,6 +17,7 @@ import { Katana } from "./items/Katana";
 import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "./enemies/Goblins";
 import { OrcBerserker, OrcShaman, OrcWarlord } from "./enemies/Orcs";
 import { ARENADIFFICULTY } from "./Difficulties";
+import { FairyMage, FairyWarrior } from "./enemies/ForestEnemies";
 
 const availableEnemies: { enemy: string; difficulty: number }[] = [
 	{ enemy: "Goblin Warrior", difficulty: 1 },
@@ -25,6 +26,8 @@ const availableEnemies: { enemy: string; difficulty: number }[] = [
 	{ enemy: "Orc Berserker", difficulty: 2 },
 	{ enemy: "Orc Shaman", difficulty: 3 },
 	{ enemy: "Orc Warlord", difficulty: 5 },
+	{ enemy: "Fairy Warrior", difficulty: 3 },
+	{ enemy: "Fairy Mage", difficulty: 4 },
 	// { enemy: "Kobold", difficulty: 1 },
 	// { enemy: "Orc", difficulty: 3 },
 	// { enemy: "Ogre", difficulty: 4 },
@@ -64,6 +67,12 @@ export class ArenaForestEncounter extends Arena {
 					break;
 				case "Orc Warlord":
 					this.enemies.push(new OrcWarlord());
+					break;
+				case "Fairy Warrior":
+					this.enemies.push(new FairyWarrior());
+					break;
+				case "Fairy Mage":
+					this.enemies.push(new FairyMage());
 					break;
 				// case "Ogre":
 				// 	this.enemies.push(new Ogre());

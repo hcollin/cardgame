@@ -51,7 +51,7 @@ export const MinorWandOfFire: Item = {
 			apCost: 2,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
-			effectsOnHit: [EFFECTS.BURNING],
+			effectsOnHit: [EFFECTS.BURN],
 			onHit: (as) => {
 				return { ...as };
 			},
@@ -75,7 +75,7 @@ export const MinorWandOfFire: Item = {
 			apCost: 3,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY, TARGETS.ADJACENT],
-			effectsOnHit: [EFFECTS.BURNING],
+			effectsOnHit: [EFFECTS.BURN],
 			onHit: (as) => {
 				return { ...as };
 			},

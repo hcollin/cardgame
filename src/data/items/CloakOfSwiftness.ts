@@ -11,11 +11,15 @@ export const CloakOfSwiftness: Item = {
     cards: [],
     price: 350,
     rarity: ITEMRARITY.RARE,
+    bonus: {
+        energy: 1
+    },
+    
     onEquip: (hero) => {
-        hero.modifyEffectEnergy(1);
+        // hero.modifyEffectEnergy(1);
 
     },
     onUnequip: (hero) => {
-        hero.modifyEffectEnergy(-1);
+        // hero.modifyEffectEnergy(-1);
     }
 };

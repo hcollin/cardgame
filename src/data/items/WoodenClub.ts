@@ -53,7 +53,7 @@ export const WoodenClub: Item = {
 			apCost: 2,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
-			effectsOnHit: [EFFECTS.STUNNED],
+			effectsOnHit: [EFFECTS.STUN],
 			onHit: (as) => {
 				return { ...as };
 			},

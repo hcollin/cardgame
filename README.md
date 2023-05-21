@@ -27,3 +27,20 @@ At the moment player can gain quite a lot of automatic armor per turn and as mos
 
 
 
+# TODO
+
+VILLAGES
+[ ] Village levels instead of difficulty
+[ ] Item generation based on level and item types
+
+ENEMIES
+[ ] Create more enemies
+[ ] Enemy damage type
+
+BALANCE
+[ ] Enemy Balance
+[ ] Reward balance
+[ ] LEvel up balance
+
+OTHERS
+[ ] Effects on player

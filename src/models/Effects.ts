@@ -3,9 +3,11 @@
 
 export enum EFFECTS {
 	FROZEN = "frozen",
-	POISONED = "poisoned",
-	BURNING = "burning",
-	STUNNED = "stunned",
-	BOOSTED = "boosted",
+	POISON = "poison",
+	BURN = "burn",
+	STUN = "stun",
+	BOOST = "boost",
+	SLOW = "slow",
+	DISARM = "disarm",
 };
 

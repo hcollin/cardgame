@@ -11,6 +11,7 @@ import goldIcon from "./icons/gold.png";
 import "./hero-info.scss";
 import ValueCircle from "./common/valueCircle/ValueCircle";
 import Icon from "./Icon";
+import { EFFECTS } from "../models/Effects";
 
 function HeroInfo(props: { arenaState: ArenaState }) {
 	const { arenaState } = props;
@@ -18,8 +19,9 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 	const hero = arenaState.hero;
 
 	const hen = hero.getEnergy();
-	const hmen = hero.getBaseEnergy();
-	const energyBar: boolean[] = new Array<boolean>(Math.max(hen, hmen)).fill(false).reduce((bar, act, i) => {
+	// const hmen = hero.getBaseEnergy();
+	
+	const energyBar: boolean[] = new Array<boolean>(Math.max(hen, hero.getBaseEnergy(), hero.getEffectedEnergy())).fill(false).reduce((bar, act, i) => {
 		if (i < hen) {
 			bar.push(true);
 		} else {
@@ -29,12 +31,22 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 		return bar;
 	}, [] as boolean[]);
 
+	const effects = hero.getEffects();
+	if (effects.length > 0) console.log("EFFECTS:", effects);
 	return (
 		<div className="hero-info">
-
 			<div className="durability">
 				<ValueCircle className="dodge" value={hero.getDodge()} maxValue={100} size={245} gaugeColor="#0F0A" gaugeBgColor="#000E" thickness={10} />
-				<ValueCircle className="block" value={hero.getArmor()} maxValue={100} size={215} gaugeColor="#48FA" gaugeBgColor="#000E" thickness={10} />
+				<ValueCircle
+					className="block"
+					value={hero.getBlock()}
+					maxValue={100}
+					size={215}
+					gaugeColor="#48FA"
+					gaugeBgColor="#000E"
+					thickness={10}
+					endPoint={0.875}
+				/>
 				<ValueCircle
 					className="health"
 					value={hero.getHealth()}
@@ -46,17 +58,15 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 				/>
 
 				<ValueCircle
-					flip
 					className="armor"
 					value={hero.getDamageReduction()}
 					maxValue={20}
-					size={120}
-					sizeY={60}
+					size={215}
 					gaugeColor="#FA0A"
 					gaugeBgColor="#000E"
-					thickness={20}
-					startPoint={0.1}
-					endPoint={0.4}
+					thickness={10}
+					startPoint={0.9}
+					endPoint={1.1}
 				/>
 
 				<div className="values">
@@ -66,7 +76,7 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 					</div>
 					<div className="block-value">
 						<Icon type="block" />
-						{hero.getArmor()}
+						{hero.getBlock()}
 					</div>
 					<div className="dodge-value">
 						<Icon type="dodge" />
@@ -77,13 +87,27 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 						{hero.getDamageReduction()}
 					</div>
 				</div>
+
+				<div className="effects">
+					{effects.map((effect, i) => {
+						const key = `eff-${effect.effect}-${i}`;
+
+						let type = effect.effect.toLowerCase();
+						
+						return (
+							<div key={key}>
+								<Icon type={type} />
+								<span className="duration">{effect.duration}</span>
+							</div>
+						);
+					})}
+				</div>
 			</div>
 			<div className="energy-bar">
 				{energyBar.map((energyACtive, i) => {
-					return <Icon type="energy" className={energyACtive ? "active" : "spent"} key={`energy-${i}`}/>;
+					return <Icon type="energy" className={energyACtive ? "active" : "spent"} key={`energy-${i}`} />;
 				})}
 			</div>
-
 		</div>
 	);
 }

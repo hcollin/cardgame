@@ -14,7 +14,7 @@ function ArmorValueContainer(props: {hero: Hero}) {
             
             <div className="title">Block</div>
             
-            <div className="value">{props.hero.getEffectedArmor()}</div>
+            <div className="value">{props.hero.getEffectedBlock()}</div>
 
             {/* <div className="base-value">{props.hero.getBaseArmor()}</div> */}
 

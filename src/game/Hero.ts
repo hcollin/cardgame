@@ -1,7 +1,7 @@
 import { roll } from "rndlib/dist/dice";
 import { ClassWarrior } from "../data/Classes";
 import { RaceHuman } from "../data/Races";
-import { Damage } from "../models/Card";
+import { DAMAGETYPE, Damage } from "../models/Card";
 import { CharacterClass, CharacterRace, ITEMSLOT, LevelMods } from "../models/HeroStats";
 import { Item } from "../models/Items";
 import { nameGenerator } from "./HeroTools";
@@ -10,8 +10,16 @@ import { CampaignOptions } from "../models/Campaign";
 import { effStore } from "../utils/usePlayerEffect";
 import { ArenaState } from "../models/ArenaState";
 import Observable from "../utils/observable/Observable";
+import { EFFECTS } from "../models/Effects";
+import { EnemyAction } from "./Enemy";
 
 const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
+
+interface HeroEffect {
+	effect: EFFECTS;
+	duration: number;
+	value: number;
+}
 
 export default class Hero extends Observable {
 	// Basic information
@@ -46,6 +54,9 @@ export default class Hero extends Observable {
 	// Inventory and item slots
 	protected inventory: Item[] = [];
 	protected itemSlots: Map<ITEMSLOT, Item> = new Map<ITEMSLOT, Item>();
+
+	// Effects
+	protected effects: Map<EFFECTS, HeroEffect> = new Map<EFFECTS, HeroEffect>();
 
 	public gold: number = 0;
 
@@ -86,7 +97,7 @@ export default class Hero extends Observable {
 	 *
 	 * @param dmg
 	 */
-	public takeDamage(dmg: number) {
+	public takeDamage(dmg: number, action?: EnemyAction) {
 		if (this.dodgeRoll()) {
 			effStore.addEffect("info", `Dodged ${dmg} damage!`);
 			return;
@@ -95,11 +106,31 @@ export default class Hero extends Observable {
 		let damage = dmg;
 		if (damage < 0) damage = 0;
 
-		if (damage <= this.block) {
+		if (action && action.damageType === DAMAGETYPE.POISON) {
+			effStore.addEffect("dmg", `You are poisoned!`);
+			this.sufferEffect(EFFECTS.POISON, dmg, 3);
+		}
+
+		if(action && action.effect && action.effect !== EFFECTS.POISON && action.effect !== EFFECTS.BURN) {
+			effStore.addEffect("dmg", `You are ${action.effect}!`);
+			this.sufferEffect(action.effect, 1, 1);
+		}
+
+		const isMagic = action && action.damageType === DAMAGETYPE.MAGIC;
+
+		if (damage <= this.block && !isMagic) {
 			this.block -= damage;
 			effStore.addEffect("dmg", `Blocked ${damage} damage!`);
 			return;
 		}
+
+		if (action && action.damageType === DAMAGETYPE.FIRE) {
+			effStore.addEffect("dmg", `You are burning!`);
+			this.sufferEffect(EFFECTS.BURN, dmg, dmg);
+		}
+
+		
+
 
 		// Damage Reduction does not effect block
 		damage = damage - this.getDamageReduction() - this.temporaryDamageReduction;
@@ -108,6 +139,23 @@ export default class Hero extends Observable {
 		effStore.addEffect("dmg", `Took ${damage - this.block}  damage!`);
 		this.health -= damage - this.block;
 		this.block = 0;
+	}
+
+	/**
+	 *
+	 */
+	public sufferEffect(effect: EFFECTS, value?: number, duration?: number) {
+		const eff = this.effects.get(effect);
+
+		if (eff) {
+			eff.duration += duration || 1;
+		} else {
+			this.effects.set(effect, {
+				effect,
+				duration: duration || 1,
+				value: value || 1,
+			});
+		}
 	}
 
 	/**
@@ -187,6 +235,7 @@ export default class Hero extends Observable {
 		this.effectBlock = 0;
 		this.effectEnergy = 0;
 		this.effectHealth = 0;
+		this.effects.clear();
 
 		this.inventory = [];
 		this.heroClass.startingItems.forEach((item) => {
@@ -212,6 +261,7 @@ export default class Hero extends Observable {
 				this.health = this.getMaxHealth();
 			}
 		}
+		this.effects.clear();
 
 		this.turnReset();
 	}
@@ -220,9 +270,47 @@ export default class Hero extends Observable {
 	 * Reset heros data at the beginning of the player turn
 	 */
 	public turnReset() {
-		this.block = this.getEffectedArmor();
+		this.block = this.getEffectedBlock();
 		this.energy = this.getEffectedEnergy();
 		this.temporaryDodge = 0; // Reset temporary dodge
+
+		if (this.effects.has(EFFECTS.SLOW)) {
+			this.energy = Math.round(this.energy / 2);
+		}
+
+		if (this.effects.has(EFFECTS.STUN)) {
+			this.energy = 1;
+		}
+
+		if (this.effects.has(EFFECTS.FROZEN)) {
+			this.energy = 0;
+		}
+
+		const burning = this.effects.get(EFFECTS.BURN);
+		if (burning) {
+			this.takeDamage(burning.value);
+		}
+	}
+
+	/**
+	 * Solve some actions at the end of the player turn
+	 */
+	public endOfTurnReset(as: ArenaState) {
+		const poison = this.effects.get(EFFECTS.POISON);
+		if (poison) {
+			effStore.addEffect("dmg", `${poison.value} poison damage`);
+			// this.takeDamage(poison.value);
+			this.health -= poison.value;		
+		}
+
+		this.effects.forEach((eff) => {
+			eff.duration--;
+			if (eff.duration <= 0) {
+				this.effects.delete(eff.effect);
+			}
+		});
+
+		this.energy = 0;
 	}
 
 	// Status
@@ -235,12 +323,12 @@ export default class Hero extends Observable {
 
 	// Calculated Getters
 
-	public getBaseArmor(): number {
+	public getBaseBlock(): number {
 		return this.heroRace.baseArmor + this.heroClass.levelStats[this.level].block + (this.heroClass.bonus.BLOCK || 0);
 	}
 
-	public getEffectedArmor(): number {
-		return this.effectBlock + this.getBaseArmor() + this.getEquippedItemBonus("BLOCK");
+	public getEffectedBlock(): number {
+		return this.effectBlock + this.getBaseBlock() + this.getEquippedItemBonus("BLOCK");
 	}
 
 	public getBaseHealth(): number {
@@ -286,16 +374,46 @@ export default class Hero extends Observable {
 		return this.health;
 	}
 
-	public getArmor(): number {
+	public getEffects(): HeroEffect[] {
+		return Array.from(this.effects.values());
+	}
+
+	/**
+	 *
+	 * @returns
+	 */
+	public getBlock(): number {
+		if (this.effects.has(EFFECTS.FROZEN)) return 0;
 		return this.block;
 	}
 
+	/**
+	 * Return the current energy of the hero
+	 *
+	 * @returns
+	 */
 	public getEnergy(): number {
+		if (this.effects.has(EFFECTS.STUN)) return Math.min(this.energy, 1);
+		if (this.effects.has(EFFECTS.FROZEN)) return 0;
+
 		return this.energy;
 	}
 
+	/**
+	 * Get the current dodge value of the hero
+	 *
+	 * If the hero is stunned or frozen, dodge is 0 (cannot dodge)
+	 * If the hero is slowed, dodge is halved
+	 *
+	 * @returns number
+	 */
 	public getDodge(): number {
-		return this.dodge + this.temporaryDodge + this.getEquippedItemBonus("DODGE") + (this.heroClass.bonus.DODGE || 0);
+		const dval = this.dodge + this.temporaryDodge + this.getEquippedItemBonus("DODGE") + (this.heroClass.bonus.DODGE || 0);
+		if (this.effects.has(EFFECTS.STUN) || this.effects.has(EFFECTS.FROZEN)) {
+			return 0;
+		}
+		if (this.effects.has(EFFECTS.SLOW)) return dval / 2;
+		return dval;
 	}
 
 	public getDamageReduction(): number {
@@ -400,11 +518,13 @@ export default class Hero extends Observable {
 	/**
 	 * Roll to see if the hero succeeds in dodging
 	 *
+	 *
 	 * @returns
 	 */
 	private dodgeRoll(): boolean {
 		const dodge = this.getDodge();
 		const dodgeChance = dodge >= 100 ? 99 : dodge <= 0 ? 0 : dodge;
+
 		return chance(dodgeChance);
 	}
 }

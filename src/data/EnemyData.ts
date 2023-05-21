@@ -1,5 +1,6 @@
 import { Enemy } from "../game/Enemy";
 import { Dragon } from "./Enemies";
+import { FairyMage, FairyWarrior, ForestSprite, HorrorSpider } from "./enemies/ForestEnemies";
 
 import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "./enemies/Goblins";
 import { FrostTroll, HillHare, Wolf } from "./enemies/MountainEnemies";
@@ -55,6 +56,37 @@ export const ENEMYDATA: { [key: string]: EnemyData } = {
         experienceValue: 25,
         enemyClass: GoblinLord,
     },
+
+
+    "Fairy Warrior":{
+        name: "Fairy Warrior",
+        difficultyNumber: 2,
+        experienceValue: 30,
+        enemyClass: FairyWarrior
+    },
+    "Fairy Mage": {
+        name: "Fairy Mage",
+        difficultyNumber: 4,
+        experienceValue: 75,
+        enemyClass: FairyMage
+    },
+
+    "Horror Spider": {
+        name: "Horror Spider",
+        difficultyNumber: 3,
+        experienceValue: 30,
+        enemyClass: HorrorSpider
+    },
+    
+    "Forest Sprite": {
+        name: "Forest Sprite",
+        difficultyNumber: 4,
+        experienceValue: 40,
+        enemyClass: ForestSprite
+    },
+
+
+
     "Dragon": {
         name: "Dragon",
         difficultyNumber: 20,

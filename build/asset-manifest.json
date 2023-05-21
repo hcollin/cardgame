@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c8901e2c.css",
-    "main.js": "/static/js/main.1414d6f0.js",
+    "main.css": "/static/css/main.58ab832e.css",
+    "main.js": "/static/js/main.90c889c7.js",
     "static/js/787.9c804d05.chunk.js": "/static/js/787.9c804d05.chunk.js",
     "static/media/enemycardlayout.png": "/static/media/enemycardlayout.4ed6558090d558ed1cc0.png",
     "static/media/tribal.png": "/static/media/tribal.daa10e4b05e622bc29e0.png",
@@ -34,6 +34,7 @@
     "static/media/ogre.png": "/static/media/ogre.dea8562000c09bb284c7.png",
     "static/media/goblinWarrior.jpeg": "/static/media/goblinWarrior.6e704d65562d08098e03.jpeg",
     "static/media/goblinSorcerer.jpeg": "/static/media/goblinSorcerer.8cf8097f91574f353d16.jpeg",
+    "static/media/poison.png": "/static/media/poison.7041bdda6c5479a0942d.png",
     "static/media/orcBerserker.jpeg": "/static/media/orcBerserker.b0e1d7d14eaeb66840a7.jpeg",
     "static/media/quest.png": "/static/media/quest.a128663208f47f1640bb.png",
     "static/media/wolf.jpg": "/static/media/wolf.f8fd0729c03ee6219c43.jpg",
@@ -41,8 +42,11 @@
     "static/media/orc.png": "/static/media/orc.a4d912d055e8ea986508.png",
     "static/media/goblin.png": "/static/media/goblin.2363553be9a28138bd25.png",
     "static/media/orcWarlord.jpeg": "/static/media/orcWarlord.ee8312bfc7a19aacf29f.jpeg",
+    "static/media/fairyWarrior.jpg": "/static/media/fairyWarrior.271096d3c1a40111ae49.jpg",
     "static/media/iconTypeDagger.png": "/static/media/iconTypeDagger.3a4fe8e50c65c5fe3de0.png",
+    "static/media/forestSprite.jpg": "/static/media/forestSprite.ffb3f35bf707923c069b.jpg",
     "static/media/damage.png": "/static/media/damage.63fe41ced9a1ffe8f816.png",
+    "static/media/burning.png": "/static/media/burning.f8deb27c29553f86520e.png",
     "static/media/left-hand.png": "/static/media/left-hand.2e75e8006d66e1661d15.png",
     "static/media/iconTypeRing.png": "/static/media/iconTypeRing.439b0fea6653ecd00301.png",
     "static/media/ring.png": "/static/media/ring.439b0fea6653ecd00301.png",
@@ -50,6 +54,8 @@
     "static/media/energy.png": "/static/media/energy.368eb98e7258a41c32b5.png",
     "static/media/mountain.png": "/static/media/mountain.e9d4a66ee42dbb3be03d.png",
     "static/media/tent.png": "/static/media/tent.45231ecd75bf9913ce84.png",
+    "static/media/fairyMage.jpg": "/static/media/fairyMage.f706d441df0aa8d380b4.jpg",
+    "static/media/horrorSpider.jpg": "/static/media/horrorSpider.b95cc4dcb20eb8d6e0cb.jpg",
     "static/media/feet.png": "/static/media/feet.c9a49b6bdb886194a601.png",
     "static/media/iconTypeBoots.png": "/static/media/iconTypeBoots.c9a49b6bdb886194a601.png",
     "static/media/damagereduction.png": "/static/media/damagereduction.40e49570a899fcd871de.png",
@@ -86,12 +92,12 @@
     "static/media/cards.png": "/static/media/cards.41ad9923479a625b0e14.png",
     "static/media/frozen.png": "/static/media/frozen.b6ba0424a12b68c17bd4.png",
     "index.html": "/index.html",
-    "main.c8901e2c.css.map": "/static/css/main.c8901e2c.css.map",
-    "main.1414d6f0.js.map": "/static/js/main.1414d6f0.js.map",
+    "main.58ab832e.css.map": "/static/css/main.58ab832e.css.map",
+    "main.90c889c7.js.map": "/static/js/main.90c889c7.js.map",
     "787.9c804d05.chunk.js.map": "/static/js/787.9c804d05.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c8901e2c.css",
-    "static/js/main.1414d6f0.js"
+    "static/css/main.58ab832e.css",
+    "static/js/main.90c889c7.js"
   ]
 }

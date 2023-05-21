@@ -61,7 +61,7 @@ export const TowerShield: Item = {
 			damage: [],
 			apCost: 4,
 			reach: 1,
-			allowedTargets: [TARGETS.ENEMY],
+			allowedTargets: [TARGETS.SELF],
 			effectsOnHit: [],
 			onHit: (as) => {
 				return { ...as };

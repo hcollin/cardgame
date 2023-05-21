@@ -68,7 +68,7 @@ export const RoundShield: Item = {
 			apCost: 3,
 			reach: 1,
 			allowedTargets: [TARGETS.ENEMY],
-			effectsOnHit: [EFFECTS.STUNNED],
+			effectsOnHit: [EFFECTS.STUN],
 			onHit: (as) => {
 				return { ...as };
 			},

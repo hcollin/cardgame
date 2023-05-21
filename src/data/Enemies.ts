@@ -246,7 +246,7 @@ export class Dragon extends Enemy {
     protected resistantTo = [DAMAGETYPE.FIRE];
     protected vulnerableTo = [DAMAGETYPE.ICE];
 
-    protected effectImmunities = [EFFECTS.BURNING, EFFECTS.STUNNED];
+    protected effectImmunities = [EFFECTS.BURN, EFFECTS.STUN];
 
     protected experienceValue: number = 500;
 

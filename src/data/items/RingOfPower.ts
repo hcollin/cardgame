@@ -21,7 +21,7 @@ export const MinorRingOfPower: Item = {
 			apCost: 2,
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
-			effectsOnHit: [EFFECTS.STUNNED],
+			effectsOnHit: [EFFECTS.STUN],
 			onHit: (as) => {
 				return { ...as };
 			},
@@ -46,7 +46,7 @@ export const MinorRingOfPower: Item = {
 			apCost: 2,
 			reach: 1,
 			allowedTargets: [TARGETS.SELF],
-			effectsOnHit: [EFFECTS.STUNNED],
+			effectsOnHit: [EFFECTS.STUN],
 			onHit: (as) => {
 				return { ...as };
 			},
@@ -66,7 +66,7 @@ export const MinorRingOfPower: Item = {
 			reach: 1,
             
 			allowedTargets: [TARGETS.SELF],
-			effectsOnHit: [EFFECTS.STUNNED],
+			effectsOnHit: [EFFECTS.STUN],
 			onHit: (as) => {
 				return { ...as };
 			},

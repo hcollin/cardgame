@@ -12,6 +12,8 @@ export enum DAMAGETYPE {
 	POISON = "POISON",
 	HOLY = "HOLY",
 	MAGIC = "MAGIC",
+	NATURE = "NATURE",
+	CHAOS = "CHAOS",
 }
 
 export enum DAMAGEFLAGS {

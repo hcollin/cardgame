@@ -51,7 +51,7 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 		worldName: () => {
 			return arnd(["The dark forest", "Mystical woods", "The enchanted forest", "The old forest", "The ancient forest", "The misty forest", "The thick forest", "The dark woods", "The mystical woods", "The enchanted woods", "The old woods", "The ancient woods", "The misty woods", "The thick woods"]);
 		},
-		enemies: ["Orc Shaman", "Orc Berserker", "Orc Warlord", "Goblin Warrior", "Goblin Sorcerer", "Goblin Lord"],
+		enemies: ["Orc Shaman", "Orc Berserker", "Orc Warlord", "Goblin Warrior", "Goblin Sorcerer", "Goblin Lord", "Fairy Warrior", "Fairy Mage", "Horror Spider", "Forest Sprite"],
 		bgImage: [forestBg],
 		icon: "forest",
 		rewardCount: 3,

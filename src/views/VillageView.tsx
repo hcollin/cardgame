@@ -140,7 +140,7 @@ export default function VillageView(props: {
 					<div className="experience"><Icon type="experience" /> <span>{hero.getExperience()}</span></div>
 
 					<div className="health"><Icon type="health" /> <span>{hero.getHealth()}</span></div>
-					<div className="block"><Icon type="block" /> <span>{hero.getArmor()}</span></div>
+					<div className="block"><Icon type="block" /> <span>{hero.getBlock()}</span></div>
 
 					<div className="energy"><Icon type="energy" /> <span>{hero.getEnergy()}</span></div>
 

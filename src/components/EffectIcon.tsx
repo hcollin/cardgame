@@ -11,10 +11,10 @@ export const EffectIcon = (props: { effect: EFFECTS; amount: number }) => {
 	let img = null;
 
 	switch (props.effect) {
-		case EFFECTS.STUNNED:
+		case EFFECTS.STUN:
 			img = imgStunned;
 			break;
-		case EFFECTS.POISONED:
+		case EFFECTS.POISON:
 			img = imgPoison;
 			break;
 		case EFFECTS.FROZEN:
@@ -37,10 +37,10 @@ export const EffectIconImage = (props: { effect: EFFECTS }) => {
 	let img = null;
 
 	switch (props.effect) {
-		case EFFECTS.STUNNED:
+		case EFFECTS.STUN:
 			img = imgStunned;
 			break;
-		case EFFECTS.POISONED:
+		case EFFECTS.POISON:
 			img = imgPoison;
 			break;
 		case EFFECTS.FROZEN:
