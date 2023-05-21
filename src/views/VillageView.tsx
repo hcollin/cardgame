@@ -21,7 +21,7 @@ interface VillageTransaction {
 	id: string;
 }
 
-export default function VillageView(props: { villageLoc: VillageWorldLocation; campaign: Campaign; onLeaveVillage: () => void }) {
+export default function VillageView(props: { villageLoc: VillageWorldLocation; campaign: Campaign; onLeaveVillage: () => void, updateCampaign: (c: Campaign) => void }) {
 	const vwlData = useClassData<VillageWorldLocation>(props.villageLoc);
 	
 	const [transaction, setTransaction] = useState<VillageTransaction[]>([]);	
@@ -57,22 +57,23 @@ export default function VillageView(props: { villageLoc: VillageWorldLocation; c
 		}
 	}
 
-	function heal(heal: number, price: number) {
+	function heal(amount: number, price: number) {
+		console.log("HEAL", amount, price)
 		if (villageLoc) {
 			const village = villageLoc.village;
 			const hero = props.campaign.hero;
 
-
-			if(hero.gold >= heal) {
+			if(hero.gold >= price) {
 				const dmg = hero.getMaxHealth() - hero.getHealth();
 				hero.gold -= price;
-				hero.healHero(heal);
+				hero.healHero(amount);
 				addTransaction(`You healed ${dmg} for `, 50);
+				props.updateCampaign({...props.campaign, hero: hero});
 			}
 			
 			villageLoc.village = village;
 			vwlData.set(villageLoc);
-		}
+		} 
 	}
 
 	function gamble(bet: number, cha: number, win: number) {

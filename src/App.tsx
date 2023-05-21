@@ -176,7 +176,7 @@ function App() {
 				</div>
 			)}
 			{viewMode === "ARENA" && arenaState !== null && <Arena as={arenaState} onArenaFinished={arenaDone} />}
-			{viewMode === "VILLAGE" && village.instance !== null && village !== null && <VillageView villageLoc={village.instance} campaign={campaign} onLeaveVillage={leaveVillage}/>}
+			{viewMode === "VILLAGE" && village.instance !== null && village !== null && <VillageView villageLoc={village.instance} campaign={campaign} onLeaveVillage={leaveVillage} updateCampaign={setCampaign}/>}
 			<div className="version">
 				{metaData.buildMajor}.{metaData.buildMinor}.{metaData.buildRevision} {metaData.buildTag}
 			</div>
