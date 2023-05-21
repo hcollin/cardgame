@@ -14,11 +14,12 @@ import { getDamageRange } from "../game/ItemTools";
 import GoldValueContainer from "../components/GoldValueContainer";
 import DodgeValueContainer from "../components/DodgeValueContainer";
 import DamageReductionValueContainer from "../components/DamageReductionValueContainer";
+import CharacterSheet from "../components/chrsheet/CharacterSheet";
 
 /**
  * Functional React Component called HeroView that takes HeroStats as a prop and renders the hero's stats
  */
-function HeroView(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
+function HeroView(props: { hero: Hero; updateHero: (hero: Hero) => void }) {	
 	return (
 		<div className="hero-view">
 			<h1>

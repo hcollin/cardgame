@@ -14,10 +14,14 @@ function ArenaHeader(props: { arenaState: ArenaState; updatearenaState: (as: Are
 	}
 
 	const endTurnActive = arenaState.hero.getEnergy() === 0;
-
+	const hero = arenaState.hero;
 	return (
 		<header className="arena-header">
-			<div className="title">Frost Troll <span>Quest</span></div>
+			{/* <div className="title">Frost Troll <span>Quest</span></div> */}
+			<div className="hero-name">
+				{hero.getName() }
+				<span>Level {hero.getLevel()} {hero.getRaceName()} {hero.getClassName()}</span>
+			</div>
 			<div className="data">
 				{arenaState.state === ARENASTATES.MYTURN && (
 					<>

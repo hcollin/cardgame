@@ -236,3 +236,5 @@ export function checkForWin(as: ArenaState): boolean {
 export function checkForDeath(as: ArenaState): boolean {
 	return as.hero.getHealth() <= 0;
 }
+
+

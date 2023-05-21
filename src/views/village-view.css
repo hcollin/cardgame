@@ -89,6 +89,46 @@ div.village-container {
             }
         }
 
+        & > div.mini-hero {
+            margin-right: 1rem;
+            padding: 0.25rem 1rem;
+
+            background: #0008;
+            border: ridge 3px #A508;
+            border-radius: 1rem;
+            width: 15rem;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+
+            box-shadow: inset 0 0 1rem 0.5rem #0008;
+
+        
+            & > div {
+                flex: 0 0 auto;
+                
+                height: 2rem;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin: 0 0.5rem;
+
+                & > span {
+                    color: #FFFA;
+                    font-size: 1.3rem;
+                    font-weight: bold;
+                }
+                 &> img {
+                    height: 1.6rem;
+                    margin-right: 0.5rem;
+                 }
+            }
+        }
+
         &>div.hero-gold {
             margin-right: 1rem;
             padding: 0.25rem 1rem;

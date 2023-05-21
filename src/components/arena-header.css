@@ -33,6 +33,40 @@
     filter: sepia(50%);
   }
 
+  &>.hero-name {
+    width: 40%;
+    /* border-right: groove 3px #0008; */
+    position: relative;
+    z-index: 2;
+    height: 5.5rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 0 1rem;
+
+    font-size: 3.0rem;
+    font-weight: normal;
+    font-family: "Tangerine";
+    color: #FEDA;
+
+    background: linear-gradient(90deg, #0008, transparent);
+
+    /* text-shadow: 2px 2px 2px #C006, -2px -2px 2px #CC06, -2px 2px 2px #0008, 2px -2px 2px #0008; */
+    text-shadow: var(--text-stroke-small);
+
+    & > span {
+      margin-left: 1rem;
+      font-family: "Lobster Two";
+      font-size: 1.2rem;
+      color: #CBAC;
+      text-shadow: var(--text-stroke-small);
+    }
+    
+  }
+
   &>.title {
     position: relative;
     font-size: 2.5rem;
@@ -50,7 +84,7 @@
     color: #ACFA;
 
     text-shadow: 0 0 4px 2px #0008;
-    ;
+    
     text-transform: uppercase;
     font-weight: bold;
     height: 6rem;

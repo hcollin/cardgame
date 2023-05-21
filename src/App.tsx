@@ -26,6 +26,7 @@ import metaData from "./metadata.json";
 import WorldLocation, { ArenaWorldLocation, VillageWorldLocation } from "./game/WorldLocation";
 import useClassData from "./utils/observable/useClassData";
 import VillageView from "./views/VillageView";
+import CharacterSheet from "./components/chrsheet/CharacterSheet";
 
 const isMobile = false;
 
@@ -128,7 +129,7 @@ function App() {
 
 	const backend = isMobile ? TouchBackend : HTML5Backend;
 
-	console.log("APP.tsx: Render!:", village);
+	// console.log("APP.tsx: Render!:", village);
 
 	let viewMode = "MAP";
 	if(arenaState !== null) { viewMode = "ARENA"; }
@@ -158,6 +159,7 @@ function App() {
 
 					{vm === "MAP" && <WorldNodeMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />}
 					{vm === "CHARACTER" && <HeroView hero={campaign.hero} updateHero={updateHero} />}
+					{/* {vm === "CHARACTER" && <CharacterSheet campaign={campaign} full/>} */}
 
 					{campaign.hero.isDead() && (
 						<div className="death">

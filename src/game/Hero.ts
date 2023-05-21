@@ -274,6 +274,10 @@ export default class Hero extends Observable {
 		return this.name;
 	}
 
+	public getRaceName(): string {
+		return this.heroRace.name;
+	}
+
 	public getClassName(): string {
 		return this.heroClass.name;
 	}

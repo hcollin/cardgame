@@ -8,78 +8,82 @@ import dodgeIcon from "./icons/dodge.png";
 import drIcon from "./icons/damagereduction.png";
 import goldIcon from "./icons/gold.png";
 
-import "./hero-info.css";
-
+import "./hero-info.scss";
+import ValueCircle from "./common/valueCircle/ValueCircle";
+import Icon from "./Icon";
 
 function HeroInfo(props: { arenaState: ArenaState }) {
 	const { arenaState } = props;
 
+	const hero = arenaState.hero;
+
+	const hen = hero.getEnergy();
+	const hmen = hero.getBaseEnergy();
+	const energyBar: boolean[] = new Array<boolean>(Math.max(hen, hmen)).fill(false).reduce((bar, act, i) => {
+		if (i < hen) {
+			bar.push(true);
+		} else {
+			bar.push(false);
+		}
+
+		return bar;
+	}, [] as boolean[]);
+
 	return (
 		<div className="hero-info">
-			<div className="small-value experience">
-				<div className="icon">
-					<img src={goldIcon} alt="Gold" />
-				</div>
-				<div className="value">{arenaState.hero.gold}</div>
-			</div>
 
-			<div className="small-value experience">
-				<div className="icon">
-					<img src={experienceIcon} alt="Experience" />
-				</div>
-				<div className="value">{arenaState.hero.getExperience()}</div>
-			</div>
+			<div className="durability">
+				<ValueCircle className="dodge" value={hero.getDodge()} maxValue={100} size={245} gaugeColor="#0F0A" gaugeBgColor="#000E" thickness={10} />
+				<ValueCircle className="block" value={hero.getArmor()} maxValue={100} size={215} gaugeColor="#48FA" gaugeBgColor="#000E" thickness={10} />
+				<ValueCircle
+					className="health"
+					value={hero.getHealth()}
+					maxValue={hero.getMaxHealth()}
+					size={195}
+					gaugeBgColor="#000E"
+					gaugeColor="#F00A"
+					thickness={20}
+				/>
 
-			<div className="name-info">
-				<h1>{arenaState.hero.getName()}</h1>
-				<h2>
-					level {arenaState.hero.getLevel()} {arenaState.hero.getClassName()}
-				</h2>
-			</div>
+				<ValueCircle
+					flip
+					className="armor"
+					value={hero.getDamageReduction()}
+					maxValue={20}
+					size={120}
+					sizeY={60}
+					gaugeColor="#FA0A"
+					gaugeBgColor="#000E"
+					thickness={20}
+					startPoint={0.1}
+					endPoint={0.4}
+				/>
 
-			<div className="value energy">
-				<div className="icon">
-					<img src={energyIcon} alt="Energy" />
-				</div>
 				<div className="values">
-					<span className="main">{arenaState.hero.getEnergy()}</span>
-					<span className="base"> / {arenaState.hero.getEffectedEnergy()}</span>
+					<div className="health-value">
+						<Icon type="health" />
+						{hero.getHealth()}
+					</div>
+					<div className="block-value">
+						<Icon type="block" />
+						{hero.getArmor()}
+					</div>
+					<div className="dodge-value">
+						<Icon type="dodge" />
+						{hero.getDodge()}
+					</div>
+					<div className="armor-value">
+						<Icon type="damagereduction" />
+						{hero.getDamageReduction()}
+					</div>
 				</div>
+			</div>
+			<div className="energy-bar">
+				{energyBar.map((energyACtive, i) => {
+					return <Icon type="energy" className={energyACtive ? "active" : "spent"} key={`energy-${i}`}/>;
+				})}
 			</div>
 
-			<div className="value health">
-				<div className="icon">
-					<img src={healthIcon} alt="Health" />
-				</div>
-				<div className="values">
-					<span className="main">{arenaState.hero.getHealth()}</span>
-					<span className="base"> / {arenaState.hero.getMaxHealth()}</span>
-				</div>
-			</div>
-
-			<div className="value armor">
-				<div className="icon">
-					<img src={armorIcon} alt="Armor" />
-				</div>
-				<div className="values">
-					<span className="main">{arenaState.hero.getArmor()}</span>
-					<span className="base"> / {arenaState.hero.getEffectedArmor()}</span>
-				</div>
-			</div>
-
-			<div className="small-value dodge">
-				<div className="icon">
-					<img src={dodgeIcon} alt="Dodge" />
-				</div>
-				<div className="value">{arenaState.hero.getDodge()}%</div>
-			</div>
-
-			<div className="small-value damage-reduction">
-				<div className="icon">
-					<img src={drIcon} alt="Damage Reduction" />
-				</div>
-				<div className="value">{arenaState.hero.getDamageReduction()}</div>
-			</div>
 		</div>
 	);
 }

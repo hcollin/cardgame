@@ -4,6 +4,11 @@ import iconGold from "./icons/gold.png";
 import iconHealth from "./icons/health.png";
 import iconEnergy from "./icons/energy.png";
 import iconBlock from "./icons/armor.png";
+import iconExperience from "./icons/experience.png";
+import iconDodge from "./icons/dodge.png";
+import iconDamageReduction from "./icons/damagereduction.png";
+
+
 import iconGamble from "./icons/gambling.png";
 import iconQuest from "./icons/quest.png";
 
@@ -34,6 +39,10 @@ const icon2Image: {[key: string]: string} = {
     "health": iconHealth,
     "energy": iconEnergy,
     "block": iconBlock,
+    "dodge": iconDodge,
+    "damagereduction": iconDamageReduction,
+    "experience": iconExperience,
+
     "gambling": iconGamble,
     "´quest": iconQuest,
     

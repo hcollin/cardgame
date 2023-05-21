@@ -3,7 +3,7 @@
 
 div.player-effects-display {
     position: absolute;
-    bottom: 7rem;
+    bottom: 270px;
     left: 40%;
     width: 20%;
     min-height: 2rem;
@@ -20,6 +20,8 @@ div.player-effects-display {
     & > div {
         color: #FFFC;
         font-size: 2rem;
+
+        text-align: center;
 
 
         
