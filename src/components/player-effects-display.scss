@@ -1,6 +1,3 @@
-
-
-
 div.player-effects-display {
     position: absolute;
     bottom: 270px;
@@ -17,14 +14,32 @@ div.player-effects-display {
     /* background: #FFF3; */
     /* border: solid 3px pink; */
 
-    & > div {
+    &>div.player-effect {
         color: #FFFC;
         font-size: 2rem;
 
         text-align: center;
+        width: 100%;
 
 
-        
+        container-type: inline-size;
+
+        &.warn {
+            color: #F80;
+        }
+
+        &>p {
+            font-size: 1.5rem;
+        }
+
+
+        @container (width < 300px) {
+
+            &>p {
+                font-size: 1rem;
+            }
+        }
     }
-    
+
+
 }

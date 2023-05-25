@@ -1,16 +1,16 @@
 import usePlayerEffects from "../utils/usePlayerEffect";
 
-import "./player-effects-display.css";
+import "./player-effects-display.scss";
 
 export default function PlayerEffectsDisplay() {
-	const [playerEffects, addPlayerEffect] = usePlayerEffects();
+	const playerEffects = usePlayerEffects()[0];
 
 	return (
 		<div className="player-effects-display">
-			{playerEffects.map((eff, index) => {
+			{playerEffects.map((eff) => {
 				return (
 					<div key={eff.id} className={`player-effect ${eff.type}`}>
-						{eff.text}
+						<p>{eff.text}</p>
 					</div>
 				);
 			})}

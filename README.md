@@ -35,7 +35,7 @@ VILLAGES
 
 ENEMIES
 [ ] Create more enemies
-[ ] Enemy damage type
+[X] Enemy damage type
 
 BALANCE
 [ ] Enemy Balance
@@ -43,4 +43,4 @@ BALANCE
 [ ] LEvel up balance
 
 OTHERS
-[ ] Effects on player
+[X] Effects on player

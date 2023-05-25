@@ -8,7 +8,6 @@ import { ITEMSLOT } from "../models/HeroStats";
 import Hero from "./Hero";
 import { RaceHuman } from "../data/Races";
 import { ClassWarrior } from "../data/Classes";
-import { Enemy } from "./Enemy";
 import { Hand } from "./Hand";
 import { effStore } from "../utils/usePlayerEffect";
 import { ARENASTATES, ArenaState } from "../models/ArenaState";
@@ -63,6 +62,7 @@ export function createDecks(as: ArenaState): ArenaState {
 export function playItemCard(arenaState: ArenaState, card: Card, targetIndex?: number): ArenaState {
 	if (arenaState.hero.getEnergy() < card.apCost) {
 		console.log("Not enough Action Points");
+		effStore.addEffect("warn", `Not enough Action Points to play ${card.name}`);
 		return { ...arenaState };
 	}
 

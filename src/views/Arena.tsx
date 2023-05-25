@@ -14,7 +14,7 @@ import CardHand from "../components/CardHand";
 import { Item } from "../models/Items";
 import ItemCard from "../components/ItemCard";
 import ArenaDevTools from "../components/ArenaDevTools";
-import PlayerEffectsDisplay from "../components/PlayerEffectDIsplay";
+import PlayerEffectsDisplay from "../components/PlayerEffectDisplay";
 
 import ArenaConsumables from "../components/Consumables";
 

@@ -36,7 +36,7 @@ div.main-screen {
   box-shadow: inset 0 0 5rem 2rem #0008;
 
 
-    &>div.death {
+  &>div.death {
     position: absolute;
     top: 0;
     left: 0;
@@ -352,7 +352,7 @@ nav {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    
+
     left: 0;
     right: 0;
 
@@ -366,8 +366,8 @@ nav {
       width: 50%;
       margin: 0;
       padding: 0;
-      
-      
+
+
 
       height: 6rem;
 
@@ -379,7 +379,7 @@ nav {
 
       }
 
-      & > img {
+      &>img {
         height: 4rem;
         width: 4rem;
         margin: 0;
@@ -390,10 +390,10 @@ nav {
         border-bottom-left-radius: 2rem;
         display: block;
         /* flex-direction: row; */
-        
+
         margin: 0;
         padding: 0;
-        
+
       }
 
       &.right {

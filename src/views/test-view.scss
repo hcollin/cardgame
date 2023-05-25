@@ -1,0 +1,22 @@
+div.test-view {
+
+    padding: 1rem;
+    margin: 1rem;
+    container-type: inline-size;
+
+    &>div.part {
+        width: 800px;
+        border: solid 3px pink;
+
+    }
+
+    @container (width < 800px) {
+
+        &>div.part {
+            width: 100%;
+            border: solid 3px green;
+
+        }
+    }
+
+}

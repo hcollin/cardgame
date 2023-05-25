@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Campaign } from "./models/Campaign";
 import { createCampaign, createEmptyCampaign, createGameForArena, getActiveLocation, markCurrentLocationCompleted } from "./game/CampaignTools";
 
-import { LocationData, WORLDLOCATIONTYPE } from "./models/LocationModels";
+import { WORLDLOCATIONTYPE } from "./models/LocationModels";
 
 import iconMap from "./components/icons/map.png";
 import iconCharacter from "./components/icons/character.png";
@@ -27,6 +27,7 @@ import WorldLocation, { ArenaWorldLocation, VillageWorldLocation } from "./game/
 import useClassData from "./utils/observable/useClassData";
 import VillageView from "./views/VillageView";
 import CharacterSheet from "./components/chrsheet/CharacterSheet";
+
 
 const isMobile = false;
 
@@ -134,6 +135,9 @@ function App() {
 	let viewMode = "MAP";
 	if(arenaState !== null) { viewMode = "ARENA"; }
 	if(village.instance !== null) { viewMode = "VILLAGE"; }
+
+	// <TestView /> is used to quickly test something like css.
+	// return <TestView />;
 
 	return (
 		<DndProvider backend={backend}>
