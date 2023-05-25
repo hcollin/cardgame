@@ -26,7 +26,7 @@ class EffectsStore {
 
 	public addEffect(type: string, text: string) {
 		const id = v4();
-		const duration = 30000;
+		const duration = 3000;
 		this.effs.push({ type, text, count: 1, duration, id });
         this.effArchive.push({ type, text, count: 1, duration, id });
 		this.notify();
