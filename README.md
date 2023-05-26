@@ -40,7 +40,7 @@ ENEMIES
 BALANCE
 [ ] Enemy Balance
 [ ] Reward balance
-[ ] LEvel up balance
+[ ] Level up balance
 
 OTHERS
 [X] Effects on player
