@@ -39,8 +39,12 @@ ENEMIES
 
 BALANCE
 [ ] Enemy Balance
-[ ] Reward balance
+[X] Reward balance, a lot less rewards per area, maybe a choise between 3 things, including gold and health. Remove XP bonus.
 [ ] Level up balance
+
+ITEMS
+[ ] Magic versions of items.
+
 
 OTHERS
 [X] Effects on player

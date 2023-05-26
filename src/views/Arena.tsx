@@ -19,10 +19,8 @@ import PlayerEffectsDisplay from "../components/PlayerEffectDisplay";
 import ArenaConsumables from "../components/Consumables";
 
 import "./arena.css";
+import { ExperienceReward, GoldReward, HealReward, ItemReward, Reward } from "../models/Rewards";
 function Arena(props: { as: ArenaState; onArenaFinished: (arenaState: ArenaState) => void }) {
-	
-	
-	
 	const [arenaState, setarenaState] = useState<ArenaState>(props.as);
 
 	const [targetIndex, setTarget] = useState<number | null>(null);
@@ -198,7 +196,7 @@ function Arena(props: { as: ArenaState; onArenaFinished: (arenaState: ArenaState
 export default Arena;
 
 function RewardsScreen(props: { as: ArenaState; onCompleteArena: () => void }) {
-	const itemRewards = useState<Item[]>(() => {
+	const rewards = useState<Reward[]>(() => {
 		return props.as.arena.getRewardOptions();
 	})[0];
 
@@ -207,13 +205,18 @@ function RewardsScreen(props: { as: ArenaState; onCompleteArena: () => void }) {
 		props.onCompleteArena();
 	}
 
-	function healHero() {
-		props.as.hero.healHero(Math.round(props.as.hero.getMaxHealth() * 0.33));
+	function healHero(amount: number) {
+		props.as.hero.healHero(amount);
 		props.onCompleteArena();
 	}
 
-	function gainExperience() {
-		props.as.hero.gainExperience(props.as.hero.getLevel() * 50);
+	function gainExperience(amount: number) {
+		props.as.hero.gainExperience(amount);
+		props.onCompleteArena();
+	}
+
+	function gainGold(amount: number) {
+		props.as.hero.gold += amount;
 		props.onCompleteArena();
 	}
 
@@ -223,17 +226,46 @@ function RewardsScreen(props: { as: ArenaState; onCompleteArena: () => void }) {
 				<div className="title">Pick a reward</div>
 
 				<div className="rewards">
-					{itemRewards.map((item, index) => {
-						return <ItemCard key={item.id} item={item} onClick={pickItem} />;
+					{rewards.map((reward, index) => {
+						if (reward.type === "ITEM") {
+							const itemR = reward as ItemReward;
+							return <ItemCard key={index} item={itemR.item} onClick={pickItem} />;
+						}
+
+						if (reward.type === "POTION") {
+							const itemR = reward as ItemReward;
+							return <ItemCard key={index} item={itemR.item} onClick={pickItem} />;
+						}
+
+						if (reward.type === "HEAL") {
+							const healR = reward as HealReward;
+							return (
+								<div className="heal" onClick={() => healHero(healR.heal)}>
+									Heal {healR.heal}
+								</div>
+							);
+						}
+
+						if (reward.type === "EXPERIENCE") {
+							const xpR = reward as ExperienceReward;
+							return (
+								<div className="experience" onClick={() => gainExperience(xpR.experience)}>
+									Gain <big>{xpR.experience}</big>bonus experience
+								</div>
+							);
+						}
+
+						if (reward.type === "GOLD") {
+							const gr = reward as GoldReward;
+							return (
+								<div className="gold" onClick={() => gainGold(gr.gold)}>
+									Gain <big>{gr.gold}</big> Gold
+								</div>
+							);
+						}
+
+						return null;
 					})}
-
-					<div className="heal" onClick={healHero}>
-						Heal {Math.round(props.as.hero.getMaxHealth() * 0.33)}{" "}
-					</div>
-
-					<div className="experience" onClick={gainExperience}>
-						Gain <big>{props.as.hero.getLevel() * 50}</big> bonus experience.
-					</div>
 				</div>
 			</div>
 		</div>

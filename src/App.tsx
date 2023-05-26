@@ -27,6 +27,7 @@ import WorldLocation, { ArenaWorldLocation, VillageWorldLocation } from "./game/
 import useClassData from "./utils/observable/useClassData";
 import VillageView from "./views/VillageView";
 import CharacterSheet from "./components/chrsheet/CharacterSheet";
+import TestView from "./views/TestView";
 
 
 const isMobile = false;

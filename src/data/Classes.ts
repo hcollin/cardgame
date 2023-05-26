@@ -14,11 +14,11 @@ export const ClassWarrior: CharacterClass = {
 	startingItems: [
 		[ShortSword, ITEMSLOT.RIGHT_HAND],
 		[BronzeBuckler, ITEMSLOT.LEFT_HAND],
-		[createItemId(MinorHealingPotion), null],
-		[createItemId(MinorHealingPotion), null],
-		[createItemId(MinorHealingPotion), null],
-		[createItemId(PotionOfInsight), null],
-		[createItemId(GreaterEnergyPotion), null],
+		// [createItemId(MinorHealingPotion), null],
+		// [createItemId(MinorHealingPotion), null],
+		// [createItemId(MinorHealingPotion), null],
+		// [createItemId(PotionOfInsight), null],
+		// [createItemId(GreaterEnergyPotion), null],
 	],
 	levelStats: [
 		{ health: 0, block: 0, energy: 0, rHandSize: 0, lHandSize: 0, cape: false },

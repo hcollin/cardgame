@@ -1,4 +1,4 @@
-import { arnd, arnds } from "rndlib";
+import { arnd, arnds, chance, rnd } from "rndlib";
 import { BronzeBuckler } from "../data/items/BronzeBuckler";
 import { HandAxe } from "../data/items/HandAxe";
 
@@ -21,6 +21,8 @@ import { ENEMYDATA, EnemyData, enemyDataArray } from "../data/EnemyData";
 import { ARENADIFFICULTY, getDifficultyLevel, getEnemyLevelsInDifficulty } from "../data/Difficulties";
 import { Gambeson, LeatherArmor, StuddedLeatherArmor } from "../data/items/LightArmor";
 import { allItems } from "../data/items/itemLists";
+import { ExperienceReward, GoldReward, HealReward, ItemReward, REWARDTYPE, Reward } from "../models/Rewards";
+import { v4 } from "uuid";
 
 export class Arena extends Cloneable {
 	public name: string = "Arena";
@@ -41,9 +43,7 @@ export class Arena extends Cloneable {
 	private difficulty: ARENADIFFICULTY = ARENADIFFICULTY.VERYEASY;
 	private difficultyValue: number = -1;
 
-	protected rewardItems: Item[] = [
-		...allItems
-	];
+	protected rewardItems: Item[] = [...allItems];
 
 	protected rewardCount: number = 3;
 
@@ -60,9 +60,12 @@ export class Arena extends Cloneable {
 			enemy.resetEnemy();
 		});
 	}
-	public getRewardOptions(): Item[] {
-		if (this.rewardItems.length <= this.rewardCount) return this.rewardItems;
-		return arnds(this.rewardItems, this.rewardCount, true);
+
+	public getRewardOptions(): Reward[] {
+		const rewards: Reward[] = [];
+		return rewardGenerator(this.rewardItems, 3, this.difficulty);
+		// if (this.rewardItems.length <= this.rewardCount) return this.rewardItems;
+		// return arnds(this.rewardItems, this.rewardCount, true);
 	}
 
 	public getGoldReward(): number {
@@ -118,7 +121,6 @@ export class Arena extends Cloneable {
 			return true;
 		});
 
-
 		const enemies: Enemy[] = [];
 		let totalDifficulty = 0;
 		while (totalDifficulty < getMaxLevel) {
@@ -127,7 +129,7 @@ export class Arena extends Cloneable {
 				if (e.difficultyNumber + totalDifficulty > getMaxLevel) continue;
 				enemies.push(new e.enemyClass());
 				totalDifficulty += e.difficultyNumber;
-			} catch(err) {
+			} catch (err) {
 				console.warn("Could not generate enemy!");
 				console.warn(err);
 				console.log(e);
@@ -142,9 +144,9 @@ export class Arena extends Cloneable {
 
 	/**
 	 * Generate boss arena for the world
-	 * @param difficulty 
-	 * @param themeName 
-	 * @returns 
+	 * @param difficulty
+	 * @param themeName
+	 * @returns
 	 */
 	public static generateBoss(difficulty: ARENADIFFICULTY, themeName: string): Arena {
 		const theme = ARENATHEMES[themeName];
@@ -165,13 +167,11 @@ export class Arena extends Cloneable {
 		// 	totalDifficulty += e.difficultyNumber;
 		// }
 
-
 		theme.bosses.forEach((b) => {
 			const e = validEnemiesData.find((ed) => ed.name === b);
 			if (!e) throw new Error("Invalid boss name");
 			enemies.push(new e.enemyClass());
 		});
-
 
 		const arena = new Arena(theme.name(), enemies, "", arnd(theme.bgImage));
 
@@ -190,3 +190,104 @@ function getEnemyByName(ename: string): Enemy {
 // function getEnemyLevelLimits(dif: ARENADIFFICULTY): [number, number] {
 
 // }
+
+export function rewardGenerator(items: Item[], count: number, difficulty: ARENADIFFICULTY): Reward[] {
+	const rewards: Reward[] = [];
+
+	const diffValue = getDifficultyLevel(difficulty);
+	// rewards.push(createItemReward(items));
+
+	while (rewards.length < count) {
+		const typeCounts: Map<REWARDTYPE, number> = rewards.reduce((counts: Map<REWARDTYPE, number>, reward) => {
+			const val = counts.get(reward.type) || 0;
+			counts.set(reward.type, val + 1);
+			return counts;
+		}, new Map<REWARDTYPE, number>());
+
+		const itemChance = 80 - (typeCounts.get("ITEM") || 0) * 40;
+		const potionChance = 40 - (typeCounts.get("POTION") || 0) * 40;
+		const healthChance = 20 - (typeCounts.get("HEAL") || 0) * 20;
+		const experienceChance = 10 - (typeCounts.get("EXPERIENCE") || 0) * 10;
+		const goldChance = 30 - (typeCounts.get("GOLD") || 0) * 30;
+
+		const maxChances = itemChance + potionChance + healthChance + experienceChance + goldChance;
+
+		let num = rnd(1, maxChances);
+
+		// console.log(`${num}/${maxChances}`, itemChance, potionChance, healthChance, experienceChance, goldChance);
+
+		if (num <= itemChance) {
+			rewards.push(createItemReward(items));
+			continue;
+		}
+		num -= itemChance;
+
+		if (num <= potionChance) {
+			rewards.push(createPotionReward(items));
+			continue;
+		}
+		num -= potionChance;
+
+		if (num <= healthChance) {
+			rewards.push(createHealReward(Math.max(10, diffValue)));
+			continue;
+		}
+		num -= healthChance;
+
+		if (num <= goldChance) {
+			rewards.push(createGoldReward(diffValue * 10));
+			continue;
+		}
+		num -= goldChance;
+
+		if (num <= experienceChance) {
+			rewards.push(createExperienceReward(diffValue * 5));
+			continue;
+		}
+		num -= experienceChance;
+
+		// rewards.push(createItemReward(items));
+	}
+
+	return rewards;
+}
+
+function createItemReward(items: Item[]): ItemReward {
+	return {
+		id: v4(),
+		type: "ITEM",
+		item: arnd(items.filter((i) => !i.groups.includes("Potion"))),
+	};
+}
+
+function createPotionReward(items: Item[]): ItemReward {
+	return {
+		id: v4(),
+		type: "POTION",
+		item: arnd(items.filter((i) => i.groups.includes("Potion"))),
+	};
+}
+
+function createHealReward(baseAmount: number): HealReward {
+	return {
+		id: v4(),
+		type: "HEAL",
+		heal: baseAmount,
+	};
+}
+
+function createGoldReward(baseAmount: number): GoldReward {
+	return {
+		id: v4(),
+		type: "GOLD",
+		gold: baseAmount,
+	};
+}
+
+function createExperienceReward(baseAmount: number): ExperienceReward {
+	return {
+		id: v4(),
+		type: "EXPERIENCE",
+		experience: baseAmount,
+	};
+}

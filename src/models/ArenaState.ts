@@ -29,7 +29,6 @@ export enum ARENASTATES {
     
 }
 
-
 export interface ArenaState {
     id: string;
     turn: number;
