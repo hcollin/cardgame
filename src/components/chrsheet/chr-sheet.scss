@@ -4,50 +4,9 @@ div.character-sheet {
 	align-items: center;
 	justify-content: center;
 
-	& > div.health-meters {
-		position: relative;
-		height: 210px;
-		width: 250px;
-		border: solid 3px #0008;
 
-		border-top-left-radius: 50% 60%;
-		border-top-right-radius: 50% 60%;
 
-		border-bottom-right-radius: 18% 40%;
-		border-bottom-left-radius: 18% 40%;
-
-		background: radial-gradient(#840d, #420d 70%, #100d 100%);
-
-	
-
-		& > div.value-circle {
-			&.health {
-				position: absolute;
-				top: 25px;
-				left: 25px;
-			}
-
-			&.block {
-				position: absolute;
-				top: 15px;
-				left: 15px;
-			}
-
-			&.dodge {
-				position: absolute;
-				top: 0;
-				left: 0;
-			}
-
-            &.armor {
-                position: absolute;
-                top: 100px;
-                left: 65px;
-            }
-		}
-	}
-
-	& > h1 {
+	&>h1 {
 		font-family: "Tangerine", cursive;
 		font-size: 4rem;
 		font-weight: normal;
@@ -56,7 +15,7 @@ div.character-sheet {
 		text-shadow: var(--text-stroke-large);
 	}
 
-	& > h2 {
+	&>h2 {
 		font-family: "Lobster Two", cursive;
 		font-size: 1.25rem;
 		font-weight: normal;
@@ -65,13 +24,16 @@ div.character-sheet {
 		text-shadow: var(--text-stroke-large);
 	}
 
-	& > div.attributes {
-		display: flex;
-		flex-direction: column;
+	&>div.content {
+		width: 100%;
 
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-between;
 		margin: 1rem;
 
-		& > h3 {
+		h3 {
 			font-family: "Lobster Two", cursive;
 			font-size: 1.25rem;
 			font-weight: normal;
@@ -81,6 +43,27 @@ div.character-sheet {
 		}
 
 		& > div {
+			margin: 0 1rem;
+			flex: 1 1 auto;
+			// border: solid 3px #0008;
+			
+			
+
+			&.inventory-container {
+				flex: 0 0 auto;
+				width: 50rem;
+			}
+		}
+
+	}
+
+	&>div.content>div.attributes {
+		display: flex;
+		flex-direction: column;
+
+		// margin: 1rem;
+
+		&>div {
 			position: relative;
 			/* border-bottom: solid 1px #0008; */
 			color: white;
@@ -100,7 +83,7 @@ div.character-sheet {
 
 			overflow: hidden;
 
-			& > div.info {
+			&>div.info {
 				width: 10rem;
 				height: 100%;
 				display: flex;
@@ -115,7 +98,7 @@ div.character-sheet {
 
 				background: #0004;
 
-				& > img {
+				&>img {
 					height: 4rem;
 					padding: 0.5rem;
 					background: #0008;
@@ -124,7 +107,7 @@ div.character-sheet {
 				}
 			}
 
-			& > div.value {
+			&>div.value {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
@@ -135,7 +118,7 @@ div.character-sheet {
 				font-size: 2rem;
 				font-weight: bold;
 
-				& > div.maxValue {
+				&>div.maxValue {
 					font-size: 1rem;
 					font-weight: normal;
 					color: #fffa;
@@ -144,6 +127,27 @@ div.character-sheet {
 			}
 		}
 	}
+
+
+	& > div.content > div.equipped-container {
+
+
+		& > div.content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			& > button {
+				margin-top: 1rem;
+			}
+
+		}
+
+		
+
+	}
+
 
 	&.full {
 		margin-top: 10rem;

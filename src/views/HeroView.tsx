@@ -54,7 +54,7 @@ function HeroView(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 
 export default HeroView;
 
-function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
+export function HeroItems(props: { hero: Hero; updateHero: (hero: Hero) => void }) {
 	const [targetSlot, setTargetSlot] = useState<ITEMSLOT | null>(null);
 
 	const [itemInfo, setItemInfo] = useState<Item | null>(null);

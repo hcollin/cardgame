@@ -205,6 +205,10 @@ export default class Hero extends Observable {
 		if (this.inventory.find((i) => i.name === item.name) === undefined) {
 			throw new Error("Hero does not have this item in inventory");
 		}
+		if(this.itemIsEquipped(item)) {
+			return;
+		}
+
 		this.itemSlots.set(slot, item);
 
 		if (item.onEquip) {
@@ -438,6 +442,10 @@ export default class Hero extends Observable {
 
 	public getEquippedItem(slot: ITEMSLOT): Item | undefined {
 		return this.itemSlots.get(slot);
+	}
+
+	public itemIsEquipped(item: Item): boolean {
+		return Array.from(this.itemSlots.values()).includes(item);
 	}
 
 	public getEquippableSlots(): ITEMSLOT[] {

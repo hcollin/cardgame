@@ -162,8 +162,8 @@ function App() {
 					</nav>
 
 					{vm === "MAP" && <WorldNodeMap campaign={campaign} updateCampaign={updateCampaign} startArena={startArena} />}
-					{vm === "CHARACTER" && <HeroView hero={campaign.hero} updateHero={updateHero} />}
-					{/* {vm === "CHARACTER" && <CharacterSheet campaign={campaign} full/>} */}
+					{/* {vm === "CHARACTER" && <HeroView hero={campaign.hero} updateHero={updateHero} />} */}
+					{vm === "CHARACTER" && <CharacterSheet campaign={campaign} full/>}
 
 					{campaign.hero.isDead() && (
 						<div className="death">
