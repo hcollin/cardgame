@@ -89,7 +89,7 @@ export default function CharacterSheet(props: { campaign: Campaign; full?: boole
 							<Icon type="block" /> Block
 						</div>
 						<div className="value">
-							{hero.getBlock()}
+							{hero.getEffectedBlock()}
 
 							<div className="maxValue">/ {hero.getBaseBlock()}</div>
 						</div>

@@ -12,6 +12,7 @@ import { ArenaState } from "../models/ArenaState";
 import Observable from "../utils/observable/Observable";
 import { EFFECTS } from "../models/Effects";
 import { EnemyAction } from "./Enemy";
+import { OffHandForTwoHandedItem } from "../data/items/EmptyHandItem";
 
 const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
@@ -111,7 +112,7 @@ export default class Hero extends Observable {
 			this.sufferEffect(EFFECTS.POISON, dmg, 3);
 		}
 
-		if(action && action.effect && action.effect !== EFFECTS.POISON && action.effect !== EFFECTS.BURN) {
+		if (action && action.effect && action.effect !== EFFECTS.POISON && action.effect !== EFFECTS.BURN) {
 			effStore.addEffect("dmg", `You are ${action.effect}!`);
 			this.sufferEffect(action.effect, 1, 1);
 		}
@@ -128,9 +129,6 @@ export default class Hero extends Observable {
 			effStore.addEffect("dmg", `You are burning!`);
 			this.sufferEffect(EFFECTS.BURN, dmg, dmg);
 		}
-
-		
-
 
 		// Damage Reduction does not effect block
 		damage = damage - this.getDamageReduction() - this.temporaryDamageReduction;
@@ -205,11 +203,23 @@ export default class Hero extends Observable {
 		if (this.inventory.find((i) => i.name === item.name) === undefined) {
 			throw new Error("Hero does not have this item in inventory");
 		}
-		if(this.itemIsEquipped(item)) {
+		if (this.itemIsEquipped(item)) {
 			return;
 		}
 
 		this.itemSlots.set(slot, item);
+
+		if (item.groups.includes("Two-Handed")) {
+			const offHandItem = { ...OffHandForTwoHandedItem };
+			offHandItem.name = item.name;
+			if (slot === ITEMSLOT.RIGHT_HAND) {
+				this.equipItem(offHandItem, ITEMSLOT.LEFT_HAND);
+			}
+
+			if (slot === ITEMSLOT.LEFT_HAND) {
+				this.equipItem(offHandItem, ITEMSLOT.RIGHT_HAND);
+			}
+		}
 
 		if (item.onEquip) {
 			// TODO: Fix this
@@ -217,9 +227,16 @@ export default class Hero extends Observable {
 		}
 	}
 
-	public unequipItem(slot: ITEMSLOT) {
+	public unequipItem(slot: ITEMSLOT, force?: boolean) {
 		const item = this.itemSlots.get(slot);
 		if (item) {
+			if (item.groups.includes("Unequippable") && !force) {
+				return;
+			}
+			if (item.groups.includes("Two-Handed")) {
+				if (slot === ITEMSLOT.RIGHT_HAND) this.unequipItem(ITEMSLOT.LEFT_HAND, true);
+				if (slot === ITEMSLOT.LEFT_HAND) this.unequipItem(ITEMSLOT.RIGHT_HAND, true);
+			}
 			if (item.onUnequip) {
 				item.onUnequip(this);
 			}
@@ -304,7 +321,7 @@ export default class Hero extends Observable {
 		if (poison) {
 			effStore.addEffect("dmg", `${poison.value} poison damage`);
 			// this.takeDamage(poison.value);
-			this.health -= poison.value;		
+			this.health -= poison.value;
 		}
 
 		this.effects.forEach((eff) => {
@@ -534,5 +551,18 @@ export default class Hero extends Observable {
 		const dodgeChance = dodge >= 100 ? 99 : dodge <= 0 ? 0 : dodge;
 
 		return chance(dodgeChance);
+	}
+
+	private equippingTwoHandedWeapon(): boolean {
+		const rItem = this.itemSlots.get(ITEMSLOT.RIGHT_HAND);
+		if (rItem && rItem.groups.includes("Two-Handed")) {
+			return true;
+		}
+
+		const lItem = this.itemSlots.get(ITEMSLOT.LEFT_HAND);
+		if (lItem && lItem.groups.includes("Two-Handed")) {
+			return true;
+		}
+		return false;
 	}
 }

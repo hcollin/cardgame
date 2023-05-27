@@ -68,6 +68,10 @@ export class Hand {
 
     private calculateHandSize(as: ArenaState) {
         this.handSize = as.hero.getHandSize(this.hand);
+        const deckSize = this.getDeck(as).getFullDeckSize();
+        if (this.handSize > deckSize) {
+            this.handSize = deckSize;
+        }
     }
 
 }

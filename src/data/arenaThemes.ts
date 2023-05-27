@@ -3,10 +3,10 @@ import { Enemy } from "../game/Enemy";
 import { Item } from "../models/Items";
 import { Dragon } from "./Enemies";
 
-import { LeatherBoots } from "./items/LeatherBoots";
+import { LeatherBoots } from "./items/Boots";
 import { LongSword } from "./items/LongSword";
 import { IronMace } from "./items/IronMace";
-import { RingOfHealing } from "./items/RingOfHealing";
+import { MinorRingOfHealing } from "./items/RingOfHealing";
 import { RoundShield } from "./items/RoundShield";
 
 

@@ -1,16 +1,25 @@
 import { shuffle } from "rndlib";
-import { Card } from "../models/Card";
+import { CARDFLAGS, Card } from "../models/Card";
 
 export class Deck {
 	private deck: Card[] = [];
 	private discard: Card[] = [];
 
+	private removedFromGame: Card[] = [];
+
+	private fullDeckSize: number = 0;
+
 	constructor(cards: Card[]) {
 		this.deck = cards;
+		this.fullDeckSize = cards.length;
 	}
 
 	public deckSize(): number {
 		return this.deck.length;
+	}
+
+	public getFullDeckSize(): number {
+		return this.fullDeckSize;
 	}
 
 	public discardSize(): number {
@@ -51,7 +60,18 @@ export class Deck {
 	}
 
 	public discardCards(cards: Card[]): void {
-		this.discard = this.discard.concat(cards);
+		cards.forEach((c) => {
+			if(c.flags && c.flags.includes(CARDFLAGS.SINGLEUSE)) {
+				this.removeFromGame([c]);
+			} else {
+				this.discard.push(c);
+			}
+		})
+		// this.discard = this.discard.concat(cards);
+	}
+
+	public removeFromGame(cards: Card[]): void {
+		this.removedFromGame = this.removedFromGame.concat(cards);
 	}
 
 	public returnDiscardToDeck(): void {
@@ -62,5 +82,9 @@ export class Deck {
 
 	public addCards(cards: Card[]): void {
 		this.deck = this.deck.concat(cards);
+	}
+
+	public calculateFullSize(): void {
+		this.fullDeckSize = this.deck.length + this.discard.length;
 	}
 }

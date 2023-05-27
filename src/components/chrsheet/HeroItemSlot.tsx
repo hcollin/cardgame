@@ -3,16 +3,15 @@ import { ITEMSLOT } from "../../models/HeroStats";
 
 import "./hero-item-slot.scss";
 
+export default function HeroItemSlot(props: { hero: Hero; slot: ITEMSLOT; selected: boolean; onSlotClick: (slot: ITEMSLOT) => void; disabled?: boolean }) {
+	const item = props.hero.getEquippedItem(props.slot);
 
-export default function HeroItemSlot(props: {hero: Hero, slot: ITEMSLOT, selected: boolean; onSlotClick: (slot: ITEMSLOT) => void; disabled?: boolean }) {
-
-    const item = props.hero.getEquippedItem(props.slot);
-
-    function handleClick() {
+	function handleClick() {
 		if (props.disabled === true) return;
 		props.onSlotClick(props.slot);
 	}
 
+	let disabled = false;
 	const cns: string[] = ["hero-item-slot", props.slot.toLowerCase()];
 
 	if (item) {
@@ -23,6 +22,7 @@ export default function HeroItemSlot(props: {hero: Hero, slot: ITEMSLOT, selecte
 	}
 	if (props.disabled === true) {
 		cns.push("disabled");
+		disabled = true;
 	}
 
 	if (!item)
@@ -32,8 +32,13 @@ export default function HeroItemSlot(props: {hero: Hero, slot: ITEMSLOT, selecte
 			</div>
 		);
 
+	if(item.groups.includes("Off-Hand")) {
+		cns.push("disabled");
+		disabled = true;
+	}
+
 	return (
-		<div className={cns.join(" ")} onClick={handleClick}>
+		<div className={cns.join(" ")} onClick={disabled ? () => {} : handleClick}>
 			{/* <div className="slot">{props.slot}</div> */}
 			<div className="name">{item.name}</div>
 		</div>

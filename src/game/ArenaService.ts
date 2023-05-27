@@ -44,14 +44,17 @@ export function createDecks(as: ArenaState): ArenaState {
 		if (ring) {
 			as.rightHandDeck.addCards(createCardsFromItem(ring, "RIGHT"));
 		}
+		as.rightHandDeck.calculateFullSize();
 	}
 	if (leftHandItem) {
 		as.leftHandDeck = new Deck(createCardsFromItem(leftHandItem, "LEFT"));
 		const ring = as.hero.getEquippedItem(ITEMSLOT.LEFT_FINGER);
+		console.log("left hand item", leftHandItem, ring)
 		if (ring) {
-			console.log("Ring on left hand", ring);
 			as.leftHandDeck.addCards(createCardsFromItem(ring, "LEFT"));
 		}
+		as.leftHandDeck.calculateFullSize();
+		
 	}
 	// as.leftHandDeck = new Deck(createCardsFromItem(left, "LEFT"));
 	// as.rightHandDeck = new Deck(createCardsFromItem(right, "RIGHT"));

@@ -3,10 +3,10 @@ import { Dragon, Goblin, Orc, Skeleton } from "./Enemies";
 import { BronzeBuckler } from "./items/BronzeBuckler";
 import { Dagger } from "./items/Dagger";
 import { HandAxe } from "./items/HandAxe";
-import { LeatherBoots } from "./items/LeatherBoots";
+import { LeatherBoots } from "./items/Boots";
 import { LongSword } from "./items/LongSword";
 import { IronMace } from "./items/IronMace";
-import { RingOfHealing } from "./items/RingOfHealing";
+import { MinorRingOfHealing } from "./items/RingOfHealing";
 import { RingOfRegeneration } from "./items/RingOfRegeneration";
 import { RoundShield } from "./items/RoundShield";
 

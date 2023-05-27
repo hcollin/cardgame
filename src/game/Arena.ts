@@ -4,15 +4,15 @@ import { HandAxe } from "../data/items/HandAxe";
 
 import { LongSword } from "../data/items/LongSword";
 import { IronMace } from "../data/items/IronMace";
-import { RingOfHealing } from "../data/items/RingOfHealing";
+import { MinorRingOfHealing } from "../data/items/RingOfHealing";
 import { RingOfRegeneration } from "../data/items/RingOfRegeneration";
 import { RoundShield } from "../data/items/RoundShield";
 import { Item } from "../models/Items";
 import { Enemy } from "./Enemy";
 import { ShortSword } from "../data/items/ShortSword";
 import { Dagger } from "../data/items/Dagger";
-import { LeatherBoots } from "../data/items/LeatherBoots";
-import { CloakOfSwiftness } from "../data/items/CloakOfSwiftness";
+import { LeatherBoots } from "../data/items/Boots";
+import { CloakOfSwiftness } from "../data/items/Cloaks";
 import { MinorWandOfFire } from "../data/items/MinorWandOfFire";
 import { Katana } from "../data/items/Katana";
 import { Cloneable } from "../utils/Clonable";
@@ -69,7 +69,7 @@ export class Arena extends Cloneable {
 	}
 
 	public getGoldReward(): number {
-		return this.getDifficultyValue() * 10;
+		return this.getDifficultyValue() * rnd(5,10);
 	}
 
 	public getDifficulty(): ARENADIFFICULTY {

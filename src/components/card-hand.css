@@ -3,7 +3,7 @@
 div.card-hand {
     position: absolute;
 
-    bottom: 8rem;
+    bottom: 9rem;
     
     width: 50%;
 
@@ -28,6 +28,56 @@ div.card-hand {
         &:hover {
             
         }
+    }
+
+    &> div.discard {
+        position: absolute;
+        bottom: -4rem;
+        left: 52%;
+
+        background: #000004;
+        /* box-shadow: inset 0 0 0.3rem 2px #FFFFFF33; */
+    
+        border: dashed 2px #888A;
+    
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        height: calc(var(--cardSize) * 0.45);
+        width: calc(var(--cardSize) * 1.6 * 0.45);
+    
+        font-size: 1.6rem;
+        color: #FFF8;
+        font-weight: bold;
+    
+        margin: 0.5rem 0;
+    }
+
+    &> div.deck {
+        position: absolute;
+        bottom: -4rem;
+        right: 52%;
+
+        background: #FFFFFF55;
+        box-shadow: inset 0 0 0.3rem 2px #FFFFFF33;
+    
+        border: solid 1px black;
+    
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        height: calc(var(--cardSize) * 0.45);
+        width: calc(var(--cardSize) * 1.6 * 0.45);
+    
+        font-size: 1.6rem;
+        color: black;
+        font-weight: bold;
+    
+        margin: 0.5rem 0;
     }
 
 }

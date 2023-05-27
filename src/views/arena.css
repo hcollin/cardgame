@@ -116,35 +116,6 @@ div.arena {
     padding-left: 2rem;
 }
 
-.deck {
-    background: #FFFFFF55;
-    box-shadow: inset 0 0 0.3rem 2px #FFFFFF33;
-
-    border: solid 1px black;
-
-
-    border-radius: 0.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: calc(var(--cardSize) * 0.45);
-    height: calc(var(--cardSize) * 1.6 * 0.45);
-
-    font-size: 1.6rem;
-    color: black;
-    font-weight: bold;
-
-    margin: 0.5rem 0;
-
-}
-
-.deck.discard {
-    background: #00000022;
-    box-shadow: inset 0 0 0.3rem 2px #00000033;
-
-}
-
 
 div#zoomedContent {
 

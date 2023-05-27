@@ -29,6 +29,10 @@ export enum TARGETS {
 	WORLD = "WORLD"
 }
 
+export enum CARDFLAGS {
+	SINGLEUSE = "SINGLEUSE",
+}
+
 export interface Card extends CardData {
 	id: string;
 	hand: "RIGHT" | "LEFT";
@@ -66,6 +70,8 @@ export interface CardData {
 	allowedTargets: TARGETS[];
 
     effectsOnHit: EFFECTS[];
+
+	flags?: CARDFLAGS[];
 
 	onHit: (as: ArenaState) => ArenaState;
 	onUse: (as: ArenaState, card: Card) => ArenaState;

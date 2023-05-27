@@ -44,6 +44,7 @@ BALANCE
 
 ITEMS
 [ ] Magic versions of items.
+[ ] Two handed weapons
 
 
 OTHERS

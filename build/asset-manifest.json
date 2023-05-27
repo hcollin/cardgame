@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.58ab832e.css",
-    "main.js": "/static/js/main.90c889c7.js",
+    "main.css": "/static/css/main.256fd016.css",
+    "main.js": "/static/js/main.988c0d8a.js",
     "static/js/787.9c804d05.chunk.js": "/static/js/787.9c804d05.chunk.js",
     "static/media/enemycardlayout.png": "/static/media/enemycardlayout.4ed6558090d558ed1cc0.png",
     "static/media/tribal.png": "/static/media/tribal.daa10e4b05e622bc29e0.png",
@@ -13,6 +13,7 @@
     "static/media/magicitemsbg.png": "/static/media/magicitemsbg.f5dbfd3f16c36b04c5c6.png",
     "static/media/generalstorebg.png": "/static/media/generalstorebg.144208bed0d022fbdf68.png",
     "static/media/castlewall.png": "/static/media/castlewall.e180bebaeeaa6ffb45d0.png",
+    "static/media/goldtreasure.jpg": "/static/media/goldtreasure.dbfc30b712707fac8e0f.jpg",
     "static/media/hillhare.png": "/static/media/hillhare.f526e6ed650e69cf53b3.png",
     "static/media/frosttroll.png": "/static/media/frosttroll.5c7bb6aca68d2acb73e0.png",
     "static/media/mountainbg.jpg": "/static/media/mountainbg.c8dd725a9218a13a54c8.jpg",
@@ -92,12 +93,12 @@
     "static/media/cards.png": "/static/media/cards.41ad9923479a625b0e14.png",
     "static/media/frozen.png": "/static/media/frozen.b6ba0424a12b68c17bd4.png",
     "index.html": "/index.html",
-    "main.58ab832e.css.map": "/static/css/main.58ab832e.css.map",
-    "main.90c889c7.js.map": "/static/js/main.90c889c7.js.map",
+    "main.256fd016.css.map": "/static/css/main.256fd016.css.map",
+    "main.988c0d8a.js.map": "/static/js/main.988c0d8a.js.map",
     "787.9c804d05.chunk.js.map": "/static/js/787.9c804d05.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.58ab832e.css",
-    "static/js/main.90c889c7.js"
+    "static/css/main.256fd016.css",
+    "static/js/main.988c0d8a.js"
   ]
 }
