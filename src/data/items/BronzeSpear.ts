@@ -22,7 +22,7 @@ export const BronzeSpear: Item = {
 				{
 					amount: 2,
 					type: DAMAGETYPE.PIERCE,
-					variation: 1,
+					variation: 0,
 				},
 			],
 			apCost: 1,
@@ -41,10 +41,10 @@ export const BronzeSpear: Item = {
 			name: "Smack!",
 			description: "Using the spear's shaft, a quick strike to the head or face can be delivered with surprising force.",
 			rarity: CARDRARITY.RARE,
-			count: 2,
+			count: 1,
 			damage: [
                 {
-					amount: 3,
+					amount: 5,
 					type: DAMAGETYPE.BLUNT,
 					variation: 2,
 				},
@@ -95,19 +95,19 @@ export const BronzeSpear: Item = {
 			count: 1,
 			damage: [
 				{
-					amount: 3,
+					amount: 5,
+					type: DAMAGETYPE.PIERCE,
+					variation: 2,
+				},
+                {
+					amount: 4,
 					type: DAMAGETYPE.PIERCE,
 					variation: 1,
 				},
                 {
 					amount: 3,
 					type: DAMAGETYPE.PIERCE,
-					variation: 1,
-				},
-                {
-					amount: 3,
-					type: DAMAGETYPE.PIERCE,
-					variation: 1,
+					variation: 0,
 				},
                 
 			],

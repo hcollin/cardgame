@@ -138,8 +138,8 @@ function Arena(props: { as: ArenaState; onArenaFinished: (arenaState: ArenaState
 	}
 
 	// const arenaActive = arenaState.state !== arenaState.DEAD && arenaState.state !== arenaState.ARENA_COMPLETED;
-
-	const enemyCardSize = arenaState.arena.enemies.length > 3 ? "small" : "medium";
+	
+	const enemyCardSize = arenaState.arena.enemies.filter((e) => !e.isDead()).length > 3 ? "small" : "medium";
 
 	return (
 		<div className="arena" style={arenaStyle}>

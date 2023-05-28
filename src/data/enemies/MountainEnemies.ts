@@ -5,6 +5,9 @@ import { ENEMYDATA } from "../EnemyData";
 import imgFrostTroll from "./pics/frosttroll.png";
 import imgWolf from "./pics/wolf.jpg";
 import imgHare from "./pics/hillhare.png";
+import imgFrostGiant from "./pics/frostgiant.jpg";
+import { DAMAGETYPE } from "../../models/Card";
+import { EFFECTS } from "../../models/Effects";
 
 export class Wolf extends Enemy {
 	protected name: string = "Wolf";
@@ -119,3 +122,99 @@ export class FrostTroll extends Enemy {
 		super();
 	}
 }
+
+export class FrostGiant extends Enemy {
+	protected name: string = "Frost Giant";
+	protected maxHealth: number = 400;
+
+	protected vulnerableTo: DAMAGETYPE[] = [DAMAGETYPE.FIRE];
+	protected resistantTo: DAMAGETYPE[] = [DAMAGETYPE.ICE];
+
+	public readonly difficulty: number = ENEMYDATA["Frost Giant"].difficultyNumber;
+
+	protected experienceValue: number = ENEMYDATA["Frost Giant"].experienceValue;
+
+	public image: string = imgFrostGiant;
+
+	protected actions: EnemyAction[] = [
+		{
+			action: ENEMYACTIONS.SPECIAL1,
+			target: ENEMYACTIONTARGETS.SELF,
+			description: "SUMMON WOLVES!",
+		},
+		{
+			action: ENEMYACTIONS.ATTACK,
+			target: ENEMYACTIONTARGETS.HERO,
+			value: 20,
+			damageType: DAMAGETYPE.ICE,
+		
+		},
+		{
+			action: ENEMYACTIONS.ATTACK,
+			target: ENEMYACTIONTARGETS.HERO,
+			value: 10,
+			damageType: DAMAGETYPE.ICE,
+			effect: EFFECTS.FROZEN,
+			description: "Cold breath 10"
+		},
+		{
+			action: ENEMYACTIONS.BLOCK,
+			target: ENEMYACTIONTARGETS.SELF,
+			value: 20,
+		},
+		{
+			action: ENEMYACTIONS.ATTACK,
+			target: ENEMYACTIONTARGETS.HERO,
+			value: 20,
+			damageType: DAMAGETYPE.ICE,
+		
+		},
+		{
+			action: ENEMYACTIONS.SPECIAL2,
+			target: ENEMYACTIONTARGETS.SELF,
+			description: "CALL FOR HARES!",
+		},
+		{
+			action: ENEMYACTIONS.BLOCK,
+			target: ENEMYACTIONTARGETS.SELF,
+			value: 20,
+		},
+		{
+			action: ENEMYACTIONS.ATTACK,
+			target: ENEMYACTIONTARGETS.HERO,
+			value: 40,
+			damageType: DAMAGETYPE.ICE,
+			effect: EFFECTS.STUN,
+			description: "Avenge! (ICE 40, Stun)"
+		
+		},
+	];
+
+	protected actionSpecial1(as: ArenaState, act: EnemyAction) {
+		
+		for(let i = 0; i <2; i++) {
+			const wolf = new Wolf();
+			wolf.resetEnemy();
+			as.arena.enemies.push(wolf);
+		}
+		
+		return { ...as };
+	}
+
+	protected actionSpecial2(as: ArenaState, act: EnemyAction) {
+		
+		for(let i = 0; i <2; i++) {
+			const clonedRabbit = new HillHare();
+			clonedRabbit.resetEnemy();
+			as.arena.enemies.push(clonedRabbit);
+		}
+		
+		return { ...as };
+	}
+
+	constructor() {
+		super();
+	}
+
+}
+

@@ -6,14 +6,13 @@ export const Gambeson: Item = {
 	name: "Gambeson",
 	groups: ["Armor", "Light Armor", "Fabric", "General Store"],
 	itemSlots: [ITEMSLOT.BODY],
-	rulesText: "BLOCK 1. Damage Reduction 1 against Slash damage.",
+	rulesText: "BLOCK 1.",
 	description: "A thick, padded fabric armor providing both protection and flexibility, often used beneath other armors.",
 	cards: [],
-	price: 45,
+	price: 25,
 	rarity: ITEMRARITY.RARE,
 	bonus: {
 		BLOCK: 1,
-		DAMAGEREDUCTION_SLASH: 1,
 	},
 	onEquip: (hero) => {},
 	onUnequip: (hero) => {},
@@ -24,13 +23,14 @@ export const LeatherArmor: Item = {
 	name: "Leather Armor",
 	groups: ["Armor", "Light Armor", "Leather", "General Store"],
 	itemSlots: [ITEMSLOT.BODY],
-	rulesText: "BLOCK 2",
+	rulesText: "BLOCK 2. DODGE +10%",
 	description: "A simple leather ammor",
 	cards: [],
 	price: 60,
 	rarity: ITEMRARITY.COMMON,
 	bonus: {
 		BLOCK: 2,
+		DODGE: 10,
 	},
 	onEquip: (hero) => {
 		// hero.modifyEffectArmor(2);
@@ -38,6 +38,10 @@ export const LeatherArmor: Item = {
 	onUnequip: (hero) => {
 		// hero.modifyEffectArmor(-2);
 	},
+	setItems: ["Leather Cap", "Leather Armor", "Leather Boots"],
+	setBonus: {
+		DODGE: 15
+	}
 };
 
 

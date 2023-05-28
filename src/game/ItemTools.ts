@@ -52,9 +52,15 @@ export function getItemIcon(item: Item): string {
 	if(item.groups.includes("Weapon")) {
 		
 		if(item.groups.includes("Axe")) {
+			if(item.groups.includes("Two-Handed")) { 
+				return "bigaxe";
+			}
 			return "axe"
 		}
 		if(item.groups.includes("Sword")) {
+			if(item.groups.includes("Two-Handed")) { 
+				return "bigsword";
+			}
 			return "sword"
 		}
 		if(item.groups.includes("Club") || item.groups.includes("Mace")) {

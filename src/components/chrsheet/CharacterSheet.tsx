@@ -111,6 +111,37 @@ export default function CharacterSheet(props: { campaign: Campaign; full?: boole
 						</div>
 					</div>
 
+
+					<h3>Actions</h3>
+
+					<div className="energy">
+						<div className="info">
+							<Icon type="energy" /> Energy
+						</div>
+						<div className="value">
+							{hero.getEnergy()}
+						</div>
+					</div>
+
+					<div className="right-hand">
+						<div className="info">
+							<Icon type="cards" /> Right Hand
+						</div>
+						<div className="value">
+							{hero.getHandSize("RIGHT")}
+						</div>
+					</div>
+
+					<div className="left-hand">
+						<div className="info">
+							<Icon type="cards" /> Left Hand
+						</div>
+						<div className="value">
+							{hero.getHandSize("LEFT")}
+						</div>
+					</div>
+
+
 					<h3>Rewards</h3>
 
 					<div className="exp">

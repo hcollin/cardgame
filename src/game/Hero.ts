@@ -1,5 +1,5 @@
 import { roll } from "rndlib/dist/dice";
-import { ClassWarrior } from "../data/Classes";
+import { ClassWarrior, LEVELEXPERIENCEREQUIREMENTS } from "../data/Classes";
 import { RaceHuman } from "../data/Races";
 import { DAMAGETYPE, Damage } from "../models/Card";
 import { CharacterClass, CharacterRace, ITEMSLOT, LevelMods } from "../models/HeroStats";
@@ -13,8 +13,7 @@ import Observable from "../utils/observable/Observable";
 import { EFFECTS } from "../models/Effects";
 import { EnemyAction } from "./Enemy";
 import { OffHandForTwoHandedItem } from "../data/items/EmptyHandItem";
-
-const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
+import { BONUS } from "../models/Bonuses";
 
 interface HeroEffect {
 	effect: EFFECTS;
@@ -153,6 +152,22 @@ export default class Hero extends Observable {
 				duration: duration || 1,
 				value: value || 1,
 			});
+		}
+	}
+
+	public removeEffect(effect: EFFECTS) {
+		this.effects.delete(effect);
+	}
+
+	public clearEffects() {
+		this.effects.clear();
+	}
+
+	public adjustEffect(effect: EFFECTS, value: number, duration?: number) {
+		const eff = this.effects.get(effect);
+		if (eff) {
+			eff.value += value;
+			eff.duration += duration || 0;
 		}
 	}
 
@@ -345,7 +360,7 @@ export default class Hero extends Observable {
 	// Calculated Getters
 
 	public getBaseBlock(): number {
-		return this.heroRace.baseArmor + this.heroClass.levelStats[this.level].block + (this.heroClass.bonus.BLOCK || 0);
+		return this.heroRace.baseArmor + this.getLevelStat("BLOCK") + (this.heroClass.bonus.BLOCK || 0);
 	}
 
 	public getEffectedBlock(): number {
@@ -353,7 +368,7 @@ export default class Hero extends Observable {
 	}
 
 	public getBaseHealth(): number {
-		return this.heroRace.baseHealth + this.heroClass.levelStats[this.level].health + (this.heroClass.bonus.HEALTH || 0);
+		return this.heroRace.baseHealth + this.getLevelStat("HEALTH") + (this.heroClass.bonus.HEALTH || 0);
 	}
 
 	public getMaxHealth(): number {
@@ -361,7 +376,7 @@ export default class Hero extends Observable {
 	}
 
 	public getBaseEnergy(): number {
-		return this.heroRace.baseEnergy + this.heroClass.levelStats[this.level].energy + (this.heroClass.bonus.ENERGY || 0);
+		return this.heroRace.baseEnergy + this.getLevelStat("ENERGY") + (this.heroClass.bonus.ENERGY || 0);
 	}
 
 	public getEffectedEnergy(): number {
@@ -372,9 +387,9 @@ export default class Hero extends Observable {
 		// console.log("Hand:", this.heroClass.levelStats[this.level]);
 		if (hand === "RIGHT") {
 			// console.log("Right hand size:", this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize);
-			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].rHandSize + this.getEquippedItemBonus("RIGHT_HAND_SIZE");
+			return this.heroRace.baseHandSize + this.getLevelStat("RIGHT_HAND_SIZE") + this.getEquippedItemBonus("RIGHT_HAND_SIZE");
 		} else {
-			return this.heroRace.baseHandSize + this.heroClass.levelStats[this.level].lHandSize + this.getEquippedItemBonus("LEFT_HAND_SIZE");
+			return this.heroRace.baseHandSize + this.getLevelStat("LEFT_HAND_SIZE") + this.getEquippedItemBonus("LEFT_HAND_SIZE");
 		}
 	}
 
@@ -461,7 +476,10 @@ export default class Hero extends Observable {
 		return this.itemSlots.get(slot);
 	}
 
-	public itemIsEquipped(item: Item): boolean {
+	public itemIsEquipped(item: Item | string): boolean {
+		if (typeof item === "string") {
+			return Array.from(this.itemSlots.values()).find((i) => i.id === item || i.name === item) !== undefined;
+		}
 		return Array.from(this.itemSlots.values()).includes(item);
 	}
 
@@ -475,19 +493,30 @@ export default class Hero extends Observable {
 			ITEMSLOT.LEFT_FINGER,
 			ITEMSLOT.RIGHT_HAND,
 			ITEMSLOT.RIGHT_FINGER,
+			ITEMSLOT.CAPE,
 		];
-		if (this.heroClass.levelStats[this.level].cape) {
-			slots.push(ITEMSLOT.CAPE);
-		}
+		// if (this.heroClass.levelStats[this.level].cape) {
+		// 	slots.push(ITEMSLOT.CAPE);
+		// }
 		return slots;
 	}
 
 	public getEquippedItemBonus(key: string): number {
 		return Array.from(this.itemSlots.values()).reduce((acc, item) => {
-			if (item.bonus?.[key]) {
-				return acc + item.bonus[key];
+			
+			let bonus = 0;
+
+			if(this.isItemSetFullyEquipped(item)) {
+				if(item.setBonus?.[key]) {
+					bonus += item.setBonus[key];
+				}
 			}
-			return acc;
+
+			if (item.bonus?.[key]) {
+				bonus += item.bonus[key];
+				// return acc + item.bonus[key];
+			}
+			return acc + bonus;
 		}, 0);
 	}
 
@@ -529,6 +558,10 @@ export default class Hero extends Observable {
 	}
 
 	public modifyTemporaryDodge(amount: number) {
+		if (this.temporaryDodge + amount < 0) {
+			this.temporaryDodge = 0;
+			return;
+		}
 		this.temporaryDodge += amount;
 	}
 
@@ -564,5 +597,22 @@ export default class Hero extends Observable {
 			return true;
 		}
 		return false;
+	}
+
+	private isItemSetFullyEquipped(item: Item): boolean {
+		if (!item.setItems) return false;
+		const equippedSetItems = Array.from(this.itemSlots.values()).filter((i) => item.setItems?.includes(i.name));
+		return equippedSetItems.length === item.setItems.length;
+	}
+
+	
+
+	private getLevelStat(str: BONUS): number {
+		let value = 0;
+		for (let i = 0; i <= this.level; i++) {
+			const bonuses = this.heroClass.levelStats[i];
+			value += bonuses[str] || 0;
+		}
+		return value;
 	}
 }

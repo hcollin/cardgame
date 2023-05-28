@@ -8,7 +8,7 @@ import { WoodenClub } from "./WoodenClub";
 import { HandAxe } from "./HandAxe";
 import { Katana } from "./Katana";
 import { Gambeson, LeatherArmor, StuddedLeatherArmor } from "./LightArmor";
-import { BootsOfSwiftness, ElvishBoots, IronGreaves, LeatherBoots } from "./Boots";
+import { BootsOfSwiftness, ElvishBoots, IronGreaves, LeatherBoots, Sandals } from "./Boots";
 import { LeatherCap } from "./LeatherCap";
 import { BronzeBuckler } from "./BronzeBuckler";
 import { BreastPlate, ChainMail, ScaleMail } from "./MediumArmor";
@@ -23,8 +23,12 @@ import {
 	HealingPotion,
 	MinorEnergyPotion,
 	MinorHealingPotion,
+	MinorPotionOfAntiVenom,
 	MinorPotionOfInsight,
+	PotionOfAntiVenom,
 	PotionOfInsight,
+	PotionOfNeutralize,
+	VerySpecialPotion,
 } from "./Potions";
 import { BronzeSpear } from "./BronzeSpear";
 import { LegendaryRingOfHealing, MajorRingOfHealing, MinorRingOfHealing, RingOfHealing } from "./RingOfHealing";
@@ -34,6 +38,10 @@ import { CapeOfWisdom, CloakOfDisplacement, CloakOfProtection, CloakOfSwiftness,
 import { MinorRingOfPower } from "./RingOfPower";
 import { Claymore } from "./Claymore";
 import { BattleAxe } from "./BattleAxe";
+import { FlaskOfWater } from "./GeneralStuff";
+
+
+export const generalItems: Item[] = [Sandals, FlaskOfWater];
 
 export const basicWeapons: Item[] = [Dagger, ShortSword, WoodenClub, BronzeSpear, HandAxe];
 
@@ -49,9 +57,9 @@ export const standardArmors: Item[] = [StuddedLeatherArmor, BreastPlate, RoundSh
 
 export const heavyArmors: Item[] = [ChainMail, ScaleMail, TowerShield, Barbute, GreatHelm];
 
-export const minorPotions: Item[] = [MinorHealingPotion, MinorEnergyPotion, MinorPotionOfInsight];
+export const minorPotions: Item[] = [MinorHealingPotion, MinorEnergyPotion, MinorPotionOfInsight, MinorPotionOfAntiVenom, VerySpecialPotion];
 
-export const defaultPotions: Item[] = [HealingPotion, EnergyPotion, PotionOfInsight];
+export const defaultPotions: Item[] = [HealingPotion, EnergyPotion, PotionOfInsight, PotionOfAntiVenom, PotionOfNeutralize];
 
 export const greaterPotions: Item[] = [GreaterEnergyPotion, GreaterHealingPotion, GreaterPotionOfInsight];
 
@@ -64,6 +72,7 @@ export const MajorMagicItems: Item[] = [MajorRingOfHealing, CapeOfWisdom, Elvish
 export const LegendaryMagicItems: Item[] = [LegendaryRingOfHealing, MerlinsCape, BootsOfSwiftness];
 
 export const allItems: Item[] = [
+	...generalItems,
 	...basicWeapons,
 	...defaultWeapons,
 	...advancedWeapons,

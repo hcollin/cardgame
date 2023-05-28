@@ -7,7 +7,7 @@ import iconBlock from "./icons/armor.png";
 import iconExperience from "./icons/experience.png";
 import iconDodge from "./icons/dodge.png";
 import iconDamageReduction from "./icons/damagereduction.png";
-
+import iconCards from "./icons/cards.png";
 
 import iconGamble from "./icons/gambling.png";
 import iconQuest from "./icons/quest.png";
@@ -34,6 +34,10 @@ import iconTypeBurn from "./icons/burning.png";
 import iconTypeSlow from "./icons/stunned.png";
 import iconTypeFrozen from "./icons/frozen.png";
 
+import iconTypeBigAxe from "./icons/iconType2ndAxe.png";
+import iconTypeBigSword from "./icons/iconType2ndSword.png";
+
+
 // import iconTypeStaff from "./icons/iconTypeStaff.png";
 // import iconTypeWand from "./icons/iconTypeWand.png";
 
@@ -47,6 +51,8 @@ const icon2Image: {[key: string]: string} = {
     "damagereduction": iconDamageReduction,
     "experience": iconExperience,
 
+    "cards": iconCards,
+
     "gambling": iconGamble,
     "´quest": iconQuest,
     
@@ -57,6 +63,8 @@ const icon2Image: {[key: string]: string} = {
     "dagger": iconTypeDagger,
     "spear": iconTypeSpear,
     "wand": iconTypeWand,
+    "bigaxe": iconTypeBigAxe,
+    "bigsword": iconTypeBigSword,
     
     "potion": iconTypePotion,
     "ring": iconTypeRing,

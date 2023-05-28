@@ -25,4 +25,6 @@ export interface Item {
 	onUnequip?: (hero: Hero) => void;
 	onEndOfTurn?: (as: ArenaState) => ArenaState;
 	onUse?: (as: ArenaState) => ArenaState;
+	setItems?: string[];
+	setBonus?: { [key: string]: number }
 }

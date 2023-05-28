@@ -4,6 +4,7 @@ import { Item } from "../models/Items";
 import { arnd } from "rndlib";
 
 import Hero from "./Hero";
+import { LEVELEXPERIENCEREQUIREMENTS } from "../data/Classes";
 
 export function equipItemRight(hero: Hero, item: Item): Hero {
 	// hero.activeItemRight = item;
@@ -27,8 +28,6 @@ export function unequipItem(hero: Hero, slot: ITEMSLOT): Hero {
 	return hero;
 }
 
-
-const LEVELEXPERIENCEREQUIREMENTS: number[] = [0, 0, 40, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
 /**
  * Level up hero if they have enough experience

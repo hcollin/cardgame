@@ -60,7 +60,7 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 	},
 	MOUNTAIN: {
 		id: "MOUNTAIN",
-		types: ["Mountain", "Orcs", "Easy"],
+		types: ["Mountain", "Orcs", "Medium"],
 		name: () => {
 			const adjectives = ["High", "Steep", "Snowy", "Rocky", "Misty", "Enchanted", "Wild", "Frosty"];
 			const nouns = ["Mountain", "Hill", "Peak", "Cliff", "Ridge", "Slope", "Trail"];
@@ -75,6 +75,6 @@ export const ARENATHEMES: { [key: string]: ArenaTheme } = {
 		icon: "mountain",
 		rewardCount: 3,
 		rewardItems: [...basicWeapons, ...basicArmors, ...minorPotions, ...defaultWeapons, ...minorMagicItems, ...defaultPotions],
-		bosses: ["Dragon"],
+		bosses: ["Frost Giant"],
 	}
 };

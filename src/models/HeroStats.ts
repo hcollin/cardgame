@@ -70,7 +70,7 @@ export interface CharacterClass {
     name: string;
 	bonus: Partial<Record<BONUS, number>>;
     startingItems: [Item, ITEMSLOT|null][];
-    levelStats: LevelMods[];
+    levelStats: (Partial<Record<BONUS, number>>)[];
 	cards?: Card[];
 
 }

@@ -20,7 +20,7 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 
 	const hen = hero.getEnergy();
 	// const hmen = hero.getBaseEnergy();
-	
+
 	const energyBar: boolean[] = new Array<boolean>(Math.max(hen, hero.getBaseEnergy(), hero.getEffectedEnergy())).fill(false).reduce((bar, act, i) => {
 		if (i < hen) {
 			bar.push(true);
@@ -32,7 +32,7 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 	}, [] as boolean[]);
 
 	const effects = hero.getEffects();
-	if (effects.length > 0) console.log("EFFECTS:", effects);
+
 	return (
 		<div className="hero-info">
 			<div className="durability">
@@ -93,7 +93,7 @@ function HeroInfo(props: { arenaState: ArenaState }) {
 						const key = `eff-${effect.effect}-${i}`;
 
 						let type = effect.effect.toLowerCase();
-						
+
 						return (
 							<div key={key}>
 								<Icon type={type} />

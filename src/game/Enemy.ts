@@ -308,6 +308,8 @@ export class Enemy extends Cloneable {
 	public resetEnemy(): void {
 		this.health = this.maxHealth;
 		this.status = ENEMYSTATUS.ALIVE;
+		this.nextAction = 0;
+		this.effects.clear();
 	}
 
 	public isDead(): boolean {

@@ -16,6 +16,21 @@ export const LeatherBoots: Item = {
 	},
 	onEquip: (hero) => {},
 	onUnequip: (hero) => {},
+	setItems: ["Leather Cap", "Leather Armor", "Leather Boots"],
+};
+
+export const Sandals: Item = {
+	id: "sandals",
+	name: "Sandals",
+	groups: ["Boots", "General Store", "Stuff"],
+	itemSlots: [ITEMSLOT.FEET],
+	description: "These sandals look nice, but do absolutely nothing to protect your feet.",
+	cards: [],
+	price: 5,
+	rarity: ITEMRARITY.COMMON,
+	bonus: {},
+	onEquip: (hero) => {},
+	onUnequip: (hero) => {},
 };
 
 export const ElvishBoots: Item = {
@@ -35,7 +50,6 @@ export const ElvishBoots: Item = {
 	onUnequip: (hero) => {},
 };
 
-
 export const IronGreaves: Item = {
 	id: "iron-greaves",
 	name: "Iron Greaves",
@@ -48,7 +62,7 @@ export const IronGreaves: Item = {
 	rarity: ITEMRARITY.UNCOMMON,
 	bonus: {
 		BLOCK: 2,
-		DODGE: -5
+		DODGE: -5,
 	},
 	onEquip: (hero) => {},
 	onUnequip: (hero) => {},
@@ -60,13 +74,14 @@ export const BootsOfSwiftness: Item = {
 	groups: ["Boots", "Magic Item", "Legendary"],
 	itemSlots: [ITEMSLOT.FEET],
 	rulesText: "Energy +1, Dodge +20%",
-	description: "These boots are made of an impossibly light material that reflects light in a way that makes the wearer appear to be moving faster than they actually are.",
+	description:
+		"These boots are made of an impossibly light material that reflects light in a way that makes the wearer appear to be moving faster than they actually are.",
 	cards: [],
 	price: 350,
 	rarity: ITEMRARITY.EPIC,
 	bonus: {
 		ENERGY: 1,
-		DODGE: 20
+		DODGE: 20,
 	},
 	onEquip: (hero) => {},
 	onUnequip: (hero) => {},

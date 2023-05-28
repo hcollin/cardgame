@@ -3,7 +3,7 @@ import { Dragon } from "./Enemies";
 import { FairyMage, FairyWarrior, ForestSprite, HorrorSpider } from "./enemies/ForestEnemies";
 
 import { GoblinLord, GoblinSorcerer, GoblinWarrior } from "./enemies/Goblins";
-import { FrostTroll, HillHare, Wolf } from "./enemies/MountainEnemies";
+import { FrostGiant, FrostTroll, HillHare, Wolf } from "./enemies/MountainEnemies";
 import { OrcWarlord } from "./enemies/Orcs";
 import { OrcShaman } from "./enemies/Orcs";
 import { OrcBerserker } from "./enemies/Orcs";
@@ -89,7 +89,7 @@ export const ENEMYDATA: { [key: string]: EnemyData } = {
 
     "Dragon": {
         name: "Dragon",
-        difficultyNumber: 20,
+        difficultyNumber: 10,
         experienceValue: 1000,
         enemyClass: Dragon,
     },
@@ -112,6 +112,12 @@ export const ENEMYDATA: { [key: string]: EnemyData } = {
         difficultyNumber: 2,
         experienceValue: 20,
         enemyClass: Wolf,
+    },
+    "Frost Giant": {
+        name: "Frost Giant",
+        difficultyNumber: 15,
+        experienceValue: 2000,
+        enemyClass: FrostGiant,
     },
 
 

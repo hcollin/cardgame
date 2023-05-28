@@ -1,4 +1,7 @@
+import { chance, rnd } from "rndlib";
+import { EFFECTS } from "../../models/Effects";
 import { Item, ITEMRARITY } from "../../models/Items";
+import { effStore } from "../../utils/usePlayerEffect";
 
 export const MinorHealingPotion: Item = {
     id: "minor-healing-potion",
@@ -158,3 +161,150 @@ export const GreaterPotionOfInsight: Item = {
         return { ...as };
     }
 }
+
+
+export const MinorPotionOfAntiVenom: Item = {
+    id: "minor-potion-of-antivenom",
+    name: "Minor Potion of Anti-Venom",
+    groups: ["Potion", "Anti-Venom", "Consumable", "grade-1"],
+    rulesText: "Remove 3 poison",
+    description: "A small vial of suspicious green liquid.",
+    itemSlots: [],
+    cards: [],
+    rarity: ITEMRARITY.COMMON,
+    bonus: {},
+    price: 10,
+    onUse: (as) => {
+        as.hero.adjustEffect(EFFECTS.POISON, 3);
+        return { ...as };
+    }
+};
+
+export const PotionOfAntiVenom: Item = {
+    id: "potion-of-antivenom",
+    name: "Potion of Anti-Venom",
+    groups: ["Potion", "Anti-Venom", "Consumable", "grade-1"],
+    rulesText: "Remove all poison",
+    description: "A large vial of very suspicious green liquid.",
+    itemSlots: [],
+    cards: [],
+    rarity: ITEMRARITY.UNCOMMON,
+    bonus: {},
+    price: 30,
+    onUse: (as) => {
+        as.hero.removeEffect(EFFECTS.POISON);
+        return { ...as };
+    }
+};
+
+export const PotionOfNeutralize: Item = {
+    id: "potion-of-neutralize",
+    name: "Potion of Neutralize",
+    groups: ["Potion", "Consumable", "grade-3", "Neutralize"],
+    rulesText: "Remove all effects",
+    description: "A clear, sparkling elixir held in a simple glass vial, its fluid seems to shimmer with an ethereal, balanced energy.",
+    itemSlots: [],
+    cards: [],
+    rarity: ITEMRARITY.RARE,
+    bonus: {},
+    price: 50,
+    onUse: (as) => {
+        as.hero.clearEffects();
+        return { ...as };
+    }
+};
+
+export const VerySpecialPotion: Item = {
+    id: "very-special-potion",
+    name: "Very Special Potion",
+    groups: ["Potion", "Consumable", "grade-2", "Very Special"],
+    rulesText: "Drink and see what happens.",
+    description: "A small vial of a mysterious liquid. It seems to be glowing and... laughing?.",
+    itemSlots: [],
+    cards: [],
+    rarity: ITEMRARITY.UNCOMMON,
+    bonus: {},
+    price: 20,
+    onUse: (as) => {
+        let results: string[] = [];
+        
+        // Heal or damage
+        if(chance(75))  {   
+            const val = rnd(1,50);
+            as.hero.healHero(val);
+            results.push(`heal ${val} health`);
+        } else {
+            if(chance(20)) {
+                const val = rnd(1,10);
+                as.hero.takeDamage(val);
+                results.push( `take ${val} damage`);
+            }
+        }
+
+        // Gain or lose energy
+        if(chance(25)) {
+            const val = rnd(1,3);
+            as.hero.useEnergy(val * -1);
+            results.push(` gain ${val} energy `);
+        } else {
+            if(chance(10)) {
+                const val = rnd(1,2);
+                as.hero.useEnergy(val);
+                results.push(`lose ${val} energy`);
+            }
+        }
+
+        // Gain or lose block
+        if(chance(50)) {
+            const val = rnd(1,10);
+            as.hero.modifyArmor(val);
+            results.push(` gain ${val} block `);
+        } else {
+            if(chance(20)) {
+                const val = rnd(1,4);
+                as.hero.modifyArmor(val * -1);
+                results.push(`lose ${val} block`);
+            }
+        }
+
+        // Gain gold
+        if(chance(25)) {
+            const val = rnd(1,50);
+            as.hero.gold += val;
+            results.push(`find ${val} gold`);
+        }
+
+        // Gain or lose dodge
+        if(chance(50)) {
+            const val = rnd(1,80);
+            as.hero.modifyTemporaryDodge(val);
+            results.push(`gain ${val} dodge`);
+        } else {
+            if(chance(20)) {
+                const val = rnd(1,25);
+                as.hero.modifyTemporaryDodge(val * -1);
+                results.push(`lose ${val} dodge`);
+            }
+        }
+
+        if(chance(50)) {
+            const val = rnd(1,5);
+            as.hero.sufferEffect(EFFECTS.POISON, val);
+            results.push(`suffer poison ${val}`);
+        }
+
+        if(chance(25)) {
+            as.hero.sufferEffect(EFFECTS.STUN, 1);
+            results.push(`stunned for a turn`);
+        }
+
+        if(chance(10)) {
+            as.hero.sufferEffect(EFFECTS.FROZEN, 1);
+            results.push(`frozen for a turn`);
+        }
+
+        effStore.addEffect("potion", `You drink the potion and ${results.join(" and ")}. Enjoy!`);
+
+        return { ...as };
+    }
+};
